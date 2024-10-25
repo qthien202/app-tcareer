@@ -8,23 +8,27 @@ import 'package:app_tcareer/src/features/chat/presentation/widgets/chat_video_pl
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
+import 'package:app_tcareer/src/widgets/photos/app_photo_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fb_photo_view/flutter_fb_photo_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-Widget messageBox({
-  required bool isFirstIndex,
-  required String status,
-  required String avatarUrl,
-  required String message,
-  bool isMe = false,
-  required String createdAt,
-  required WidgetRef ref,
-  required List<String> media,
-}) {
+Widget messageBox(
+    {required bool isFirstIndex,
+    required String status,
+    required String avatarUrl,
+    required String message,
+    bool isMe = false,
+    required String createdAt,
+    required WidgetRef ref,
+    required List<String> media,
+    required BuildContext context}) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: !isMe ? MainAxisAlignment.start : MainAxisAlignment.end,
@@ -103,7 +107,7 @@ Widget messageBox({
                           ? CrossAxisAlignment.end
                           : CrossAxisAlignment.start,
                       children: [
-                        mediaItem(media, ref),
+                        mediaItem(media, ref, context),
                         const SizedBox(
                           height: 5,
                         ),
@@ -179,7 +183,8 @@ Widget statusText(String status) {
   );
 }
 
-Widget mediaItem(List<String> media, WidgetRef ref) {
+Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context) {
+  CarouselController carouselController = CarouselController();
   if (media.length == 1) {
     return Visibility(
       visible: media.first.isImageNetWork,
@@ -207,12 +212,29 @@ Widget mediaItem(List<String> media, WidgetRef ref) {
       child: Visibility(
         visible: !media.first.isVideoNetWork,
         replacement: ChatVideoPlayerWidget(media.first),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: cachedImageWidget(
-            visiblePlaceHolder: false,
-            imageUrl: media[0],
-            fit: BoxFit.cover,
+        child: GestureDetector(
+          onTap: () {
+            List<String> images =
+                media.where((item) => item.isImageNetWork).toList();
+            final data = AppPhotoModel(
+                images: images,
+                onPageChanged: (val) {
+                  // carouselController.animateToPage(
+                  //   val,
+                  //   duration: const Duration(milliseconds: 300),
+                  //   curve: Curves.easeInOut,
+                  // );
+                },
+                index: 0);
+            context.pushNamed("appPhoto", extra: data);
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: cachedImageWidget(
+              visiblePlaceHolder: false,
+              imageUrl: media[0],
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),
@@ -222,7 +244,9 @@ Widget mediaItem(List<String> media, WidgetRef ref) {
       // alignment: WrapAlignment.end,
       spacing: 5,
       runSpacing: 5,
-      children: media.map((mediaItem) {
+      children: media.asMap().entries.map((entry) {
+        final mediaItem = entry.value;
+        final index = entry.key;
         return Container(
           alignment: Alignment.centerRight,
           // width: (ScreenUtil().screenWidth - 15) / 2,
@@ -254,12 +278,29 @@ Widget mediaItem(List<String> media, WidgetRef ref) {
               replacement: ChatVideoPlayerWidget(
                 mediaItem,
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: cachedImageWidget(
-                  visiblePlaceHolder: false,
-                  imageUrl: mediaItem,
-                  fit: BoxFit.cover,
+              child: GestureDetector(
+                onTap: () {
+                  List<String> images =
+                      media.where((item) => item.isImageNetWork).toList();
+                  final data = AppPhotoModel(
+                      images: images,
+                      onPageChanged: (val) {
+                        // carouselController.animateToPage(
+                        //   val,
+                        //   duration: const Duration(milliseconds: 300),
+                        //   curve: Curves.easeInOut,
+                        // );
+                      },
+                      index: index);
+                  context.pushNamed("appPhoto", extra: data);
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: cachedImageWidget(
+                    visiblePlaceHolder: false,
+                    imageUrl: mediaItem,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),

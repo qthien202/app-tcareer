@@ -106,12 +106,12 @@ class ConversationController extends ChangeNotifier {
         conversations.insert(0, newConversation);
 
         notifyListeners();
-        if (messageData['sender_id'] != null) {
-          await markDeliveredMessage(
-              senderId: messageData['sender_id'],
-              messageId: messageId,
-              conversationId: conversationId);
-        }
+        // if (messageData['sender_id'] != null) {
+        //   await markDeliveredMessage(
+        //       senderId: messageData['sender_id'],
+        //       messageId: messageId,
+        //       conversationId: conversationId);
+        // }
       }
     }
   }
