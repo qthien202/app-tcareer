@@ -92,7 +92,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           // ref
           //     .watch(indexControllerProvider.notifier)
           //     .setBottomNavigationBarVisibility(true);
-          context.goNamed("conversation");
+          // context.goNamed("conversation");
         }
       },
       child: Scaffold(
@@ -193,7 +193,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           centerTitle: false,
           leadingWidth: 40,
           leading: GestureDetector(
-            onTap: () => context.goNamed("conversation"),
+            onTap: () => context.pop(),
             child: const Icon(Icons.arrow_back),
           ),
           title: StreamBuilder<Map<dynamic, dynamic>>(

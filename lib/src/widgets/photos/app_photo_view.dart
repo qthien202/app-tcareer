@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:app_tcareer/src/extensions/image_extension.dart';
 import 'package:app_tcareer/src/features/index/index_controller.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/engagement_widget.dart';
@@ -113,13 +114,17 @@ class _AppPhotoViewState extends State<AppPhotoView> {
                 visible: widget.data.images.length > 1,
                 child: Text("${index + 1}/${widget.data.images.length}")),
             actions: [
-              IconButton(
-                  onPressed: () async =>
-                      await downLoadImage(widget.data.images[index]),
-                  icon: Icon(
-                    Icons.download,
-                    color: Colors.white,
-                  ))
+              Visibility(
+                visible:
+                    widget.data.images.any((image) => image.isImageNetWork),
+                child: IconButton(
+                    onPressed: () async =>
+                        await downLoadImage(widget.data.images[index]),
+                    icon: Icon(
+                      Icons.download,
+                      color: Colors.white,
+                    )),
+              )
             ],
           ),
           body: Stack(

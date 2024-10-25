@@ -2,9 +2,11 @@ import 'dart:io';
 import 'package:app_tcareer/src/extensions/image_extension.dart';
 import 'package:app_tcareer/src/features/posts/get_image_orientation.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
+import 'package:app_tcareer/src/widgets/photos/app_photo_model.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -16,10 +18,11 @@ Widget postingImageWidget(
   if (mediaUrl.isEmpty) {
     return const SizedBox();
   }
-
+  CarouselController carouselController = CarouselController();
   return Column(
     children: [
       CarouselSlider.builder(
+        carouselController: carouselController,
         itemCount: mediaUrl.length,
         itemBuilder: (context, index, realIndex) {
           String image = mediaUrl[index];
@@ -43,19 +46,34 @@ Widget postingImageWidget(
                                 error: (error, stack) => 16 / 9,
                               );
 
-                      return image.isImageNetWork
-                          ? Image.network(
-                              image,
-                              width: constraints.maxWidth,
-                              height: constraints.maxWidth / aspectRatio,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.file(
-                              File(image),
-                              width: constraints.maxWidth,
-                              height: constraints.maxWidth / aspectRatio,
-                              fit: BoxFit.cover,
-                            );
+                      return GestureDetector(
+                        onTap: () {
+                          final data = AppPhotoModel(
+                              images: mediaUrl,
+                              onPageChanged: (val) {
+                                carouselController.animateToPage(
+                                  val,
+                                  duration: const Duration(milliseconds: 300),
+                                  curve: Curves.easeInOut,
+                                );
+                              },
+                              index: index);
+                          context.pushNamed("appPhoto", extra: data);
+                        },
+                        child: image.isImageNetWork
+                            ? Image.network(
+                                image,
+                                width: constraints.maxWidth,
+                                height: constraints.maxWidth / aspectRatio,
+                                fit: BoxFit.cover,
+                              )
+                            : Image.file(
+                                File(image),
+                                width: constraints.maxWidth,
+                                height: constraints.maxWidth / aspectRatio,
+                                fit: BoxFit.cover,
+                              ),
+                      );
                     },
                   ),
                 ),
