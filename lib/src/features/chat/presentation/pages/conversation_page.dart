@@ -9,9 +9,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:ably_flutter/ably_flutter.dart' as ably;
+import 'package:pinput/pinput.dart';
 
 class ConversationPage extends ConsumerStatefulWidget {
   const ConversationPage({super.key});
@@ -130,86 +132,124 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
             childCount: controller.conversations.length,
             (context, index) {
               final conversation = controller.conversations[index];
-
-              return ListTile(
-                onTap: () async {
-                  String clientId = await userUtils.getUserId();
-                  context.goNamed("chat", pathParameters: {
-                    "userId": conversation.userId.toString() ?? "",
-                    "clientId": clientId
-                  });
-                  print(
-                      ">>>>>>>>>>>>conversations: ${controller.conversations}");
-                },
-                leading: Stack(
-                  children: [
-                    // Avatar
-                    CircleAvatar(
-                      radius: 20,
-                      backgroundImage: CachedNetworkImageProvider(
-                        conversation.userAvatar ?? "",
-                      ),
-                    ),
-                    // Chấm tròn cắt vào avatar
-                    StreamBuilder<Map<dynamic, dynamic>>(
-                      stream: controller
-                          .listenUsersStatus(conversation.userId.toString()),
-                      builder: (context, snapshot) {
-                        return Visibility(
-                          visible: snapshot.data?['status'] == "online",
-                          replacement: Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 3, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade100,
-                                borderRadius: BorderRadius.circular(10),
-                                // border: Border.all(
-                                //   color: Colors.white,
-                                //   width: 2,
-                                // ),
-                              ),
-                              child: Text(
-                                AppUtils.formatTimeStatusOnline(
-                                    snapshot.data?['updatedAt'] != null
-                                        ? (snapshot.data?['updatedAt'])
-                                        : ""),
-                                style: const TextStyle(
-                                    fontSize: 8, color: Colors.green),
-                              ),
-                            ),
+              bool isLastIndex = controller.conversations.length - index == 1;
+              return Column(
+                children: [
+                  ListTile(
+                    onTap: () async {
+                      String clientId = await userUtils.getUserId();
+                      context.goNamed("chat", pathParameters: {
+                        "userId": conversation.userId.toString() ?? "",
+                        "clientId": clientId
+                      });
+                      print(
+                          ">>>>>>>>>>>>conversations: ${controller.conversations}");
+                    },
+                    leading: Stack(
+                      children: [
+                        // Avatar
+                        CircleAvatar(
+                          radius: 25,
+                          backgroundImage: CachedNetworkImageProvider(
+                            conversation.userAvatar ?? "",
                           ),
-                          child: Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              width: 12, // Độ rộng của chấm tròn
-                              height: 12, // Chiều cao của chấm tròn
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.green, // Màu của chấm tròn
-                                border: Border.all(
-                                  color: Colors
-                                      .white, // Đường viền màu trắng để tạo hiệu ứng cắt vào avatar
-                                  width: 2, // Độ dày của viền
+                        ),
+                        // Chấm tròn cắt vào avatar
+                        StreamBuilder<Map<dynamic, dynamic>>(
+                          stream: controller.listenUsersStatus(
+                              conversation.userId.toString()),
+                          builder: (context, snapshot) {
+                            return Visibility(
+                              visible: snapshot.data?['status'] == "online",
+                              replacement: Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 3, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade100,
+                                    borderRadius: BorderRadius.circular(10),
+                                    // border: Border.all(
+                                    //   color: Colors.white,
+                                    //   width: 2,
+                                    // ),
+                                  ),
+                                  child: Text(
+                                    AppUtils.formatTimeStatusOnline(
+                                        snapshot.data?['updatedAt'] != null
+                                            ? (snapshot.data?['updatedAt'])
+                                            : ""),
+                                    style: const TextStyle(
+                                        fontSize: 8, color: Colors.green),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      },
+                              child: Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  width: 12, // Độ rộng của chấm tròn
+                                  height: 12, // Chiều cao của chấm tròn
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.green, // Màu của chấm tròn
+                                    border: Border.all(
+                                      color: Colors
+                                          .white, // Đường viền màu trắng để tạo hiệu ứng cắt vào avatar
+                                      width: 2, // Độ dày của viền
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                title: Text(conversation.userFullName ?? ""),
-                subtitle: Text(
-                  conversation.latestMessage ?? "",
-                  style: const TextStyle(fontSize: 12, color: Colors.black54),
-                ),
-                trailing: Text(AppUtils.formatTimeLastMessage(
-                    conversation.updatedAt ?? "")),
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          conversation.userFullName ?? "",
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                        Text(
+                          AppUtils.formatTimeLastMessage(
+                              conversation.updatedAt ?? ""),
+                          style: TextStyle(fontSize: 11, color: Colors.black45),
+                        ),
+                      ],
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          conversation.latestMessage ?? "",
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.black54),
+                        ),
+                      ],
+                    ),
+                    // trailing:
+                  ),
+                  Visibility(
+                    visible: !isLastIndex,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: ScreenUtil().screenWidth * .21),
+                          child: Divider(
+                            height: 1,
+                            color: Colors.grey.shade100,
+                            // color: Colors.grey.shade200,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
               );
             },
           )),
@@ -261,7 +301,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                                 return Visibility(
                                   visible: snapshot.data?['status'] == "online",
                                   child: Container(
-                                    width: 15, // Độ rộng của chấm tròn
+                                    width: 15,
                                     height: 15, // Chiều cao của chấm tròn
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,

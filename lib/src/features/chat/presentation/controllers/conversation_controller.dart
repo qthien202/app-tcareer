@@ -24,8 +24,12 @@ class ConversationController extends ChangeNotifier {
     allConversation = null;
 
     allConversation = await chatUseCase.getAllConversation();
-
-    if (allConversation?.data != null) {
+    if (allConversation?.data
+            ?.any((conversation) => conversations.contains(conversation)) ==
+        false) {
+      conversations.clear();
+    }
+    if (allConversation?.data != null && conversations.isEmpty) {
       // Lọc các cuộc hội thoại để chỉ thêm những cuộc hội thoại có userId không trùng lặp
       final newConversations = allConversation!.data?.where((newConversation) {
         return !conversations.any((existingConversation) =>

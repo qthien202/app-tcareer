@@ -61,7 +61,14 @@ class ChatController extends ChangeNotifier {
       notifyListeners();
     }
     conversationData = await chatUseCase.getConversation(userId);
-
+    if (conversationData?.conversation != user) {
+      user = null;
+    }
+    if (conversationData?.message?.data
+            ?.any((message) => messages.contains(message)) ==
+        false) {
+      messages.clear();
+    }
     if (conversationData != null) {
       user = conversationData?.conversation;
       final userJson = jsonEncode(user?.toJson());

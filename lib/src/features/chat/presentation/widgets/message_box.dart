@@ -100,8 +100,8 @@ Widget messageBox({
                         BoxConstraints(maxWidth: ScreenUtil().screenWidth * .6),
                     child: Column(
                       crossAxisAlignment: isMe
-                          ? CrossAxisAlignment.start
-                          : CrossAxisAlignment.end,
+                          ? CrossAxisAlignment.end
+                          : CrossAxisAlignment.start,
                       children: [
                         mediaItem(media, ref),
                         const SizedBox(
@@ -219,7 +219,7 @@ Widget mediaItem(List<String> media, WidgetRef ref) {
     );
   } else {
     return Wrap(
-      alignment: WrapAlignment.end,
+      // alignment: WrapAlignment.end,
       spacing: 5,
       runSpacing: 5,
       children: media.map((mediaItem) {

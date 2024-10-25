@@ -45,7 +45,7 @@ class _ChatVideoPlayerWidgetState extends ConsumerState<ChatVideoPlayerWidget> {
     return flickManager != null
         ? ConstrainedBox(
             constraints: BoxConstraints(
-                maxWidth: ScreenUtil().screenWidth * .5,
+                // maxWidth: ScreenUtil().screenWidth * .5,
                 maxHeight: ScreenUtil().screenHeight * .4),
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
