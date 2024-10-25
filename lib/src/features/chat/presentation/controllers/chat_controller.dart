@@ -62,8 +62,6 @@ class ChatController extends ChangeNotifier {
     }
     conversationData = await chatUseCase.getConversation(userId);
 
-    // String? rawMessage = await loadMessage(userId);
-    // conversationData = jsonDecode(rawMessage ?? "");
     if (conversationData != null) {
       user = conversationData?.conversation;
       final userJson = jsonEncode(user?.toJson());
@@ -72,7 +70,7 @@ class ChatController extends ChangeNotifier {
           ?.where((newConversation) =>
               !messages.any((messages) => messages.id == newConversation.id))
           .toList();
-      messages.addAll(newConversations?.reversed ?? []);
+      messages.addAll(newConversations ?? []);
       final messageJson =
           jsonEncode(messages.map((message) => message.toJson()).toList());
       await saveMessage(userId: userId, messageJson: messageJson);
@@ -136,24 +134,20 @@ class ChatController extends ChangeNotifier {
         createdAt:
             messageData['created_at'], // sửa 'createdAt' thành 'created_at'
       );
-      final conversationController = ref.read(conversationControllerProvider);
-      // conversationController.updateLastMessage(
-      //     senderId: messageData['sender_id'].toString(),
-      //     messageData: messageData);
+      final controller = ref.read(conversationControllerProvider);
+      await controller.addConversation(messageData: messageData);
+      await controller.listenAllConversation();
 
       if (!messages
           .any((existingMessage) => existingMessage.id == newMessage.id)) {
         messages.removeWhere((message) => message.type == "temp");
         messages.insert(0, newMessage);
+
         final messageJson =
             jsonEncode(messages.map((message) => message.toJson()).toList());
         saveMessage(
             userId: user?.userId.toString() ?? "", messageJson: messageJson);
-        conversationController.updateLastMessage(
-            userId: user?.userId?.toInt(),
-            messageData: messageData,
-            avatar: user?.userAvatar,
-            fullName: user?.userFullName);
+
         markReadMessage(
             senderId: messageData['sender_id'].toString(),
             messageId: messageData['message_id']);
@@ -300,10 +294,6 @@ class ChatController extends ChangeNotifier {
   bool isMessageLoaded = false;
   Future<void> onInit(
       {required String clientId, required String userId}) async {
-    // isShowMedia = false;
-    // isShowEmoji = false;
-    // contentController.clear();
-    // hasContent = false;
     await loadCache(userId);
     await getConversation(userId);
     await initializeAbly();
@@ -359,7 +349,7 @@ class ChatController extends ChangeNotifier {
           .map((data) => MessageModel.fromJson(data as Map<String, dynamic>))
           .toList();
       messages.clear();
-      messages.addAll(loadedMessages.reversed);
+      messages.addAll(loadedMessages);
       notifyListeners();
     }
   }

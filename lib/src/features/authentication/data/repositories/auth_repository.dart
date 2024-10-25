@@ -97,17 +97,17 @@ class AuthRepository {
   Future<void> logout() async {
     final fireBaseAuth = ref.watch(firebaseAuthServiceProvider);
     final userUtil = ref.watch(userUtilsProvider);
-    final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-    await firebaseMessaging.deleteToken();
-    String? deviceToken = await firebaseMessaging.getToken();
-    await userUtil.saveDeviceToken(deviceToken: deviceToken ?? "");
+
     final apiServices = ref.watch(apiServiceProvider);
     String refreshToken = await userUtil.getRefreshToken();
     await apiServices.postLogout(
         body: LogoutRequest(refreshToken: refreshToken));
     await fireBaseAuth.signOut();
-    await userUtil.clearToken();
-    await userUtil.removeCache("searchHistory");
+    await userUtil.clearCache();
+    final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+    await firebaseMessaging.deleteToken();
+    String? deviceToken = await firebaseMessaging.getToken();
+    await userUtil.saveDeviceToken(deviceToken: deviceToken ?? "");
     await DefaultCacheManager().emptyCache();
   }
 

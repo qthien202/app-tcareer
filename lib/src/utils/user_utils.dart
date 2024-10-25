@@ -117,6 +117,11 @@ class UserUtils {
     final encrypter = encrypt.Encrypter(encrypt.AES(key));
     return encrypter.decrypt64(encrypted);
   }
+
+  Future<bool> clearCache() async {
+    final shareRef = await ref.read(sharedPreferencesProvider.future);
+    return shareRef.clear();
+  }
 }
 
 final userUtilsProvider = Provider((ref) => UserUtils(ref));

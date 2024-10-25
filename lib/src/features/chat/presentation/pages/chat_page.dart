@@ -162,7 +162,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         itemCount: messages.length,
         itemBuilder: (context, index) {
           bool isFirstIndex = messages.length - index == messages.length;
-          final message = messages[index];
+          final message = messages.reversed.toList()[index];
           bool isMe = message.senderId == user.userData?.data?.id;
           return messageBox(
               isFirstIndex: isFirstIndex,

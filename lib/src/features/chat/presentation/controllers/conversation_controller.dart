@@ -44,11 +44,34 @@ class ConversationController extends ChangeNotifier {
     }
   }
 
+  Future<void> addConversation({required dynamic messageData}) async {
+    // String lastMessage = messageData['latest_message'].toString();
+    // String senderId = messageData['sender_id'].toString();
+    // final userUtil = ref.watch(userUtilsProvider);
+    // String clientId = await userUtil.getUserId();
+    // String senderLastMessage = messageData['sender_latest_message'].toString();
+    int conversationId = messageData['conversation_id'] ?? 0;
+    // int messageId = messageData['message_id'] ?? 0;
+    //
+    // String latestMessage =
+    //     clientId != senderId ? lastMessage : senderLastMessage;
+    // String fullName = clientId == senderId
+    //     ? messageData["full_name"]
+    //     : messageData['sender_full_name'];
+    // String avatar = clientId == senderId
+    //     ? messageData['avatar']
+    //     : messageData['sender_avatar'];
+    // num userId =
+    //     clientId != senderId ? messageData['sender_id'] : num.parse(clientId);
+    if (!(conversations
+        .any((conversation) => conversation.id == conversationId))) {
+      await getAllConversation();
+      notifyListeners();
+    }
+  }
+
   Future<void> updateLastMessage({
     required dynamic messageData,
-    String? avatar,
-    String? fullName,
-    int? userId,
   }) async {
     String lastMessage = messageData['latest_message'].toString();
     String senderId = messageData['sender_id'].toString();
@@ -58,11 +81,17 @@ class ConversationController extends ChangeNotifier {
     int conversationId = messageData['conversation_id'] ?? 0;
     int messageId = messageData['message_id'] ?? 0;
 
-    // Xác định nội dung tin nhắn và thời gian cập nhật dựa trên clientId và senderId
     String latestMessage =
         clientId != senderId ? lastMessage : senderLastMessage;
+    String fullName = clientId == senderId
+        ? messageData["full_name"]
+        : messageData['sender_full_name'];
+    String avatar = clientId == senderId
+        ? messageData['avatar']
+        : messageData['sender_avatar'];
+    num userId =
+        clientId != senderId ? messageData['sender_id'] : num.parse(clientId);
 
-    // Nếu cuộc trò chuyện đã tồn tại
     if (conversations
         .any((conversation) => conversation.id == conversationId)) {
       final conversation =
@@ -72,28 +101,10 @@ class ConversationController extends ChangeNotifier {
         updatedAt: DateTime.now().toIso8601String(),
       );
 
-      // Cập nhật danh sách cuộc trò chuyện
       conversations
           .removeWhere((conversation) => conversation.id == conversationId);
       conversations.insert(0, newConversation);
       notifyListeners();
-    }
-    // Nếu cuộc trò chuyện chưa tồn tại
-    else {
-      final newConversation = UserConversation(
-        id: conversationId,
-        userId: userId,
-        latestMessage: latestMessage,
-        updatedAt: DateTime.now().toIso8601String(),
-        userAvatar: avatar,
-        userFullName: fullName,
-      );
-
-      if (!conversations
-          .any((conversation) => conversation.id == newConversation.id)) {
-        conversations.insert(0, newConversation);
-        notifyListeners();
-      }
     }
   }
 
