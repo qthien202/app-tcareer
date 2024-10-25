@@ -78,37 +78,43 @@ class ConversationController extends ChangeNotifier {
     required dynamic messageData,
   }) async {
     String lastMessage = messageData['latest_message'].toString();
-    String senderId = messageData['sender_id'].toString();
-    final userUtil = ref.watch(userUtilsProvider);
-    String clientId = await userUtil.getUserId();
+
     String senderLastMessage = messageData['sender_latest_message'].toString();
     int conversationId = messageData['conversation_id'] ?? 0;
     int messageId = messageData['message_id'] ?? 0;
 
-    String latestMessage =
-        clientId != senderId ? lastMessage : senderLastMessage;
-    String fullName = clientId == senderId
-        ? messageData["full_name"]
-        : messageData['sender_full_name'];
-    String avatar = clientId == senderId
-        ? messageData['avatar']
-        : messageData['sender_avatar'];
-    num userId =
-        clientId != senderId ? messageData['sender_id'] : num.parse(clientId);
+    String fullName = messageData["full_name"];
+    String avatar = messageData['avatar'];
 
-    if (conversations
-        .any((conversation) => conversation.id == conversationId)) {
-      final conversation =
-          conversations.firstWhere((e) => e.id == conversationId);
+    num userId = messageData['id'];
+    String createdAt = messageData['created_at'].toString();
+
+    if (conversations.any((conversation) => conversation.userId == userId)) {
+      final conversation = conversations.firstWhere((e) => e.userId == userId);
       final newConversation = conversation.copyWith(
-        latestMessage: latestMessage,
-        updatedAt: DateTime.now().toIso8601String(),
+        latestMessage: lastMessage,
+        updatedAt: createdAt,
       );
 
       conversations
-          .removeWhere((conversation) => conversation.id == conversationId);
+          .removeWhere((conversation) => conversation.userId == userId);
+
       conversations.insert(0, newConversation);
       notifyListeners();
+    } else {
+      final newConversation = UserConversation(
+        userId: userId,
+        userAvatar: avatar,
+        userFullName: fullName,
+        latestMessage: lastMessage,
+        updatedAt: createdAt,
+      );
+
+      if (!conversations
+          .any((existing) => existing.userId == newConversation.userId)) {
+        conversations.insert(0, newConversation);
+        notifyListeners();
+      }
     }
   }
 
@@ -127,23 +133,19 @@ class ConversationController extends ChangeNotifier {
     await getAllConversation();
   }
 
-  List<StreamSubscription<ably.Message>> messageSubscriptions = [];
+  StreamSubscription<ably.Message>? conversationSubscriptions;
 
   Future<StreamSubscription<ably.Message>?> listenAllConversation() async {
-    for (UserConversation conversation in conversations) {
-      final subscription = await chatUseCase.listenAllMessage(
-        conversationId: conversation.id.toString(),
-        handleChannelMessage: (message) async {
-          print(">>>>>>>>>conversationData: ${message.data}");
+    final subscription = await chatUseCase.listenAllConversation(
+      handleChannelMessage: (message) async {
+        print(">>>>>>>>>conversationData: ${message.data}");
 
-          final messageData = jsonDecode(message.data.toString());
-          await updateLastMessage(messageData: messageData);
-        },
-      );
-      messageSubscriptions.add(subscription);
-    }
+        final messageData = jsonDecode(message.data.toString());
+        await updateLastMessage(messageData: messageData);
+      },
+    );
 
-    return messageSubscriptions.isNotEmpty ? messageSubscriptions.first : null;
+    return conversationSubscriptions;
   }
 
   Future<void> markDeliveredMessage({
@@ -212,9 +214,7 @@ class ConversationController extends ChangeNotifier {
   @override
   void dispose() {
     // TODO: implement dispose
-    for (var subscription in messageSubscriptions) {
-      subscription.cancel(); // Huỷ tất cả subscription khi dispose
-    }
+    connectSubscription?.cancel();
     // connectSubscription?.cancel();
     super.dispose();
   }

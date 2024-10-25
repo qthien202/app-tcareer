@@ -87,7 +87,10 @@ class AppRouter {
           inMessage = false;
           await ref.read(connectionUseCaseProvider).setUserOnlineStatus();
           await ref.read(chatUseCaseProvider).disconnect();
-          ref.read(conversationControllerProvider).messageSubscriptions.clear();
+          ref
+              .read(conversationControllerProvider)
+              .conversationSubscriptions
+              ?.cancel();
         }
         // Lấy trạng thái xác thực và refresh token
         // ref.read(authStateProvider.notifier).checkAuthentication();

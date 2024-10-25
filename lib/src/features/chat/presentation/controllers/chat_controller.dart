@@ -141,9 +141,6 @@ class ChatController extends ChangeNotifier {
         createdAt:
             messageData['created_at'], // sửa 'createdAt' thành 'created_at'
       );
-      final controller = ref.read(conversationControllerProvider);
-      await controller.addConversation(messageData: messageData);
-      await controller.listenAllConversation();
 
       if (!messages
           .any((existingMessage) => existingMessage.id == newMessage.id)) {

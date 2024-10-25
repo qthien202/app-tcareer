@@ -7,12 +7,14 @@ import 'package:app_tcareer/src/features/chat/data/models/leave_chat_request.dar
 import 'package:app_tcareer/src/features/chat/data/models/mark_read_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/send_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/repositories/chat_repository.dart';
+import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ChatUseCase {
   final ChatRepository chatRepository;
-  ChatUseCase(this.chatRepository);
+  final Ref ref;
+  ChatUseCase(this.chatRepository, this.ref);
 
   Future<void> initialize() async => await chatRepository.initialize();
 
@@ -22,6 +24,17 @@ class ChatUseCase {
       await chatRepository.listenAllMessage(
           channelName: "conversation-$conversationId",
           handleChannelMessage: handleChannelMessage);
+
+  Future<StreamSubscription<ably.Message>> listenAllConversation({
+    required Function(ably.Message) handleChannelMessage,
+  }) async {
+    final userUtil = ref.watch(userUtilsProvider);
+    String userId = await userUtil.getUserId();
+    return await chatRepository.listenAllMessage(
+        channelName: "conversation-user-$userId",
+        handleChannelMessage: handleChannelMessage);
+  }
+
   Future<void> publishMessage(
       {required String conversationId, required Object data}) async {
     return await chatRepository.publishMessage(
@@ -94,5 +107,5 @@ class ChatUseCase {
 
 final chatUseCaseProvider = Provider<ChatUseCase>((ref) {
   final chatRepository = ref.watch(chatRepositoryProvider);
-  return ChatUseCase(chatRepository);
+  return ChatUseCase(chatRepository, ref);
 });
