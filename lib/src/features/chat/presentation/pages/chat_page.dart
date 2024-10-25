@@ -11,6 +11,7 @@ import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart'
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
+import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
@@ -143,7 +144,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
   Widget messages() {
     final controller = ref.watch(chatControllerProvider);
-    final user = ref.watch(userControllerProvider);
+
     final mediaController = ref.watch(chatMediaControllerProvider);
     final messages = controller.messages;
 
@@ -163,7 +164,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         itemBuilder: (context, index) {
           bool isFirstIndex = messages.length - index == messages.length;
           final message = messages.reversed.toList()[index];
-          bool isMe = message.senderId == user.userData?.data?.id;
+
+          bool isMe = message.senderId.toString() == widget.clientId;
           return messageBox(
               isFirstIndex: isFirstIndex,
               status: message.status ?? "",

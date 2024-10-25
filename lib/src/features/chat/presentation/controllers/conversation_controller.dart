@@ -109,9 +109,18 @@ class ConversationController extends ChangeNotifier {
   }
 
   Future<void> onInit() async {
+    await loadConversationFriends();
+    await loadConversation();
+    getFriends();
+    await getAllConversation();
     await initializeAbly();
     await listenAllConversation();
     print(">>>>>>>>>doneListen");
+  }
+
+  Future<void> refresh() async {
+    await getFriends();
+    await getAllConversation();
   }
 
   List<StreamSubscription<ably.Message>> messageSubscriptions = [];
@@ -208,8 +217,6 @@ class ConversationController extends ChangeNotifier {
 
   List<Data> friends = [];
   Future<void> getFriends() async {
-    friends.clear();
-    notifyListeners();
     final data = await chatUseCase.getFriendInChat();
     List<dynamic> followerJson = data['data'];
     await mapFriendsFromJson(followerJson);
@@ -221,6 +228,9 @@ class ConversationController extends ChangeNotifier {
         .whereType<Map<String, dynamic>>()
         .map((item) => Data.fromJson(item))
         .toList();
+    final friendJson =
+        jsonEncode(friends.map((friend) => friend.toJson()).toList());
+    saveConversationFriends(friendJson: friendJson);
   }
 
   StreamSubscription<ably.ConnectionStateChange>? connectSubscription;
@@ -255,6 +265,30 @@ class ConversationController extends ChangeNotifier {
     final String userId = await userUtil.getUserId();
     await userUtil.saveCache(
         key: "conversation_$userId", value: conversationJson);
+  }
+
+  Future<void> saveConversationFriends({required String friendJson}) async {
+    final userUtil = ref.watch(userUtilsProvider);
+    final String userId = await userUtil.getUserId();
+    await userUtil.saveCache(
+        key: "conversation_friend_$userId", value: friendJson);
+  }
+
+  Future<void> loadConversationFriends() async {
+    final userUtil = ref.watch(userUtilsProvider);
+    final String userId = await userUtil.getUserId();
+    String? rawData = await userUtil.loadCache("conversation_friend_$userId");
+    print(">>>>>>>>>rawData: $rawData");
+    if (rawData != null) {
+      final List<dynamic> decodedData = jsonDecode(rawData);
+      List<Data> loadedConversationFriend = decodedData
+          .map((data) => Data.fromJson(data as Map<String, dynamic>))
+          .toList();
+      friends.clear();
+      friends.addAll(loadedConversationFriend);
+
+      notifyListeners();
+    }
   }
 }
 

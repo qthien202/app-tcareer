@@ -28,9 +28,9 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
 
     Future.microtask(() async {
       final controller = ref.read(conversationControllerProvider);
-      controller.getFriends();
-      await controller.loadConversation();
-      await controller.getAllConversation();
+      // controller.getFriends();
+      // await controller.loadConversation();
+      // await controller.getAllConversation();
       await controller.onInit();
     });
 
@@ -70,7 +70,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
           physics: const BouncingScrollPhysics(),
           slivers: [
             CupertinoSliverRefreshControl(
-              onRefresh: () async => await controller.getAllConversation(),
+              onRefresh: () async => await controller.refresh(),
             ),
             sliverAppBar(context),
             sliverFriend(),
@@ -223,7 +223,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: SizedBox(
-          height: 80,
+          height: 110,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: controller.friends.length,
@@ -246,8 +246,9 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                         children: [
                           // Avatar
                           CircleAvatar(
-                            radius: 20,
-                            backgroundImage: NetworkImage(friend.avatar ?? ""),
+                            radius: 30,
+                            backgroundImage:
+                                CachedNetworkImageProvider(friend.avatar ?? ""),
                           ),
                           // Chấm tròn cắt vào avatar
                           Positioned(
@@ -260,8 +261,8 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                                 return Visibility(
                                   visible: snapshot.data?['status'] == "online",
                                   child: Container(
-                                    width: 12, // Độ rộng của chấm tròn
-                                    height: 12, // Chiều cao của chấm tròn
+                                    width: 15, // Độ rộng của chấm tròn
+                                    height: 15, // Chiều cao của chấm tròn
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
                                       color: Colors.green, // Màu của chấm tròn

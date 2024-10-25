@@ -236,7 +236,7 @@ class ChatMediaController extends ChangeNotifier {
         status: 'sent',
         type: 'temp');
 
-    chatController.messages.insert(0, newMessage);
+    chatController.messages.add(newMessage);
     final messageJson = jsonEncode(
         chatController.messages.map((message) => message.toJson()).toList());
     await chatController.saveMessage(

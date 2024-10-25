@@ -141,7 +141,7 @@ class ChatController extends ChangeNotifier {
       if (!messages
           .any((existingMessage) => existingMessage.id == newMessage.id)) {
         messages.removeWhere((message) => message.type == "temp");
-        messages.insert(0, newMessage);
+        messages.add(newMessage);
 
         final messageJson =
             jsonEncode(messages.map((message) => message.toJson()).toList());
@@ -350,6 +350,7 @@ class ChatController extends ChangeNotifier {
           .toList();
       messages.clear();
       messages.addAll(loadedMessages);
+      print(">>>>>>>>>>messageCache: ${jsonEncode(messages)}");
       notifyListeners();
     }
   }
