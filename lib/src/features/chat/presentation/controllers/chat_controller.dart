@@ -121,10 +121,10 @@ class ChatController extends ChangeNotifier {
     final messageData = jsonDecode(message.data.toString());
     if (messageData['updatedStatus'] == "delivered" ||
         messageData['updatedStatus'] == "read") {
-      final currentMessage = messages.first;
+      final currentMessage = messages.last;
       final updatedMessage =
           currentMessage.copyWith(status: messageData['updatedStatus']);
-      messages[0] = updatedMessage;
+      messages[messages.length - 1] = updatedMessage;
       notifyListeners();
     } else {
       final mediaUrls = messageData['media_url'] != null
@@ -152,7 +152,7 @@ class ChatController extends ChangeNotifier {
         saveMessage(
             userId: user?.userId.toString() ?? "", messageJson: messageJson);
 
-        markReadMessage(
+        await markReadMessage(
             senderId: messageData['sender_id'].toString(),
             messageId: messageData['message_id']);
         notifyListeners();
@@ -169,10 +169,13 @@ class ChatController extends ChangeNotifier {
       {required String senderId, required dynamic messageId}) async {
     final userUtil = ref.watch(userUtilsProvider);
     String clientId = await userUtil.getUserId();
+    final conversationController = ref.read(conversationControllerProvider);
     final connectionUseCase = ref.watch(connectionUseCaseProvider);
     if (await connectionUseCase.getInMessage() == true) {
-      if (clientId != senderId && messages.first.status == "sent" ||
-          messages.first.status == "delivered") {
+      print(">>>>>>>>>clientId: $clientId");
+      print(">>>>>>>>>>senderId: $senderId");
+      if (clientId != senderId && messages.last.status == "sent" ||
+          messages.last.status == "delivered") {
         String data = jsonEncode({
           "topic": "statusMessage",
           "id": messageId,
@@ -180,16 +183,20 @@ class ChatController extends ChangeNotifier {
           "conversationId": conversationData?.conversation?.id.toString() ?? "",
           "senderId": senderId
         });
+
         await chatUseCase
             .publishMessage(
                 conversationId:
                     conversationData?.conversation?.id.toString() ?? "",
                 data: data)
-            .then((val) async {});
+            .then((val) async {
+          await conversationController
+              .updateUnRead(conversationData?.conversation?.id ?? 0);
+        });
+        await chatUseCase.postMarkReadMessage(MarkReadMessageRequest(
+          conversationId: conversationData?.conversation?.id,
+        ));
       }
-      chatUseCase.postMarkReadMessage(MarkReadMessageRequest(
-        conversationId: conversationData?.conversation?.id,
-      ));
     }
   }
 
@@ -303,11 +310,9 @@ class ChatController extends ChangeNotifier {
     await initializeAbly();
 
     if (messages.isNotEmpty) {
-      if (messages[0].status == "sent" || messages[0].status == "delivered") {
-        await markReadMessage(
-            senderId: messages.first.senderId.toString(),
-            messageId: messages.first.id);
-      }
+      await markReadMessage(
+          senderId: messages.last.senderId.toString(),
+          messageId: messages.last.id);
     }
     // listenPresence(userId);
     // listenMessage();
@@ -354,7 +359,7 @@ class ChatController extends ChangeNotifier {
           .toList();
       messages.clear();
       messages.addAll(loadedMessages);
-      print(">>>>>>>>>>messageCache: ${jsonEncode(messages)}");
+
       notifyListeners();
     }
   }

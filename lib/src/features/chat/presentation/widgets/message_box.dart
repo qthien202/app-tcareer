@@ -150,7 +150,7 @@ Widget statusText(String status) {
   };
 
   Map<String, dynamic> statusIcon = {
-    "sent": PhosphorIconsRegular.checks,
+    "sent": PhosphorIconsRegular.check,
     "delivered": PhosphorIconsRegular.checks,
     "read": PhosphorIconsRegular.eye,
   };

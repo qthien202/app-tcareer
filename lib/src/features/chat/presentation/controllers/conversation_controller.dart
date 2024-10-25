@@ -47,6 +47,16 @@ class ConversationController extends ChangeNotifier {
     }
   }
 
+  Future<void> updateUnRead(num conversationId) async {
+    final currentConversation = conversations
+        .firstWhere((conversation) => conversation.id == conversationId);
+    final index = conversations
+        .indexWhere((conversation) => conversation.id == conversationId);
+    final updatedConversation = currentConversation.copyWith(unRead: 0);
+    conversations[index] = updatedConversation;
+    notifyListeners();
+  }
+
   Future<void> updateLastMessage({
     required dynamic messageData,
   }) async {
@@ -75,6 +85,10 @@ class ConversationController extends ChangeNotifier {
           .removeWhere((conversation) => conversation.userId == userId);
 
       conversations.insert(0, newConversation);
+      await markDeliveredMessage(
+          senderId: messageData['id'].toString(),
+          messageId: messageId,
+          conversationId: conversationId);
       notifyListeners();
     } else {
       final newConversation = UserConversation(
@@ -90,7 +104,14 @@ class ConversationController extends ChangeNotifier {
       if (!conversations
           .any((existing) => existing.userId == newConversation.userId)) {
         conversations.insert(0, newConversation);
+
         notifyListeners();
+        if (messageData['sender_id'] != null) {
+          await markDeliveredMessage(
+              senderId: messageData['sender_id'],
+              messageId: messageId,
+              conversationId: conversationId);
+        }
       }
     }
   }
@@ -126,46 +147,33 @@ class ConversationController extends ChangeNotifier {
   }
 
   Future<void> markDeliveredMessage({
-    required String senderId,
-    required dynamic messageId,
-    required dynamic conversationId,
-  }) async {
-    // final userUtil = ref.watch(userUtilsProvider);
-    // String clientId = await userUtil.getUserId();
-
-    String data = jsonEncode({
-      "topic": "statusMessage",
-      "id": messageId,
-      "updatedStatus": "delivered",
-    });
-    await chatUseCase
-        .publishMessage(conversationId: conversationId.toString(), data: data)
-        .catchError((e) {
-      print(e);
-    });
-    chatUseCase.postMarkDeliveredMessage(MarkReadMessageRequest(
-      conversationId: conversationId,
-    ));
-  }
-
-  Future<void> markReadMessage({
-    required dynamic senderId,
+    dynamic senderId,
     required dynamic messageId,
     required dynamic conversationId,
   }) async {
     final userUtil = ref.watch(userUtilsProvider);
     String clientId = await userUtil.getUserId();
-
-    if (clientId != senderId) {
-      String data = jsonEncode(
-          {"topic": "statusMessage", "id": messageId, "updatedStatus": "read"});
+    print(">>>>>>>>>clientId: $clientId");
+    print(">>>>>>>>>>senderId: $senderId");
+    final currentConversation = conversations
+        .firstWhere((conversation) => conversation.id == conversationId);
+    print(">>>>>>>>unRead: ${currentConversation.unRead}");
+    if (clientId != senderId && currentConversation.unRead == 0) {
+      String data = jsonEncode({
+        "topic": "statusMessage",
+        "id": messageId,
+        "updatedStatus": "delivered",
+      });
+      await Future.delayed(const Duration(milliseconds: 500));
       await chatUseCase
           .publishMessage(conversationId: conversationId.toString(), data: data)
-          .then((val) async {});
+          .catchError((e) {
+        print(e);
+      });
+      await chatUseCase.postMarkDeliveredMessage(MarkReadMessageRequest(
+        conversationId: conversationId,
+      ));
     }
-    chatUseCase.postMarkReadMessage(MarkReadMessageRequest(
-      conversationId: int.parse(conversationId),
-    ));
   }
 
   Future<void> initializeAbly() async => await chatUseCase.initialize();
