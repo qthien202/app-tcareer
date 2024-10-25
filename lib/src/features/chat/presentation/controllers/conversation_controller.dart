@@ -30,7 +30,6 @@ class ConversationController extends ChangeNotifier {
       conversations.clear();
     }
     if (allConversation?.data != null && conversations.isEmpty) {
-      // Lọc các cuộc hội thoại để chỉ thêm những cuộc hội thoại có userId không trùng lặp
       final newConversations = allConversation!.data?.where((newConversation) {
         return !conversations.any((existingConversation) =>
             existingConversation.userId == newConversation.userId);
@@ -48,32 +47,6 @@ class ConversationController extends ChangeNotifier {
     }
   }
 
-  Future<void> addConversation({required dynamic messageData}) async {
-    // String lastMessage = messageData['latest_message'].toString();
-    // String senderId = messageData['sender_id'].toString();
-    // final userUtil = ref.watch(userUtilsProvider);
-    // String clientId = await userUtil.getUserId();
-    // String senderLastMessage = messageData['sender_latest_message'].toString();
-    int conversationId = messageData['conversation_id'] ?? 0;
-    // int messageId = messageData['message_id'] ?? 0;
-    //
-    // String latestMessage =
-    //     clientId != senderId ? lastMessage : senderLastMessage;
-    // String fullName = clientId == senderId
-    //     ? messageData["full_name"]
-    //     : messageData['sender_full_name'];
-    // String avatar = clientId == senderId
-    //     ? messageData['avatar']
-    //     : messageData['sender_avatar'];
-    // num userId =
-    //     clientId != senderId ? messageData['sender_id'] : num.parse(clientId);
-    if (!(conversations
-        .any((conversation) => conversation.id == conversationId))) {
-      await getAllConversation();
-      notifyListeners();
-    }
-  }
-
   Future<void> updateLastMessage({
     required dynamic messageData,
   }) async {
@@ -85,13 +58,15 @@ class ConversationController extends ChangeNotifier {
 
     String fullName = messageData["full_name"];
     String avatar = messageData['avatar'];
-
+    num unRead = messageData['un_read'];
     num userId = messageData['id'];
     String createdAt = messageData['created_at'].toString();
 
     if (conversations.any((conversation) => conversation.userId == userId)) {
       final conversation = conversations.firstWhere((e) => e.userId == userId);
       final newConversation = conversation.copyWith(
+        unRead: unRead,
+        id: conversationId,
         latestMessage: lastMessage,
         updatedAt: createdAt,
       );
@@ -103,6 +78,8 @@ class ConversationController extends ChangeNotifier {
       notifyListeners();
     } else {
       final newConversation = UserConversation(
+        unRead: unRead,
+        id: conversationId,
         userId: userId,
         userAvatar: avatar,
         userFullName: fullName,
@@ -250,7 +227,7 @@ class ConversationController extends ChangeNotifier {
     final userUtil = ref.watch(userUtilsProvider);
     final String userId = await userUtil.getUserId();
     String? rawData = await userUtil.loadCache("conversation_$userId");
-    print(">>>>>>>>>rawData: $rawData");
+
     if (rawData != null) {
       final List<dynamic> decodedData = jsonDecode(rawData);
       List<UserConversation> loadedConversation = decodedData
@@ -259,7 +236,7 @@ class ConversationController extends ChangeNotifier {
           .toList();
       conversations.clear();
       conversations.addAll(loadedConversation);
-      print(">>>>>>>>>isNot: ${conversations.isNotEmpty}");
+
       notifyListeners();
     }
   }

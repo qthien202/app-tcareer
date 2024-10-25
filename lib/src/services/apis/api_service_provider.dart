@@ -144,7 +144,6 @@ class RefreshTokenStateNotifier extends ChangeNotifier {
 
   void setTokenExpired(bool expired) {
     isRefreshTokenExpired = expired;
-    notifyListeners();
   }
 }
 

@@ -2,7 +2,8 @@ class UserConversation {
   UserConversation({
       num? id, 
       num? userId, 
-      String? leftAt, 
+      dynamic leftAt, 
+      num? unRead, 
       String? userAvatar, 
       String? userFullName, 
       String? latestMessage, 
@@ -10,6 +11,7 @@ class UserConversation {
     _id = id;
     _userId = userId;
     _leftAt = leftAt;
+    _unRead = unRead;
     _userAvatar = userAvatar;
     _userFullName = userFullName;
     _latestMessage = latestMessage;
@@ -20,6 +22,7 @@ class UserConversation {
     _id = json['id'];
     _userId = json['user_id'];
     _leftAt = json['left_at'];
+    _unRead = json['un_read'];
     _userAvatar = json['user_avatar'];
     _userFullName = json['user_full_name'];
     _latestMessage = json['latest_message'];
@@ -27,14 +30,16 @@ class UserConversation {
   }
   num? _id;
   num? _userId;
-  String? _leftAt;
+  dynamic _leftAt;
+  num? _unRead;
   String? _userAvatar;
   String? _userFullName;
   String? _latestMessage;
   String? _updatedAt;
 UserConversation copyWith({  num? id,
   num? userId,
-  String? leftAt,
+  dynamic leftAt,
+  num? unRead,
   String? userAvatar,
   String? userFullName,
   String? latestMessage,
@@ -42,6 +47,7 @@ UserConversation copyWith({  num? id,
 }) => UserConversation(  id: id ?? _id,
   userId: userId ?? _userId,
   leftAt: leftAt ?? _leftAt,
+  unRead: unRead ?? _unRead,
   userAvatar: userAvatar ?? _userAvatar,
   userFullName: userFullName ?? _userFullName,
   latestMessage: latestMessage ?? _latestMessage,
@@ -49,7 +55,8 @@ UserConversation copyWith({  num? id,
 );
   num? get id => _id;
   num? get userId => _userId;
-  String? get leftAt => _leftAt;
+  dynamic get leftAt => _leftAt;
+  num? get unRead => _unRead;
   String? get userAvatar => _userAvatar;
   String? get userFullName => _userFullName;
   String? get latestMessage => _latestMessage;
@@ -60,6 +67,7 @@ UserConversation copyWith({  num? id,
     map['id'] = _id;
     map['user_id'] = _userId;
     map['left_at'] = _leftAt;
+    map['un_read'] = _unRead;
     map['user_avatar'] = _userAvatar;
     map['user_full_name'] = _userFullName;
     map['latest_message'] = _latestMessage;

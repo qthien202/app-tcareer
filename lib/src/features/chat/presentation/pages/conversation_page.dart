@@ -238,14 +238,28 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                         ),
                       ],
                     ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    subtitle: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           conversation.latestMessage ?? "",
                           style: const TextStyle(
                               fontSize: 12, color: Colors.black54),
                         ),
+                        Visibility(
+                          visible: conversation.unRead != null &&
+                              conversation.unRead != 0,
+                          child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Colors.red, shape: BoxShape.circle),
+                            child: Text(
+                              conversation.unRead.toString(),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 11),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                     // trailing:
