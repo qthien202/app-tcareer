@@ -231,7 +231,7 @@ class AppUtils {
     } else if (difference.inDays < 14) {
       return '1 tuần';
     } else {
-      return DateFormat('dd/MM/yyyy').format(dateTime);
+      return "";
     }
   }
 
