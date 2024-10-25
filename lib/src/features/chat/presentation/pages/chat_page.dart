@@ -12,6 +12,7 @@ import 'package:app_tcareer/src/features/user/presentation/controllers/user_cont
 import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -210,16 +211,18 @@ class _ChatPageState extends ConsumerState<ChatPage> {
                         visible: user?['status'] == "online",
                         replacement: CircleAvatar(
                           radius: 20,
-                          backgroundImage:
-                              NetworkImage(controller.user?.userAvatar ?? ""),
+                          backgroundImage: CachedNetworkImageProvider(
+                            controller.user?.userAvatar ?? "",
+                          ),
                         ),
                         child: Stack(
                           children: [
                             // Avatar
                             CircleAvatar(
                               radius: 20,
-                              backgroundImage: NetworkImage(
-                                  controller.user?.userAvatar ?? ""),
+                              backgroundImage: CachedNetworkImageProvider(
+                                controller.user?.userAvatar ?? "",
+                              ),
                             ),
                             // Chấm tròn cắt vào avatar
                             Positioned(

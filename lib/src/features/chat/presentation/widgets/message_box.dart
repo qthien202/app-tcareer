@@ -8,6 +8,7 @@ import 'package:app_tcareer/src/features/chat/presentation/widgets/chat_video_pl
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fb_photo_view/flutter_fb_photo_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,7 +33,7 @@ Widget messageBox({
         visible: !isMe,
         child: CircleAvatar(
           radius: 15,
-          backgroundImage: NetworkImage(avatarUrl),
+          backgroundImage: CachedNetworkImageProvider(avatarUrl),
         ),
       ),
       const SizedBox(

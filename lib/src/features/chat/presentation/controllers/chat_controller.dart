@@ -60,15 +60,22 @@ class ChatController extends ChangeNotifier {
       messages.clear();
       notifyListeners();
     }
-
     conversationData = await chatUseCase.getConversation(userId);
+
+    // String? rawMessage = await loadMessage(userId);
+    // conversationData = jsonDecode(rawMessage ?? "");
     if (conversationData != null) {
       user = conversationData?.conversation;
+      final userJson = jsonEncode(user?.toJson());
+      saveUser(userId: userId, userJson: userJson);
       final newConversations = conversationData?.message?.data
           ?.where((newConversation) =>
               !messages.any((messages) => messages.id == newConversation.id))
           .toList();
       messages.addAll(newConversations?.reversed ?? []);
+      final messageJson =
+          jsonEncode(messages.map((message) => message.toJson()).toList());
+      await saveMessage(userId: userId, messageJson: messageJson);
 
       notifyListeners();
     }
@@ -133,12 +140,20 @@ class ChatController extends ChangeNotifier {
       // conversationController.updateLastMessage(
       //     senderId: messageData['sender_id'].toString(),
       //     messageData: messageData);
-      notifyListeners();
 
       if (!messages
           .any((existingMessage) => existingMessage.id == newMessage.id)) {
         messages.removeWhere((message) => message.type == "temp");
         messages.insert(0, newMessage);
+        final messageJson =
+            jsonEncode(messages.map((message) => message.toJson()).toList());
+        saveMessage(
+            userId: user?.userId.toString() ?? "", messageJson: messageJson);
+        conversationController.updateLastMessage(
+            userId: user?.userId?.toInt(),
+            messageData: messageData,
+            avatar: user?.userAvatar,
+            fullName: user?.userFullName);
         markReadMessage(
             senderId: messageData['sender_id'].toString(),
             messageId: messageData['message_id']);
@@ -282,12 +297,14 @@ class ChatController extends ChangeNotifier {
     // setIsShowMedia(context);
   }
 
+  bool isMessageLoaded = false;
   Future<void> onInit(
       {required String clientId, required String userId}) async {
     // isShowMedia = false;
     // isShowEmoji = false;
     // contentController.clear();
     // hasContent = false;
+    await loadCache(userId);
     await getConversation(userId);
     await initializeAbly();
 
@@ -302,6 +319,11 @@ class ChatController extends ChangeNotifier {
     // listenMessage();
   }
 
+  Future<void> loadCache(String userId) async {
+    await loadUser(userId);
+    await loadMessage(userId);
+  }
+
   Stream<Map<dynamic, dynamic>> listenUserStatus() {
     String userId = user?.userId.toString() ?? "";
     return chatUseCase.listenUserStatus(userId).map((event) {
@@ -313,6 +335,43 @@ class ChatController extends ChangeNotifier {
         return {};
       }
     });
+  }
+
+  Future<void> saveMessage(
+      {required String userId, required String messageJson}) async {
+    final userUtil = ref.watch(userUtilsProvider);
+    await userUtil.saveCache(key: "message_$userId", value: messageJson);
+  }
+
+  Future<void> saveUser(
+      {required String userId, required String userJson}) async {
+    final userUtil = ref.watch(userUtilsProvider);
+    await userUtil.saveCache(key: "message_user_$userId", value: userJson);
+  }
+
+  Future<void> loadMessage(String userId) async {
+    final userUtil = ref.watch(userUtilsProvider);
+    String? rawData = await userUtil.loadCache("message_$userId");
+    if (rawData != null) {
+      final List<dynamic> decodedData = jsonDecode(rawData);
+      print(">>>>>>>>>>>>>decodeData: $decodedData");
+      List<MessageModel> loadedMessages = decodedData
+          .map((data) => MessageModel.fromJson(data as Map<String, dynamic>))
+          .toList();
+      messages.clear();
+      messages.addAll(loadedMessages.reversed);
+      notifyListeners();
+    }
+  }
+
+  Future<void> loadUser(String userId) async {
+    final userUtil = ref.watch(userUtilsProvider);
+    String? rawData = await userUtil.loadCache("message_user_$userId");
+    if (rawData != null) {
+      final Map<dynamic, dynamic> decodedData = jsonDecode(rawData);
+      user = UserConversation.fromJson(decodedData);
+      notifyListeners();
+    }
   }
 }
 

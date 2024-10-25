@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -82,29 +83,7 @@ class ChatMediaController extends ChangeNotifier {
   void setIsShowPopUp(bool value) {
     isShowPopUp = value;
     notifyListeners();
-  } /*Future<void> clearData(BuildContext context) async {
-    bool hasChanged = await hasChangedSelectedAssets();
-    if (isAutoPop) {
-      return;
-    }
-    if (selectedAsset.isEmpty ||
-        !hasChanged ||
-        imagePaths.length == selectedAsset.length) {
-      context.pop();
-    } else {
-      showModalPopup(
-          context: context,
-          onPop: () async {
-            // selectedAsset.clear();
-            // assetIndices.clear();
-            Future.microtask(() {
-              selectedAsset.clear();
-              context.pop();
-              context.pop();
-            });
-          });
-    }
-  }*/
+  }
 
   bool isAutoPop = false;
 
@@ -140,29 +119,7 @@ class ChatMediaController extends ChangeNotifier {
     bool? isComment,
   }) async {
     print(">>>>>>>>>$isComment");
-    // if (isComment != false &&
-    //     selectedAsset.length == 1 &&
-    //     !selectedAsset.contains(asset)) {
-    //   showSnackBarError("Bạn chỉ có thể chọn tối đa 1 ảnh hoặc 1 video");
-    //   return;
-    // }
-    // if (imagePaths.any((image) => image.isImageNetWork) &&
-    //     asset.type == AssetType.video) {
-    //   showSnackBarError("Bạn chỉ được phép chọn thêm ảnh");
-    //   return;
-    // }
 
-    // if (asset.type == AssetType.video &&
-    //     selectedAsset.any((a) => a.type == AssetType.image)) {
-    //   showSnackBarError("Bạn chỉ có thể chọn tối đa 10 ảnh hoặc 5 video");
-    //   return;
-    // }
-    // if (asset.type == AssetType.image &&
-    //     selectedAsset.any((a) =>
-    //         a.type == AssetType.video && !selectedAsset.contains(asset))) {
-    //   showSnackBarError("Bạn đã chọn 1 video, không thể chọn thêm ảnh.");
-    //   return;
-    // }
     if (asset.type == AssetType.video &&
         selectedAsset.where((a) => a.type == AssetType.video).length >= 5) {
       showSnackBarError("Bạn chỉ có thể chọn tối đa 5 video");
@@ -183,11 +140,6 @@ class ChatMediaController extends ChangeNotifier {
           return;
         }
       }
-
-      // if (selectedAsset.length >= 10 && !selectedAsset.contains(asset)) {
-      //   showSnackBarError("Bạn chỉ có thể chọn tối đa là 10 ảnh hoặc 1 video");
-      //   return;
-      // }
     }
 
     if (selectedAsset.contains(asset)) {
@@ -285,30 +237,14 @@ class ChatMediaController extends ChangeNotifier {
         type: 'temp');
 
     chatController.messages.insert(0, newMessage);
+    final messageJson = jsonEncode(
+        chatController.messages.map((message) => message.toJson()).toList());
+    await chatController.saveMessage(
+        userId: chatController.user?.userId.toString() ?? "",
+        messageJson: messageJson);
     // mediaLocalPath.clear();
     notifyListeners();
   }
-  // Future<void> removeImage(int index) async {
-  //   imagePaths.removeAt(index);
-  //   if (selectedAsset.isNotEmpty) {
-  //     selectedAsset.removeAt(index);
-  //   }
-  //   notifyListeners();
-
-  // Future<void> removeVideo() async {
-  //   videoPaths.clear();
-  //   videoThumbnail = null;
-  //
-  //   selectedAsset.clear();
-  //   notifyListeners();
-  // }
-  //
-  // Future<void> deleteVideo() async {
-  //   videoPaths.clear();
-  //   videoThumbnail = null;
-  //
-  //   notifyListeners();
-  // }
 
   Future<bool> hasChangedSelectedAssets() async {
     final userUtils = ref.watch(userUtilsProvider);

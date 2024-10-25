@@ -5,6 +5,7 @@ import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,7 +28,8 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
 
     Future.microtask(() async {
       final controller = ref.read(conversationControllerProvider);
-      await controller.getFriends();
+      controller.getFriends();
+      await controller.loadConversation();
       await controller.getAllConversation();
       await controller.onInit();
     });
@@ -117,106 +119,101 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
     final controller = ref.watch(conversationControllerProvider);
     final userUtils = ref.watch(userUtilsProvider);
     return SliverPadding(
-      padding: const EdgeInsets.only(bottom: 550),
-      sliver: SliverVisibility(
-          visible: controller.allConversation != null,
+        padding: const EdgeInsets.only(bottom: 550),
+        sliver: SliverVisibility(
+          visible: controller.conversations.isNotEmpty,
           replacementSliver: SliverToBoxAdapter(
-            child: circularLoadingWidget(),
+            child: emptyWidget("Bạn chưa có đoạn chat nào!"),
           ),
-          sliver: SliverVisibility(
-            visible: controller.conversations.isNotEmpty == true,
-            replacementSliver: SliverToBoxAdapter(
-              child: emptyWidget("Bạn chưa có đoạn chat nào!"),
-            ),
-            sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-              childCount: controller.conversations.length,
-              (context, index) {
-                final conversation = controller.conversations[index];
+          sliver: SliverList(
+              delegate: SliverChildBuilderDelegate(
+            childCount: controller.conversations.length,
+            (context, index) {
+              final conversation = controller.conversations[index];
 
-                return ListTile(
-                  onTap: () async {
-                    String clientId = await userUtils.getUserId();
-                    context.goNamed("chat", pathParameters: {
-                      "userId": conversation.userId.toString() ?? "",
-                      "clientId": clientId
-                    });
-                    print(
-                        ">>>>>>>>>>>>conversations: ${controller.conversations}");
-                  },
-                  leading: Stack(
-                    children: [
-                      // Avatar
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundImage:
-                            NetworkImage(conversation.userAvatar ?? ""),
+              return ListTile(
+                onTap: () async {
+                  String clientId = await userUtils.getUserId();
+                  context.goNamed("chat", pathParameters: {
+                    "userId": conversation.userId.toString() ?? "",
+                    "clientId": clientId
+                  });
+                  print(
+                      ">>>>>>>>>>>>conversations: ${controller.conversations}");
+                },
+                leading: Stack(
+                  children: [
+                    // Avatar
+                    CircleAvatar(
+                      radius: 20,
+                      backgroundImage: CachedNetworkImageProvider(
+                        conversation.userAvatar ?? "",
                       ),
-                      // Chấm tròn cắt vào avatar
-                      StreamBuilder<Map<dynamic, dynamic>>(
-                        stream: controller
-                            .listenUsersStatus(conversation.userId.toString()),
-                        builder: (context, snapshot) {
-                          return Visibility(
-                            visible: snapshot.data?['status'] == "online",
-                            replacement: Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 3, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  borderRadius: BorderRadius.circular(10),
-                                  // border: Border.all(
-                                  //   color: Colors.white,
-                                  //   width: 2,
-                                  // ),
-                                ),
-                                child: Text(
-                                  AppUtils.formatTimeStatusOnline(
-                                      snapshot.data?['updatedAt'] != null
-                                          ? (snapshot.data?['updatedAt'])
-                                          : ""),
-                                  style: const TextStyle(
-                                      fontSize: 8, color: Colors.green),
+                    ),
+                    // Chấm tròn cắt vào avatar
+                    StreamBuilder<Map<dynamic, dynamic>>(
+                      stream: controller
+                          .listenUsersStatus(conversation.userId.toString()),
+                      builder: (context, snapshot) {
+                        return Visibility(
+                          visible: snapshot.data?['status'] == "online",
+                          replacement: Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 3, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade100,
+                                borderRadius: BorderRadius.circular(10),
+                                // border: Border.all(
+                                //   color: Colors.white,
+                                //   width: 2,
+                                // ),
+                              ),
+                              child: Text(
+                                AppUtils.formatTimeStatusOnline(
+                                    snapshot.data?['updatedAt'] != null
+                                        ? (snapshot.data?['updatedAt'])
+                                        : ""),
+                                style: const TextStyle(
+                                    fontSize: 8, color: Colors.green),
+                              ),
+                            ),
+                          ),
+                          child: Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              width: 12, // Độ rộng của chấm tròn
+                              height: 12, // Chiều cao của chấm tròn
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.green, // Màu của chấm tròn
+                                border: Border.all(
+                                  color: Colors
+                                      .white, // Đường viền màu trắng để tạo hiệu ứng cắt vào avatar
+                                  width: 2, // Độ dày của viền
                                 ),
                               ),
                             ),
-                            child: Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                width: 12, // Độ rộng của chấm tròn
-                                height: 12, // Chiều cao của chấm tròn
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.green, // Màu của chấm tròn
-                                  border: Border.all(
-                                    color: Colors
-                                        .white, // Đường viền màu trắng để tạo hiệu ứng cắt vào avatar
-                                    width: 2, // Độ dày của viền
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  title: Text(conversation.userFullName ?? ""),
-                  subtitle: Text(
-                    conversation.latestMessage ?? "",
-                    style: const TextStyle(fontSize: 12, color: Colors.black54),
-                  ),
-                  trailing: Text(AppUtils.formatTimeLastMessage(
-                      conversation.updatedAt ?? "")),
-                );
-              },
-            )),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                title: Text(conversation.userFullName ?? ""),
+                subtitle: Text(
+                  conversation.latestMessage ?? "",
+                  style: const TextStyle(fontSize: 12, color: Colors.black54),
+                ),
+                trailing: Text(AppUtils.formatTimeLastMessage(
+                    conversation.updatedAt ?? "")),
+              );
+            },
           )),
-    );
+        ));
   }
 
   Widget sliverFriend() {

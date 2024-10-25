@@ -22,19 +22,34 @@ class ConversationController extends ChangeNotifier {
   List<UserConversation> conversations = [];
   Future<void> getAllConversation() async {
     allConversation = null;
-    conversations.clear();
+
     allConversation = await chatUseCase.getAllConversation();
+
     if (allConversation?.data != null) {
-      // final newConversations = allConversation?.data
-      //     ?.where((newPost) =>
-      //         !conversations.any((cachedPost) => cachedPost.id == newPost.id))
-      //     .toList();
-      conversations.addAll(allConversation?.data as Iterable<UserConversation>);
-      notifyListeners();
+      // Lọc các cuộc hội thoại để chỉ thêm những cuộc hội thoại có userId không trùng lặp
+      final newConversations = allConversation!.data?.where((newConversation) {
+        return !conversations.any((existingConversation) =>
+            existingConversation.userId == newConversation.userId);
+      }).toList();
+
+      // Nếu có cuộc hội thoại mới, thêm vào danh sách
+      if (newConversations?.isNotEmpty == true) {
+        conversations.addAll(newConversations!);
+        final conversationJson = jsonEncode(conversations
+            .map((conversation) => conversation.toJson())
+            .toList());
+        await saveConversation(conversationJson: conversationJson);
+        notifyListeners();
+      }
     }
   }
 
-  Future<void> updateLastMessage({required dynamic messageData}) async {
+  Future<void> updateLastMessage({
+    required dynamic messageData,
+    String? avatar,
+    String? fullName,
+    int? userId,
+  }) async {
     String lastMessage = messageData['latest_message'].toString();
     String senderId = messageData['sender_id'].toString();
     final userUtil = ref.watch(userUtilsProvider);
@@ -43,42 +58,43 @@ class ConversationController extends ChangeNotifier {
     int conversationId = messageData['conversation_id'] ?? 0;
     int messageId = messageData['message_id'] ?? 0;
 
-    final conversation =
-        conversations.firstWhere((e) => e.id == conversationId);
+    // Xác định nội dung tin nhắn và thời gian cập nhật dựa trên clientId và senderId
+    String latestMessage =
+        clientId != senderId ? lastMessage : senderLastMessage;
 
-    // if (messageData['updatedStatus'] != "read") {
-
-    notifyListeners();
-    // conversations
-
-    if (clientId != senderId) {
+    // Nếu cuộc trò chuyện đã tồn tại
+    if (conversations
+        .any((conversation) => conversation.id == conversationId)) {
+      final conversation =
+          conversations.firstWhere((e) => e.id == conversationId);
       final newConversation = conversation.copyWith(
-        latestMessage: lastMessage,
+        latestMessage: latestMessage,
         updatedAt: DateTime.now().toIso8601String(),
       );
 
+      // Cập nhật danh sách cuộc trò chuyện
       conversations
           .removeWhere((conversation) => conversation.id == conversationId);
       conversations.insert(0, newConversation);
-
-      // await markDeliveredMessage(
-      //     senderId: senderId,
-      //     messageId: messageId,
-      //     conversationId: conversationId);
-      // await Future.delayed(Duration(seconds: 3));
-    } else {
-      final newConversation = conversation.copyWith(
-        latestMessage: senderLastMessage,
-        updatedAt: DateTime.now().toIso8601String(),
-      );
-      // print(">>>>>>>new: ${jsonEncode(newConversation)}");
-      conversations
-          .removeWhere((conversation) => conversation.id == conversationId);
-      conversations.insert(0, newConversation);
+      notifyListeners();
     }
-    // notifyListeners();
+    // Nếu cuộc trò chuyện chưa tồn tại
+    else {
+      final newConversation = UserConversation(
+        id: conversationId,
+        userId: userId,
+        latestMessage: latestMessage,
+        updatedAt: DateTime.now().toIso8601String(),
+        userAvatar: avatar,
+        userFullName: fullName,
+      );
 
-    // .removeWhere((conversation) => conversation.id == conversationId);
+      if (!conversations
+          .any((conversation) => conversation.id == newConversation.id)) {
+        conversations.insert(0, newConversation);
+        notifyListeners();
+      }
+    }
   }
 
   Future<void> onInit() async {
@@ -203,6 +219,31 @@ class ConversationController extends ChangeNotifier {
     connectSubscription = await chatUseCase.listenAblyConnected(
         handleChannelStateChange: handleChannelStateChange);
     return connectSubscription;
+  }
+
+  Future<void> loadConversation() async {
+    final userUtil = ref.watch(userUtilsProvider);
+    final String userId = await userUtil.getUserId();
+    String? rawData = await userUtil.loadCache("conversation_$userId");
+    print(">>>>>>>>>rawData: $rawData");
+    if (rawData != null) {
+      final List<dynamic> decodedData = jsonDecode(rawData);
+      List<UserConversation> loadedConversation = decodedData
+          .map(
+              (data) => UserConversation.fromJson(data as Map<String, dynamic>))
+          .toList();
+      conversations.clear();
+      conversations.addAll(loadedConversation);
+      print(">>>>>>>>>isNot: ${conversations.isNotEmpty}");
+      notifyListeners();
+    }
+  }
+
+  Future<void> saveConversation({required String conversationJson}) async {
+    final userUtil = ref.watch(userUtilsProvider);
+    final String userId = await userUtil.getUserId();
+    await userUtil.saveCache(
+        key: "conversation_$userId", value: conversationJson);
   }
 }
 
