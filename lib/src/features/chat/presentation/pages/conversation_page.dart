@@ -33,7 +33,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
       // controller.getFriends();
       // await controller.loadConversation();
       // await controller.getAllConversation();
-      await controller.onInit();
+      await controller.onInit(context);
     });
 
     // WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -62,9 +62,9 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
     // Future.microtask(() async {
     //
     // });
-    // Future.microtask(() async {
-    //   await controller.onInit();
-    // });
+    Future.microtask(() async {
+      await controller.listenAllConversation(context);
+    });
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(

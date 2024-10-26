@@ -74,11 +74,13 @@ class AppRouter {
               if (connectionState.event == ably.ConnectionEvent.closed) {
                 await ref.read(conversationControllerProvider).initializeAbly();
               }
-              if (connectionState.event == ably.ConnectionEvent.connected) {
-                await ref
-                    .read(conversationControllerProvider)
-                    .listenAllConversation();
-              }
+              // if (connectionState.event == ably.ConnectionEvent.connected) {
+              //   Future.microtask(() {
+              //     ref
+              //         .read(conversationControllerProvider)
+              //         .listenAllConversation(context);
+              //   });
+              // }
             });
 
             inMessage = true;

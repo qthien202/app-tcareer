@@ -9,8 +9,10 @@ import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class ConversationController extends ChangeNotifier {
   final ChatUseCase chatUseCase;
@@ -57,9 +59,8 @@ class ConversationController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateLastMessage({
-    required dynamic messageData,
-  }) async {
+  Future<void> updateLastMessage(
+      {required dynamic messageData, required BuildContext context}) async {
     String lastMessage = messageData['latest_message'].toString();
 
     String senderLastMessage = messageData['sender_latest_message'].toString();
@@ -69,8 +70,9 @@ class ConversationController extends ChangeNotifier {
     String fullName = messageData["full_name"];
     String avatar = messageData['avatar'];
     num unRead = messageData['un_read'];
-    num userId = messageData['id'];
+    num userId = messageData['sender_id'];
     String createdAt = messageData['created_at'].toString();
+    num senderId = messageData['sender_message_id'];
 
     if (conversations.any((conversation) => conversation.userId == userId)) {
       final conversation = conversations.firstWhere((e) => e.userId == userId);
@@ -86,7 +88,8 @@ class ConversationController extends ChangeNotifier {
 
       conversations.insert(0, newConversation);
       await markDeliveredMessage(
-          senderId: messageData['id'].toString(),
+          context: context,
+          senderId: senderId,
           messageId: messageId,
           conversationId: conversationId);
       notifyListeners();
@@ -107,22 +110,23 @@ class ConversationController extends ChangeNotifier {
 
         notifyListeners();
         // if (messageData['sender_id'] != null) {
-        //   await markDeliveredMessage(
-        //       senderId: messageData['sender_id'],
-        //       messageId: messageId,
-        //       conversationId: conversationId);
+        await markDeliveredMessage(
+            context: context,
+            senderId: senderId,
+            messageId: messageId,
+            conversationId: conversationId);
         // }
       }
     }
   }
 
-  Future<void> onInit() async {
+  Future<void> onInit(BuildContext context) async {
     await loadConversationFriends();
     await loadConversation();
     getFriends();
     await getAllConversation();
     await initializeAbly();
-    await listenAllConversation();
+    await listenAllConversation(context);
     print(">>>>>>>>>doneListen");
   }
 
@@ -133,38 +137,41 @@ class ConversationController extends ChangeNotifier {
 
   StreamSubscription<ably.Message>? conversationSubscriptions;
 
-  Future<StreamSubscription<ably.Message>?> listenAllConversation() async {
+  Future<StreamSubscription<ably.Message>?> listenAllConversation(
+      BuildContext context) async {
     final subscription = await chatUseCase.listenAllConversation(
       handleChannelMessage: (message) async {
         print(">>>>>>>>>conversationData: ${message.data}");
 
         final messageData = jsonDecode(message.data.toString());
-        await updateLastMessage(messageData: messageData);
+        await updateLastMessage(messageData: messageData, context: context);
       },
     );
 
     return conversationSubscriptions;
   }
 
-  Future<void> markDeliveredMessage({
-    dynamic senderId,
-    required dynamic messageId,
-    required dynamic conversationId,
-  }) async {
+  Future<void> markDeliveredMessage(
+      {dynamic senderId,
+      required dynamic messageId,
+      required dynamic conversationId,
+      required BuildContext context}) async {
     final userUtil = ref.watch(userUtilsProvider);
     String clientId = await userUtil.getUserId();
     print(">>>>>>>>>clientId: $clientId");
     print(">>>>>>>>>>senderId: $senderId");
     final currentConversation = conversations
         .firstWhere((conversation) => conversation.id == conversationId);
-    print(">>>>>>>>unRead: ${currentConversation.unRead}");
-    if (clientId != senderId && currentConversation.unRead == 0) {
+    final routerState = GoRouterState.of(context);
+    print(">>>>path: ${routerState.fullPath}");
+    bool isConversationRoute = routerState.fullPath == ("/conversation");
+    if (isConversationRoute && clientId != senderId.toString()) {
+      print(">>>>>>>>>clientIdRead: $clientId");
       String data = jsonEncode({
         "topic": "statusMessage",
         "id": messageId,
         "updatedStatus": "delivered",
       });
-      await Future.delayed(const Duration(milliseconds: 500));
       await chatUseCase
           .publishMessage(conversationId: conversationId.toString(), data: data)
           .catchError((e) {

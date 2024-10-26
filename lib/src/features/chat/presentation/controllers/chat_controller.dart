@@ -92,10 +92,9 @@ class ChatController extends ChangeNotifier {
         conversationId: conversationData?.conversation?.id,
         content: contentController.text,
       );
-      await chatUseCase.sendMessage(body).then((val) {
-        contentController.clear();
-        setHasContent("");
-      });
+      contentController.clear();
+      setHasContent("");
+      await chatUseCase.sendMessage(body).then((val) {});
     }, context, (val) {});
   }
 
