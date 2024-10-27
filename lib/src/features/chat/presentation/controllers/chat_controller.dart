@@ -171,8 +171,6 @@ class ChatController extends ChangeNotifier {
     final conversationController = ref.read(conversationControllerProvider);
     final connectionUseCase = ref.watch(connectionUseCaseProvider);
     if (await connectionUseCase.getInMessage() == true) {
-      print(">>>>>>>>>clientId: $clientId");
-      print(">>>>>>>>>>senderId: $senderId");
       if (clientId != senderId && messages.last.status == "sent" ||
           messages.last.status == "delivered") {
         String data = jsonEncode({

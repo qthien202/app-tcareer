@@ -8,9 +8,6 @@ Widget circularLoadingWidget() {
       child: SizedBox(
     width: 20.0,
     height: 20.0,
-    // child: CircularProgressIndicator(
-    //   value: event == null ? 0 : event.cumulativeBytesLoaded / (event.expectedTotalBytes ?? 1),
-    // ),
     child: CupertinoActivityIndicator(color: Colors.grey, radius: 10),
   ));
 }

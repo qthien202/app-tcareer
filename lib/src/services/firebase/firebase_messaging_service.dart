@@ -110,7 +110,7 @@ class FirebaseMessagingService {
           userId.isNotEmpty) {
         final userUtil = ref.watch(userUtilsProvider);
         String clientId = await userUtil.getUserId();
-        context.replaceNamed("chat",
+        context.pushReplacementNamed("chat",
             pathParameters: {"userId": userId ?? "", "clientId": clientId});
       } else if (userId != null && userId.isNotEmpty) {
         context.pushNamed(
@@ -159,7 +159,7 @@ Future<void> backgroundHandler(RemoteMessage message) async {
         userId.isNotEmpty) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String clientId = prefs.getString("userId").toString();
-      context.replaceNamed("chat",
+      context.pushReplacementNamed("chat",
           pathParameters: {"userId": userId ?? "", "clientId": clientId});
     } else if (userId != null && userId.isNotEmpty) {
       context.pushNamed(

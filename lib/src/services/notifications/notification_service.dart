@@ -100,7 +100,7 @@ class NotificationService {
         userId.isNotEmpty) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String clientId = prefs.getString("userId").toString();
-      navigatorKey.currentContext?.replaceNamed("chat",
+      navigatorKey.currentContext?.pushReplacementNamed("chat",
           pathParameters: {"userId": userId ?? "", "clientId": clientId});
     } else if (userId != null && userId.isNotEmpty) {
       print(">>>>>>>>>>>2");

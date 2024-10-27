@@ -47,23 +47,6 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   // TODO: implement dispose
-  //   Future.microtask(() async {
-  //     await ref.read(chatControllerProvider).leavePresence(widget.userId);
-  //   });
-  //   super.dispose();
-  // }
-  // @override
-  // void didChangeDependencies() {
-  //   // TODO: implement didChangeDependencies
-  //   super.didChangeDependencies();
-  //   // WidgetsBinding.instance.addPostFrameCallback((_) {
-  //   //   ref.read(chatControllerProvider).scrollToBottom();
-  //   // });
-  // }
-
   @override
   void dispose() {
     // TODO: implement dispose
