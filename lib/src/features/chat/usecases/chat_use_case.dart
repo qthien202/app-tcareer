@@ -103,6 +103,12 @@ class ChatUseCase {
           handleChannelStateChange: handleChannelStateChange);
 
   Future getFriendInChat() async => await chatRepository.getFriendInChat();
+
+  Future<void> putDeleteMessage(String messageId) async =>
+      await chatRepository.putDeleteMessage(messageId);
+
+  Future<void> putRecallMessage(String messageId) async =>
+      await chatRepository.putRecallMessage(messageId);
 }
 
 final chatUseCaseProvider = Provider<ChatUseCase>((ref) {

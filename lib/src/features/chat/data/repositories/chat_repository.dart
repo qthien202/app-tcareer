@@ -141,6 +141,16 @@ class ChatRepository {
     final api = ref.watch(apiServiceProvider);
     return await api.getFriendInChat();
   }
+
+  Future<void> putDeleteMessage(String messageId) async {
+    final api = ref.watch(apiServiceProvider);
+    return await api.putDeleteMessage(messageId: messageId);
+  }
+
+  Future<void> putRecallMessage(String messageId) async {
+    final api = ref.watch(apiServiceProvider);
+    return await api.putRecallMessage(messageId: messageId);
+  }
 }
 
 final chatRepositoryProvider =

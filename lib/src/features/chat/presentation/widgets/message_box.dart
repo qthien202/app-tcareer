@@ -24,11 +24,14 @@ Widget messageBox(
     required String status,
     required String avatarUrl,
     required String message,
+    String? type,
     bool isMe = false,
     required String createdAt,
     required WidgetRef ref,
     required List<String> media,
-    required BuildContext context}) {
+    required BuildContext context,
+    required num messageId}) {
+  Color messageColor = isMe ? const Color(0xff3E66FB) : Colors.white;
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     mainAxisAlignment: !isMe ? MainAxisAlignment.start : MainAxisAlignment.end,
@@ -44,51 +47,69 @@ Widget messageBox(
         width: 10,
       ),
       Visibility(
+        visible: type == "recall",
+        child: recallMessage(
+            createdAt: createdAt,
+            status: status,
+            isFirstIndex: isFirstIndex,
+            isMe: isMe),
+      ),
+      Visibility(
         visible: message != "",
         child: Expanded(
-          child: Column(
-            crossAxisAlignment:
-                isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-            children: [
-              ConstrainedBox(
-                constraints:
-                    BoxConstraints(maxWidth: ScreenUtil().screenWidth * .7),
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 5),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-                  decoration: BoxDecoration(
-                      color: isMe ? const Color(0xff3E66FB) : Colors.white,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        message,
-                        style: TextStyle(
-                            color: isMe ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.w400),
-                      ),
-                      const SizedBox(
-                        height: 2,
-                      ),
-                      Text(
-                        AppUtils.formatCreatedAt(createdAt),
-                        style: TextStyle(
-                            color: isMe ? Colors.white : Colors.black54,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w300),
-                      ),
-                    ],
+          child: GestureDetector(
+            onLongPress: () {
+              ref.read(chatControllerProvider).showModalMessageText(
+                  context: context,
+                  isMe: isMe,
+                  message: message,
+                  messageId: messageId);
+            },
+            child: Column(
+              crossAxisAlignment:
+                  isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              children: [
+                ConstrainedBox(
+                  constraints:
+                      BoxConstraints(maxWidth: ScreenUtil().screenWidth * .7),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 5),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                    decoration: BoxDecoration(
+                      color: messageColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          message,
+                          style: TextStyle(
+                              color: !isMe ? Colors.black : Colors.white,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          AppUtils.formatCreatedAt(createdAt),
+                          style: TextStyle(
+                              color: !isMe ? Colors.black : Colors.white,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Visibility(
-                visible: isMe && isFirstIndex,
-                child: Visibility(child: statusText(status)),
-              )
-            ],
+                Visibility(
+                  visible: isMe && isFirstIndex,
+                  child: Visibility(child: statusText(status)),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -309,4 +330,56 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context) {
       }).toList(),
     );
   }
+}
+
+Widget recallMessage({
+  bool isMe = false,
+  required String createdAt,
+  required String status,
+  required bool isFirstIndex,
+}) {
+  return Expanded(
+    child: Column(
+      crossAxisAlignment:
+          isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      children: [
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: ScreenUtil().screenWidth * .7),
+          child: Container(
+            margin: const EdgeInsets.only(bottom: 5),
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+            decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.grey.shade300)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Bạn đã thu hồi một tin nhắn",
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w400),
+                ),
+                const SizedBox(
+                  height: 2,
+                ),
+                Text(
+                  AppUtils.formatCreatedAt(createdAt),
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w300),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Visibility(
+          visible: isMe && isFirstIndex,
+          child: Visibility(child: statusText(status)),
+        )
+      ],
+    ),
+  );
 }

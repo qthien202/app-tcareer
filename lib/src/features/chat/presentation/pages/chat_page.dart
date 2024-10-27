@@ -150,6 +150,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
           bool isMe = message.senderId.toString() == widget.clientId;
           return messageBox(
+              type: message.type,
               context: context,
               isFirstIndex: isFirstIndex,
               status: message.status ?? "",
@@ -158,7 +159,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               ref: ref,
               message: message.content ?? "",
               isMe: isMe,
-              createdAt: message.createdAt ?? "");
+              createdAt: message.createdAt ?? "",
+              messageId: message.id ?? 0);
         },
         separatorBuilder: (context, index) => const SizedBox(
           height: 2,

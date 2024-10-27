@@ -24,9 +24,11 @@ import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ably_flutter/ably_flutter.dart' as ably;
+import 'package:go_router/go_router.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:uuid/uuid.dart';
 
@@ -369,6 +371,81 @@ class ChatController extends ChangeNotifier {
       user = UserConversation.fromJson(decodedData);
       notifyListeners();
     }
+  }
+
+  Future<void> showModalMessageText({
+    bool isMe = false,
+    required String message,
+    required num messageId,
+    required BuildContext context,
+  }) async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoActionSheet(
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+                onPressed: () async => await deleteMessage(messageId, context),
+                child: const Text(
+                  'Gỡ tin nhắn',
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                )),
+            CupertinoActionSheetAction(
+                onPressed: () => copyMessage(message, context),
+                child: const Text(
+                  'Sao chép',
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                )),
+            Visibility(
+              visible: isMe,
+              child: CupertinoActionSheetAction(
+                  isDestructiveAction: true,
+                  onPressed: () async =>
+                      await recallMessage(messageId, context),
+                  child: const Text(
+                    'Thu hồi',
+                    style: TextStyle(fontSize: 16),
+                  )),
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+              isDefaultAction: true,
+              child: const Text(
+                'Hủy',
+                style: TextStyle(color: Colors.black, fontSize: 16),
+              ),
+              onPressed: () => context.pop()),
+        );
+      },
+    );
+  }
+
+  void copyMessage(String text, BuildContext context) {
+    Clipboard.setData(ClipboardData(text: text)).then((_) {
+      showSnackBar("Sao chép tin nhắn thành công!");
+      context.pop();
+    });
+  }
+
+  Future<void> deleteMessage(num messageId, BuildContext context) async {
+    await chatUseCase.putDeleteMessage(messageId.toString()).then((_) {
+      messages.removeWhere((message) => message.id == messageId);
+      notifyListeners();
+      context.pop();
+    });
+  }
+
+  Future<void> recallMessage(num messageId, BuildContext context) async {
+    await chatUseCase.putRecallMessage(messageId.toString()).then((_) {
+      final currentMessage =
+          messages.firstWhere((message) => message.id == messageId);
+      final index = messages.indexWhere((message) => message.id == messageId);
+      final updateMessage =
+          currentMessage.copyWith(content: "", type: "recall");
+      messages[index] = updateMessage;
+      notifyListeners();
+      context.pop();
+    });
   }
 }
 

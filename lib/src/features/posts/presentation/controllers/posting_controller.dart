@@ -403,8 +403,6 @@ class PostingController extends ChangeNotifier {
     required BuildContext context,
     required String userId,
   }) async {
-    // bool currentUser = userId == commentUserId;
-
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) {
@@ -421,19 +419,6 @@ class PostingController extends ChangeNotifier {
                   'Chỉnh sửa bài viết',
                   style: TextStyle(fontSize: 16, color: Colors.black),
                 )),
-            // Visibility(
-            //   // visible: currentUser,
-            //   child: CupertinoActionSheetAction(
-            //       onPressed: () {
-            //         context.pop();
-            //         // showEditPage(
-            //         //     context, postId, commentId.toString(), content);
-            //       },
-            //       child: const Text(
-            //         'Chỉnh sửa quyền riêng tư',
-            //         style: TextStyle(fontSize: 16, color: Colors.black),
-            //       )),
-            // ),
             Visibility(
               // visible: currentUser,
               child: CupertinoActionSheetAction(
@@ -447,12 +432,6 @@ class PostingController extends ChangeNotifier {
                     style: TextStyle(fontSize: 16),
                   )),
             ),
-            // CupertinoActionSheetAction(
-            //     onPressed: (){},
-            //     child: const Text(
-            //       'Sao chép',
-            //       style: TextStyle(fontSize: 16, color: Colors.black),
-            //     )),
           ],
           cancelButton: CupertinoActionSheetAction(
               isDefaultAction: true,

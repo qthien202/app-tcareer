@@ -179,4 +179,10 @@ abstract class ApiServices {
 
   @GET('api/auth/friends/view')
   Future getFriendInChat();
+
+  @PUT('api/auth/hide_message_for_user/{messageId}')
+  Future putDeleteMessage({@Path('messageId') required String messageId});
+
+  @PUT('api/auth/recall_message/{messageId}')
+  Future putRecallMessage({@Path('messageId') required String messageId});
 }
