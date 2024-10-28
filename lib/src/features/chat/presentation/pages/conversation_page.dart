@@ -238,13 +238,19 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                         ),
                       ],
                     ),
+
                     subtitle: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          conversation.latestMessage ?? "",
-                          style: const TextStyle(
-                              fontSize: 12, color: Colors.black54),
+                        Expanded(
+                          child: Text(
+                            conversation.latestMessage ?? "",
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.black54),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
                         ),
                         Visibility(
                           visible: conversation.unRead != null &&

@@ -79,7 +79,7 @@ Widget messageBox(
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                     decoration: BoxDecoration(
                       color: messageColor,
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
