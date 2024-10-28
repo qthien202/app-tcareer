@@ -158,15 +158,13 @@ class ConversationController extends ChangeNotifier {
       required BuildContext context}) async {
     final userUtil = ref.watch(userUtilsProvider);
     String clientId = await userUtil.getUserId();
-    print(">>>>>>>>>clientId: $clientId");
-    print(">>>>>>>>>>senderId: $senderId");
+
     final currentConversation = conversations
         .firstWhere((conversation) => conversation.id == conversationId);
     final routerState = GoRouterState.of(context);
     print(">>>>path: ${routerState.fullPath}");
     bool isConversationRoute = routerState.fullPath == ("/conversation");
     if (isConversationRoute && clientId != senderId.toString()) {
-      print(">>>>>>>>>clientIdRead: $clientId");
       String data = jsonEncode({
         "topic": "statusMessage",
         "id": messageId,

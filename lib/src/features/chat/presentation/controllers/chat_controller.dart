@@ -43,13 +43,6 @@ class ChatController extends ChangeNotifier {
   ScrollController scrollController = ScrollController();
 
   TextEditingController contentController = TextEditingController();
-  Future<void> publishMessage() async {
-    final userController = ref.watch(userControllerProvider);
-    final user = userController.userData?.data;
-    // await chatUseCase.publishMessage(
-    //
-    //     data: {"message": contentController.text, "userId": "1"});
-  }
 
   Conversation? conversationData;
   UserConversation? user;
@@ -104,22 +97,28 @@ class ChatController extends ChangeNotifier {
   StreamSubscription<ably.Message>? messageSubscription;
 
   Future<StreamSubscription<ably.Message>?> listenMessage() async {
-    // Hủy bỏ subscription cũ nếu có
-    // messageSubscription?.cancel();
-
     messageSubscription = await chatUseCase.listenAllMessage(
       conversationId: conversationData?.conversation?.id.toString() ?? "",
       handleChannelMessage: (message) async {
         print(">>>>>>>>data: ${message.data}");
-        handleUpdateMessage(message);
+        await handleUpdateMessage(message);
       },
     );
 
     return messageSubscription;
   }
 
-  void handleUpdateMessage(ably.Message message) async {
+  Future<void> handleUpdateMessage(ably.Message message) async {
     final messageData = jsonDecode(message.data.toString());
+    final userUtil = ref.watch(userUtilsProvider);
+    String clientId = await userUtil.getUserId();
+    if (messageData['topic'] == "recall") {
+      if (clientId != messageData['senderId'].toString()) {
+        await handleUpdateMessageRecall(messageData['id']);
+      }
+
+      return;
+    }
     if (messageData['updatedStatus'] == "delivered" ||
         messageData['updatedStatus'] == "read") {
       final currentMessage = messages.last;
@@ -198,12 +197,6 @@ class ChatController extends ChangeNotifier {
       }
     }
   }
-
-  // Future<void> markReadMessage() async {
-  //   await chatUseCase.postMarkReadMessage(MarkReadMessageRequest(
-  //     conversationId: conversationData?.conversation?.id,
-  //   ));
-  // }
 
   StreamSubscription<ably.PresenceMessage>? presenceSubscription;
 
@@ -436,16 +429,35 @@ class ChatController extends ChangeNotifier {
   }
 
   Future<void> recallMessage(num messageId, BuildContext context) async {
-    await chatUseCase.putRecallMessage(messageId.toString()).then((_) {
-      final currentMessage =
-          messages.firstWhere((message) => message.id == messageId);
-      final index = messages.indexWhere((message) => message.id == messageId);
-      final updateMessage =
-          currentMessage.copyWith(content: "", type: "recall");
-      messages[index] = updateMessage;
-      notifyListeners();
+    await chatUseCase.putRecallMessage(messageId.toString()).then((_) async {
+      await handleUpdateMessageRecall(messageId);
+      await pushNotifyRecallMessage(messageId: messageId);
       context.pop();
     });
+  }
+
+  Future<void> pushNotifyRecallMessage({required dynamic messageId}) async {
+    final userUtil = ref.watch(userUtilsProvider);
+    String clientId = await userUtil.getUserId();
+    final conversationController = ref.read(conversationControllerProvider);
+    final connectionUseCase = ref.watch(connectionUseCaseProvider);
+    if (await connectionUseCase.getInMessage() == true) {
+      String data = jsonEncode(
+          {"topic": "recall", "id": messageId, "senderId": clientId});
+
+      await chatUseCase.publishMessage(
+          conversationId: conversationData?.conversation?.id.toString() ?? "",
+          data: data);
+    }
+  }
+
+  Future<void> handleUpdateMessageRecall(dynamic messageId) async {
+    final currentMessage =
+        messages.firstWhere((message) => message.id == messageId);
+    final index = messages.indexWhere((message) => message.id == messageId);
+    final updateMessage = currentMessage.copyWith(content: "", type: "recall");
+    messages[index] = updateMessage;
+    notifyListeners();
   }
 }
 

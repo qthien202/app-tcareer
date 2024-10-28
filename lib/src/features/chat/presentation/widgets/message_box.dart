@@ -49,6 +49,7 @@ Widget messageBox(
       Visibility(
         visible: type == "recall",
         child: recallMessage(
+            ref: ref,
             createdAt: createdAt,
             status: status,
             isFirstIndex: isFirstIndex,
@@ -337,7 +338,10 @@ Widget recallMessage({
   required String createdAt,
   required String status,
   required bool isFirstIndex,
+  required WidgetRef ref,
 }) {
+  final chatController = ref.watch(chatControllerProvider);
+  String? fullName = chatController.user?.userFullName.toString();
   return Expanded(
     child: Column(
       crossAxisAlignment:
@@ -357,7 +361,9 @@ Widget recallMessage({
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Bạn đã thu hồi một tin nhắn",
+                  isMe
+                      ? "Bạn đã thu hồi một tin nhắn"
+                      : "$fullName đã thu hồi một tin nhắn",
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w400),
                 ),
