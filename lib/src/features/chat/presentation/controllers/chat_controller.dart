@@ -100,7 +100,7 @@ class ChatController extends ChangeNotifier {
     messageSubscription = await chatUseCase.listenAllMessage(
       conversationId: conversationData?.conversation?.id.toString() ?? "",
       handleChannelMessage: (message) async {
-        print(">>>>>>>>data: ${message.data}");
+        // print(">>>>>>>>data: ${message.data}");
         await handleUpdateMessage(message);
       },
     );
@@ -204,7 +204,7 @@ class ChatController extends ChangeNotifier {
     presenceSubscription = chatUseCase.listenPresence(
         conversationId: conversationData?.conversation?.id.toString() ?? "",
         handleChannelPresence: (presenceMessage) {
-          print(">>>>>>>>>data: ${presenceMessage.data}");
+          // print(">>>>>>>>>data: ${presenceMessage.data}");
         });
     return presenceSubscription;
   }
@@ -320,7 +320,7 @@ class ChatController extends ChangeNotifier {
     return chatUseCase.listenUserStatus(userId).map((event) {
       if (event.snapshot.value != null) {
         final userStatus = event.snapshot.value as Map<dynamic, dynamic>;
-        print(">>>>>>>>data");
+        // print(">>>>>>>>data");
         return userStatus;
       } else {
         return {};
@@ -331,6 +331,7 @@ class ChatController extends ChangeNotifier {
   Future<void> saveMessage(
       {required String userId, required String messageJson}) async {
     final userUtil = ref.watch(userUtilsProvider);
+
     await userUtil.saveCache(key: "message_$userId", value: messageJson);
   }
 
@@ -349,6 +350,7 @@ class ChatController extends ChangeNotifier {
       List<MessageModel> loadedMessages = decodedData
           .map((data) => MessageModel.fromJson(data as Map<String, dynamic>))
           .toList();
+      print(">>>>>>>>>messageCache: ${jsonEncode(loadedMessages)}");
       messages.clear();
       messages.addAll(loadedMessages);
 
@@ -378,7 +380,10 @@ class ChatController extends ChangeNotifier {
         return CupertinoActionSheet(
           actions: <Widget>[
             CupertinoActionSheetAction(
-                onPressed: () async => await deleteMessage(messageId, context),
+                onPressed: () async {
+                  context.pop();
+                  await showConfirmDeleteMessage(messageId, context);
+                },
                 child: const Text(
                   'Gỡ tin nhắn',
                   style: TextStyle(fontSize: 16, color: Colors.black),
@@ -393,8 +398,10 @@ class ChatController extends ChangeNotifier {
               visible: isMe,
               child: CupertinoActionSheetAction(
                   isDestructiveAction: true,
-                  onPressed: () async =>
-                      await recallMessage(messageId, context),
+                  onPressed: () async {
+                    context.pop();
+                    await showRecallMessage(messageId, context);
+                  },
                   child: const Text(
                     'Thu hồi',
                     style: TextStyle(fontSize: 16),
@@ -431,6 +438,7 @@ class ChatController extends ChangeNotifier {
   Future<void> recallMessage(num messageId, BuildContext context) async {
     await chatUseCase.putRecallMessage(messageId.toString()).then((_) async {
       await handleUpdateMessageRecall(messageId);
+
       await pushNotifyRecallMessage(messageId: messageId);
       context.pop();
     });
@@ -452,12 +460,91 @@ class ChatController extends ChangeNotifier {
   }
 
   Future<void> handleUpdateMessageRecall(dynamic messageId) async {
+    final userUtil = ref.watch(userUtilsProvider);
+    String clientId = await userUtil.getUserId();
     final currentMessage =
         messages.firstWhere((message) => message.id == messageId);
     final index = messages.indexWhere((message) => message.id == messageId);
     final updateMessage = currentMessage.copyWith(content: "", type: "recall");
     messages[index] = updateMessage;
+    // print(">>>>>>>>messageData: ${jsonEncode(messages)}");
     notifyListeners();
+    final messageJson =
+        jsonEncode(messages.map((message) => message.toJson()).toList());
+    // print(">>>>>>>>messages: $messageJson");
+    await saveMessage(
+        userId: user?.userId.toString() ?? "", messageJson: messageJson);
+  }
+
+  Future<void> showConfirmDeleteMessage(
+      num messageId, BuildContext context) async {
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Gỡ đối với bạn?'),
+        content: const Text(
+            'Tin nhắn này sẽ bị gỡ khỏi thiết bị của bạn, nhưng vẫn hiển thị với thành viên khác trong đoạn chat'),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            /// This parameter indicates this action is the default,
+            /// and turns the action's text to bold text.
+
+            onPressed: () {
+              context.pop();
+            },
+            child: const Text(
+              'Hủy',
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          CupertinoDialogAction(
+            /// This parameter indicates the action would perform
+            /// a destructive action such as deletion, and turns
+            /// the action's text color to red.
+            isDestructiveAction: true,
+            onPressed: () async {
+              await deleteMessage(messageId, context);
+            },
+            child: const Text('Gỡ bỏ'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> showRecallMessage(num messageId, BuildContext context) async {
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Thu hồi tin nhắn này?'),
+        content: const Text(
+            'Tin nhắn này sẽ bị thu hồi khỏi cuộc trò chuyện và không thể khôi phục'),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            /// This parameter indicates this action is the default,
+            /// and turns the action's text to bold text.
+
+            onPressed: () {
+              context.pop();
+            },
+            child: const Text(
+              'Hủy',
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          CupertinoDialogAction(
+            /// This parameter indicates the action would perform
+            /// a destructive action such as deletion, and turns
+            /// the action's text color to red.
+            isDestructiveAction: true,
+            onPressed: () async {
+              await recallMessage(messageId, context);
+            },
+            child: const Text('Thu hồi'),
+          ),
+        ],
+      ),
+    );
   }
 }
 
