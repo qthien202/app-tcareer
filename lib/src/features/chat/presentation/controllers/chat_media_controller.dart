@@ -187,7 +187,11 @@ class ChatMediaController extends ChangeNotifier {
             mediaUrl.add(imageUrl);
           }
         }
+
         await chatController.sendMessageWithMedia(mediaUrl);
+        mediaPath.clear();
+        mediaLocalPath.clear();
+        media.clear();
       },
       context,
       (value) {},

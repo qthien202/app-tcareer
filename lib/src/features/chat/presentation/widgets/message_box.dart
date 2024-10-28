@@ -117,38 +117,47 @@ Widget messageBox(
       Visibility(
           visible: media.isNotEmpty,
           child: Expanded(
-            child: Column(
-              crossAxisAlignment:
-                  isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-              children: [
-                ConstrainedBox(
-                    constraints:
-                        BoxConstraints(maxWidth: ScreenUtil().screenWidth * .6),
-                    child: Column(
-                      crossAxisAlignment: isMe
-                          ? CrossAxisAlignment.end
-                          : CrossAxisAlignment.start,
-                      children: [
-                        mediaItem(media, ref, context),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            createdAtText(createdAt),
-                            Visibility(
-                              visible: isMe && isFirstIndex,
-                              child: Visibility(child: statusText(status)),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                      ],
-                    )),
-              ],
+            child: GestureDetector(
+              onLongPress: () {
+                ref.read(chatControllerProvider).showModalMessageText(
+                    context: context,
+                    isMe: isMe,
+                    message: message,
+                    messageId: messageId);
+              },
+              child: Column(
+                crossAxisAlignment:
+                    isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                children: [
+                  ConstrainedBox(
+                      constraints: BoxConstraints(
+                          maxWidth: ScreenUtil().screenWidth * .6),
+                      child: Column(
+                        crossAxisAlignment: isMe
+                            ? CrossAxisAlignment.end
+                            : CrossAxisAlignment.start,
+                        children: [
+                          mediaItem(media, ref, context),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              createdAtText(createdAt),
+                              Visibility(
+                                visible: isMe && isFirstIndex,
+                                child: Visibility(child: statusText(status)),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                        ],
+                      )),
+                ],
+              ),
             ),
           ))
     ],

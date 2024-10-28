@@ -428,8 +428,13 @@ class ChatController extends ChangeNotifier {
   }
 
   Future<void> deleteMessage(num messageId, BuildContext context) async {
-    await chatUseCase.putDeleteMessage(messageId.toString()).then((_) {
+    await chatUseCase.putDeleteMessage(messageId.toString()).then((_) async {
       messages.removeWhere((message) => message.id == messageId);
+      final messageJson =
+          jsonEncode(messages.map((message) => message.toJson()).toList());
+      // print(">>>>>>>>messages: $messageJson");
+      await saveMessage(
+          userId: user?.userId.toString() ?? "", messageJson: messageJson);
       notifyListeners();
       context.pop();
     });
@@ -465,15 +470,16 @@ class ChatController extends ChangeNotifier {
     final currentMessage =
         messages.firstWhere((message) => message.id == messageId);
     final index = messages.indexWhere((message) => message.id == messageId);
-    final updateMessage = currentMessage.copyWith(content: "", type: "recall");
+    final updateMessage =
+        currentMessage.copyWith(content: "", type: "recall", mediaUrl: []);
     messages[index] = updateMessage;
     // print(">>>>>>>>messageData: ${jsonEncode(messages)}");
-    notifyListeners();
     final messageJson =
         jsonEncode(messages.map((message) => message.toJson()).toList());
     // print(">>>>>>>>messages: $messageJson");
     await saveMessage(
         userId: user?.userId.toString() ?? "", messageJson: messageJson);
+    notifyListeners();
   }
 
   Future<void> showConfirmDeleteMessage(

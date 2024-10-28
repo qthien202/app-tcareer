@@ -127,10 +127,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
   Widget messages() {
     final controller = ref.watch(chatControllerProvider);
-
     final mediaController = ref.watch(chatMediaControllerProvider);
     final messages = controller.messages;
-
     return Expanded(
       // flex: 5,
       child: ListView.separated(
