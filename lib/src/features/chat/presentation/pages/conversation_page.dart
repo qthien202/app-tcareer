@@ -1,19 +1,14 @@
-import 'package:app_tcareer/src/features/chat/presentation/controllers/chat_controller.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
-import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
+import 'package:app_tcareer/src/features/posts/presentation/widgets/search_bar_widget.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
-import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:ably_flutter/ably_flutter.dart' as ably;
-import 'package:pinput/pinput.dart';
 
 class ConversationPage extends ConsumerStatefulWidget {
   const ConversationPage({super.key});
@@ -30,38 +25,14 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
 
     Future.microtask(() async {
       final controller = ref.read(conversationControllerProvider);
-      // controller.getFriends();
-      // await controller.loadConversation();
-      // await controller.getAllConversation();
       await controller.onInit(context);
-    });
-
-    // WidgetsBinding.instance.addPostFrameCallback((_) async {
-    //   await ref.read(conversationControllerProvider).getAllConversation();
-    // });
-  }
-
-  // @override
-  // void dispose() {
-  //   final controller = ref.read(conversationControllerProvider);
-  //   controller.dispose();
-  //   super.dispose();
-  // }
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    Future.microtask(() async {
-      final controller = ref.read(conversationControllerProvider);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(conversationControllerProvider);
-    // Future.microtask(() async {
-    //
-    // });
+
     Future.microtask(() async {
       await controller.listenAllConversation(context);
     });
@@ -75,17 +46,16 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
               onRefresh: () async => await controller.refresh(),
             ),
             sliverAppBar(context),
-            sliverFriend(),
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 5),
-                child: Divider(
-                  height: 1,
-                  color: Color(0xffEEEEEE),
-                  // color: Colors.grey.shade200,
-                ),
+                padding: const EdgeInsets.only(right: 15, left: 15, bottom: 20),
+                child: searchBarWidget(
+                    onTap: () => context.goNamed("conversationSearch"),
+                    controller: controller.queryController,
+                    readOnly: true),
               ),
             ),
+            sliverFriend(),
             sliverChat(),
           ],
         ),
@@ -95,35 +65,15 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
 
   Widget sliverAppBar(BuildContext context) {
     // final postingController = ref.watch(postingControllerProvider);
-    return SliverAppBar(
+    return const SliverAppBar(
       centerTitle: false,
       backgroundColor: Colors.white,
       floating: true,
       pinned: false, // AppBar không cố định
-      title: const Text(
-        "Tin nhắn",
+      title: Text(
+        "Đoạn chat",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
       ),
-      // leadingWidth: 120,
-      actions: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: GestureDetector(
-            onTap: () {},
-            child: const PhosphorIcon(
-              PhosphorIconsRegular.magnifyingGlass,
-              color: Colors.black,
-              size: 20,
-            ),
-          ),
-        ),
-      ],
-      // bottom: PreferredSize(
-      //   preferredSize: postingController.isLoading == true
-      //       ? const Size.fromHeight(30)
-      //       : const Size.fromHeight(0),
-      //   child: postingLoading(ref),
-      // ),
     );
   }
 
@@ -229,12 +179,13 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                       children: [
                         Text(
                           conversation.userFullName ?? "",
-                          style: TextStyle(fontWeight: FontWeight.w700),
+                          style: const TextStyle(fontWeight: FontWeight.w700),
                         ),
                         Text(
                           AppUtils.formatTimeLastMessage(
                               conversation.updatedAt ?? ""),
-                          style: TextStyle(fontSize: 11, color: Colors.black45),
+                          style: const TextStyle(
+                              fontSize: 11, color: Colors.black45),
                         ),
                       ],
                     ),
@@ -256,13 +207,13 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                           visible: conversation.unRead != null &&
                               conversation.unRead != 0,
                           child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(5),
+                            decoration: const BoxDecoration(
                                 color: Colors.red, shape: BoxShape.circle),
                             child: Text(
                               conversation.unRead.toString(),
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 11),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 11),
                             ),
                           ),
                         )
@@ -275,7 +226,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                     child: Padding(
                       padding:
                           EdgeInsets.only(left: ScreenUtil().screenWidth * .21),
-                      child: Divider(
+                      child: const Divider(
                         height: 1,
                         color: Color(0xffEEEEEE),
                         // color: Colors.grey.shade200,
@@ -293,74 +244,77 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
     final userUtils = ref.watch(userUtilsProvider);
     final controller = ref.watch(conversationControllerProvider);
     return SliverToBoxAdapter(
-      child: SizedBox(
-        height: 90,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: controller.friends.length,
-          itemBuilder: (context, index) {
-            final friend = controller.friends[index];
-            return GestureDetector(
-              onTap: () async {
-                String clientId = await userUtils.getUserId();
-                context.goNamed("chat", pathParameters: {
-                  "userId": friend.id.toString() ?? "",
-                  "clientId": clientId
-                });
-              },
-              child: Container(
-                width: 70, // Đặt chiều rộng cho mỗi avatar
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                child: Column(
-                  children: [
-                    Stack(
-                      children: [
-                        // Avatar
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundImage:
-                              CachedNetworkImageProvider(friend.avatar ?? ""),
-                        ),
-                        // Chấm tròn cắt vào avatar
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: StreamBuilder<Map<dynamic, dynamic>>(
-                            stream: controller
-                                .listenUsersStatus(friend.id.toString()),
-                            builder: (context, snapshot) {
-                              return Visibility(
-                                visible: snapshot.data?['status'] == "online",
-                                child: Container(
-                                  width: 15,
-                                  height: 15, // Chiều cao của chấm tròn
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.green, // Màu của chấm tròn
-                                    border: Border.all(
-                                      color: Colors
-                                          .white, // Đường viền màu trắng để tạo hiệu ứng cắt vào avatar
-                                      width: 2, // Độ dày của viền
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: SizedBox(
+          height: 90,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: controller.friends.length,
+            itemBuilder: (context, index) {
+              final friend = controller.friends[index];
+              return GestureDetector(
+                onTap: () async {
+                  String clientId = await userUtils.getUserId();
+                  context.goNamed("chat", pathParameters: {
+                    "userId": friend.id.toString() ?? "",
+                    "clientId": clientId
+                  });
+                },
+                child: Container(
+                  width: 70, // Đặt chiều rộng cho mỗi avatar
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Column(
+                    children: [
+                      Stack(
+                        children: [
+                          // Avatar
+                          CircleAvatar(
+                            radius: 28,
+                            backgroundImage:
+                                CachedNetworkImageProvider(friend.avatar ?? ""),
+                          ),
+                          // Chấm tròn cắt vào avatar
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: StreamBuilder<Map<dynamic, dynamic>>(
+                              stream: controller
+                                  .listenUsersStatus(friend.id.toString()),
+                              builder: (context, snapshot) {
+                                return Visibility(
+                                  visible: snapshot.data?['status'] == "online",
+                                  child: Container(
+                                    width: 15,
+                                    height: 15, // Chiều cao của chấm tròn
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.green, // Màu của chấm tròn
+                                      border: Border.all(
+                                        color: Colors
+                                            .white, // Đường viền màu trắng để tạo hiệu ứng cắt vào avatar
+                                        width: 2, // Độ dày của viền
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
 
-                    const SizedBox(height: 5),
-                    Text(
-                      friend.lastName ?? "",
-                      overflow: TextOverflow.ellipsis,
-                    ), // Thay đổi tên người bạn
-                  ],
+                      const SizedBox(height: 5),
+                      Text(
+                        friend.lastName ?? "",
+                        overflow: TextOverflow.ellipsis,
+                      ), // Thay đổi tên người bạn
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );

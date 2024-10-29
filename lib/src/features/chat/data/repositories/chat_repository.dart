@@ -151,6 +151,16 @@ class ChatRepository {
     final api = ref.watch(apiServiceProvider);
     return await api.putRecallMessage(messageId: messageId);
   }
+
+  Future getUsersFromMessage(String query) async {
+    final api = ref.watch(apiServiceProvider);
+    return await api.getUsersFromMessage(query: query);
+  }
+
+  Future getRecentChatters(String query) async {
+    final api = ref.watch(apiServiceProvider);
+    return await api.getRecentChatters(query: query);
+  }
 }
 
 final chatRepositoryProvider =

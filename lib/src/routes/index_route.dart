@@ -1,5 +1,6 @@
 import 'package:app_tcareer/src/features/chat/presentation/pages/chat_page.dart';
 import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_page.dart';
+import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_search_page.dart';
 import 'package:app_tcareer/src/features/index/index_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/job_page.dart';
 import 'package:app_tcareer/src/features/notifications/presentation/pages/notification_page.dart';
@@ -72,6 +73,15 @@ class Index {
                             userId: userId,
                             clientId: clientId,
                           ),
+                          transitionsBuilder: fadeTransitionBuilder);
+                    },
+                    routes: []),
+                GoRoute(
+                    path: "search",
+                    name: "conversationSearch",
+                    pageBuilder: (context, state) {
+                      return const CustomTransitionPage(
+                          child: ConversationSearchPage(),
                           transitionsBuilder: fadeTransitionBuilder);
                     },
                     routes: []),

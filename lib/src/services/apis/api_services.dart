@@ -185,4 +185,10 @@ abstract class ApiServices {
 
   @PUT('api/auth/recall_message/{messageId}')
   Future putRecallMessage({@Path('messageId') required String messageId});
+
+  @GET('api/auth/search_user_message_conversation')
+  Future getUsersFromMessage({@Query('q') required String query});
+
+  @GET('api/auth/search_user_conversation')
+  Future getRecentChatters({@Query('q') required String query});
 }

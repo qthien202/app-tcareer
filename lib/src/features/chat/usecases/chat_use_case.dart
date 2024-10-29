@@ -109,6 +109,11 @@ class ChatUseCase {
 
   Future<void> putRecallMessage(String messageId) async =>
       await chatRepository.putRecallMessage(messageId);
+
+  Future getUsersFromMessage(String query) async =>
+      await chatRepository.getUsersFromMessage(query);
+  Future getRecentChatters(String query) async =>
+      await chatRepository.getRecentChatters(query);
 }
 
 final chatUseCaseProvider = Provider<ChatUseCase>((ref) {

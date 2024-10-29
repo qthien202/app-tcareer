@@ -6,6 +6,7 @@ import 'package:app_tcareer/src/features/chat/data/models/mark_read_message_requ
 import 'package:app_tcareer/src/features/chat/data/models/user_conversation.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/chat_controller.dart';
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
+import 'package:app_tcareer/src/features/posts/data/models/debouncer.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
@@ -283,6 +284,46 @@ class ConversationController extends ChangeNotifier {
 
       notifyListeners();
     }
+  }
+
+  TextEditingController queryController = TextEditingController();
+  List<Data> recentChatters = [];
+  Future<void> getRecentChatters() async {
+    final data = await chatUseCase.getRecentChatters(queryController.text);
+    List<dynamic> chattersJson = data['data'];
+    await mapChattersFromJson(chattersJson);
+    notifyListeners();
+  }
+
+  Future<void> mapChattersFromJson(List<dynamic> jsonData) async {
+    recentChatters = jsonData
+        .whereType<Map<String, dynamic>>()
+        .map((item) => Data.fromJson(item))
+        .toList();
+    // final friendJson =
+    // jsonEncode(friends.map((friend) => friend.toJson()).toList());
+    // saveConversationFriends(friendJson: friendJson);
+  }
+
+  final Debouncer debouncer = Debouncer(milliseconds: 1000);
+  bool isLoading = false;
+
+  void setIsLoading(bool val) {
+    isLoading = val;
+    notifyListeners();
+  }
+
+  Future<void> onSearch() async {
+    debouncer.run(() async {
+      setIsLoading(true);
+      if (queryController.text.isNotEmpty) {
+        await getRecentChatters();
+      } else {
+        recentChatters.clear();
+        notifyListeners();
+      }
+      setIsLoading(false);
+    });
   }
 }
 
