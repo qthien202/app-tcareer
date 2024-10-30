@@ -6,6 +6,7 @@ import 'package:app_tcareer/src/features/jobs/presentation/pages/job_page.dart';
 import 'package:app_tcareer/src/features/notifications/presentation/pages/notification_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/home_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/posting_page.dart';
+import 'package:app_tcareer/src/features/user/presentation/pages/media/user_media_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/profile_page.dart';
 import 'package:app_tcareer/src/routes/home_route.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
@@ -89,13 +90,22 @@ class Index {
         ]),
         StatefulShellBranch(routes: [
           GoRoute(
-            path: "/${RouteNames.user.name}",
-            name: RouteNames.user.name,
-            pageBuilder: (context, state) => CustomTransitionPage(
-                key: state.pageKey,
-                child: const ProfilePage(),
-                transitionsBuilder: fadeTransitionBuilder),
-          ),
+              path: "/${RouteNames.user.name}",
+              name: RouteNames.user.name,
+              pageBuilder: (context, state) => CustomTransitionPage(
+                  key: state.pageKey,
+                  child: const ProfilePage(),
+                  transitionsBuilder: fadeTransitionBuilder),
+              routes: [
+                GoRoute(
+                    path: "media",
+                    name: "userMedia",
+                    pageBuilder: (context, state) => CustomTransitionPage(
+                        key: state.pageKey,
+                        child: const UserMediaPage(),
+                        transitionsBuilder: fadeTransitionBuilder),
+                    routes: []),
+              ]),
         ]),
         StatefulShellBranch(routes: [
           GoRoute(

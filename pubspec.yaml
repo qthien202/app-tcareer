@@ -117,6 +117,7 @@ dependencies:
   image_gallery_saver: ^2.0.3
   flutter_dotenv: ^5.2.1
   encrypt: ^5.0.3
+  image_cropper: ^8.0.2
 
 dev_dependencies:
   flutter_test:

@@ -19,7 +19,7 @@ class ConversationSearchPage extends ConsumerWidget {
     // });
     return PopScope(
       onPopInvoked: (didPop) {
-        controller.queryController.clear();
+        controller.queryController.text = "";
         controller.recentChatters.clear();
       },
       child: Scaffold(

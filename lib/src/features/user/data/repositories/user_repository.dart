@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/services/apis/api_service_provider.dart';
 import 'package:app_tcareer/src/services/firebase/firebase_database_service.dart';
+import 'package:app_tcareer/src/services/firebase/firebase_storage_service.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -52,6 +56,17 @@ class UserRepository {
   Future<Map<dynamic, dynamic>?> getData(String path) async {
     final database = ref.watch(firebaseDatabaseServiceProvider);
     return await database.getData(path);
+  }
+
+  Future<void> putUpdateProfile({required UpdateProfileRequest body}) async {
+    final api = ref.watch(apiServiceProvider);
+    return await api.putUpdateProfile(body: body);
+  }
+
+  Future<String> uploadImage(
+      {required File file, required String folderPath}) async {
+    final storage = ref.watch(firebaseStorageServiceProvider);
+    return await storage.uploadFile(file, folderPath);
   }
 }
 

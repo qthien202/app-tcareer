@@ -1,3 +1,4 @@
+import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/features/user/data/repositories/user_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +15,9 @@ class UserUseCase {
 
   Future getFriends(String userId) async =>
       await userRepository.getFriends(userId);
+
+  Future<void> putUpdateProfile({required UpdateProfileRequest body}) async =>
+      await userRepository.putUpdateProfile(body: body);
 }
 
 final userUseCaseProvider =

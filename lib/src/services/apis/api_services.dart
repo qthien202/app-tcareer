@@ -30,6 +30,7 @@ import 'package:app_tcareer/src/features/posts/data/models/quick_search_user_dat
 import 'package:app_tcareer/src/features/posts/data/models/quick_search_user_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/user_liked.dart';
 import 'package:app_tcareer/src/features/posts/data/models/user_liked_request.dart';
+import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
@@ -191,4 +192,7 @@ abstract class ApiServices {
 
   @GET('api/auth/search_user_conversation')
   Future getRecentChatters({@Query('q') required String query});
+
+  @PUT('api/auth/user/update-profile')
+  Future putUpdateProfile({@Body() required UpdateProfileRequest body});
 }

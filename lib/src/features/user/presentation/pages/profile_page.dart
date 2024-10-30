@@ -25,31 +25,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
     with SingleTickerProviderStateMixin {
   ScrollController scrollController = ScrollController();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //
-  //   Future.microtask(() {
-  //     ref.read(userControllerProvider).getUserInfo();
-  //     ref.read(userControllerProvider).getPost();
-  //   });
-  // }
-
-  @override
-  // void didChangeDependencies() {
-  //   // TODO: implement didChangeDependencies
-  //   super.didChangeDependencies();
-  //   String? reload = GoRouterState.of(context).extra as String?;
-  //   if (reload != null) {
-  //     scrollController.jumpTo(0);
-  //   }
-  //   Future.microtask(() {
-  //     ref.read(userControllerProvider).page = 1;
-  //     ref.read(userControllerProvider).getUserInfo();
-  //     ref.read(userControllerProvider).getPost();
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(userControllerProvider);
@@ -76,15 +51,25 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                       itemBuilder: (context) {
                         return [
                           PopupMenuItem(
+                            onTap: () => context.goNamed("userMedia"),
+                            child: const ListTile(
+                              leading: Icon(
+                                Icons.edit,
+                                color: Colors.black,
+                              ),
+                              title: Text("Chỉnh sửa"),
+                            ),
+                          ),
+                          PopupMenuItem(
                             onTap: () async => await controller.logout(context),
                             child: const ListTile(
                               leading: Icon(
                                 Icons.logout,
-                                color: Colors.red,
+                                color: Colors.black,
                               ),
                               title: Text("Đăng xuất"),
                             ),
-                          )
+                          ),
                         ];
                       },
                     )

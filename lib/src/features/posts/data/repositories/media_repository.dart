@@ -14,13 +14,16 @@ class MediaRepository {
     return false;
   }
 
-  Future<List<AssetPathEntity>> getAlbums() async {
+  Future<List<AssetPathEntity>> getAlbums({RequestType? type}) async {
     return await PhotoManager.getAssetPathList(
-        type: RequestType.image | RequestType.video);
+        type: type ?? (RequestType.image | RequestType.video));
   }
 
-  Future<List<AssetEntity>> getMediaFromAlbum(
-      {required AssetPathEntity album, int page = 0, int? size}) async {
+  Future<List<AssetEntity>> getMediaFromAlbum({
+    required AssetPathEntity album,
+    int page = 0,
+    int? size,
+  }) async {
     int? totalAssets = await album.assetCountAsync;
     size = totalAssets > 10 ? size : totalAssets;
     List<AssetEntity>? assets =
