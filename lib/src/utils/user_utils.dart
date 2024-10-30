@@ -110,13 +110,12 @@ class UserUtils {
     return shareRef.getString(key);
   }
 
-  String decryptedData(String encrypted) {
-    final rawKey = dotenv.env['CIPHER_KEY'];
-    final key = encrypt.Key.fromUtf8(rawKey ?? "");
-
-    final encrypter = encrypt.Encrypter(encrypt.AES(key));
-    return encrypter.decrypt64(encrypted);
-  }
+  // String decryptedData(String encrypted) {
+  //   final key = dotenv.env['CIPHER_KEY'];
+  //
+  //   final encrypter = encrypt.Encrypter(encrypt.AES(key));
+  //   return encrypter.decrypt(encoded);
+  // }
 
   Future<bool> clearCache() async {
     final shareRef = await ref.read(sharedPreferencesProvider.future);

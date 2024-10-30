@@ -153,7 +153,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               isFirstIndex: isFirstIndex,
               status: message.status ?? "",
               avatarUrl: controller.user?.userAvatar ?? "",
-              media: message.mediaUrl ?? [],
+              media: message.mediaUrl ?? <String>[],
               ref: ref,
               message: message.content ?? "",
               isMe: isMe,

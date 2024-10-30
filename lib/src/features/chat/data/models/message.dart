@@ -6,7 +6,7 @@ class MessageModel {
     dynamic content,
     String? type,
     String? status,
-    List<String>? mediaUrl,
+    dynamic mediaUrl,
     String? createdAt,
     String? updatedAt,
     String? deletedAt,
@@ -30,8 +30,7 @@ class MessageModel {
     _content = json['content'];
     _type = json['type'];
     _status = json['status'];
-    _mediaUrl =
-        json['media_url'] != null ? json['media_url'].cast<String>() : [];
+    _mediaUrl = json['media_url'];
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
     _deletedAt = json['deleted_at'];
@@ -42,7 +41,7 @@ class MessageModel {
   dynamic _content;
   String? _type;
   String? _status;
-  List<String>? _mediaUrl;
+  dynamic _mediaUrl;
   String? _createdAt;
   String? _updatedAt;
   String? _deletedAt;
@@ -53,7 +52,7 @@ class MessageModel {
     dynamic content,
     String? type,
     String? status,
-    List<String>? mediaUrl,
+    dynamic mediaUrl,
     String? createdAt,
     String? updatedAt,
     String? deletedAt,
@@ -76,7 +75,7 @@ class MessageModel {
   dynamic get content => _content;
   String? get type => _type;
   String? get status => _status;
-  List<String>? get mediaUrl => _mediaUrl;
+  dynamic get mediaUrl => _mediaUrl;
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
   String? get deletedAt => _deletedAt;

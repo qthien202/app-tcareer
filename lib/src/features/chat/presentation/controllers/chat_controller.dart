@@ -22,6 +22,7 @@ import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -73,12 +74,52 @@ class ChatController extends ChangeNotifier {
               !messages.any((messages) => messages.id == newConversation.id))
           .toList();
       messages.addAll(newConversations ?? []);
+      await handleDecryptMessage();
       final messageJson =
           jsonEncode(messages.map((message) => message.toJson()).toList());
       await saveMessage(userId: userId, messageJson: messageJson);
 
       notifyListeners();
     }
+  }
+
+  // Đảm bảo rằng bạn đã import thư viện json
+
+  Future<void> handleDecryptMessage() async {
+    final rawKey = dotenv.env['CIPHER_KEY'];
+    final key = encrypt.Key.fromBase64(rawKey ?? "");
+    final encrypter =
+        encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
+
+    messages = messages.map((message) {
+      // Giải mã nội dung của tin nhắn
+      final decodedMessage = message.content != null
+          ? encrypter.decrypt64(message.content!)
+          : null;
+
+      // Khởi tạo biến mediaUrl để chứa danh sách đã giải mã
+      List<String>? mediaUrl;
+
+      // Giải mã mediaUrl nếu nó không phải là null
+      if (message.mediaUrl != null) {
+        // Giải mã chuỗi mediaUrl
+        final decryptedMediaUrl = encrypter.decrypt64(message.mediaUrl!);
+        print("Decrypted media URL: $decryptedMediaUrl");
+
+        // Chuyển đổi chuỗi JSON thành danh sách
+        try {
+          mediaUrl = List<String>.from(json.decode(decryptedMediaUrl));
+        } catch (e) {
+          print("Error decoding mediaUrl: $e");
+        }
+      }
+
+      // In ra danh sách mediaUrl đã giải mã
+      print(">>>>>>>>>>>>mediaUrlData: $mediaUrl");
+
+      // Cập nhật lại message với nội dung và mediaUrl đã giải mã
+      return message.copyWith(content: decodedMessage, mediaUrl: mediaUrl);
+    }).toList();
   }
 
   Future<void> sendMessage(BuildContext context) async {

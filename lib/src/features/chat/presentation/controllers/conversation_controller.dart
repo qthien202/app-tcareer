@@ -12,8 +12,10 @@ import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 
 class ConversationController extends ChangeNotifier {
   final ChatUseCase chatUseCase;
@@ -41,6 +43,7 @@ class ConversationController extends ChangeNotifier {
       // Nếu có cuộc hội thoại mới, thêm vào danh sách
       if (newConversations?.isNotEmpty == true) {
         conversations.addAll(newConversations!);
+        await handleDecryptMessage();
         final conversationJson = jsonEncode(conversations
             .map((conversation) => conversation.toJson())
             .toList());
@@ -48,6 +51,19 @@ class ConversationController extends ChangeNotifier {
         notifyListeners();
       }
     }
+  }
+
+  Future<void> handleDecryptMessage() async {
+    final rawKey = dotenv.env['CIPHER_KEY'];
+    final key = encrypt.Key.fromBase64(rawKey ?? "");
+    final encrypter =
+        encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
+    conversations = conversations.map((coversation) {
+      final decodedLatestMessage =
+          encrypter.decrypt64(coversation.latestMessage ?? "");
+
+      return coversation.copyWith(latestMessage: decodedLatestMessage);
+    }).toList();
   }
 
   Future<void> updateUnRead(num conversationId) async {
