@@ -104,12 +104,13 @@ class ConversationController extends ChangeNotifier {
           .removeWhere((conversation) => conversation.userId == userId);
 
       conversations.insert(0, newConversation);
+      await handleDecryptMessage();
+      notifyListeners();
       await markDeliveredMessage(
           context: context,
           senderId: senderId,
           messageId: messageId,
           conversationId: conversationId);
-      notifyListeners();
     } else {
       final newConversation = UserConversation(
         unRead: unRead,
@@ -124,7 +125,7 @@ class ConversationController extends ChangeNotifier {
       if (!conversations
           .any((existing) => existing.userId == newConversation.userId)) {
         conversations.insert(0, newConversation);
-
+        await handleDecryptMessage();
         notifyListeners();
         // if (messageData['sender_id'] != null) {
         await markDeliveredMessage(
