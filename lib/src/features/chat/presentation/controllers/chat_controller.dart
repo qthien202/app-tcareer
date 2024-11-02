@@ -516,8 +516,8 @@ class ChatController extends ChangeNotifier {
     final currentMessage =
         messages.firstWhere((message) => message.id == messageId);
     final index = messages.indexWhere((message) => message.id == messageId);
-    final updateMessage =
-        currentMessage.copyWith(content: "", type: "recall", mediaUrl: []);
+    final updateMessage = currentMessage
+        .copyWith(content: "", type: "recall", mediaUrl: <String>[]);
     messages[index] = updateMessage;
     // print(">>>>>>>>messageData: ${jsonEncode(messages)}");
     final messageJson =
