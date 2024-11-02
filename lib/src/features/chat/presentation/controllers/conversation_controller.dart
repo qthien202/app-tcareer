@@ -53,16 +53,25 @@ class ConversationController extends ChangeNotifier {
     }
   }
 
+  Future<String> handleDecryptLastMessage(String lastMessage) async {
+    final rawKey = dotenv.env['CIPHER_KEY'];
+    final key = encrypt.Key.fromBase64(rawKey ?? "");
+    final encrypter =
+        encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
+    String message = encrypter.decrypt64(lastMessage);
+    return message;
+  }
+
   Future<void> handleDecryptMessage() async {
     final rawKey = dotenv.env['CIPHER_KEY'];
     final key = encrypt.Key.fromBase64(rawKey ?? "");
     final encrypter =
         encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
-    conversations = conversations.map((coversation) {
+    conversations = conversations.map((conversation) {
       final decodedLatestMessage =
-          encrypter.decrypt64(coversation.latestMessage ?? "");
+          encrypter.decrypt64(conversation.latestMessage ?? "");
 
-      return coversation.copyWith(latestMessage: decodedLatestMessage);
+      return conversation.copyWith(latestMessage: decodedLatestMessage);
     }).toList();
   }
 
@@ -78,7 +87,8 @@ class ConversationController extends ChangeNotifier {
 
   Future<void> updateLastMessage(
       {required dynamic messageData, required BuildContext context}) async {
-    String lastMessage = messageData['latest_message'].toString();
+    String lastMessage = await handleDecryptLastMessage(
+        messageData['latest_message'].toString());
 
     String senderLastMessage = messageData['sender_latest_message'].toString();
     int conversationId = messageData['conversation_id'] ?? 0;
@@ -104,7 +114,6 @@ class ConversationController extends ChangeNotifier {
           .removeWhere((conversation) => conversation.userId == userId);
 
       conversations.insert(0, newConversation);
-      await handleDecryptMessage();
       notifyListeners();
       await markDeliveredMessage(
           context: context,
@@ -125,14 +134,15 @@ class ConversationController extends ChangeNotifier {
       if (!conversations
           .any((existing) => existing.userId == newConversation.userId)) {
         conversations.insert(0, newConversation);
-        await handleDecryptMessage();
         notifyListeners();
-        // if (messageData['sender_id'] != null) {
         await markDeliveredMessage(
             context: context,
             senderId: senderId,
             messageId: messageId,
             conversationId: conversationId);
+
+        // if (messageData['sender_id'] != null) {
+
         // }
       }
     }
