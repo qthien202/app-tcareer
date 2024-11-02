@@ -92,21 +92,16 @@ class ChatController extends ChangeNotifier {
         encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
 
     messages = messages.map((message) {
-      // Giải mã nội dung của tin nhắn
       final decodedMessage = message.content != null
           ? encrypter.decrypt64(message.content!)
           : null;
 
-      // Khởi tạo biến mediaUrl để chứa danh sách đã giải mã
       List<String>? mediaUrl;
 
-      // Giải mã mediaUrl nếu nó không phải là null
       if (message.mediaUrl != null) {
-        // Giải mã chuỗi mediaUrl
         final decryptedMediaUrl = encrypter.decrypt64(message.mediaUrl!);
         print("Decrypted media URL: $decryptedMediaUrl");
 
-        // Chuyển đổi chuỗi JSON thành danh sách
         try {
           mediaUrl = List<String>.from(json.decode(decryptedMediaUrl));
         } catch (e) {
@@ -114,10 +109,7 @@ class ChatController extends ChangeNotifier {
         }
       }
 
-      // In ra danh sách mediaUrl đã giải mã
       print(">>>>>>>>>>>>mediaUrlData: $mediaUrl");
-
-      // Cập nhật lại message với nội dung và mediaUrl đã giải mã
       return message.copyWith(content: decodedMessage, mediaUrl: mediaUrl);
     }).toList();
   }
@@ -394,6 +386,19 @@ class ChatController extends ChangeNotifier {
       print(">>>>>>>>>messageCache: ${jsonEncode(loadedMessages)}");
       messages.clear();
       messages.addAll(loadedMessages);
+      messages = messages.map((message) {
+        List<String>? mediaUrl;
+
+        if (message.mediaUrl != null) {
+          try {
+            mediaUrl = List<String>.from(message.mediaUrl);
+          } catch (e) {
+            print("Error decoding mediaUrl: $e");
+          }
+        }
+
+        return message.copyWith(mediaUrl: mediaUrl);
+      }).toList();
 
       notifyListeners();
     }
