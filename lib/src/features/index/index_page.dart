@@ -75,7 +75,7 @@ class _IndexPageState extends ConsumerState<IndexPage>
       },
       {
         'icon': PhosphorIconsThin.plusCircle,
-        'activeIcon': PhosphorIconsThin.plusCircle,
+        'activeIcon': PhosphorIconsFill.plusCircle,
         'route': 'posting',
         "label": "Tạo mới"
       },
@@ -120,7 +120,10 @@ class _IndexPageState extends ConsumerState<IndexPage>
                   widget.shell.goBranch(index);
                 }
               } else {
-                context.pushNamed("posting");
+                // context.pushNamed("posting");
+                ref
+                    .read(indexControllerProvider.notifier)
+                    .showCreateBottomSheet(context);
               }
             },
             currentIndex: widget.shell.currentIndex,
