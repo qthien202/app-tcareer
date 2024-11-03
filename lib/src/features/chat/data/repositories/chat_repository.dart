@@ -5,6 +5,7 @@ import 'package:app_tcareer/src/features/chat/data/models/conversation.dart';
 import 'package:app_tcareer/src/features/chat/data/models/leave_chat_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/mark_read_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/send_message_request.dart';
+import 'package:app_tcareer/src/features/chat/data/models/user_from_message.dart';
 import 'package:app_tcareer/src/services/ably/ably_service.dart';
 import 'package:app_tcareer/src/services/apis/api_service_provider.dart';
 import 'package:app_tcareer/src/services/drive/upload_file_service.dart';
@@ -152,7 +153,7 @@ class ChatRepository {
     return await api.putRecallMessage(messageId: messageId);
   }
 
-  Future getUsersFromMessage(String query) async {
+  Future<UserFromMessage> getUsersFromMessage(String query) async {
     final api = ref.watch(apiServiceProvider);
     return await api.getUsersFromMessage(query: query);
   }

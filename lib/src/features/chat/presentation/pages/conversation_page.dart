@@ -244,76 +244,81 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
     final userUtils = ref.watch(userUtilsProvider);
     final controller = ref.watch(conversationControllerProvider);
     return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 10),
-        child: SizedBox(
-          height: 90,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: controller.friends.length,
-            itemBuilder: (context, index) {
-              final friend = controller.friends[index];
-              return GestureDetector(
-                onTap: () async {
-                  String clientId = await userUtils.getUserId();
-                  context.goNamed("chat", pathParameters: {
-                    "userId": friend.id.toString() ?? "",
-                    "clientId": clientId
-                  });
-                },
-                child: Container(
-                  width: 70, // Đặt chiều rộng cho mỗi avatar
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Column(
-                    children: [
-                      Stack(
-                        children: [
-                          // Avatar
-                          CircleAvatar(
-                            radius: 28,
-                            backgroundImage:
-                                CachedNetworkImageProvider(friend.avatar ?? ""),
-                          ),
-                          // Chấm tròn cắt vào avatar
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: StreamBuilder<Map<dynamic, dynamic>>(
-                              stream: controller
-                                  .listenUsersStatus(friend.id.toString()),
-                              builder: (context, snapshot) {
-                                return Visibility(
-                                  visible: snapshot.data?['status'] == "online",
-                                  child: Container(
-                                    width: 15,
-                                    height: 15, // Chiều cao của chấm tròn
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.green, // Màu của chấm tròn
-                                      border: Border.all(
-                                        color: Colors
-                                            .white, // Đường viền màu trắng để tạo hiệu ứng cắt vào avatar
-                                        width: 2, // Độ dày của viền
+      child: Visibility(
+        visible: controller.friends.isNotEmpty,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: SizedBox(
+            height: 90,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: controller.friends.length,
+              itemBuilder: (context, index) {
+                final friend = controller.friends[index];
+                return GestureDetector(
+                  onTap: () async {
+                    String clientId = await userUtils.getUserId();
+                    context.goNamed("chat", pathParameters: {
+                      "userId": friend.id.toString() ?? "",
+                      "clientId": clientId
+                    });
+                  },
+                  child: Container(
+                    width: 70, // Đặt chiều rộng cho mỗi avatar
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Column(
+                      children: [
+                        Stack(
+                          children: [
+                            // Avatar
+                            CircleAvatar(
+                              radius: 28,
+                              backgroundImage: CachedNetworkImageProvider(
+                                  friend.avatar ?? ""),
+                            ),
+                            // Chấm tròn cắt vào avatar
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: StreamBuilder<Map<dynamic, dynamic>>(
+                                stream: controller
+                                    .listenUsersStatus(friend.id.toString()),
+                                builder: (context, snapshot) {
+                                  return Visibility(
+                                    visible:
+                                        snapshot.data?['status'] == "online",
+                                    child: Container(
+                                      width: 15,
+                                      height: 15, // Chiều cao của chấm tròn
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color:
+                                            Colors.green, // Màu của chấm tròn
+                                        border: Border.all(
+                                          color: Colors
+                                              .white, // Đường viền màu trắng để tạo hiệu ứng cắt vào avatar
+                                          width: 2, // Độ dày của viền
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
 
-                      const SizedBox(height: 5),
-                      Text(
-                        friend.lastName ?? "",
-                        overflow: TextOverflow.ellipsis,
-                      ), // Thay đổi tên người bạn
-                    ],
+                        const SizedBox(height: 5),
+                        Text(
+                          friend.lastName ?? "",
+                          overflow: TextOverflow.ellipsis,
+                        ), // Thay đổi tên người bạn
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),

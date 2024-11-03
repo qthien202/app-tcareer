@@ -118,6 +118,7 @@ dependencies:
   flutter_dotenv: ^5.2.1
   encrypt: ^5.0.3
   image_cropper: ^8.0.2
+  scrollable_positioned_list: ^0.3.8
 
 dev_dependencies:
   flutter_test:

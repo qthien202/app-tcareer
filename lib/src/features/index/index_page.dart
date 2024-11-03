@@ -74,14 +74,14 @@ class _IndexPageState extends ConsumerState<IndexPage>
         "label": "Công việc"
       },
       {
-        'icon': PhosphorIconsThin.plusSquare,
-        'activeIcon': PhosphorIconsThin.plusSquare,
+        'icon': PhosphorIconsThin.plusCircle,
+        'activeIcon': PhosphorIconsThin.plusCircle,
         'route': 'posting',
         "label": "Tạo mới"
       },
       {
-        'icon': PhosphorIconsThin.chatCircleText,
-        'activeIcon': PhosphorIconsFill.chatCircleText,
+        'icon': PhosphorIconsThin.chatCentered,
+        'activeIcon': PhosphorIconsFill.chatCentered,
         'route': 'conversation',
         "label": "Tin nhắn"
       },
@@ -128,8 +128,14 @@ class _IndexPageState extends ConsumerState<IndexPage>
               final item = entry.value;
               final index = entry.key;
               return BottomNavigationBarItem(
-                  icon: PhosphorIcon(item['icon']),
-                  activeIcon: PhosphorIcon(item['activeIcon']),
+                  icon: PhosphorIcon(
+                    item['icon'],
+                    size: index != 2 ? 25 : 30,
+                  ),
+                  activeIcon: PhosphorIcon(
+                    item['activeIcon'],
+                    size: index != 2 ? 25 : 30,
+                  ),
                   label: item['label']);
             }).toList()),
       ),

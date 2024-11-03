@@ -31,6 +31,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ably_flutter/ably_flutter.dart' as ably;
 import 'package:go_router/go_router.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatController extends ChangeNotifier {
@@ -597,6 +598,18 @@ class ChatController extends ChangeNotifier {
         ],
       ),
     );
+  }
+
+  final ItemScrollController itemScrollController = ItemScrollController();
+  Future<void> directToMessage(String content) async {
+    final index = messages.indexWhere((message) => message.content == content);
+
+    if (index != -1) {
+      final reverseIndex = messages.length - 1 - index;
+      itemScrollController.jumpTo(index: reverseIndex);
+    }
+
+    notifyListeners();
   }
 }
 

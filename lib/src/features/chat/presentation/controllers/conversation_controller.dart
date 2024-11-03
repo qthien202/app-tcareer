@@ -331,27 +331,6 @@ class ConversationController extends ChangeNotifier {
     // jsonEncode(friends.map((friend) => friend.toJson()).toList());
     // saveConversationFriends(friendJson: friendJson);
   }
-
-  final Debouncer debouncer = Debouncer(milliseconds: 1000);
-  bool isLoading = false;
-
-  void setIsLoading(bool val) {
-    isLoading = val;
-    notifyListeners();
-  }
-
-  Future<void> onSearch() async {
-    debouncer.run(() async {
-      setIsLoading(true);
-      if (queryController.text.isNotEmpty) {
-        await getRecentChatters();
-      } else {
-        recentChatters.clear();
-        notifyListeners();
-      }
-      setIsLoading(false);
-    });
-  }
 }
 
 final conversationControllerProvider = ChangeNotifierProvider((ref) {

@@ -1,16 +1,17 @@
 class MessageModel {
-  MessageModel({
-    num? id,
-    num? conversationId,
-    num? senderId,
-    dynamic content,
-    String? type,
-    String? status,
-    dynamic mediaUrl,
-    String? createdAt,
-    String? updatedAt,
-    String? deletedAt,
-  }) {
+  MessageModel(
+      {num? id,
+      num? conversationId,
+      num? senderId,
+      dynamic content,
+      String? type,
+      String? status,
+      dynamic mediaUrl,
+      String? createdAt,
+      String? updatedAt,
+      String? deletedAt,
+      String? senderFullName,
+      String? senderAvatar}) {
     _id = id;
     _conversationId = conversationId;
     _senderId = senderId;
@@ -21,6 +22,8 @@ class MessageModel {
     _createdAt = createdAt;
     _updatedAt = updatedAt;
     _deletedAt = deletedAt;
+    _senderFullName = senderFullName;
+    _senderAvatar = senderAvatar;
   }
 
   MessageModel.fromJson(dynamic json) {
@@ -34,6 +37,8 @@ class MessageModel {
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
     _deletedAt = json['deleted_at'];
+    _senderFullName = json['sender_full_name'];
+    _senderAvatar = json['sender_avatar'];
   }
   num? _id;
   num? _conversationId;
@@ -45,30 +50,34 @@ class MessageModel {
   String? _createdAt;
   String? _updatedAt;
   String? _deletedAt;
-  MessageModel copyWith({
-    num? id,
-    num? conversationId,
-    num? senderId,
-    dynamic content,
-    String? type,
-    String? status,
-    dynamic mediaUrl,
-    String? createdAt,
-    String? updatedAt,
-    String? deletedAt,
-  }) =>
+  String? _senderFullName;
+  String? _senderAvatar;
+  MessageModel copyWith(
+          {num? id,
+          num? conversationId,
+          num? senderId,
+          dynamic content,
+          String? type,
+          String? status,
+          dynamic mediaUrl,
+          String? createdAt,
+          String? updatedAt,
+          String? deletedAt,
+          String? senderFullName,
+          String? senderAvatar}) =>
       MessageModel(
-        id: id ?? _id,
-        conversationId: conversationId ?? _conversationId,
-        senderId: senderId ?? _senderId,
-        content: content ?? _content,
-        type: type ?? _type,
-        status: status ?? _status,
-        mediaUrl: mediaUrl ?? _mediaUrl,
-        createdAt: createdAt ?? _createdAt,
-        updatedAt: updatedAt ?? _updatedAt,
-        deletedAt: deletedAt ?? _deletedAt,
-      );
+          id: id ?? _id,
+          conversationId: conversationId ?? _conversationId,
+          senderId: senderId ?? _senderId,
+          content: content ?? _content,
+          type: type ?? _type,
+          status: status ?? _status,
+          mediaUrl: mediaUrl ?? _mediaUrl,
+          createdAt: createdAt ?? _createdAt,
+          updatedAt: updatedAt ?? _updatedAt,
+          deletedAt: deletedAt ?? _deletedAt,
+          senderFullName: senderFullName ?? _senderFullName,
+          senderAvatar: senderAvatar ?? _senderAvatar);
   num? get id => _id;
   num? get conversationId => _conversationId;
   num? get senderId => _senderId;
@@ -79,7 +88,8 @@ class MessageModel {
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
   String? get deletedAt => _deletedAt;
-
+  String? get senderFullName => _senderFullName;
+  String? get senderAvatar => _senderAvatar;
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
@@ -92,6 +102,8 @@ class MessageModel {
     map['created_at'] = _createdAt;
     map['updated_at'] = _updatedAt;
     map['deleted_at'] = _deletedAt;
+    map['sender_full_name'] = _senderFullName;
+    map['sender_avatar'] = _senderAvatar;
     return map;
   }
 }

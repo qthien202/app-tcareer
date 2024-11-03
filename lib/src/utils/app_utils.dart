@@ -209,6 +209,14 @@ class AppUtils {
     return false;
   }
 
+  static String formatToHourMinute(String dateTimeString) {
+    // Chuyển đổi chuỗi thành DateTime
+    DateTime dateTime = DateTime.parse(dateTimeString);
+
+    // Định dạng lại thành giờ và phút
+    return DateFormat('HH:mm').format(dateTime);
+  }
+
   static String formatTimeStatusOnline(String dateString) {
     // Chuyển đổi định dạng ngày tháng
     dateString = dateString.replaceAll('/', '-'); // Đổi dấu '/' thành '-'

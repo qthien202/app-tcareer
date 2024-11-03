@@ -20,11 +20,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ChatPage extends ConsumerStatefulWidget {
   final String userId;
   final String clientId;
-  const ChatPage({super.key, required this.userId, required this.clientId});
+  final String? content;
+  const ChatPage(
+      {super.key, required this.userId, required this.clientId, this.content});
 
   @override
   ConsumerState<ChatPage> createState() => _ChatPageState();
@@ -42,6 +45,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       await controller.onInit(clientId: widget.clientId, userId: widget.userId);
       // controller.listenPresence(widget.userId);
       await controller.listenMessage();
+      if (widget.content != null) {
+        await controller.directToMessage(widget.content ?? "");
+      }
     });
 
     super.initState();
@@ -131,9 +137,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
     final messages = controller.messages;
     return Expanded(
       // flex: 5,
-      child: ListView.separated(
+      child: ScrollablePositionedList.separated(
         reverse: true,
-        controller: controller.scrollController,
+        itemScrollController: controller.itemScrollController,
         padding: const EdgeInsets.symmetric(horizontal: 10).copyWith(
             bottom: controller.isShowMedia
                 ? ScreenUtil().screenHeight * .37

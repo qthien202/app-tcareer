@@ -6,6 +6,7 @@ import 'package:app_tcareer/src/features/chat/data/models/conversation.dart';
 import 'package:app_tcareer/src/features/chat/data/models/leave_chat_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/mark_read_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/send_message_request.dart';
+import 'package:app_tcareer/src/features/chat/data/models/user_from_message.dart';
 import 'package:app_tcareer/src/features/chat/data/repositories/chat_repository.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -110,7 +111,7 @@ class ChatUseCase {
   Future<void> putRecallMessage(String messageId) async =>
       await chatRepository.putRecallMessage(messageId);
 
-  Future getUsersFromMessage(String query) async =>
+  Future<UserFromMessage> getUsersFromMessage(String query) async =>
       await chatRepository.getUsersFromMessage(query);
   Future getRecentChatters(String query) async =>
       await chatRepository.getRecentChatters(query);

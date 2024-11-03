@@ -92,7 +92,7 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
                       child: Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
                     width: ScreenUtil().scaleWidth,
-                    color: Colors.grey.shade200,
+                    color: Colors.grey.shade100,
                     height: 10,
                   )),
                 ),

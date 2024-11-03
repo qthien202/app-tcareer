@@ -1,6 +1,7 @@
 import 'package:app_tcareer/src/features/chat/presentation/pages/chat_page.dart';
 import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_page.dart';
 import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_search_page.dart';
+import 'package:app_tcareer/src/features/chat/presentation/pages/messages_match_page.dart';
 import 'package:app_tcareer/src/features/index/index_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/job_page.dart';
 import 'package:app_tcareer/src/features/notifications/presentation/pages/notification_page.dart';
@@ -12,6 +13,7 @@ import 'package:app_tcareer/src/routes/home_route.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+import 'package:app_tcareer/src/features/chat/data/models/user_from_message.dart';
 
 enum RouteNames { home, jobs, notifications, user, temp }
 
@@ -69,10 +71,13 @@ class Index {
                       String userId = state.pathParameters['userId'].toString();
                       String clientId =
                           state.pathParameters['clientId'].toString();
+                      String? content =
+                          state.uri.queryParameters['content'].toString() ?? "";
                       return CustomTransitionPage(
                           child: ChatPage(
                             userId: userId,
                             clientId: clientId,
+                            content: content,
                           ),
                           transitionsBuilder: fadeTransitionBuilder);
                     },
@@ -85,7 +90,20 @@ class Index {
                           child: ConversationSearchPage(),
                           transitionsBuilder: fadeTransitionBuilder);
                     },
-                    routes: []),
+                    routes: [
+                      GoRoute(
+                          path: "match",
+                          name: "messagesMatch",
+                          pageBuilder: (context, state) {
+                            final user = state.extra as Data;
+                            return CustomTransitionPage(
+                                child: MessagesMatchPage(
+                                  user: user,
+                                ),
+                                transitionsBuilder: fadeTransitionBuilder);
+                          },
+                          routes: []),
+                    ]),
               ]),
         ]),
         StatefulShellBranch(routes: [

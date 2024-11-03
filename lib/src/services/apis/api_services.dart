@@ -15,6 +15,7 @@ import 'package:app_tcareer/src/features/chat/data/models/conversation.dart';
 import 'package:app_tcareer/src/features/chat/data/models/leave_chat_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/mark_read_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/send_message_request.dart';
+import 'package:app_tcareer/src/features/chat/data/models/user_from_message.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_comment_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/like_comment_request.dart';
@@ -188,7 +189,8 @@ abstract class ApiServices {
   Future putRecallMessage({@Path('messageId') required String messageId});
 
   @GET('api/auth/search_user_message_conversation')
-  Future getUsersFromMessage({@Query('q') required String query});
+  Future<UserFromMessage> getUsersFromMessage(
+      {@Query('q') required String query});
 
   @GET('api/auth/search_user_conversation')
   Future getRecentChatters({@Query('q') required String query});
