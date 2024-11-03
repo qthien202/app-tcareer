@@ -100,20 +100,20 @@ Widget jobItem(Jobs job) {
                               fontWeight: FontWeight.w300),
                         ),
                       ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                            color: Colors.grey.shade100,
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Text(
-                          "Thỏa thuận",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w300),
-                        ),
-                      ),
+                      // Container(
+                      //   padding:
+                      //       EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      //   decoration: BoxDecoration(
+                      //       color: Colors.grey.shade100,
+                      //       borderRadius: BorderRadius.circular(20)),
+                      //   child: Text(
+                      //     "Thỏa thuận",
+                      //     style: TextStyle(
+                      //         color: Colors.black,
+                      //         fontSize: 12,
+                      //         fontWeight: FontWeight.w300),
+                      //   ),
+                      // ),
                     ],
                   )
                 ],
