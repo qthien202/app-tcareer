@@ -20,8 +20,10 @@ class ConversationSearchPage extends ConsumerWidget {
     final controller = ref.watch(conversationSearchProvider);
     return PopScope(
       onPopInvoked: (didPop) {
-        controller.recentChatters.clear();
+        controller.recentChatters.clear;
         controller.userMessages.clear();
+        controller.userFromMessage = null;
+        controller.userRecent = null;
         controller.queryController.text = "";
       },
       child: Scaffold(
