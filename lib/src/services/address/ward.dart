@@ -33,7 +33,6 @@ class Ward {
     _pickType = pickType;
     _deliverType = deliverType;
 
-    _whiteListWard = whiteListWard;
     _status = status;
     _reasonCode = reasonCode;
     _reasonMessage = reasonMessage;
@@ -57,7 +56,7 @@ class Ward {
     _supportType = json['SupportType'];
     _pickType = json['PickType'];
     _deliverType = json['DeliverType'];
-    _whiteListWard = json['WhiteListWard'];
+
     _status = json['Status'];
     _reasonCode = json['ReasonCode'];
     _reasonMessage = json['ReasonMessage'];
@@ -77,7 +76,7 @@ class Ward {
   num? _supportType;
   num? _pickType;
   num? _deliverType;
-  WhiteListWard? _whiteListWard;
+
   num? _status;
   String? _reasonCode;
   String? _reasonMessage;
@@ -118,7 +117,6 @@ class Ward {
         supportType: supportType ?? _supportType,
         pickType: pickType ?? _pickType,
         deliverType: deliverType ?? _deliverType,
-        whiteListWard: whiteListWard ?? _whiteListWard,
         status: status ?? _status,
         reasonCode: reasonCode ?? _reasonCode,
         reasonMessage: reasonMessage ?? _reasonMessage,
@@ -138,7 +136,7 @@ class Ward {
   num? get supportType => _supportType;
   num? get pickType => _pickType;
   num? get deliverType => _deliverType;
-  WhiteListWard? get whiteListWard => _whiteListWard;
+
   num? get status => _status;
   String? get reasonCode => _reasonCode;
   String? get reasonMessage => _reasonMessage;
@@ -160,7 +158,7 @@ class Ward {
     map['SupportType'] = _supportType;
     map['PickType'] = _pickType;
     map['DeliverType'] = _deliverType;
-    map['WhiteListWard'] = _whiteListWard;
+
     map['Status'] = _status;
     map['ReasonCode'] = _reasonCode;
     map['ReasonMessage'] = _reasonMessage;

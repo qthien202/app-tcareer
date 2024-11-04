@@ -38,7 +38,6 @@ class District {
     _pickType = pickType;
     _deliverType = deliverType;
 
-    _whiteListDistrict = whiteListDistrict;
     _reasonCode = reasonCode;
     _reasonMessage = reasonMessage;
     _onDates = onDates;
@@ -65,7 +64,6 @@ class District {
     _pickType = json['PickType'];
     _deliverType = json['DeliverType'];
 
-    _whiteListDistrict = json['WhiteListDistrict'];
     _reasonCode = json['ReasonCode'];
     _reasonMessage = json['ReasonMessage'];
     _onDates = json['OnDates'];
@@ -88,7 +86,6 @@ class District {
   num? _pickType;
   num? _deliverType;
 
-  WhiteListDistrict? _whiteListDistrict;
   String? _reasonCode;
   String? _reasonMessage;
   dynamic _onDates;
@@ -110,7 +107,6 @@ class District {
     num? status,
     num? pickType,
     num? deliverType,
-    WhiteListDistrict? whiteListDistrict,
     String? reasonCode,
     String? reasonMessage,
     dynamic onDates,
@@ -133,7 +129,6 @@ class District {
         status: status ?? _status,
         pickType: pickType ?? _pickType,
         deliverType: deliverType ?? _deliverType,
-        whiteListDistrict: whiteListDistrict ?? _whiteListDistrict,
         reasonCode: reasonCode ?? _reasonCode,
         reasonMessage: reasonMessage ?? _reasonMessage,
         onDates: onDates ?? _onDates,
@@ -156,7 +151,6 @@ class District {
   num? get pickType => _pickType;
   num? get deliverType => _deliverType;
 
-  WhiteListDistrict? get whiteListDistrict => _whiteListDistrict;
   String? get reasonCode => _reasonCode;
   String? get reasonMessage => _reasonMessage;
   dynamic get onDates => _onDates;
@@ -181,7 +175,6 @@ class District {
     map['PickType'] = _pickType;
     map['DeliverType'] = _deliverType;
 
-    map['WhiteListDistrict'] = _whiteListDistrict;
     map['ReasonCode'] = _reasonCode;
     map['ReasonMessage'] = _reasonMessage;
     map['OnDates'] = _onDates;

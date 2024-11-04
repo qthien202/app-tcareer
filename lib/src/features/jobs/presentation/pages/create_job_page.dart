@@ -1,5 +1,6 @@
 import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_job_controller.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_location.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_position.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_type_work_space.dart';
 import 'package:flutter/material.dart';
@@ -48,6 +49,10 @@ class CreateJobPage extends ConsumerWidget {
           item(
             title: "Địa điểm làm việc",
             content: "Ninh Kiều, Cần Thơ",
+            onTap: () async => await controller.showBottomSheetDraggable(
+                builder: (scrollController) =>
+                    JobLocation(scrollController: scrollController),
+                context: context),
           ),
           item(
             title: "Công ty",
