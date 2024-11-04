@@ -19,6 +19,8 @@ class AppConstants {
   static const ablyKey =
       "l8xDTg.FFzKkg:cnC-cWz25wOdN4SAFb26xTYDLf1R8tcVzhCVAyGamss";
   static const twilioAuthToken = "";
+  static const addressApiUrl =
+      "https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/";
 
   //test app
   // static const ablyKey =

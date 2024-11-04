@@ -81,7 +81,10 @@ class CreateBottomSheet extends StatelessWidget {
                 child: ElevatedButton(
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                    onPressed: () {},
+                    onPressed: () {
+                      context.pop();
+                      context.pushNamed('createJob');
+                    },
                     child: Text(
                       "Thêm công việc",
                       style: TextStyle(color: Colors.white),

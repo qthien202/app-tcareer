@@ -93,7 +93,18 @@ class _PostingPageState extends ConsumerState<PostingPage> {
               }
             }),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Text(
+                widget.action == "edit" ? "Chỉnh sửa" : "Tạo bài viết",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
             Expanded(
               child: ListView(
                 controller: scrollController,
@@ -165,47 +176,48 @@ class _PostingPageState extends ConsumerState<PostingPage> {
       required void Function()? onPosting,
       required bool isLoading}) {
     return AppBar(
-      bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(5),
-        child: Divider(
-          color: Colors.grey.shade200,
-        ),
-      ),
+      // bottom: PreferredSize(
+      //   preferredSize: const Size.fromHeight(5),
+      //   child: Divider(
+      //     color: Colors.grey.shade200,
+      //   ),
+      // ),
       backgroundColor: Colors.white,
       leading: InkWell(
         onTap: onPop,
         child: const Icon(
-          Icons.close,
+          Icons.arrow_back,
           color: Colors.black,
         ),
       ),
       centerTitle: false,
-      title: Text(
-        widget.action == "edit" ? "Chỉnh sửa bài viết" : "Tạo bài viết",
-        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-      ),
-      titleTextStyle: const TextStyle(
-        color: Colors.black,
-        fontSize: 20,
-        fontWeight: FontWeight.w700,
-      ),
+      // title: Text(
+      //   widget.action == "edit" ? "Chỉnh sửa bài viết" : "Tạo bài viết",
+      //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+      // ),
+      // titleTextStyle: const TextStyle(
+      //   color: Colors.black,
+      //   fontSize: 20,
+      //   fontWeight: FontWeight.w700,
+      // ),
       actions: [
-        SizedBox(
-          height: 30,
-          width: 90,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    backgroundColor: AppColors.executeButton),
-                onPressed: isActive ? onPosting : null,
-                child: Text(
-                  widget.action == "edit" ? "Lưu" : "Đăng",
-                  style: TextStyle(color: Colors.white, fontSize: 13),
-                )),
-          ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 2),
+          child: TextButton(
+              // style: ElevatedButton.styleFrom(
+              //     shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(20)),
+              //     backgroundColor: AppColors.executeButton),
+              onPressed: isActive ? onPosting : null,
+              child: Text(
+                widget.action == "edit" ? "Lưu" : "Đăng bài",
+                style: TextStyle(
+                    color: isActive
+                        ? AppColors.executeButton
+                        : Colors.grey.shade300,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold),
+              )),
         )
       ],
     );

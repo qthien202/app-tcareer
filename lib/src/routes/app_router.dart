@@ -11,6 +11,7 @@ import 'package:app_tcareer/src/features/chat/presentation/controllers/conversat
 import 'package:app_tcareer/src/features/chat/presentation/pages/chat_page.dart';
 import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_page.dart';
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/create_job_page.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/post_edit.dart';
 import 'package:app_tcareer/src/features/posts/data/models/shared_post.dart';
@@ -54,7 +55,7 @@ class AppRouter {
     return GoRouter(
       navigatorKey: navigatorKey,
       debugLogDiagnostics: true,
-      initialLocation: "/home",
+      initialLocation: "/createJob",
       redirect: (context, state) async {
         final userUtils = ref.watch(userUtilsProvider);
         final isAuthenticated = await userUtils.isAuthenticated();
@@ -199,6 +200,18 @@ class AppRouter {
             ),
           ],
         ),
+
+        GoRoute(
+          path: "/createJob",
+          name: "createJob",
+          pageBuilder: (context, state) {
+            return CustomTransitionPage(
+              child: CreateJobPage(),
+              transitionsBuilder: slideUpTransitionBuilder,
+            );
+          },
+        ),
+
         GoRoute(
             path: "/${RouteNames.posting.name}",
             name: RouteNames.posting.name,
