@@ -1,3 +1,4 @@
+import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_job_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,13 +13,20 @@ class JobLocation extends ConsumerStatefulWidget {
 }
 
 class _JobLocationState extends ConsumerState<JobLocation> {
+  final FocusNode fullAddressFocusNode = FocusNode();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Future.microtask(() async {
-      await ref.read(createJobControllerProvider).getProvince();
+      final controller = ref.read(createJobControllerProvider);
+      await controller.getProvince();
     });
+  }
+
+  @override
+  void dispose() {
+    fullAddressFocusNode.dispose(); // Hủy listener
+    super.dispose();
   }
 
   @override
@@ -30,6 +38,7 @@ class _JobLocationState extends ConsumerState<JobLocation> {
         topRight: Radius.circular(20),
       ),
       child: Scaffold(
+          resizeToAvoidBottomInset: true,
           backgroundColor: Colors.white,
           appBar: AppBar(
             toolbarHeight: 30,
@@ -50,9 +59,28 @@ class _JobLocationState extends ConsumerState<JobLocation> {
             automaticallyImplyLeading: false,
             centerTitle: true,
           ),
-          body: CustomScrollView(
-            controller: widget.scrollController,
-            slivers: [sliverSelected(), sliverAppBar(), sliverAddress()],
+          body: Column(
+            children: [
+              Visibility(
+                  visible: controller.selectedProvince != null,
+                  child: Visibility(
+                      visible:
+                          controller.addressType == AddressType.fullAddress,
+                      replacement: addressSelected(),
+                      child: Expanded(child: addressSelected()))),
+              const SizedBox(
+                height: 5,
+              ),
+              Visibility(
+                visible: controller.addressType != AddressType.fullAddress,
+                child: Expanded(
+                  child: CustomScrollView(
+                    controller: widget.scrollController,
+                    slivers: [sliverAppBar(), sliverAddress()],
+                  ),
+                ),
+              ),
+            ],
           )),
     );
   }
@@ -100,27 +128,30 @@ class _JobLocationState extends ConsumerState<JobLocation> {
           bool isLastIndex = controller.provinces.length - index == 1;
           return Padding(
             padding: const EdgeInsets.only(left: 30),
-            child: InkWell(
+            child: GestureDetector(
               onTap: () async => await controller.selectProvince(province),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(province.provinceName ?? ""),
-                  ),
-                  Visibility(
-                    visible: !isLastIndex,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: Divider(
-                        height: 1,
-                        color: Color(0xffEEEEEE),
-                        // color: Colors.grey.shade200,
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text(province.provinceName ?? ""),
+                    ),
+                    Visibility(
+                      visible: !isLastIndex,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Divider(
+                          height: 1,
+                          color: Color(0xffEEEEEE),
+                          // color: Colors.grey.shade200,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
@@ -139,27 +170,30 @@ class _JobLocationState extends ConsumerState<JobLocation> {
           bool isLastIndex = controller.districts.length - index == 1;
           return Padding(
             padding: const EdgeInsets.only(left: 30),
-            child: InkWell(
+            child: GestureDetector(
               onTap: () async => await controller.selectDistrict(district),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(district.districtName ?? ""),
-                  ),
-                  Visibility(
-                    visible: !isLastIndex,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: Divider(
-                        height: 1,
-                        color: Color(0xffEEEEEE),
-                        // color: Colors.grey.shade200,
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text(district.districtName ?? ""),
+                    ),
+                    Visibility(
+                      visible: !isLastIndex,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Divider(
+                          height: 1,
+                          color: Color(0xffEEEEEE),
+                          // color: Colors.grey.shade200,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
@@ -178,27 +212,30 @@ class _JobLocationState extends ConsumerState<JobLocation> {
           bool isLastIndex = controller.wards.length - index == 1;
           return Padding(
             padding: const EdgeInsets.only(left: 30),
-            child: InkWell(
+            child: GestureDetector(
               onTap: () async => await controller.selectWard(ward),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: Text(ward.wardName ?? ""),
-                  ),
-                  Visibility(
-                    visible: !isLastIndex,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
-                      child: Divider(
-                        height: 1,
-                        color: Color(0xffEEEEEE),
-                        // color: Colors.grey.shade200,
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Text(ward.wardName ?? ""),
+                    ),
+                    Visibility(
+                      visible: !isLastIndex,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Divider(
+                          height: 1,
+                          color: Color(0xffEEEEEE),
+                          // color: Colors.grey.shade200,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           );
@@ -207,12 +244,19 @@ class _JobLocationState extends ConsumerState<JobLocation> {
     );
   }
 
-  Widget sliverSelected() {
+  Widget addressSelected() {
     final controller = ref.watch(createJobControllerProvider);
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: SingleChildScrollView(
+        controller: controller.addressType == AddressType.fullAddress
+            ? widget.scrollController
+            : null,
+        physics: controller.addressType == AddressType.fullAddress
+            ? const AlwaysScrollableScrollPhysics()
+            : const NeverScrollableScrollPhysics(),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Visibility(
@@ -223,62 +267,193 @@ class _JobLocationState extends ConsumerState<JobLocation> {
                 )),
             Visibility(
               visible: controller.selectedProvince != null,
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey.shade200)),
-                child: ListTile(
-                  onTap: () {
-                    setState(() {
-                      controller.addressType = AddressType.province;
-                    });
-                  },
-                  title: Text("Tỉnh/Thành phố"),
-                  subtitle:
-                      Text(controller.selectedProvince?.provinceName ?? ""),
-                ),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    controller.addressType = AddressType.province;
+                  });
+                },
+                child: Container(
+                    padding: EdgeInsets.all(10),
+                    width: ScreenUtil().screenWidth,
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color:
+                                controller.addressType == AddressType.province
+                                    ? AppColors.primary
+                                    : Colors.grey.shade200)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Tỉnh/Thành phố",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          controller.selectedProvince?.provinceName ?? "",
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.w300),
+                        ),
+                      ],
+                    )),
               ),
             ),
             Visibility(
               visible: controller.selectedDistrict != null,
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey.shade200)),
-                child: ListTile(
-                  onTap: () {
-                    setState(() {
-                      controller.addressType = AddressType.district;
-                    });
-                  },
-                  title: Text("Quận Huyện"),
-                  subtitle:
-                      Text(controller.selectedDistrict?.districtName ?? ""),
-                ),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    controller.addressType = AddressType.district;
+                  });
+                },
+                child: Container(
+                    padding: EdgeInsets.all(10),
+                    width: ScreenUtil().screenWidth,
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color:
+                                controller.addressType == AddressType.district
+                                    ? AppColors.primary
+                                    : Colors.grey.shade200)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Quận/Huyện",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          controller.selectedDistrict?.districtName ?? "",
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.w300),
+                        ),
+                      ],
+                    )),
               ),
             ),
             Visibility(
               visible: controller.selectedWard != null,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    controller.addressType = AddressType.ward;
+                  });
+                },
+                child: Container(
+                    padding: EdgeInsets.all(10),
+                    width: ScreenUtil().screenWidth,
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                            color: controller.addressType == AddressType.ward
+                                ? AppColors.primary
+                                : Colors.grey.shade200)),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Phường/Xã",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          controller.selectedWard?.wardName ?? "",
+                          style: TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.w300),
+                        ),
+                      ],
+                    )),
+              ),
+            ),
+            Visibility(
+              visible: controller.addressType == AddressType.fullAddress,
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: Colors.grey.shade200)),
-                child: ListTile(
-                  onTap: () {
-                    setState(() {
-                      controller.addressType = AddressType.ward;
-                    });
-                  },
-                  title: Text("Phường/Xã"),
-                  subtitle: Text(controller.selectedWard?.wardName ?? ""),
-                ),
+                  padding: EdgeInsets.all(10),
+                  width: ScreenUtil().screenWidth,
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                          color: controller.addressType == AddressType.province
+                              ? AppColors.primary
+                              : Colors.grey.shade200)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Tên đường, Tòa nhà, Số nhà.",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      fullAddress()
+                    ],
+                  )),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Visibility(
+              visible: controller.addressType == AddressType.fullAddress,
+              child: SizedBox(
+                height: 50,
+                width: ScreenUtil().screenWidth,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                    onPressed: () {},
+                    child: Text(
+                      "Hoàn thành",
+                      style: TextStyle(color: Colors.white),
+                    )),
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget fullAddress(
+      {int? minLines,
+      TextEditingController? controller,
+      int? maxLines,
+      String? hintText,
+      void Function(String)? onChanged}) {
+    return SizedBox(
+      height: 35,
+      child: TextField(
+        focusNode: fullAddressFocusNode,
+        onChanged: onChanged,
+        textInputAction: TextInputAction.done,
+        autofocus: false,
+        // minLines: minLines,
+        onTap: () {},
+        maxLines: maxLines,
+        controller: controller,
+        style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+        // Gán focusNode vào TextField
+        keyboardType: TextInputType.multiline,
+        decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(horizontal: 4),
+            // hintText: hintText ?? "Hôm nay bạn muốn chia sẻ điều gì?",
+            border: InputBorder.none,
+            errorBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none),
       ),
     );
   }

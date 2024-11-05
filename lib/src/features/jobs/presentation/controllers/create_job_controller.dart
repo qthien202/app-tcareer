@@ -6,7 +6,7 @@ import 'package:app_tcareer/src/services/address/ward.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum AddressType { province, district, ward }
+enum AddressType { province, district, ward, fullAddress }
 
 class CreateJobController extends ChangeNotifier {
   final CreateJobUseCase createJobUseCase;
@@ -21,11 +21,24 @@ class CreateJobController extends ChangeNotifier {
         context: context,
         builder: (context) => DraggableScrollableSheet(
               expand: false,
-              snap: false,
-              initialChildSize: 0.7,
-              maxChildSize: 0.95,
-              minChildSize: 0.7,
-              builder: (context, scrollController) => builder(scrollController),
+              snap: true,
+              initialChildSize: .7,
+              maxChildSize: .95,
+              minChildSize: .7,
+              builder: (context, scrollController) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  // Kiểm tra xem bàn phím có hiển thị không
+                  if (MediaQuery.of(context).viewInsets.bottom > 0) {
+                    // Cuộn đến cuối danh sách
+                    scrollController.animateTo(
+                      scrollController.position.maxScrollExtent,
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  }
+                });
+                return builder(scrollController);
+              },
             )).whenComplete(
       () {},
     );
@@ -64,22 +77,28 @@ class CreateJobController extends ChangeNotifier {
   Province? selectedProvince;
   Future<void> selectProvince(Province province) async {
     selectedProvince = province;
-    await getDistrict(selectedProvince?.provinceID ?? 0);
+    selectedDistrict = null;
+    selectedWard = null;
+
     addressType = AddressType.district;
     notifyListeners();
+    await getDistrict(selectedProvince?.provinceID ?? 0);
   }
 
   District? selectedDistrict;
   Future<void> selectDistrict(District district) async {
     selectedDistrict = district;
-    await getWard(selectedDistrict?.districtID ?? 0);
+    selectedWard = null;
+
     addressType = AddressType.ward;
     notifyListeners();
+    await getWard(selectedDistrict?.districtID ?? 0);
   }
 
   Ward? selectedWard;
   Future<void> selectWard(Ward ward) async {
     selectedWard = ward;
+    addressType = AddressType.fullAddress;
     notifyListeners();
   }
 
