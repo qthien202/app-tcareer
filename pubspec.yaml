@@ -119,6 +119,9 @@ dependencies:
   encrypt: ^5.0.3
   image_cropper: ^8.0.2
   scrollable_positioned_list: ^0.3.8
+  html_editor_enhanced: ^2.5.1
+  flutter_quill: ^10.5.14
+
 
 dev_dependencies:
   flutter_test:
@@ -129,7 +132,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
   retrofit_generator: ">=7.0.0 <8.0.0"
   build_runner: ">=2.3.0 <4.0.0"
   json_serializable: ^6.6.2

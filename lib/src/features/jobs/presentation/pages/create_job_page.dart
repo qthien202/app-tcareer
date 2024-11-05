@@ -1,5 +1,7 @@
 import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_job_controller.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_description.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_employment_type.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_location.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_position.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_type_work_space.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:html_editor_enhanced/html_editor.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class CreateJobPage extends ConsumerWidget {
@@ -59,10 +62,23 @@ class CreateJobPage extends ConsumerWidget {
             content: "TTech",
           ),
           item(
-            title: "Hình thức làm việc",
-            content: "Fulltime",
-          ),
-          item(title: "Chi tiết", content: "")
+              title: "Hình thức làm việc",
+              content: "Fulltime",
+              onTap: () async => await controller.showBottomSheet(
+                    context: context,
+                    child: SizedBox(
+                        height: ScreenUtil().screenHeight * .35,
+                        child: const JobEmploymentType()),
+                  )),
+          item(
+              title: "Chi tiết",
+              content: "",
+              onTap: () async => await controller.showBottomSheet(
+                    context: context,
+                    child: SizedBox(
+                        height: ScreenUtil().screenHeight * .95,
+                        child: JobDescription()),
+                  ))
         ],
       ),
 
@@ -87,7 +103,7 @@ class CreateJobPage extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 2),
           child: TextButton(
-              onPressed: () {},
+              onPressed: null,
               child: Text(
                 "Đăng",
                 style: TextStyle(
@@ -107,33 +123,33 @@ class CreateJobPage extends ConsumerWidget {
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(15)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                content ?? "",
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-              ),
-            ],
-          ),
-          GestureDetector(
-            onTap: onTap,
-            child: PhosphorIcon(
-              PhosphorIconsRegular.plusCircle,
-              color: Colors.orangeAccent,
+      child: InkWell(
+        onTap: onTap,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  content ?? "",
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+                ),
+              ],
             ),
-          )
-        ],
+            PhosphorIcon(
+              PhosphorIconsRegular.plusCircle,
+              color: AppColors.primary,
+            )
+          ],
+        ),
       ),
     );
   }

@@ -261,7 +261,7 @@ class _JobLocationState extends ConsumerState<JobLocation> {
               children: [
                 Text(
                   "Địa điểm làm việc",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 Visibility(
                   visible: controller.selectedProvince != null,

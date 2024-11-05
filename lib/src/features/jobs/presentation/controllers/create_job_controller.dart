@@ -45,6 +45,7 @@ class CreateJobController extends ChangeNotifier {
   }
 
   String? selectedJobTypeWorkSpace;
+  String? selectedJobEmploymentType;
   List<Province> provinces = [];
   Future<void> getProvince() async {
     provinces = await createJobUseCase.getProvince();
