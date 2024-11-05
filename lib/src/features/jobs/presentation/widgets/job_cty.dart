@@ -1,0 +1,137 @@
+import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:app_tcareer/src/features/authentication/presentation/widgets/text_input_form.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+class JobCty extends StatelessWidget {
+  final ScrollController scrollController;
+  const JobCty({super.key, required this.scrollController});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.grey.shade100,
+        appBar: AppBar(
+          toolbarHeight: 30,
+          elevation: 0.0,
+          backgroundColor: Colors.grey.shade100,
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                width: 30,
+                height: 4,
+              ),
+            ],
+          ),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+        ),
+        body: ListView(
+          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          children: [
+            Center(
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      "assets/images/posts/no_image.jpg",
+                      height: 150,
+                      width: 150,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  Positioned(
+                      right: -10,
+                      bottom: -5,
+                      child: Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey.shade200),
+                              color: Colors.white,
+                              shape: BoxShape.circle),
+                          child: Icon(Icons.camera_alt))),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            TextInputForm(
+              title: "Tên công ty",
+              hintText: "Nhập tên công ty",
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextInputForm(
+              title: "Địa chỉ",
+              hintText: "Nhập địa chỉ",
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            SizedBox(
+              height: 50,
+              width: ScreenUtil().screenWidth,
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                  onPressed: () {},
+                  child: Text(
+                    "Hoàn thành",
+                    style: TextStyle(color: Colors.white),
+                  )),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget cTyName(
+      {int? minLines,
+      TextEditingController? controller,
+      int? maxLines,
+      String? hintText,
+      void Function(String)? onChanged}) {
+    return SizedBox(
+      height: 30,
+      child: TextField(
+        onChanged: onChanged,
+        textInputAction: TextInputAction.done,
+        autofocus: false,
+        // minLines: minLines,
+        onTap: () {},
+        maxLines: maxLines,
+        controller: controller,
+        style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12),
+        // Gán focusNode vào TextField
+
+        keyboardType: TextInputType.multiline,
+        decoration: InputDecoration(
+            hintStyle: TextStyle(fontSize: 12),
+            contentPadding: EdgeInsets.symmetric(vertical: 5),
+            hintText: hintText ?? "Hôm nay bạn muốn chia sẻ điều gì?",
+            border: InputBorder.none,
+            errorBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none),
+      ),
+    );
+  }
+}
