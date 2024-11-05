@@ -22,21 +22,10 @@ class CreateJobController extends ChangeNotifier {
         builder: (context) => DraggableScrollableSheet(
               expand: false,
               snap: true,
-              initialChildSize: .7,
+              initialChildSize: .65,
               maxChildSize: .95,
-              minChildSize: .7,
+              minChildSize: .65,
               builder: (context, scrollController) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  // Kiểm tra xem bàn phím có hiển thị không
-                  if (MediaQuery.of(context).viewInsets.bottom > 0) {
-                    // Cuộn đến cuối danh sách
-                    scrollController.animateTo(
-                      scrollController.position.maxScrollExtent,
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeInOut,
-                    );
-                  }
-                });
                 return builder(scrollController);
               },
             )).whenComplete(
@@ -76,10 +65,10 @@ class CreateJobController extends ChangeNotifier {
 
   Province? selectedProvince;
   Future<void> selectProvince(Province province) async {
+    addressType = AddressType.ward;
     selectedProvince = province;
     selectedDistrict = null;
     selectedWard = null;
-
     addressType = AddressType.district;
     notifyListeners();
     await getDistrict(selectedProvince?.provinceID ?? 0);
@@ -87,22 +76,22 @@ class CreateJobController extends ChangeNotifier {
 
   District? selectedDistrict;
   Future<void> selectDistrict(District district) async {
+    addressType = AddressType.ward;
     selectedDistrict = district;
     selectedWard = null;
-
-    addressType = AddressType.ward;
     notifyListeners();
     await getWard(selectedDistrict?.districtID ?? 0);
   }
 
   Ward? selectedWard;
   Future<void> selectWard(Ward ward) async {
-    selectedWard = ward;
     addressType = AddressType.fullAddress;
+    selectedWard = ward;
+
     notifyListeners();
   }
 
-  AddressType addressType = AddressType.province;
+  AddressType addressType = AddressType.fullAddress;
   // unSelectDistrict(){
   //    selectedDistrict =null;
   //    notifyListeners();
@@ -112,6 +101,14 @@ class CreateJobController extends ChangeNotifier {
   //    selectedDistrict =null;
   //    notifyListeners();
   //  }
+
+  resetAddress() {
+    addressType = AddressType.fullAddress;
+    selectedProvince = null;
+    selectedDistrict = null;
+    selectedWard = null;
+    notifyListeners();
+  }
 }
 
 final createJobControllerProvider = ChangeNotifierProvider((ref) {
