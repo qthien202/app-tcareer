@@ -3,6 +3,7 @@ import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_jo
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class JobEmploymentType extends ConsumerWidget {
   const JobEmploymentType({super.key});
@@ -12,14 +13,24 @@ class JobEmploymentType extends ConsumerWidget {
     final controller = ref.watch(createJobControllerProvider);
     List<Map<String, dynamic>> privacies = [
       {
-        "value": "Full time",
+        "value": "full-time",
         "title": "Full time",
         "subTitle": "Làm việc toàn thời gian.",
       },
       {
-        "value": "Part time",
+        "value": "part-time",
         "title": "Part time",
         "subTitle": "Làm việc bán thời gian.",
+      },
+      {
+        "value": "contract",
+        "title": "Contract",
+        "subTitle": "Làm việc theo hợp đồng.",
+      },
+      {
+        "value": "internship",
+        "title": "Internship",
+        "subTitle": "Thực tập",
       },
     ];
     return Padding(
@@ -44,7 +55,7 @@ class JobEmploymentType extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
-              "Chọn hình thức làm việc",
+              "Chọn loại hình làm việc",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
@@ -61,7 +72,10 @@ class JobEmploymentType extends ConsumerWidget {
                 activeColor: AppColors.primary,
                 value: item["value"],
                 groupValue: controller.selectedJobEmploymentType,
-                onChanged: (value) {},
+                onChanged: (value) async {
+                  await controller.selectJobEmploymentType(value);
+                  context.pop();
+                },
                 title: Row(
                   children: [
                     Column(

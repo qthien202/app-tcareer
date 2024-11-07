@@ -122,6 +122,7 @@ dependencies:
   html_editor_enhanced: ^2.5.1
   flutter_quill: ^10.5.14
   sticky_headers: ^0.3.0+2
+  geocoding: ^3.0.0
 
 
 dev_dependencies:

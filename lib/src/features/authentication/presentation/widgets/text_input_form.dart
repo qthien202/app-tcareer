@@ -14,9 +14,11 @@ class TextInputForm extends StatefulWidget {
   final void Function()? onTap;
   final Widget? prefixIcon;
   final void Function(String)? onChanged;
+  final void Function(String)? onSubmitted;
 
   const TextInputForm({
     super.key,
+    this.onSubmitted,
     this.maxLine,
     this.hintText,
     this.isReadOnly,
@@ -82,6 +84,7 @@ class TextInputFormState extends State<TextInputForm> {
           TextFormField(
             onChanged: widget.onChanged,
             // enabled: true,
+            onFieldSubmitted: widget.onSubmitted,
             style: TextStyle(color: Colors.black),
             obscureText: widget.isSecurity != null ? !isShowPassword : false,
             keyboardType: widget.keyboardType,

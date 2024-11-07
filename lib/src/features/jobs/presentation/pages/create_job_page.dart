@@ -23,7 +23,7 @@ class CreateJobPage extends ConsumerWidget {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: const Color(0xffF9F9F9),
-      appBar: appBar(context),
+      appBar: appBar(context, ref),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         children: [
@@ -36,7 +36,7 @@ class CreateJobPage extends ConsumerWidget {
           ),
           item(
             title: "Tiêu đề",
-            content: "Lập trình viên",
+            content: controller.job.title,
             onTap: () async => await controller.showBottomSheet(
                 child: JobTitle(), context: context),
           ),
@@ -49,15 +49,21 @@ class CreateJobPage extends ConsumerWidget {
                 context: context),
           ),
           item(
-              title: "Loại hình làm việc",
-              content: "On-site",
+              title: "Kinh nghiệm làm việc",
+              content: controller.job.experienceName,
+              onTap: () async =>
+                  await controller.showExperiencePicker(context)),
+          item(
+              title: "Hình thức làm việc",
+              content:
+                  controller.getJobType(controller.job.jobType ?? "") ?? "",
               onTap: () async => await controller.showBottomSheet(
                     context: context,
                     child: const JobTypeWorkSpace(),
                   )),
           item(
               title: "Địa điểm làm việc",
-              content: "Ninh Kiều, Cần Thơ",
+              content: controller.jobLocation.fullAddress,
               onTap: () async => context.goNamed("jobLocation")),
           item(
               title: "Công ty",
@@ -65,8 +71,10 @@ class CreateJobPage extends ConsumerWidget {
               onTap: () async => await controller.showBottomSheet(
                   context: context, child: const JobCty())),
           item(
-              title: "Hình thức làm việc",
-              content: "Fulltime",
+              title: "Loại hình làm việc",
+              content: controller
+                      .getEmploymentType(controller.job.employmentType ?? "") ??
+                  "",
               onTap: () async => await controller.showBottomSheet(
                     context: context,
                     child: const JobEmploymentType(),
@@ -83,7 +91,8 @@ class CreateJobPage extends ConsumerWidget {
     );
   }
 
-  PreferredSizeWidget appBar(BuildContext context) {
+  PreferredSizeWidget appBar(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(createJobControllerProvider);
     return AppBar(
       backgroundColor: const Color(0xffF9F9F9),
       leading: InkWell(
@@ -100,7 +109,7 @@ class CreateJobPage extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 2),
           child: TextButton(
-              onPressed: null,
+              onPressed: () {},
               child: Text(
                 "Đăng",
                 style: TextStyle(

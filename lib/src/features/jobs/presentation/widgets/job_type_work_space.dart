@@ -3,6 +3,7 @@ import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_jo
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class JobTypeWorkSpace extends ConsumerWidget {
   const JobTypeWorkSpace({super.key});
@@ -12,17 +13,17 @@ class JobTypeWorkSpace extends ConsumerWidget {
     final controller = ref.watch(createJobControllerProvider);
     List<Map<String, dynamic>> privacies = [
       {
-        "value": "On-site",
+        "value": "onsite",
         "title": "On-site",
         "subTitle": "Làm việc tại văn phòng",
       },
       {
-        "value": "Hybrid",
+        "value": "hybrid",
         "title": "Hybrid",
         "subTitle": "Làm việc kết hợp tại văn phòng và từ xa",
       },
       {
-        "value": "Remote",
+        "value": "remote",
         "title": "Remote",
         "subTitle": "Làm việc từ xa",
       },
@@ -49,7 +50,7 @@ class JobTypeWorkSpace extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
-              "Chọn loại hình làm việc",
+              "Chọn hình thức làm việc",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),
@@ -66,7 +67,10 @@ class JobTypeWorkSpace extends ConsumerWidget {
                 activeColor: AppColors.primary,
                 value: item["value"],
                 groupValue: controller.selectedJobTypeWorkSpace,
-                onChanged: (value) {},
+                onChanged: (value) async {
+                  await controller.selectJobType(value);
+                  context.pop();
+                },
                 title: Row(
                   children: [
                     Column(

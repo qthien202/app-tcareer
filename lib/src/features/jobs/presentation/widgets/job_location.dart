@@ -3,6 +3,7 @@ import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_jo
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class JobLocation extends ConsumerStatefulWidget {
   // final ScrollController scrollController;
@@ -239,6 +240,7 @@ class _JobLocationState extends ConsumerState<JobLocation> {
 
   Widget addressSelected() {
     final controller = ref.watch(createJobControllerProvider);
+    TextEditingController addressController = TextEditingController();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
@@ -371,7 +373,7 @@ class _JobLocationState extends ConsumerState<JobLocation> {
                     "Tên đường, Tòa nhà, Số nhà.",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  fullAddress()
+                  fullAddress(controller: addressController)
                 ],
               )),
           const SizedBox(
@@ -385,7 +387,17 @@ class _JobLocationState extends ConsumerState<JobLocation> {
                     backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
-                onPressed: controller.selectedWard != null ? () {} : null,
+                onPressed: controller.selectedWard != null
+                    ? () async {
+                        String fullAddress =
+                            "${addressController.text},${controller.selectedWard?.wardName}, ${controller.selectedDistrict?.districtName},${controller.selectedProvince?.provinceName}";
+                        await controller.getLatLngFromAddress(
+                            fullAddress: fullAddress);
+                        await controller.setJobLocation(
+                            fullAddress: fullAddress);
+                        context.pop();
+                      }
+                    : null,
                 child: Text(
                   "Hoàn thành",
                   style: TextStyle(color: Colors.white),

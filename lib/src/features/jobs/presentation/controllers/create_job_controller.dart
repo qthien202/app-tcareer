@@ -1,12 +1,17 @@
 import 'dart:convert';
+import 'package:app_tcareer/src/features/jobs/data/models/job_location_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_experience.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_location.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/create_job_use_case.dart';
 import 'package:app_tcareer/src/services/address/district.dart';
 import 'package:app_tcareer/src/services/address/province.dart';
 import 'package:app_tcareer/src/services/address/ward.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geocoding/geocoding.dart';
 
 enum AddressType { province, district, ward, fullAddress }
 
@@ -83,6 +88,9 @@ class CreateJobController extends ChangeNotifier {
     selectedDistrict = null;
     selectedWard = null;
     addressType = AddressType.district;
+    await setJobLocation(
+        provinceId: selectedProvince?.provinceID,
+        provinceName: selectedProvince?.provinceName);
     notifyListeners();
     await getDistrict(selectedProvince?.provinceID ?? 0);
   }
@@ -92,6 +100,9 @@ class CreateJobController extends ChangeNotifier {
     addressType = AddressType.ward;
     selectedDistrict = district;
     selectedWard = null;
+    await setJobLocation(
+        districtId: selectedDistrict?.districtID,
+        districtName: selectedDistrict?.districtName);
     notifyListeners();
     await getWard(selectedDistrict?.districtID ?? 0);
   }
@@ -100,7 +111,9 @@ class CreateJobController extends ChangeNotifier {
   Future<void> selectWard(Ward ward) async {
     addressType = AddressType.fullAddress;
     selectedWard = ward;
-
+    await setJobLocation(
+        wardId: num.parse(selectedWard?.wardCode ?? ""),
+        wardName: selectedWard?.wardName);
     notifyListeners();
   }
 
@@ -123,9 +136,38 @@ class CreateJobController extends ChangeNotifier {
     notifyListeners();
   }
 
-  JobModel body = JobModel();
-  void setJob({required JobModel job}) {
-    body = job;
+  JobModel job = JobModel();
+
+  Future<void> setJob(
+      {String? title,
+      num? jobTopicId,
+      String? jobType,
+      String? jobDescription,
+      dynamic detailLocation,
+      num? latitude,
+      num? longitude,
+      String? employmentType,
+      String? ctyName,
+      String? ctyImageUrl,
+      num? experienceRequired,
+      String? experienceName,
+      num? positionsAvailable}) async {
+    job = job.copyWith(
+        title: title,
+        jobTopicId: jobTopicId,
+        jobType: jobType,
+        jobDescription: jobDescription,
+        detailLocation: detailLocation,
+        latitude: latitude,
+        longitude: longitude,
+        experienceRequired: experienceRequired,
+        ctyImageUrl: ctyImageUrl,
+        ctyName: ctyName,
+        employmentType: employmentType,
+        experienceName: experienceName,
+        positionsAvailable: positionsAvailable);
+    print(">>>>>>>>>>body: ${jsonEncode(job)}");
+    notifyListeners();
   }
 
   bool isLoading = false;
@@ -138,8 +180,83 @@ class CreateJobController extends ChangeNotifier {
 
   Future<void> postCreateJob(BuildContext context) async {
     AppUtils.loadingApi(() async {
-      await createJobUseCase.postCreateJob(body: body);
+      await createJobUseCase.postCreateJob(body: job);
     }, context);
+  }
+
+  List<Location>? locations;
+  Future<void> getLatLngFromAddress({required String fullAddress}) async {
+    locations = await locationFromAddress(fullAddress);
+  }
+
+  Future<void> showExperiencePicker(
+    BuildContext context,
+  ) async {
+    await showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return const JobExperience();
+      },
+    );
+  }
+
+  Future<void> selectJobType(String value) async {
+    selectedJobTypeWorkSpace = value;
+    await setJob(jobType: selectedJobTypeWorkSpace);
+    notifyListeners();
+  }
+
+  Future<void> selectJobEmploymentType(String value) async {
+    selectedJobEmploymentType = value;
+    await setJob(employmentType: selectedJobEmploymentType);
+    notifyListeners();
+  }
+
+  Map<String, dynamic> jobType = {
+    "onsite": "On-site",
+    "hybrid": "Hybrid",
+    "remote": "Remote"
+  };
+
+  Map<String, dynamic> employmentType = {
+    "full-time": "Full time",
+    "part-time": "Part time",
+    "contract": "Contract",
+    "internship": "Internship"
+  };
+
+  String? getJobType(String value) {
+    return jobType[value];
+  }
+
+  String? getEmploymentType(String value) {
+    return employmentType[value];
+  }
+
+  JobLocationModel jobLocation = JobLocationModel();
+  Future<void> setJobLocation({
+    num? provinceId,
+    String? provinceName,
+    num? districtId,
+    String? districtName,
+    num? wardId,
+    String? wardName,
+    String? fullAddress,
+  }) async {
+    jobLocation = jobLocation.copyWith(
+        provinceName: provinceName,
+        districtName: districtName,
+        wardName: wardName,
+        provinceId: provinceId,
+        districtId: districtId,
+        wardId: wardId,
+        fullAddress: fullAddress,
+        latitude: locations?.first.latitude,
+        longitude: locations?.first.longitude);
+    await setJob(
+        detailLocation: jobLocation,
+        latitude: locations?.first.latitude,
+        longitude: locations?.first.longitude);
   }
 }
 

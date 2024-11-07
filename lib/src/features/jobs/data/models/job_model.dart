@@ -1,135 +1,120 @@
 class JobModel {
   JobModel({
-      String? title, 
-      num? jobTopicId, 
-      String? jobType, 
-      JobDescription? jobDescription, 
-      String? selfDescription, 
-      String? detailLocation, 
-      num? latitude, 
-      num? longitude, 
-      String? province, 
-      String? employmentType,}){
+    String? title,
+    num? jobTopicId,
+    String? jobType,
+    String? jobDescription,
+    dynamic detailLocation,
+    num? latitude,
+    num? longitude,
+    String? employmentType,
+    String? ctyName,
+    String? ctyImageUrl,
+    num? experienceRequired,
+    String? experienceName,
+    num? positionsAvailable,
+  }) {
     _title = title;
     _jobTopicId = jobTopicId;
     _jobType = jobType;
     _jobDescription = jobDescription;
-    _selfDescription = selfDescription;
     _detailLocation = detailLocation;
     _latitude = latitude;
     _longitude = longitude;
-    _province = province;
     _employmentType = employmentType;
-}
+    _ctyName = ctyName;
+    _ctyImageUrl = ctyImageUrl;
+    _experienceRequired = experienceRequired;
+    _positionsAvailable = positionsAvailable;
+    _experienceName = experienceName;
+  }
 
   JobModel.fromJson(dynamic json) {
     _title = json['title'];
     _jobTopicId = json['job_topic_id'];
     _jobType = json['job_type'];
-    _jobDescription = json['job_description'] != null ? JobDescription.fromJson(json['job_description']) : null;
-    _selfDescription = json['self_description'];
+    _jobDescription = json['job_description'];
     _detailLocation = json['detail_location'];
     _latitude = json['latitude'];
     _longitude = json['longitude'];
-    _province = json['province'];
     _employmentType = json['employment_type'];
+    _ctyName = json['cty_name'];
+    _ctyImageUrl = json['cty_image_url'];
+    _experienceRequired = json['experience_required'];
+    _positionsAvailable = json['positions_available'];
+    _experienceName = json['experience_name'];
   }
   String? _title;
   num? _jobTopicId;
   String? _jobType;
-  JobDescription? _jobDescription;
-  String? _selfDescription;
-  String? _detailLocation;
+  String? _jobDescription;
+  dynamic _detailLocation;
   num? _latitude;
   num? _longitude;
-  String? _province;
   String? _employmentType;
-JobModel copyWith({  String? title,
-  num? jobTopicId,
-  String? jobType,
-  JobDescription? jobDescription,
-  String? selfDescription,
-  String? detailLocation,
-  num? latitude,
-  num? longitude,
-  String? province,
-  String? employmentType,
-}) => JobModel(  title: title ?? _title,
-  jobTopicId: jobTopicId ?? _jobTopicId,
-  jobType: jobType ?? _jobType,
-  jobDescription: jobDescription ?? _jobDescription,
-  selfDescription: selfDescription ?? _selfDescription,
-  detailLocation: detailLocation ?? _detailLocation,
-  latitude: latitude ?? _latitude,
-  longitude: longitude ?? _longitude,
-  province: province ?? _province,
-  employmentType: employmentType ?? _employmentType,
-);
+  String? _ctyName;
+  String? _ctyImageUrl;
+  num? _experienceRequired;
+  num? _positionsAvailable;
+  String? _experienceName;
+  JobModel copyWith({
+    String? title,
+    num? jobTopicId,
+    String? jobType,
+    String? jobDescription,
+    dynamic detailLocation,
+    num? latitude,
+    num? longitude,
+    String? employmentType,
+    String? ctyName,
+    String? ctyImageUrl,
+    num? experienceRequired,
+    num? positionsAvailable,
+    String? experienceName,
+  }) =>
+      JobModel(
+          title: title ?? _title,
+          jobTopicId: jobTopicId ?? _jobTopicId,
+          jobType: jobType ?? _jobType,
+          jobDescription: jobDescription ?? _jobDescription,
+          detailLocation: detailLocation ?? _detailLocation,
+          latitude: latitude ?? _latitude,
+          longitude: longitude ?? _longitude,
+          employmentType: employmentType ?? _employmentType,
+          ctyName: ctyName ?? _ctyName,
+          ctyImageUrl: ctyImageUrl ?? _ctyImageUrl,
+          experienceRequired: experienceRequired ?? _experienceRequired,
+          positionsAvailable: positionsAvailable ?? _positionsAvailable,
+          experienceName: experienceName ?? _experienceName);
   String? get title => _title;
   num? get jobTopicId => _jobTopicId;
   String? get jobType => _jobType;
-  JobDescription? get jobDescription => _jobDescription;
-  String? get selfDescription => _selfDescription;
-  String? get detailLocation => _detailLocation;
+  String? get jobDescription => _jobDescription;
+  dynamic get detailLocation => _detailLocation;
   num? get latitude => _latitude;
   num? get longitude => _longitude;
-  String? get province => _province;
   String? get employmentType => _employmentType;
+  String? get ctyName => _ctyName;
+  String? get ctyImageUrl => _ctyImageUrl;
+  num? get experienceRequired => _experienceRequired;
+  num? get positionsAvailable => _positionsAvailable;
+  String? get experienceName => _experienceName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['title'] = _title;
     map['job_topic_id'] = _jobTopicId;
     map['job_type'] = _jobType;
-    if (_jobDescription != null) {
-      map['job_description'] = _jobDescription?.toJson();
-    }
-    map['self_description'] = _selfDescription;
+    map['job_description'] = _jobDescription;
     map['detail_location'] = _detailLocation;
     map['latitude'] = _latitude;
     map['longitude'] = _longitude;
-    map['province'] = _province;
     map['employment_type'] = _employmentType;
+    map['cty_name'] = _ctyName;
+    map['cty_image_url'] = _ctyImageUrl;
+    map['experience_required'] = _experienceRequired;
+    map['positions_available'] = _positionsAvailable;
+    map['experience_name'] = _experienceName;
     return map;
   }
-
-}
-
-class JobDescription {
-  JobDescription({
-      String? mtcngvic, 
-      String? yucungtuyn, 
-      String? quynli,}){
-    _mtcngvic = mtcngvic;
-    _yucungtuyn = yucungtuyn;
-    _quynli = quynli;
-}
-
-  JobDescription.fromJson(dynamic json) {
-    _mtcngvic = json['Mô tả công việc'];
-    _yucungtuyn = json['Yêu cầu ứng tuyển'];
-    _quynli = json['Quyền lợi'];
-  }
-  String? _mtcngvic;
-  String? _yucungtuyn;
-  String? _quynli;
-JobDescription copyWith({  String? mtcngvic,
-  String? yucungtuyn,
-  String? quynli,
-}) => JobDescription(  mtcngvic: mtcngvic ?? _mtcngvic,
-  yucungtuyn: yucungtuyn ?? _yucungtuyn,
-  quynli: quynli ?? _quynli,
-);
-  String? get mtcngvic => _mtcngvic;
-  String? get yucungtuyn => _yucungtuyn;
-  String? get quynli => _quynli;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['Mô tả công việc'] = _mtcngvic;
-    map['Yêu cầu ứng tuyển'] = _yucungtuyn;
-    map['Quyền lợi'] = _quynli;
-    return map;
-  }
-
 }

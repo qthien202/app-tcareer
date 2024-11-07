@@ -17,13 +17,13 @@ class JobCty extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaController = ref.watch(jobMediaControllerProvider);
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: Wrap(
         spacing: 20,
         children: [
           Center(
             child: Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
                   color: Colors.grey, borderRadius: BorderRadius.circular(5)),
               width: 30,
@@ -73,13 +73,13 @@ class JobCty extends ConsumerWidget {
             title: "Tên công ty",
             hintText: "Nhập tên công ty",
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          TextInputForm(
-            title: "Địa chỉ",
-            hintText: "Nhập địa chỉ",
-          ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
+          // TextInputForm(
+          //   title: "Địa chỉ",
+          //   hintText: "Nhập địa chỉ",
+          // ),
           const SizedBox(
             height: 30,
           ),
