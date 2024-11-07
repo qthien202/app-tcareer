@@ -9,112 +9,95 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class JobCty extends ConsumerWidget {
-  final ScrollController scrollController;
-  const JobCty({super.key, required this.scrollController});
+  const JobCty({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaController = ref.watch(jobMediaControllerProvider);
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.grey.shade50,
-        appBar: AppBar(
-          toolbarHeight: 30,
-          elevation: 0.0,
-          backgroundColor: Colors.grey.shade50,
-          title: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: Colors.grey.shade200),
-                ),
-                width: 30,
-                height: 4,
-              ),
-            ],
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Wrap(
+        spacing: 20,
+        children: [
+          Center(
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                  color: Colors.grey, borderRadius: BorderRadius.circular(5)),
+              width: 30,
+              height: 4,
+            ),
           ),
-          automaticallyImplyLeading: false,
-          centerTitle: true,
-        ),
-        body: ListView(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-          children: [
-            Center(
-              child: Stack(
-                clipBehavior: Clip.none,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: mediaController.selectedImage != null
-                        ? Image.file(
-                            File(mediaController.selectedImage?.path ?? ""),
-                            height: 150,
-                            width: 150,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset(
-                            "assets/images/posts/no_image.jpg",
-                            height: 150,
-                            width: 150,
-                            fit: BoxFit.cover,
-                          ),
-                  ),
-                  Positioned(
-                      right: -10,
-                      bottom: -5,
-                      child: InkWell(
-                        onTap: () => context.goNamed("jobMedia"),
-                        child: Container(
-                            padding: EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey.shade200),
-                                color: Colors.white,
-                                shape: BoxShape.circle),
-                            child: Icon(Icons.camera_alt)),
-                      )),
-                ],
-              ),
+          Center(
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: mediaController.selectedImage != null
+                      ? Image.file(
+                          File(mediaController.selectedImage?.path ?? ""),
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          "assets/images/posts/no_image.jpg",
+                          height: 150,
+                          width: 150,
+                          fit: BoxFit.cover,
+                        ),
+                ),
+                Positioned(
+                    right: -10,
+                    bottom: -5,
+                    child: InkWell(
+                      onTap: () => context.goNamed("jobMedia"),
+                      child: Container(
+                          padding: EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey.shade200),
+                              color: Colors.white,
+                              shape: BoxShape.circle),
+                          child: Icon(Icons.camera_alt)),
+                    )),
+              ],
             ),
-            const SizedBox(
-              height: 30,
-            ),
-            TextInputForm(
-              title: "Tên công ty",
-              hintText: "Nhập tên công ty",
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            TextInputForm(
-              title: "Địa chỉ",
-              hintText: "Nhập địa chỉ",
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            SizedBox(
-              height: 50,
-              width: ScreenUtil().screenWidth,
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
-                  onPressed: () {},
-                  child: Text(
-                    "Hoàn thành",
-                    style: TextStyle(color: Colors.white),
-                  )),
-            ),
-          ],
-        ),
+          ),
+          // const SizedBox(
+          //   height: 40,
+          // ),
+          TextInputForm(
+            title: "Tên công ty",
+            hintText: "Nhập tên công ty",
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          TextInputForm(
+            title: "Địa chỉ",
+            hintText: "Nhập địa chỉ",
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          SizedBox(
+            height: 50,
+            width: ScreenUtil().screenWidth,
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                onPressed: () {},
+                child: Text(
+                  "Hoàn thành",
+                  style: TextStyle(color: Colors.white),
+                )),
+          ),
+        ],
       ),
     );
   }

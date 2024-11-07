@@ -62,30 +62,20 @@ class CreateJobPage extends ConsumerWidget {
           item(
               title: "Công ty",
               content: "TTech",
-              onTap: () async => await controller.showBottomSheetDraggable(
-                    context: context,
-                    builder: (scrollController) => JobCty(
-                      scrollController: scrollController,
-                    ),
-                  )),
+              onTap: () async => await controller.showBottomSheet(
+                  context: context, child: const JobCty())),
           item(
               title: "Hình thức làm việc",
               content: "Fulltime",
               onTap: () async => await controller.showBottomSheet(
                     context: context,
-                    child: SizedBox(
-                        height: ScreenUtil().screenHeight * .35,
-                        child: const JobEmploymentType()),
+                    child: const JobEmploymentType(),
                   )),
           item(
-              title: "Chi tiết",
-              content: "",
-              onTap: () async => await controller.showBottomSheet(
-                    context: context,
-                    child: SizedBox(
-                        height: ScreenUtil().screenHeight * .95,
-                        child: JobDescription()),
-                  ))
+            title: "Chi tiết",
+            content: "",
+            onTap: () async => context.goNamed("jobDescription"),
+          )
         ],
       ),
 

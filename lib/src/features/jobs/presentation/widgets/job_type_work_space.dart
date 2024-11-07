@@ -46,13 +46,13 @@ class JobTypeWorkSpace extends ConsumerWidget {
           const SizedBox(
             height: 10,
           ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 15),
-          //   child: Text(
-          //     "Chọn loại hình làm việc",
-          //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          //   ),
-          // ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              "Chọn loại hình làm việc",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
           ListView.separated(
             shrinkWrap: true,
             separatorBuilder: (context, index) => const SizedBox(

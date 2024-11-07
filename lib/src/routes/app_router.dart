@@ -13,6 +13,7 @@ import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_pa
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/create_job_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/media/job_media_page.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_description.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_location.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_position.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
@@ -230,6 +231,16 @@ class AppRouter {
                   pageBuilder: (context, state) {
                     return CustomTransitionPage(
                       child: JobLocation(),
+                      transitionsBuilder: slideUpTransitionBuilder,
+                    );
+                  },
+                  routes: []),
+              GoRoute(
+                  path: "description",
+                  name: "jobDescription",
+                  pageBuilder: (context, state) {
+                    return CustomTransitionPage(
+                      child: JobDescription(),
                       transitionsBuilder: slideUpTransitionBuilder,
                     );
                   },
