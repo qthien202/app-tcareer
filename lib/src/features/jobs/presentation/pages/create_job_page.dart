@@ -5,6 +5,7 @@ import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_descripti
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_employment_type.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_location.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_position.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_title.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_type_work_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,6 +35,12 @@ class CreateJobPage extends ConsumerWidget {
             height: 10,
           ),
           item(
+            title: "Tiêu đề",
+            content: "Lập trình viên",
+            onTap: () async => await controller.showBottomSheet(
+                child: JobTitle(), context: context),
+          ),
+          item(
             title: "Vị trí công việc",
             content: "Lập trình viên",
             onTap: () async => await controller.showBottomSheetDraggable(
@@ -46,18 +53,12 @@ class CreateJobPage extends ConsumerWidget {
               content: "On-site",
               onTap: () async => await controller.showBottomSheet(
                     context: context,
-                    child: SizedBox(
-                        height: ScreenUtil().screenHeight * .35,
-                        child: const JobTypeWorkSpace()),
+                    child: const JobTypeWorkSpace(),
                   )),
           item(
-            title: "Địa điểm làm việc",
-            content: "Ninh Kiều, Cần Thơ",
-            onTap: () async => await controller.showBottomSheetDraggable(
-                builder: (scrollController) =>
-                    JobLocation(scrollController: scrollController),
-                context: context),
-          ),
+              title: "Địa điểm làm việc",
+              content: "Ninh Kiều, Cần Thơ",
+              onTap: () async => context.goNamed("jobLocation")),
           item(
               title: "Công ty",
               content: "TTech",

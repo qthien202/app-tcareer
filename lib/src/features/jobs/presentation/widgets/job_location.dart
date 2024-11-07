@@ -5,8 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class JobLocation extends ConsumerStatefulWidget {
-  final ScrollController scrollController;
-  const JobLocation({super.key, required this.scrollController});
+  // final ScrollController scrollController;
+  const JobLocation({super.key});
 
   @override
   ConsumerState<JobLocation> createState() => _JobLocationState();
@@ -32,75 +32,71 @@ class _JobLocationState extends ConsumerState<JobLocation> {
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(createJobControllerProvider);
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(20),
-        topRight: Radius.circular(20),
-      ),
-      child: Scaffold(
-          resizeToAvoidBottomInset: true,
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            toolbarHeight: 30,
-            elevation: 0.0,
-            backgroundColor: Colors.white,
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(5)),
-                  width: 30,
-                  height: 4,
-                ),
-              ],
-            ),
-            automaticallyImplyLeading: false,
-            centerTitle: true,
-          ),
-          body: Column(
-            children: [
+    return Material(
+      color: Colors.white,
+      child: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            automaticallyImplyLeading: true,
+            pinned: true,
+            centerTitle: false,
+            actions: [
               Visibility(
-                  visible: controller.addressType == AddressType.fullAddress,
-                  replacement: addressSelected(),
-                  child: Expanded(child: addressSelected())),
-              const SizedBox(
-                height: 5,
-              ),
-              Visibility(
-                visible: controller.addressType != AddressType.fullAddress,
-                child: Expanded(
-                  child: CustomScrollView(
-                    controller: widget.scrollController,
-                    slivers: [sliverAppBar(), sliverAddress()],
-                  ),
-                ),
-              ),
+                visible: controller.selectedProvince != null,
+                child: TextButton(
+                    onPressed: () => controller.resetAddress(),
+                    child: Text(
+                      "Thiết lập lại",
+                      style: TextStyle(color: AppColors.primary),
+                    )),
+              )
             ],
-          )),
+            title: Text(
+              "Địa điểm làm việc",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: addressSelected(),
+          ),
+          SliverVisibility(
+            visible: controller.addressType != AddressType.fullAddress,
+            sliver: titleAddress(),
+          ),
+          SliverVisibility(
+              visible: controller.addressType != AddressType.fullAddress,
+              sliver: sliverAddress())
+        ],
+      ),
     );
   }
 
-  Widget sliverAppBar() {
+  Widget titleAddress() {
     final controller = ref.watch(createJobControllerProvider);
-    String titleAppBar = controller.addressType == AddressType.ward
+    String title = controller.addressType == AddressType.ward
         ? "Phường/Xã"
         : controller.addressType == AddressType.district
             ? "Quận/Huyện"
             : "Tỉnh/Thành phố";
 
     return SliverAppBar(
+      clipBehavior: Clip.none,
+      expandedHeight: 20,
+      toolbarHeight: 20,
       backgroundColor: Colors.grey.shade100,
-      leading: null,
-      toolbarHeight: 30,
-      automaticallyImplyLeading: false,
-      title: Text(
-        titleAppBar,
-        style: TextStyle(color: Colors.black45),
-      ),
-      pinned: true,
       centerTitle: false,
+      pinned: true,
+      automaticallyImplyLeading: false,
+      leadingWidth: 0,
+      actions: null,
+      title: Padding(
+        padding: const EdgeInsets.only(
+            bottom: 15), // Điều chỉnh khoảng cách trên nếu cần
+        child: Text(
+          title,
+          style: TextStyle(color: Colors.black45, fontSize: 14),
+        ),
+      ),
     );
   }
 
@@ -245,188 +241,160 @@ class _JobLocationState extends ConsumerState<JobLocation> {
     final controller = ref.watch(createJobControllerProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
-      child: SingleChildScrollView(
-        controller: controller.addressType == AddressType.fullAddress
-            ? widget.scrollController
-            : null,
-        physics: controller.addressType == AddressType.fullAddress
-            ? const AlwaysScrollableScrollPhysics()
-            : const NeverScrollableScrollPhysics(),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Địa điểm làm việc",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                Visibility(
-                  visible: controller.selectedProvince != null,
-                  child: TextButton(
-                      onPressed: () => controller.resetAddress(),
-                      child: Text(
-                        "Thiết lập lại",
-                        style: TextStyle(color: AppColors.primary),
-                      )),
-                )
-              ],
-            ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  controller.addressType = AddressType.province;
-                });
-              },
-              child: Container(
-                  padding: EdgeInsets.all(10),
-                  width: ScreenUtil().screenWidth,
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: controller.addressType == AddressType.province
-                              ? AppColors.primary
-                              : Colors.grey.shade200)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Tỉnh/Thành phố",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        controller.selectedProvince?.provinceName ??
-                            "Nhấn vào để chọn",
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.w300),
-                      ),
-                    ],
-                  )),
-            ),
-            GestureDetector(
-              onTap: controller.selectedProvince != null
-                  ? () {
-                      setState(() {
-                        controller.addressType = AddressType.district;
-                      });
-                    }
-                  : null,
-              child: Container(
-                  padding: EdgeInsets.all(10),
-                  width: ScreenUtil().screenWidth,
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: controller.addressType == AddressType.district
-                              ? AppColors.primary
-                              : Colors.grey.shade200)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Quận/Huyện",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        controller.selectedDistrict?.districtName ??
-                            "Nhấn vào để chọn",
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.w300),
-                      ),
-                    ],
-                  )),
-            ),
-            GestureDetector(
-              onTap: controller.selectedDistrict != null
-                  ? () {
-                      setState(() {
-                        controller.addressType = AddressType.ward;
-                      });
-                    }
-                  : null,
-              child: Container(
-                  padding: EdgeInsets.all(10),
-                  width: ScreenUtil().screenWidth,
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: controller.addressType == AddressType.ward
-                              ? AppColors.primary
-                              : Colors.grey.shade200)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Phường/Xã",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        controller.selectedWard?.wardName ?? "Nhấn vào để chọn",
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.w300),
-                      ),
-                    ],
-                  )),
-            ),
-            Visibility(
-              visible: controller.addressType == AddressType.fullAddress,
-              child: Container(
-                  padding: EdgeInsets.all(10),
-                  width: ScreenUtil().screenWidth,
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                          color: controller.addressType == AddressType.province
-                              ? AppColors.primary
-                              : Colors.grey.shade200)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Tên đường, Tòa nhà, Số nhà.",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      fullAddress()
-                    ],
-                  )),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Visibility(
-              visible: controller.addressType == AddressType.fullAddress,
-              child: SizedBox(
-                height: 50,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [],
+          ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                controller.addressType = AddressType.province;
+              });
+            },
+            child: Container(
+                padding: EdgeInsets.all(10),
                 width: ScreenUtil().screenWidth,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    onPressed: () {},
-                    child: Text(
-                      "Hoàn thành",
-                      style: TextStyle(color: Colors.white),
-                    )),
-              ),
-            ),
-          ],
-        ),
+                margin: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                        color: controller.addressType == AddressType.province
+                            ? AppColors.primary
+                            : Colors.grey.shade200)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Tỉnh/Thành phố",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      controller.selectedProvince?.provinceName ??
+                          "Nhấn vào để chọn",
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+                    ),
+                  ],
+                )),
+          ),
+          GestureDetector(
+            onTap: controller.selectedProvince != null
+                ? () {
+                    setState(() {
+                      controller.addressType = AddressType.district;
+                    });
+                  }
+                : null,
+            child: Container(
+                padding: EdgeInsets.all(10),
+                width: ScreenUtil().screenWidth,
+                margin: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                        color: controller.addressType == AddressType.district
+                            ? AppColors.primary
+                            : Colors.grey.shade200)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Quận/Huyện",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      controller.selectedDistrict?.districtName ??
+                          "Nhấn vào để chọn",
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+                    ),
+                  ],
+                )),
+          ),
+          GestureDetector(
+            onTap: controller.selectedDistrict != null
+                ? () {
+                    setState(() {
+                      controller.addressType = AddressType.ward;
+                    });
+                  }
+                : null,
+            child: Container(
+                padding: EdgeInsets.all(10),
+                width: ScreenUtil().screenWidth,
+                margin: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                        color: controller.addressType == AddressType.ward
+                            ? AppColors.primary
+                            : Colors.grey.shade200)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Phường/Xã",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Text(
+                      controller.selectedWard?.wardName ?? "Nhấn vào để chọn",
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+                    ),
+                  ],
+                )),
+          ),
+          Container(
+              padding: EdgeInsets.all(10),
+              width: ScreenUtil().screenWidth,
+              margin: EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.grey.shade200)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Tên đường, Tòa nhà, Số nhà.",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  fullAddress()
+                ],
+              )),
+          const SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+            height: 50,
+            width: ScreenUtil().screenWidth,
+            child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                onPressed: controller.selectedWard != null ? () {} : null,
+                child: Text(
+                  "Hoàn thành",
+                  style: TextStyle(color: Colors.white),
+                )),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+        ],
       ),
     );
   }
@@ -451,7 +419,7 @@ class _JobLocationState extends ConsumerState<JobLocation> {
         style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
         // Gán focusNode vào TextField
         keyboardType: TextInputType.multiline,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             contentPadding: EdgeInsets.symmetric(horizontal: 4),
             // hintText: hintText ?? "Hôm nay bạn muốn chia sẻ điều gì?",
             border: InputBorder.none,

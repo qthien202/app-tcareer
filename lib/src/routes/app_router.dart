@@ -12,6 +12,9 @@ import 'package:app_tcareer/src/features/chat/presentation/pages/chat_page.dart'
 import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_page.dart';
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/create_job_page.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/media/job_media_page.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_location.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_position.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/post_edit.dart';
 import 'package:app_tcareer/src/features/posts/data/models/shared_post.dart';
@@ -202,15 +205,36 @@ class AppRouter {
         ),
 
         GoRoute(
-          path: "/createJob",
-          name: "createJob",
-          pageBuilder: (context, state) {
-            return CustomTransitionPage(
-              child: CreateJobPage(),
-              transitionsBuilder: slideUpTransitionBuilder,
-            );
-          },
-        ),
+            path: "/createJob",
+            name: "createJob",
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                child: CreateJobPage(),
+                transitionsBuilder: slideUpTransitionBuilder,
+              );
+            },
+            routes: [
+              GoRoute(
+                  path: "media",
+                  name: "jobMedia",
+                  pageBuilder: (context, state) {
+                    return CustomTransitionPage(
+                      child: JobMediaPage(),
+                      transitionsBuilder: slideUpTransitionBuilder,
+                    );
+                  },
+                  routes: []),
+              GoRoute(
+                  path: "location",
+                  name: "jobLocation",
+                  pageBuilder: (context, state) {
+                    return CustomTransitionPage(
+                      child: JobLocation(),
+                      transitionsBuilder: slideUpTransitionBuilder,
+                    );
+                  },
+                  routes: []),
+            ]),
 
         GoRoute(
             path: "/${RouteNames.posting.name}",

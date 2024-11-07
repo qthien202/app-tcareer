@@ -1,3 +1,4 @@
+import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/repository/job_repository.dart';
 import 'package:app_tcareer/src/services/address/district.dart';
 import 'package:app_tcareer/src/services/address/province.dart';
@@ -14,6 +15,8 @@ class CreateJobUseCase {
       await jobRepository.getDistrict(provinceId);
   Future<List<Ward>> getWard(num districtId) async =>
       await jobRepository.getWard(districtId);
+  Future<void> postCreateJob({required JobModel body}) async =>
+      await jobRepository.postCreateJob(body: body);
 }
 
 final createJobUseCaseProvider = Provider((ref) {

@@ -1,25 +1,31 @@
+import 'dart:io';
+
 import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/widgets/text_input_form.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_media_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
-class JobCty extends StatelessWidget {
+class JobCty extends ConsumerWidget {
   final ScrollController scrollController;
   const JobCty({super.key, required this.scrollController});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mediaController = ref.watch(jobMediaControllerProvider);
     return ClipRRect(
       borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(20),
         topRight: Radius.circular(20),
       ),
       child: Scaffold(
-        backgroundColor: Colors.grey.shade100,
+        backgroundColor: Colors.grey.shade50,
         appBar: AppBar(
           toolbarHeight: 30,
           elevation: 0.0,
-          backgroundColor: Colors.grey.shade100,
+          backgroundColor: Colors.grey.shade50,
           title: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -46,23 +52,33 @@ class JobCty extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      "assets/images/posts/no_image.jpg",
-                      height: 150,
-                      width: 150,
-                      fit: BoxFit.cover,
-                    ),
+                    child: mediaController.selectedImage != null
+                        ? Image.file(
+                            File(mediaController.selectedImage?.path ?? ""),
+                            height: 150,
+                            width: 150,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            "assets/images/posts/no_image.jpg",
+                            height: 150,
+                            width: 150,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                   Positioned(
                       right: -10,
                       bottom: -5,
-                      child: Container(
-                          padding: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey.shade200),
-                              color: Colors.white,
-                              shape: BoxShape.circle),
-                          child: Icon(Icons.camera_alt))),
+                      child: InkWell(
+                        onTap: () => context.goNamed("jobMedia"),
+                        child: Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey.shade200),
+                                color: Colors.white,
+                                shape: BoxShape.circle),
+                            child: Icon(Icons.camera_alt)),
+                      )),
                 ],
               ),
             ),

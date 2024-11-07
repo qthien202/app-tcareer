@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/create_job_use_case.dart';
 import 'package:app_tcareer/src/services/address/district.dart';
 import 'package:app_tcareer/src/services/address/province.dart';
 import 'package:app_tcareer/src/services/address/ward.dart';
+import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -36,10 +38,18 @@ class CreateJobController extends ChangeNotifier {
   Future<void> showBottomSheet(
       {required BuildContext context, required Widget child}) async {
     await showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      backgroundColor: Colors.grey.shade50,
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return child;
+        return Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: child,
+        );
       },
     );
   }
@@ -48,8 +58,10 @@ class CreateJobController extends ChangeNotifier {
   String? selectedJobEmploymentType;
   List<Province> provinces = [];
   Future<void> getProvince() async {
-    provinces = await createJobUseCase.getProvince();
-    notifyListeners();
+    if (provinces.isEmpty) {
+      provinces = await createJobUseCase.getProvince();
+      notifyListeners();
+    }
   }
 
   List<District> districts = [];
@@ -109,6 +121,25 @@ class CreateJobController extends ChangeNotifier {
     selectedDistrict = null;
     selectedWard = null;
     notifyListeners();
+  }
+
+  JobModel body = JobModel();
+  void setJob({required JobModel job}) {
+    body = job;
+  }
+
+  bool isLoading = false;
+
+  void setIsLoading(bool value) {
+    isLoading = value;
+
+    notifyListeners();
+  }
+
+  Future<void> postCreateJob(BuildContext context) async {
+    AppUtils.loadingApi(() async {
+      await createJobUseCase.postCreateJob(body: body);
+    }, context);
   }
 }
 

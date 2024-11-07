@@ -16,6 +16,7 @@ import 'package:app_tcareer/src/features/chat/data/models/leave_chat_request.dar
 import 'package:app_tcareer/src/features/chat/data/models/mark_read_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/send_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_from_message.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_comment_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/like_comment_request.dart';
@@ -197,4 +198,7 @@ abstract class ApiServices {
 
   @PUT('api/auth/user/update-profile')
   Future putUpdateProfile({@Body() required UpdateProfileRequest body});
+
+  @POST('api/auth/career/create')
+  Future postCreateJob({@Body() required JobModel body});
 }

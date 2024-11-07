@@ -121,6 +121,7 @@ dependencies:
   scrollable_positioned_list: ^0.3.8
   html_editor_enhanced: ^2.5.1
   flutter_quill: ^10.5.14
+  sticky_headers: ^0.3.0+2
 
 
 dev_dependencies:
