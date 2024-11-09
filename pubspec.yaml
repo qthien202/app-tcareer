@@ -128,6 +128,8 @@ dependencies:
   uuid: ^4.4.0
   quill_html_editor: any
   clipboard_watcher: ^0.3.0
+  flutter_widget_from_html: ^0.15.2
+  flutter_html: ^3.0.0-beta.2
 
 
 #  quill_html_editor: ^2.2.8

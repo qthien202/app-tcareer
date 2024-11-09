@@ -16,6 +16,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:go_router/go_router.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
 enum AddressType { province, district, ward, fullAddress }
@@ -291,6 +292,12 @@ class CreateJobController extends ChangeNotifier {
   }
 
   final QuillEditorController quillController = QuillEditorController();
+
+  Future<void> saveJobDescription(BuildContext context) async {
+    final description = await quillController.getText();
+    await setJob(jobDescription: description);
+    context.pop();
+  }
 
   Future<void> handlePaste(TextSelectionDelegate delegate) async {
     delegate.pasteText(SelectionChangedCause.toolbar);

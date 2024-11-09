@@ -4,12 +4,12 @@ import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_cty.dart'
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_description.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_employment_type.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_location.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_position.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_title.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_type_work_space.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -26,7 +26,7 @@ class CreateJobPage extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         children: [
-          Text(
+          const Text(
             "Tạo công việc",
             style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
@@ -36,20 +36,24 @@ class CreateJobPage extends ConsumerWidget {
           item(
             title: "Tiêu đề",
             content: controller.job.title,
+            hasContent: controller.job.title != null,
             onTap: () async => await controller.showBottomSheet(
-                child: JobTitle(), context: context),
+                child: const JobTitle(), context: context),
           ),
           item(
               title: "Nghề nghiệp",
               content: controller.job.jobRoleName,
+              hasContent: controller.job.jobRoleName != null,
               onTap: () async => context.goNamed("jobTopic")),
           item(
               title: "Kinh nghiệm làm việc",
               content: controller.job.experienceName,
+              hasContent: controller.job.experienceName != null,
               onTap: () async =>
                   await controller.showExperiencePicker(context)),
           item(
               title: "Hình thức làm việc",
+              hasContent: controller.job.jobType != null,
               content:
                   controller.getJobType(controller.job.jobType ?? "") ?? "",
               onTap: () async => await controller.showBottomSheet(
@@ -58,6 +62,7 @@ class CreateJobPage extends ConsumerWidget {
                   )),
           item(
               title: "Địa điểm làm việc",
+              hasContent: controller.jobLocation.fullAddress != null,
               content: controller.jobLocation.fullAddress,
               onTap: () async => context.goNamed("jobLocation")),
           item(
@@ -67,6 +72,7 @@ class CreateJobPage extends ConsumerWidget {
                   context: context, child: const JobCty())),
           item(
               title: "Loại hình làm việc",
+              hasContent: controller.job.employmentType != null,
               content: controller
                       .getEmploymentType(controller.job.employmentType ?? "") ??
                   "",
@@ -75,10 +81,30 @@ class CreateJobPage extends ConsumerWidget {
                     child: const JobEmploymentType(),
                   )),
           item(
-            title: "Chi tiết",
-            content: "",
+            title: "Mô tả chi tiết",
+            hasContent: controller.job.jobDescription != null,
+            widget: Visibility(
+              visible: controller.job.jobDescription != null,
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                    maxHeight: ScreenUtil().screenHeight * .3,
+                    maxWidth: ScreenUtil().screenWidth * .8),
+                child: ListView(
+                  children: [
+                    HtmlWidget(
+                      controller.job.jobDescription ?? "",
+                      textStyle:
+                          const TextStyle(overflow: TextOverflow.ellipsis),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             onTap: () async => context.goNamed("jobDescription"),
-          )
+          ),
+          const SizedBox(
+            height: 30,
+          ),
         ],
       ),
 
@@ -105,7 +131,7 @@ class CreateJobPage extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 2),
           child: TextButton(
               onPressed: () {},
-              child: Text(
+              child: const Text(
                 "Đăng",
                 style: TextStyle(
                     color: AppColors.executeButton,
@@ -118,36 +144,54 @@ class CreateJobPage extends ConsumerWidget {
   }
 
   Widget item(
-      {required String title, void Function()? onTap, String? content}) {
+      {required String title,
+      bool hasContent = false,
+      void Function()? onTap,
+      String? content,
+      Widget? widget}) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(15)),
       child: InkWell(
         onTap: onTap,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
-                Text(
-                  content ?? "",
-                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+                Visibility(
+                  visible: content != null,
+                  replacement: widget ?? const Center(),
+                  child: Text(
+                    content ?? "",
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w300),
+                  ),
                 ),
               ],
             ),
-            PhosphorIcon(
-              PhosphorIconsRegular.plusCircle,
-              color: AppColors.primary,
+            Visibility(
+              visible: hasContent,
+              replacement: const PhosphorIcon(
+                PhosphorIconsRegular.plusCircle,
+                color: AppColors.primary,
+              ),
+              child: const PhosphorIcon(
+                PhosphorIconsRegular.pencilSimpleLine,
+                color: AppColors.primary,
+              ),
             )
           ],
         ),

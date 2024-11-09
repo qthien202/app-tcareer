@@ -243,16 +243,21 @@ class _JobTopicState extends ConsumerState<JobTopic> {
                 )),
           ),
           GestureDetector(
-            onTap: () {
-              setState(() {
-                controller.jobOption = JobOption.jobRole;
-              });
-            },
+            onTap: controller.selectedJobTopic != null
+                ? () {
+                    setState(() {
+                      controller.jobOption = JobOption.jobRole;
+                    });
+                  }
+                : null,
             child: Container(
                 padding: EdgeInsets.all(10),
                 width: ScreenUtil().screenWidth,
                 margin: EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
+                    color: controller.selectedJobTopic != null
+                        ? Colors.white
+                        : Colors.grey.shade200,
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                         color: controller.jobOption == JobOption.jobRole
@@ -287,14 +292,17 @@ class _JobTopicState extends ConsumerState<JobTopic> {
                     backgroundColor: AppColors.primary,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
-                onPressed: () async {
-                  await controller.setJob(
-                      jobTopicId: controller.selectedJobTopic?.id,
-                      jobTopicName: controller.selectedJobTopic?.topicName,
-                      jobRoleId: controller.selectedJobRole?.id,
-                      jobRoleName: controller.selectedJobRole?.name);
-                  context.pop();
-                },
+                onPressed: controller.selectedJobRole != null
+                    ? () async {
+                        await controller.setJob(
+                            jobTopicId: controller.selectedJobTopic?.id,
+                            jobTopicName:
+                                controller.selectedJobTopic?.topicName,
+                            jobRoleId: controller.selectedJobRole?.id,
+                            jobRoleName: controller.selectedJobRole?.name);
+                        context.pop();
+                      }
+                    : null,
                 child: Text(
                   "Lưu lại",
                   style: TextStyle(color: Colors.white),

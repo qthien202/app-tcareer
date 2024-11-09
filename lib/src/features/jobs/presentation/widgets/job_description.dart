@@ -48,12 +48,13 @@ class _JobDescriptionState extends ConsumerState<JobDescription>
           elevation: 0.0,
           backgroundColor: Colors.white,
           title: const Text(
-            "Chi tiết công việc",
+            "Mô tả chi tiết",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           actions: [
             TextButton(
-                onPressed: () async {},
+                onPressed: () async =>
+                    await controller.saveJobDescription(context),
                 child: const Text(
                   "Lưu lại",
                   style: TextStyle(
