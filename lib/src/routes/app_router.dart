@@ -16,6 +16,7 @@ import 'package:app_tcareer/src/features/jobs/presentation/pages/media/job_media
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_description.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_location.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_position.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_topic.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/post_edit.dart';
 import 'package:app_tcareer/src/features/posts/data/models/shared_post.dart';
@@ -231,6 +232,16 @@ class AppRouter {
                   pageBuilder: (context, state) {
                     return CustomTransitionPage(
                       child: JobLocation(),
+                      transitionsBuilder: slideUpTransitionBuilder,
+                    );
+                  },
+                  routes: []),
+              GoRoute(
+                  path: "topic",
+                  name: "jobTopic",
+                  pageBuilder: (context, state) {
+                    return CustomTransitionPage(
+                      child: JobTopic(),
                       transitionsBuilder: slideUpTransitionBuilder,
                     );
                   },

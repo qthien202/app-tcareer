@@ -40,13 +40,9 @@ class CreateJobPage extends ConsumerWidget {
                 child: JobTitle(), context: context),
           ),
           item(
-            title: "Vị trí công việc",
-            content: "Lập trình viên",
-            onTap: () async => await controller.showBottomSheetDraggable(
-                builder: (scrollController) =>
-                    JobPosition(scrollController: scrollController),
-                context: context),
-          ),
+              title: "Nghề nghiệp",
+              content: controller.job.jobRoleName,
+              onTap: () async => context.goNamed("jobTopic")),
           item(
               title: "Kinh nghiệm làm việc",
               content: controller.job.experienceName,

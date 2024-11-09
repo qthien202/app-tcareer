@@ -93,7 +93,7 @@ class JobCty extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(10))),
                 onPressed: () {},
                 child: Text(
-                  "Hoàn thành",
+                  "Lưu lại",
                   style: TextStyle(color: Colors.white),
                 )),
           ),

@@ -1,4 +1,5 @@
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
 import 'package:app_tcareer/src/services/address/address_services.dart';
 import 'package:app_tcareer/src/services/address/district.dart';
 import 'package:app_tcareer/src/services/address/province.dart';
@@ -6,6 +7,8 @@ import 'package:app_tcareer/src/services/address/ward.dart';
 import 'package:app_tcareer/src/services/apis/api_service_provider.dart';
 import 'package:app_tcareer/src/services/apis/api_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../models/job_topic_model.dart';
 
 class JobRepository {
   final AddressServices addressServices;
@@ -21,6 +24,12 @@ class JobRepository {
 
   Future<void> postCreateJob({required JobModel body}) async =>
       await apiServices.postCreateJob(body: body);
+
+  Future<List<JobTopicModel>> getJobTopic() async =>
+      await apiServices.getJobTopic();
+
+  Future<List<JobRolesModel>> getJobRoles(num topicId) async =>
+      await apiServices.getJobRoles(topicId: topicId);
 }
 
 final jobRepositoryProvider = Provider((ref) {

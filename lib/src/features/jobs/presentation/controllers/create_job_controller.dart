@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'package:app_tcareer/src/features/jobs/data/models/job_location_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_experience.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_location.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/create_job_use_case.dart';
+import 'package:app_tcareer/src/features/jobs/usecases/job_use_case.dart';
 import 'package:app_tcareer/src/services/address/district.dart';
 import 'package:app_tcareer/src/services/address/province.dart';
 import 'package:app_tcareer/src/services/address/ward.dart';
@@ -17,10 +20,13 @@ import 'package:quill_html_editor/quill_html_editor.dart';
 
 enum AddressType { province, district, ward, fullAddress }
 
+enum JobOption { jobTopic, jobRole, none }
+
 class CreateJobController extends ChangeNotifier {
   final CreateJobUseCase createJobUseCase;
+  final JobUseCase jobUseCase;
 
-  CreateJobController(this.createJobUseCase);
+  CreateJobController(this.createJobUseCase, this.jobUseCase);
 
   Future<void> showBottomSheetDraggable(
       {required BuildContext context,
@@ -152,16 +158,19 @@ class CreateJobController extends ChangeNotifier {
   Future<void> setJob(
       {String? title,
       num? jobTopicId,
+      String? jobTopicName,
+      num? jobRoleId,
+      String? jobRoleName,
       String? jobType,
       String? jobDescription,
       dynamic detailLocation,
       num? latitude,
       num? longitude,
       String? employmentType,
+      String? experienceName,
       String? ctyName,
       String? ctyImageUrl,
       num? experienceRequired,
-      String? experienceName,
       num? positionsAvailable}) async {
     job = job.copyWith(
         title: title,
@@ -175,6 +184,9 @@ class CreateJobController extends ChangeNotifier {
         ctyImageUrl: ctyImageUrl,
         ctyName: ctyName,
         employmentType: employmentType,
+        jobTopicName: jobTopicName,
+        jobRoleId: jobRoleId,
+        jobRoleName: jobRoleName,
         experienceName: experienceName,
         positionsAvailable: positionsAvailable);
     print(">>>>>>>>>>body: ${jsonEncode(job)}");
@@ -283,9 +295,40 @@ class CreateJobController extends ChangeNotifier {
   Future<void> handlePaste(TextSelectionDelegate delegate) async {
     delegate.pasteText(SelectionChangedCause.toolbar);
   }
+
+  List<JobTopicModel> jobTopic = [];
+  Future<void> getJobTopic() async {
+    jobTopic.clear();
+    jobTopic = await jobUseCase.getJobTopic();
+    notifyListeners();
+  }
+
+  List<JobRolesModel> jobRoles = [];
+  Future<void> getJobRoles(num topicId) async {
+    jobRoles.clear();
+    jobRoles = await jobUseCase.getJobRoles(topicId);
+    notifyListeners();
+  }
+
+  JobTopicModel? selectedJobTopic;
+  JobOption jobOption = JobOption.jobTopic;
+  Future<void> selectJobTopic(JobTopicModel value) async {
+    selectedJobTopic = value;
+    jobOption = JobOption.jobRole;
+    notifyListeners();
+    await getJobRoles(selectedJobTopic?.id ?? 0);
+  }
+
+  JobRolesModel? selectedJobRole;
+  Future<void> selectJobRole(JobRolesModel value) async {
+    selectedJobRole = value;
+    jobOption = JobOption.none;
+    notifyListeners();
+  }
 }
 
 final createJobControllerProvider = ChangeNotifierProvider((ref) {
   final createJobUseCase = ref.read(createJobUseCaseProvider);
-  return CreateJobController(createJobUseCase);
+  final jobUseCase = ref.read(jobUseCaseProvider);
+  return CreateJobController(createJobUseCase, jobUseCase);
 });
