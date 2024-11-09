@@ -10,14 +10,18 @@ import 'package:app_tcareer/src/services/address/ward.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:quill_html_editor/quill_html_editor.dart';
 
 enum AddressType { province, district, ward, fullAddress }
 
 class CreateJobController extends ChangeNotifier {
   final CreateJobUseCase createJobUseCase;
+
   CreateJobController(this.createJobUseCase);
+
   Future<void> showBottomSheetDraggable(
       {required BuildContext context,
       required Widget Function(ScrollController scrollController)
@@ -62,6 +66,7 @@ class CreateJobController extends ChangeNotifier {
   String? selectedJobTypeWorkSpace;
   String? selectedJobEmploymentType;
   List<Province> provinces = [];
+
   Future<void> getProvince() async {
     if (provinces.isEmpty) {
       provinces = await createJobUseCase.getProvince();
@@ -70,18 +75,21 @@ class CreateJobController extends ChangeNotifier {
   }
 
   List<District> districts = [];
+
   Future<void> getDistrict(num provinceId) async {
     districts = await createJobUseCase.getDistrict(provinceId);
     notifyListeners();
   }
 
   List<Ward> wards = [];
+
   Future<void> getWard(num districtId) async {
     wards = await createJobUseCase.getWard(districtId);
     notifyListeners();
   }
 
   Province? selectedProvince;
+
   Future<void> selectProvince(Province province) async {
     addressType = AddressType.ward;
     selectedProvince = province;
@@ -96,6 +104,7 @@ class CreateJobController extends ChangeNotifier {
   }
 
   District? selectedDistrict;
+
   Future<void> selectDistrict(District district) async {
     addressType = AddressType.ward;
     selectedDistrict = district;
@@ -108,6 +117,7 @@ class CreateJobController extends ChangeNotifier {
   }
 
   Ward? selectedWard;
+
   Future<void> selectWard(Ward ward) async {
     addressType = AddressType.fullAddress;
     selectedWard = ward;
@@ -118,6 +128,7 @@ class CreateJobController extends ChangeNotifier {
   }
 
   AddressType addressType = AddressType.fullAddress;
+
   // unSelectDistrict(){
   //    selectedDistrict =null;
   //    notifyListeners();
@@ -185,6 +196,7 @@ class CreateJobController extends ChangeNotifier {
   }
 
   List<Location>? locations;
+
   Future<void> getLatLngFromAddress({required String fullAddress}) async {
     locations = await locationFromAddress(fullAddress);
   }
@@ -234,6 +246,7 @@ class CreateJobController extends ChangeNotifier {
   }
 
   JobLocationModel jobLocation = JobLocationModel();
+
   Future<void> setJobLocation({
     num? provinceId,
     String? provinceName,
@@ -257,6 +270,18 @@ class CreateJobController extends ChangeNotifier {
         detailLocation: jobLocation,
         latitude: locations?.first.latitude,
         longitude: locations?.first.longitude);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  final QuillEditorController quillController = QuillEditorController();
+
+  Future<void> handlePaste(TextSelectionDelegate delegate) async {
+    delegate.pasteText(SelectionChangedCause.toolbar);
   }
 }
 

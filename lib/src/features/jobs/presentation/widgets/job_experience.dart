@@ -43,10 +43,10 @@ class JobExperience extends ConsumerWidget {
       },
     ];
     return ClipRRect(
-      borderRadius: BorderRadius.only(
+      borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20), topRight: Radius.circular(20)),
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
         ),
         height: 250,
@@ -54,13 +54,13 @@ class JobExperience extends ConsumerWidget {
           children: [
             Material(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 // height: 40,
                 color: Colors.white,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       'Chọn số năm kinh nghiệm',
                       style: TextStyle(
                           letterSpacing: 0,
@@ -71,7 +71,7 @@ class JobExperience extends ConsumerWidget {
                     ),
                     TextButton(
                       onPressed: () => context.pop(),
-                      child: Text(
+                      child: const Text(
                         'Xong',
                         style:
                             TextStyle(color: AppColors.primary, fontSize: 14),

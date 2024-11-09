@@ -4,6 +4,7 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   awesome_notifications
+  clipboard_watcher
   desktop_webview_auth
   emoji_picker_flutter
   file_selector_linux
