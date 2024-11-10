@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_media_controller.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_cty.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_cty.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_media_controller.dart';
 import 'package:flutter/material.dart';

@@ -1,11 +1,12 @@
 import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_job_controller.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_cty.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_description.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_employment_type.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_location.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_title.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_type_work_space.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_cty.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_description.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_employment_type.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_location.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_title.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_type_work_space.dart';
+import 'package:app_tcareer/src/utils/alert_dialog_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -120,7 +121,7 @@ class CreateJobPage extends ConsumerWidget {
 
   PreferredSizeWidget appBar(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(createJobControllerProvider);
-    bool isActive = controller.body != null;
+
     return AppBar(
       backgroundColor: const Color(0xffF9F9F9),
       leading: InkWell(
@@ -142,6 +143,13 @@ class CreateJobPage extends ConsumerWidget {
               //         borderRadius: BorderRadius.circular(20)),
               //     backgroundColor: AppColors.executeButton),
               onPressed: () async {
+                if (controller.validateJobModel() == false) {
+                  await AlertDialogUtil.showAlert(
+                      context: context,
+                      title: "Thông báo",
+                      content: "Vui lòng hoàn thành đầy đủ thông tin!");
+                  return;
+                }
                 await controller.postCreateJob(context);
               },
               child: Text(
@@ -173,27 +181,29 @@ class CreateJobPage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                      fontSize: 14, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Visibility(
-                  visible: content != null,
-                  replacement: widget ?? const Center(),
-                  child: Text(
-                    content ?? "",
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
                     style: const TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.w300),
+                        fontSize: 14, fontWeight: FontWeight.bold),
                   ),
-                ),
-              ],
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Visibility(
+                    visible: content != null,
+                    replacement: widget ?? const Center(),
+                    child: Text(
+                      content ?? "",
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w300),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Visibility(
               visible: hasContent,

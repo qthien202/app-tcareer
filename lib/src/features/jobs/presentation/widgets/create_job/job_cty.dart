@@ -91,8 +91,8 @@ class JobCty extends ConsumerWidget {
                 if (value.isEmpty) {
                   return "Tên công ty không được để trống";
                 }
-                if (value.length > 30) {
-                  return "Tên công ty chỉ được tối đa 30 ký tự";
+                if (value.length > 50) {
+                  return "Tên công ty chỉ được tối đa 50 ký tự";
                 }
                 return null;
               },

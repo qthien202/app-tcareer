@@ -4,8 +4,8 @@ import 'package:app_tcareer/src/features/jobs/data/models/job_location_model.dar
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_experience.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_location.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_experience.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_location.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/create_job_use_case.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/job_use_case.dart';
 import 'package:app_tcareer/src/services/address/district.dart';
@@ -279,6 +279,31 @@ class CreateJobController extends ChangeNotifier {
 
   final QuillEditorController quillController = QuillEditorController();
 
+  Future<void> setDescription() async {
+    if (job.jobDescription != null) {
+      await quillController.setText(job.jobDescription ?? "");
+      notifyListeners();
+    }
+  }
+
+  bool validateJobModel() {
+    return job.title != null &&
+        job.jobTopicId != null &&
+        job.jobTopicName != null &&
+        job.jobRoleId != null &&
+        job.jobRoleName != null &&
+        job.jobType != null &&
+        job.jobDescription != null &&
+        job.detailLocation != null &&
+        job.latitude != null &&
+        job.longitude != null &&
+        job.employmentType != null &&
+        job.experienceName != null &&
+        job.ctyName != null &&
+        job.ctyImageUrl != null &&
+        job.experienceRequired != null;
+  }
+
   Future<void> saveJobDescription(BuildContext context) async {
     final description = await quillController.getText();
     await setJob(jobDescription: description);
@@ -325,6 +350,7 @@ class CreateJobController extends ChangeNotifier {
       await uploadImage();
       body = job;
       await createJobUseCase.postCreateJob(body: body!);
+      context.replaceNamed("jobs");
     }, context);
   }
 

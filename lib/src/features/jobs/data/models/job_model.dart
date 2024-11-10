@@ -1,21 +1,22 @@
 class JobModel {
   JobModel({
-      String? title, 
-      num? jobTopicId, 
-      String? jobTopicName, 
-      num? jobRoleId, 
-      String? jobRoleName, 
-      String? jobType, 
-      String? jobDescription, 
-      dynamic detailLocation, 
-      num? latitude, 
-      num? longitude, 
-      String? employmentType, 
-      String? experienceName, 
-      String? ctyName, 
-      String? ctyImageUrl, 
-      num? experienceRequired, 
-      num? positionsAvailable,}){
+    String? title,
+    num? jobTopicId,
+    String? jobTopicName,
+    num? jobRoleId,
+    String? jobRoleName,
+    String? jobType,
+    String? jobDescription,
+    dynamic detailLocation,
+    num? latitude,
+    num? longitude,
+    String? employmentType,
+    String? experienceName,
+    String? ctyName,
+    String? ctyImageUrl,
+    num? experienceRequired,
+    num? positionsAvailable,
+  }) {
     _title = title;
     _jobTopicId = jobTopicId;
     _jobTopicName = jobTopicName;
@@ -32,7 +33,26 @@ class JobModel {
     _ctyImageUrl = ctyImageUrl;
     _experienceRequired = experienceRequired;
     _positionsAvailable = positionsAvailable;
-}
+  }
+
+  bool isValid() {
+    return _title != null &&
+        _jobTopicId != null &&
+        _jobTopicName != null &&
+        _jobRoleId != null &&
+        _jobRoleName != null &&
+        _jobType != null &&
+        _jobDescription != null &&
+        _detailLocation != null &&
+        _latitude != null &&
+        _longitude != null &&
+        _employmentType != null &&
+        _experienceName != null &&
+        _ctyName != null &&
+        _ctyImageUrl != null &&
+        _experienceRequired != null &&
+        _positionsAvailable != null;
+  }
 
   JobModel.fromJson(dynamic json) {
     _title = json['title'];
@@ -68,39 +88,42 @@ class JobModel {
   String? _ctyImageUrl;
   num? _experienceRequired;
   num? _positionsAvailable;
-JobModel copyWith({  String? title,
-  num? jobTopicId,
-  String? jobTopicName,
-  num? jobRoleId,
-  String? jobRoleName,
-  String? jobType,
-  String? jobDescription,
-  dynamic detailLocation,
-  num? latitude,
-  num? longitude,
-  String? employmentType,
-  String? experienceName,
-  String? ctyName,
-  String? ctyImageUrl,
-  num? experienceRequired,
-  num? positionsAvailable,
-}) => JobModel(  title: title ?? _title,
-  jobTopicId: jobTopicId ?? _jobTopicId,
-  jobTopicName: jobTopicName ?? _jobTopicName,
-  jobRoleId: jobRoleId ?? _jobRoleId,
-  jobRoleName: jobRoleName ?? _jobRoleName,
-  jobType: jobType ?? _jobType,
-  jobDescription: jobDescription ?? _jobDescription,
-  detailLocation: detailLocation ?? _detailLocation,
-  latitude: latitude ?? _latitude,
-  longitude: longitude ?? _longitude,
-  employmentType: employmentType ?? _employmentType,
-  experienceName: experienceName ?? _experienceName,
-  ctyName: ctyName ?? _ctyName,
-  ctyImageUrl: ctyImageUrl ?? _ctyImageUrl,
-  experienceRequired: experienceRequired ?? _experienceRequired,
-  positionsAvailable: positionsAvailable ?? _positionsAvailable,
-);
+  JobModel copyWith({
+    String? title,
+    num? jobTopicId,
+    String? jobTopicName,
+    num? jobRoleId,
+    String? jobRoleName,
+    String? jobType,
+    String? jobDescription,
+    dynamic detailLocation,
+    num? latitude,
+    num? longitude,
+    String? employmentType,
+    String? experienceName,
+    String? ctyName,
+    String? ctyImageUrl,
+    num? experienceRequired,
+    num? positionsAvailable,
+  }) =>
+      JobModel(
+        title: title ?? _title,
+        jobTopicId: jobTopicId ?? _jobTopicId,
+        jobTopicName: jobTopicName ?? _jobTopicName,
+        jobRoleId: jobRoleId ?? _jobRoleId,
+        jobRoleName: jobRoleName ?? _jobRoleName,
+        jobType: jobType ?? _jobType,
+        jobDescription: jobDescription ?? _jobDescription,
+        detailLocation: detailLocation ?? _detailLocation,
+        latitude: latitude ?? _latitude,
+        longitude: longitude ?? _longitude,
+        employmentType: employmentType ?? _employmentType,
+        experienceName: experienceName ?? _experienceName,
+        ctyName: ctyName ?? _ctyName,
+        ctyImageUrl: ctyImageUrl ?? _ctyImageUrl,
+        experienceRequired: experienceRequired ?? _experienceRequired,
+        positionsAvailable: positionsAvailable ?? _positionsAvailable,
+      );
   String? get title => _title;
   num? get jobTopicId => _jobTopicId;
   String? get jobTopicName => _jobTopicName;
@@ -138,5 +161,4 @@ JobModel copyWith({  String? title,
     map['positions_available'] = _positionsAvailable;
     return map;
   }
-
 }

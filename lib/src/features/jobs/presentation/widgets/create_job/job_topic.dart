@@ -255,9 +255,7 @@ class _JobTopicState extends ConsumerState<JobTopic> {
                 width: ScreenUtil().screenWidth,
                 margin: EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                    color: controller.selectedJobTopic != null
-                        ? Colors.white
-                        : Colors.grey.shade200,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                         color: controller.jobOption == JobOption.jobRole

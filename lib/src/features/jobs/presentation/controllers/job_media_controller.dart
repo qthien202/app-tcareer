@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_job_controller.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_cty.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_cty.dart';
 import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_media_use_case.dart';

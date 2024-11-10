@@ -74,6 +74,9 @@ class _JobDescriptionState extends ConsumerState<JobDescription>
                 child: ListView(
                   children: [
                     QuillHtmlEditor(
+                      onEditorCreated: () async {
+                        await controller.setDescription();
+                      },
                       ensureVisible: true,
                       autoFocus: true,
                       // text: "<h1>Hello</h1>This is a quill html editor example 😊",
