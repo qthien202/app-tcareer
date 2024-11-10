@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
 import 'package:app_tcareer/src/services/address/address_services.dart';
@@ -39,6 +40,8 @@ class JobRepository {
       {required File file, required String folderPath}) async {
     return await storageService.uploadFile(file, folderPath);
   }
+
+  Future<GetJobResponse> getJobs() async => await apiServices.getJobs();
 }
 
 final jobRepositoryProvider = Provider((ref) {

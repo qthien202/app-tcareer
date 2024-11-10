@@ -16,6 +16,7 @@ import 'package:app_tcareer/src/features/chat/data/models/leave_chat_request.dar
 import 'package:app_tcareer/src/features/chat/data/models/mark_read_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/send_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_from_message.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
@@ -210,4 +211,7 @@ abstract class ApiServices {
   @GET('api/auth/topic-roles/{topic}/view')
   Future<List<JobRolesModel>> getJobRoles(
       {@Path('topic') required num topicId});
+
+  @GET('api/auth/career')
+  Future<GetJobResponse> getJobs();
 }

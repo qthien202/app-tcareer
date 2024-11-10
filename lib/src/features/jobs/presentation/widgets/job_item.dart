@@ -1,8 +1,10 @@
+import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/jobs.dart';
+import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-Widget jobItem(Jobs job) {
+Widget jobItem(JobModel job) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
     margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -29,8 +31,10 @@ Widget jobItem(Jobs job) {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Image.network(
-                    job.thumbnailUrl ?? "",
+                  cachedImageWidget(
+                    height: 50,
+                    width: 50,
+                    imageUrl: job.ctyImageUrl ?? "",
                     fit: BoxFit.cover,
                   )
                 ],
@@ -45,21 +49,21 @@ Widget jobItem(Jobs job) {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    job.name ?? "",
+                    job.title ?? "",
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   Text(
-                    job.hiringCompany ?? "",
+                    job.ctyName ?? "",
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   Text(
-                    job.address ?? "",
+                    job.detailLocation['full_address'] ?? "",
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -78,7 +82,7 @@ Widget jobItem(Jobs job) {
                             color: Colors.grey.shade100,
                             borderRadius: BorderRadius.circular(20)),
                         child: Text(
-                          "Toàn thời gian",
+                          job.employmentType ?? "",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 12,
@@ -93,7 +97,7 @@ Widget jobItem(Jobs job) {
                             color: Colors.grey.shade100,
                             borderRadius: BorderRadius.circular(20)),
                         child: Text(
-                          "4 năm",
+                          "${job.experienceRequired.toString()} năm",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 12,
@@ -119,17 +123,17 @@ Widget jobItem(Jobs job) {
                 ],
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Column(
-                children: [
-                  Text(
-                    "1 giờ",
-                    style: const TextStyle(color: Colors.grey, fontSize: 12),
-                  ),
-                ],
-              ),
-            )
+            // Expanded(
+            //   flex: 1,
+            //   child: Column(
+            //     children: [
+            //       Text(
+            //         "1 giờ",
+            //         style: const TextStyle(color: Colors.grey, fontSize: 12),
+            //       ),
+            //     ],
+            //   ),
+            // )
 
             // Expanded(child: Text("1"))
           ],
