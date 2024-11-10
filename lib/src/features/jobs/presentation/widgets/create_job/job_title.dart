@@ -14,8 +14,8 @@ class JobTitle extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(createJobControllerProvider);
     TextEditingController textController = TextEditingController();
-    if (controller.job.title != null) {
-      textController.text = controller.job.title ?? "";
+    if (controller.job?.title != null) {
+      textController.text = controller.job?.title ?? "";
     }
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Padding(
@@ -26,7 +26,7 @@ class JobTitle extends ConsumerWidget {
           children: [
             Center(
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
+                margin: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
                     color: Colors.grey, borderRadius: BorderRadius.circular(5)),
                 width: 30,

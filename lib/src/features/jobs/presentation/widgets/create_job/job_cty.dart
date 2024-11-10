@@ -21,8 +21,8 @@ class JobCty extends ConsumerWidget {
     final controller = ref.watch(createJobControllerProvider);
     TextEditingController ctyNameController = TextEditingController();
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    if (controller.job.ctyName != null) {
-      ctyNameController.text = controller.job.ctyName ?? "";
+    if (controller.job?.ctyName != null) {
+      ctyNameController.text = controller.job?.ctyName ?? "";
     }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),

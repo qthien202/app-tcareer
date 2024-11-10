@@ -147,7 +147,7 @@ class CreateJobController extends ChangeNotifier {
     notifyListeners();
   }
 
-  JobModel job = JobModel();
+  JobModel? job;
 
   Future<void> setJob(
       {String? title,
@@ -166,7 +166,7 @@ class CreateJobController extends ChangeNotifier {
       String? ctyImageUrl,
       num? experienceRequired,
       num? positionsAvailable}) async {
-    job = job.copyWith(
+    job = job?.copyWith(
         title: title,
         jobTopicId: jobTopicId,
         jobType: jobType,
@@ -292,29 +292,29 @@ class CreateJobController extends ChangeNotifier {
   final QuillEditorController quillController = QuillEditorController();
 
   Future<void> setDescription() async {
-    if (job.jobDescription != null) {
-      await quillController.setText(job.jobDescription ?? "");
+    if (job?.jobDescription != null) {
+      await quillController.setText(job?.jobDescription ?? "");
       notifyListeners();
     }
   }
 
   bool validateJobModel() {
-    return job.title != null &&
-        job.jobTopicId != null &&
-        job.jobTopicName != null &&
-        job.jobRoleId != null &&
-        job.jobRoleName != null &&
-        job.jobType != null &&
-        job.jobDescription != null &&
-        job.detailLocation != null &&
-        job.latitude != null &&
-        job.longitude != null &&
-        job.employmentType != null &&
-        job.experienceName != null &&
-        job.ctyName != null &&
-        job.ctyImageUrl != null &&
-        job.experienceRequired != null &&
-        job.positionsAvailable != null;
+    return job?.title != null &&
+        job?.jobTopicId != null &&
+        job?.jobTopicName != null &&
+        job?.jobRoleId != null &&
+        job?.jobRoleName != null &&
+        job?.jobType != null &&
+        job?.jobDescription != null &&
+        job?.detailLocation != null &&
+        job?.latitude != null &&
+        job?.longitude != null &&
+        job?.employmentType != null &&
+        job?.experienceName != null &&
+        job?.ctyName != null &&
+        job?.ctyImageUrl != null &&
+        job?.experienceRequired != null &&
+        job?.positionsAvailable != null;
   }
 
   Future<void> saveJobDescription(BuildContext context) async {
@@ -357,13 +357,13 @@ class CreateJobController extends ChangeNotifier {
     notifyListeners();
   }
 
-  JobModel? body;
   Future<void> postCreateJob(BuildContext context) async {
     AppUtils.loadingApi(() async {
       await uploadImage();
-      body = job;
-      await createJobUseCase.postCreateJob(body: body!);
-      context.replaceNamed("jobs");
+
+      await createJobUseCase.postCreateJob(body: job!);
+
+      context.goNamed("jobs");
     }, context);
   }
 
@@ -371,9 +371,9 @@ class CreateJobController extends ChangeNotifier {
     const uuid = Uuid();
     final id = uuid.v4();
     String? imageUrl = await createJobUseCase.uploadImage(
-        file: File(job.ctyImageUrl ?? ""), folderPath: "jobs/$id");
+        file: File(job?.ctyImageUrl ?? ""), folderPath: "jobs/$id");
     if (imageUrl != "") {
-      job = job.copyWith(ctyImageUrl: imageUrl);
+      job = job?.copyWith(ctyImageUrl: imageUrl);
     }
   }
 }
