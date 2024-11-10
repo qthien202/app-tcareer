@@ -389,8 +389,11 @@ class _JobLocationState extends ConsumerState<JobLocation> {
                         borderRadius: BorderRadius.circular(10))),
                 onPressed: controller.selectedWard != null
                     ? () async {
+                        String? address = addressController.text != ""
+                            ? "${addressController.text},"
+                            : "";
                         String fullAddress =
-                            "${addressController.text},${controller.selectedWard?.wardName}, ${controller.selectedDistrict?.districtName},${controller.selectedProvince?.provinceName}";
+                            "$address${controller.selectedWard?.wardName}, ${controller.selectedDistrict?.districtName}, ${controller.selectedProvince?.provinceName}";
                         await controller.getLatLngFromAddress(
                             fullAddress: fullAddress);
                         await controller.setJobLocation(

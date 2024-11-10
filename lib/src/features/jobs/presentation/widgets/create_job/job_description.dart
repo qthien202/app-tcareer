@@ -8,38 +8,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
-class JobDescription extends ConsumerStatefulWidget {
+class JobDescription extends ConsumerWidget {
   const JobDescription({
     super.key,
   });
 
   @override
-  ConsumerState<JobDescription> createState() => _JobDescriptionState();
-}
-
-class _JobDescriptionState extends ConsumerState<JobDescription>
-    with ClipboardListener {
-  @override
-  void initState() {
-    // TODO: implement initState
-    clipboardWatcher.addListener(this);
-    // start watch
-    clipboardWatcher.start();
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    clipboardWatcher.removeListener(this);
-    // stop watch
-    clipboardWatcher.stop();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(createJobControllerProvider);
 
     return Scaffold(
@@ -87,16 +62,9 @@ class _JobDescriptionState extends ConsumerState<JobDescription>
                       hintTextAlign: TextAlign.start,
                       padding: const EdgeInsets.only(left: 10, top: 5),
                       hintTextPadding: EdgeInsets.zero,
-
+                      textStyle: TextStyle(fontSize: 14),
                       onEditingComplete: (val) async {},
-                      onTextChanged: (val) async {
-                        final clipboard = ref.read(clipboardServiceProvider);
-                        final content = await clipboard.getHtmlFromClipboard();
-                        if (content != null && val == content) {
-                          await controller.quillController.setText(content);
-                        }
-                        print(">>>>>>>>>>content: $content");
-                      },
+                      onTextChanged: (val) async {},
                     ),
                   ],
                 ),
@@ -142,28 +110,5 @@ class _JobDescriptionState extends ConsumerState<JobDescription>
         // ),
 
         );
-  }
-
-  @override
-  void onClipboardChanged() async {
-    ClipboardData? newClipboardData =
-        await Clipboard.getData(Clipboard.kTextPlain);
-    print(">>>>>>>>>>>>>>>clipboard: ${newClipboardData?.text ?? ""}");
-  }
-}
-
-class PasteInputFormatter extends TextInputFormatter {
-  final Function(String) onPasteDetected;
-
-  PasteInputFormatter({required this.onPasteDetected});
-
-  @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
-    if (oldValue.text != newValue.text) {
-      // Kiểm tra xem nếu dữ liệu thay đổi có thể là do paste
-      onPasteDetected(newValue.text);
-    }
-    return newValue;
   }
 }
