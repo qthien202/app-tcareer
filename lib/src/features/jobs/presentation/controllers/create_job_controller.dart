@@ -4,6 +4,7 @@ import 'package:app_tcareer/src/features/jobs/data/models/job_location_model.dar
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_employee_qty.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_experience.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_location.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/create_job_use_case.dart';
@@ -211,6 +212,17 @@ class CreateJobController extends ChangeNotifier {
     );
   }
 
+  Future<void> showEmployeeQtyPicker(
+    BuildContext context,
+  ) async {
+    await showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return const JobEmployeeQty();
+      },
+    );
+  }
+
   Future<void> selectJobType(String value) async {
     selectedJobTypeWorkSpace = value;
     await setJob(jobType: selectedJobTypeWorkSpace);
@@ -301,7 +313,8 @@ class CreateJobController extends ChangeNotifier {
         job.experienceName != null &&
         job.ctyName != null &&
         job.ctyImageUrl != null &&
-        job.experienceRequired != null;
+        job.experienceRequired != null &&
+        job.positionsAvailable != null;
   }
 
   Future<void> saveJobDescription(BuildContext context) async {

@@ -57,6 +57,14 @@ class CreateJobPage extends ConsumerWidget {
                 onTap: () async =>
                     await controller.showExperiencePicker(context)),
             item(
+                title: "Số lượng tuyển",
+                content: controller.job.positionsAvailable != null
+                    ? "${controller.job.positionsAvailable} nhân viên"
+                    : "",
+                hasContent: controller.job.positionsAvailable != null,
+                onTap: () async =>
+                    await controller.showEmployeeQtyPicker(context)),
+            item(
                 title: "Hình thức làm việc",
                 hasContent: controller.job.jobType != null,
                 content:
