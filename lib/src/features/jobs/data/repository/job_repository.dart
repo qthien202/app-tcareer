@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
 import 'package:app_tcareer/src/services/address/address_services.dart';
@@ -6,6 +8,7 @@ import 'package:app_tcareer/src/services/address/province.dart';
 import 'package:app_tcareer/src/services/address/ward.dart';
 import 'package:app_tcareer/src/services/apis/api_service_provider.dart';
 import 'package:app_tcareer/src/services/apis/api_services.dart';
+import 'package:app_tcareer/src/services/firebase/firebase_storage_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/job_topic_model.dart';
@@ -13,7 +16,8 @@ import '../models/job_topic_model.dart';
 class JobRepository {
   final AddressServices addressServices;
   final ApiServices apiServices;
-  JobRepository(this.addressServices, this.apiServices);
+  final FirebaseStorageService storageService;
+  JobRepository(this.addressServices, this.apiServices, this.storageService);
 
   Future<List<Province>> getProvince() async =>
       await addressServices.getProvince();
@@ -30,10 +34,16 @@ class JobRepository {
 
   Future<List<JobRolesModel>> getJobRoles(num topicId) async =>
       await apiServices.getJobRoles(topicId: topicId);
+
+  Future<String> uploadImage(
+      {required File file, required String folderPath}) async {
+    return await storageService.uploadFile(file, folderPath);
+  }
 }
 
 final jobRepositoryProvider = Provider((ref) {
   final addressServices = ref.read(addressServicesProvider);
   final apiServices = ref.read(apiServiceProvider);
-  return JobRepository(addressServices, apiServices);
+  final firebaseStorageService = ref.read(firebaseStorageServiceProvider);
+  return JobRepository(addressServices, apiServices, firebaseStorageService);
 });

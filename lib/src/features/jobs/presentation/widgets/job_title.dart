@@ -14,6 +14,9 @@ class JobTitle extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(createJobControllerProvider);
     TextEditingController textController = TextEditingController();
+    if (controller.job.title != null) {
+      textController.text = controller.job.title ?? "";
+    }
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
@@ -32,13 +35,16 @@ class JobTitle extends ConsumerWidget {
             ),
             TextInputForm(
               controller: textController,
-              title: "Tên công việc",
-              hintText: "Nhập tên công việc",
+              title: "Tiêu đề",
+              hintText: "Nhập tiêu đề",
               maxLine: 3,
               validator: (val) {
                 String value = val ?? '';
                 if (value.isEmpty) {
-                  return "Tên công việc không được để trống";
+                  return "Tiêu đề không được để trống";
+                }
+                if (value.length > 100) {
+                  return "Tiêu đề chỉ được tối đa 100 ký tự";
                 }
                 return null;
               },

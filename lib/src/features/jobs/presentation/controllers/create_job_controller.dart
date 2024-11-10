@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:app_tcareer/src/features/jobs/data/models/job_location_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
@@ -18,6 +19,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
+import 'package:uuid/uuid.dart';
 
 enum AddressType { province, district, ward, fullAddress }
 
@@ -136,16 +138,6 @@ class CreateJobController extends ChangeNotifier {
 
   AddressType addressType = AddressType.fullAddress;
 
-  // unSelectDistrict(){
-  //    selectedDistrict =null;
-  //    notifyListeners();
-  //  }
-  //
-  //  unSelectDistrict(){
-  //    selectedDistrict =null;
-  //    notifyListeners();
-  //  }
-
   resetAddress() {
     addressType = AddressType.fullAddress;
     selectedProvince = null;
@@ -200,12 +192,6 @@ class CreateJobController extends ChangeNotifier {
     isLoading = value;
 
     notifyListeners();
-  }
-
-  Future<void> postCreateJob(BuildContext context) async {
-    AppUtils.loadingApi(() async {
-      await createJobUseCase.postCreateJob(body: job);
-    }, context);
   }
 
   List<Location>? locations;
@@ -331,6 +317,25 @@ class CreateJobController extends ChangeNotifier {
     selectedJobRole = value;
     jobOption = JobOption.none;
     notifyListeners();
+  }
+
+  JobModel? body;
+  Future<void> postCreateJob(BuildContext context) async {
+    AppUtils.loadingApi(() async {
+      await uploadImage();
+      body = job;
+      await createJobUseCase.postCreateJob(body: body!);
+    }, context);
+  }
+
+  Future<void> uploadImage() async {
+    const uuid = Uuid();
+    final id = uuid.v4();
+    String? imageUrl = await createJobUseCase.uploadImage(
+        file: File(job.ctyImageUrl ?? ""), folderPath: "jobs/$id");
+    if (imageUrl != "") {
+      job = job.copyWith(ctyImageUrl: imageUrl);
+    }
   }
 }
 

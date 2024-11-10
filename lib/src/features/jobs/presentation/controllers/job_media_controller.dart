@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_job_controller.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_cty.dart';
 import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_media_use_case.dart';
@@ -65,8 +67,8 @@ class JobMediaController extends ChangeNotifier {
       final croppedFile = await cropImage(image: file, context: context);
       if (croppedFile != null) {
         selectedImage = File(croppedFile.path);
+        notifyListeners();
       }
-      notifyListeners();
     }
   }
 
@@ -105,10 +107,18 @@ class JobMediaController extends ChangeNotifier {
 
   Future<void> updateAvatar(
       {required AssetEntity asset, required BuildContext context}) async {
+    final create = ref.read(createJobControllerProvider);
+
     await selectImage(asset: asset, context: context);
+    if (selectedImage != null) {
+      if (context.mounted) {
+        context.pop();
+        await create.showBottomSheet(context: context, child: const JobCty());
+      }
+    }
+
     // final user = ref.watch(userControllerProvider);
-    // final uuid = Uuid();
-    // final id = uuid.v4();
+
     // if (selectedImage != null) {
     //   AppUtils.loadingApi(() async {
     //     final avatarUrl = await userMediaUseCase.uploadImage(

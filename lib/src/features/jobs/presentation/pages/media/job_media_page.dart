@@ -1,5 +1,7 @@
 import 'dart:typed_data';
+import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_media_controller.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_cty.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_media_controller.dart';
 import 'package:flutter/material.dart';
@@ -33,50 +35,60 @@ class _JobMediaPageState extends ConsumerState<JobMediaPage> {
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(jobMediaControllerProvider);
+    final createJobController = ref.watch(createJobControllerProvider);
 
-    return Scaffold(
-        appBar: appBar(),
-        body: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: 4,
-              mainAxisSpacing: 4,
-            ),
-            itemCount: controller.media.length,
-            itemBuilder: (context, index) {
-              final item = controller.media[index];
+    return PopScope(
+      onPopInvoked: (didPop) async {
+        context.pop();
+        await createJobController.showBottomSheet(
+            context: context, child: const JobCty());
+      },
+      child: Scaffold(
+          appBar: appBar(),
+          body: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 4,
+                mainAxisSpacing: 4,
+              ),
+              itemCount: controller.media.length,
+              itemBuilder: (context, index) {
+                final item = controller.media[index];
 
-              return FutureBuilder<Uint8List?>(
-                future: item.thumbnailData,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center();
-                  }
+                return FutureBuilder<Uint8List?>(
+                  future: item.thumbnailData,
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center();
+                    }
 
-                  return InkWell(
-                      onTap: () async {
-                        await controller.updateAvatar(
-                            asset: item, context: context);
-                      },
-                      child: Container(
-                          child: Image.memory(
-                        snapshot.data!,
-                        fit: BoxFit.cover,
-                      )));
-                },
-              );
-            }));
+                    return InkWell(
+                        onTap: () async {
+                          await controller.updateAvatar(
+                              asset: item, context: context);
+                        },
+                        child: Container(
+                            child: Image.memory(
+                          snapshot.data!,
+                          fit: BoxFit.cover,
+                        )));
+                  },
+                );
+              })),
+    );
   }
 
   PreferredSize appBar() {
     final controller = ref.watch(userMediaControllerProvider);
+    final createJobController = ref.watch(createJobControllerProvider);
     return PreferredSize(
         preferredSize: Size.fromHeight(50),
         child: AppBar(
           centerTitle: true,
           leading: IconButton(
-            onPressed: () {
-              context.pop();
+            onPressed: () async {
+              await createJobController.showBottomSheet(
+                  context: context, child: const JobCty());
             },
             icon: const Icon(
               Icons.close,

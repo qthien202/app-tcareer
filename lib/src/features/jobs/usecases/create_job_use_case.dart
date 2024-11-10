@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/repository/job_repository.dart';
 import 'package:app_tcareer/src/services/address/district.dart';
@@ -17,6 +19,10 @@ class CreateJobUseCase {
       await jobRepository.getWard(districtId);
   Future<void> postCreateJob({required JobModel body}) async =>
       await jobRepository.postCreateJob(body: body);
+
+  Future<String> uploadImage(
+          {required File file, required String folderPath}) async =>
+      await jobRepository.uploadImage(file: file, folderPath: folderPath);
 }
 
 final createJobUseCaseProvider = Provider((ref) {

@@ -19,106 +19,113 @@ class CreateJobPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(createJobControllerProvider);
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: const Color(0xffF9F9F9),
-      appBar: appBar(context, ref),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        children: [
-          const Text(
-            "Tạo công việc",
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          item(
-            title: "Tiêu đề",
-            content: controller.job.title,
-            hasContent: controller.job.title != null,
-            onTap: () async => await controller.showBottomSheet(
-                child: const JobTitle(), context: context),
-          ),
-          item(
-              title: "Nghề nghiệp",
-              content: controller.job.jobRoleName,
-              hasContent: controller.job.jobRoleName != null,
-              onTap: () async => context.goNamed("jobTopic")),
-          item(
-              title: "Kinh nghiệm làm việc",
-              content: controller.job.experienceName,
-              hasContent: controller.job.experienceName != null,
-              onTap: () async =>
-                  await controller.showExperiencePicker(context)),
-          item(
-              title: "Hình thức làm việc",
-              hasContent: controller.job.jobType != null,
-              content:
-                  controller.getJobType(controller.job.jobType ?? "") ?? "",
+    return PopScope(
+      onPopInvoked: (didPop) {
+        context.replaceNamed("home");
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: const Color(0xffF9F9F9),
+        appBar: appBar(context, ref),
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          children: [
+            const Text(
+              "Tạo công việc",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            item(
+              title: "Tiêu đề",
+              content: controller.job.title,
+              hasContent: controller.job.title != null,
               onTap: () async => await controller.showBottomSheet(
-                    context: context,
-                    child: const JobTypeWorkSpace(),
-                  )),
-          item(
-              title: "Địa điểm làm việc",
-              hasContent: controller.jobLocation.fullAddress != null,
-              content: controller.jobLocation.fullAddress,
-              onTap: () async => context.goNamed("jobLocation")),
-          item(
-              title: "Công ty",
-              content: "TTech",
-              onTap: () async => await controller.showBottomSheet(
-                  context: context, child: const JobCty())),
-          item(
-              title: "Loại hình làm việc",
-              hasContent: controller.job.employmentType != null,
-              content: controller
-                      .getEmploymentType(controller.job.employmentType ?? "") ??
-                  "",
-              onTap: () async => await controller.showBottomSheet(
-                    context: context,
-                    child: const JobEmploymentType(),
-                  )),
-          item(
-            title: "Mô tả chi tiết",
-            hasContent: controller.job.jobDescription != null,
-            widget: Visibility(
-              visible: controller.job.jobDescription != null,
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                    maxHeight: ScreenUtil().screenHeight * .3,
-                    maxWidth: ScreenUtil().screenWidth * .8),
-                child: ListView(
-                  children: [
-                    HtmlWidget(
-                      controller.job.jobDescription ?? "",
-                      textStyle:
-                          const TextStyle(overflow: TextOverflow.ellipsis),
-                    ),
-                  ],
+                  child: const JobTitle(), context: context),
+            ),
+            item(
+                title: "Nghề nghiệp",
+                content: controller.job.jobRoleName,
+                hasContent: controller.job.jobRoleName != null,
+                onTap: () async => context.goNamed("jobTopic")),
+            item(
+                title: "Kinh nghiệm làm việc",
+                content: controller.job.experienceName,
+                hasContent: controller.job.experienceName != null,
+                onTap: () async =>
+                    await controller.showExperiencePicker(context)),
+            item(
+                title: "Hình thức làm việc",
+                hasContent: controller.job.jobType != null,
+                content:
+                    controller.getJobType(controller.job.jobType ?? "") ?? "",
+                onTap: () async => await controller.showBottomSheet(
+                      context: context,
+                      child: const JobTypeWorkSpace(),
+                    )),
+            item(
+                title: "Địa điểm làm việc",
+                hasContent: controller.jobLocation.fullAddress != null,
+                content: controller.jobLocation.fullAddress,
+                onTap: () async => context.goNamed("jobLocation")),
+            item(
+                title: "Công ty",
+                hasContent: controller.job.ctyName != null,
+                content: controller.job.ctyName,
+                onTap: () async => await controller.showBottomSheet(
+                    context: context, child: const JobCty())),
+            item(
+                title: "Loại hình làm việc",
+                hasContent: controller.job.employmentType != null,
+                content: controller.getEmploymentType(
+                        controller.job.employmentType ?? "") ??
+                    "",
+                onTap: () async => await controller.showBottomSheet(
+                      context: context,
+                      child: const JobEmploymentType(),
+                    )),
+            item(
+              title: "Mô tả chi tiết",
+              hasContent: controller.job.jobDescription != null,
+              widget: Visibility(
+                visible: controller.job.jobDescription != null,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                      maxHeight: ScreenUtil().screenHeight * .3,
+                      maxWidth: ScreenUtil().screenWidth * .8),
+                  child: ListView(
+                    children: [
+                      HtmlWidget(
+                        controller.job.jobDescription ?? "",
+                        textStyle:
+                            const TextStyle(overflow: TextOverflow.ellipsis),
+                      ),
+                    ],
+                  ),
                 ),
               ),
+              onTap: () async => context.goNamed("jobDescription"),
             ),
-            onTap: () async => context.goNamed("jobDescription"),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-        ],
-      ),
+            const SizedBox(
+              height: 30,
+            ),
+          ],
+        ),
 
-      // bottomNavigationBar:
+        // bottomNavigationBar:
+      ),
     );
   }
 
   PreferredSizeWidget appBar(BuildContext context, WidgetRef ref) {
-    final controller = ref.read(createJobControllerProvider);
+    final controller = ref.watch(createJobControllerProvider);
+    bool isActive = controller.body != null;
     return AppBar(
       backgroundColor: const Color(0xffF9F9F9),
       leading: InkWell(
         onTap: () {
-          context.pop();
+          context.replaceNamed("home");
         },
         child: const Icon(
           Icons.arrow_back,
@@ -130,9 +137,15 @@ class CreateJobPage extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 2),
           child: TextButton(
-              onPressed: () {},
-              child: const Text(
-                "Đăng",
+              // style: ElevatedButton.styleFrom(
+              //     shape: RoundedRectangleBorder(
+              //         borderRadius: BorderRadius.circular(20)),
+              //     backgroundColor: AppColors.executeButton),
+              onPressed: () async {
+                await controller.postCreateJob(context);
+              },
+              child: Text(
+                "Đăng bài",
                 style: TextStyle(
                     color: AppColors.executeButton,
                     fontSize: 14,
