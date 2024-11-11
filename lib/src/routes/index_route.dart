@@ -3,6 +3,8 @@ import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_pa
 import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_search_page.dart';
 import 'package:app_tcareer/src/features/chat/presentation/pages/messages_match_page.dart';
 import 'package:app_tcareer/src/features/index/index_page.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/job_page.dart';
 import 'package:app_tcareer/src/features/notifications/presentation/pages/notification_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/home_page.dart';
@@ -39,13 +41,27 @@ class Index {
         ),
         StatefulShellBranch(routes: [
           GoRoute(
-            path: "/${RouteNames.jobs.name}",
-            name: RouteNames.jobs.name,
-            pageBuilder: (context, state) => CustomTransitionPage(
-                key: state.pageKey,
-                child: const JobPage(),
-                transitionsBuilder: fadeTransitionBuilder),
-          ),
+              path: "/${RouteNames.jobs.name}",
+              name: RouteNames.jobs.name,
+              pageBuilder: (context, state) => CustomTransitionPage(
+                  key: state.pageKey,
+                  child: const JobPage(),
+                  transitionsBuilder: fadeTransitionBuilder),
+              routes: [
+                GoRoute(
+                    path: "detail",
+                    name: "jobDetail",
+                    pageBuilder: (context, state) {
+                      final job = state.extra as JobModel;
+                      return CustomTransitionPage(
+                          key: state.pageKey,
+                          child: JobDetailPage(
+                            job: job,
+                          ),
+                          transitionsBuilder: fadeTransitionBuilder);
+                    },
+                    routes: []),
+              ]),
         ]),
         StatefulShellBranch(routes: [
           GoRoute(

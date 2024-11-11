@@ -113,7 +113,7 @@ class JobPage extends ConsumerWidget {
           childCount: controller.jobs.length,
           (context, index) {
             final job = controller.jobs[index];
-            return jobItem(job);
+            return jobItem(job, context);
           },
         ),
       ),

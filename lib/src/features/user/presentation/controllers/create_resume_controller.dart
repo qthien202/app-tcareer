@@ -7,6 +7,8 @@ class CreateResumeController extends ChangeNotifier {
   QuillEditorController experienceController = QuillEditorController();
   QuillEditorController educationController = QuillEditorController();
   QuillEditorController skillController = QuillEditorController();
+
+  Future<void> setIntroduce() async {}
 }
 
 final createResumeControllerProvider = ChangeNotifierProvider((ref) {

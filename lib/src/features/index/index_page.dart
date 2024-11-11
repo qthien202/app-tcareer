@@ -94,12 +94,14 @@ class _IndexPageState extends ConsumerState<IndexPage>
     ];
     final state = ref.watch(indexControllerProvider);
     final routerState = GoRouterState.of(context);
+    bool isRouteValid =
+        routerState.fullPath?.startsWith("/conversation/chat") == false &&
+            routerState.fullPath?.startsWith("/user/createResume") == false &&
+            routerState.fullPath?.startsWith("/jobs/detail") == false;
     return Scaffold(
       body: widget.shell,
       bottomNavigationBar: Visibility(
-        visible: state == true &&
-            routerState.fullPath?.startsWith("/conversation/chat") == false &&
-            routerState.fullPath?.startsWith("/user/createResume") == false,
+        visible: state == true && isRouteValid,
         child: BottomNavigationBar(
             showSelectedLabels: false,
             showUnselectedLabels: false,
@@ -162,10 +164,10 @@ class _IndexPageState extends ConsumerState<IndexPage>
             badgeStyle: const badges.BadgeStyle(badgeColor: Colors.blue),
             child: Visibility(
               visible: active != true,
-              replacement: PhosphorIcon(
+              replacement: const PhosphorIcon(
                 PhosphorIconsFill.bell,
               ),
-              child: PhosphorIcon(
+              child: const PhosphorIcon(
                 PhosphorIconsThin.bell,
               ),
             ),
