@@ -203,7 +203,9 @@ class _PostingPageState extends ConsumerState<PostingPage> {
       actions: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 2),
-          child: TextButton(
+          child: ElevatedButton(
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
               // style: ElevatedButton.styleFrom(
               //     shape: RoundedRectangleBorder(
               //         borderRadius: BorderRadius.circular(20)),
@@ -211,12 +213,8 @@ class _PostingPageState extends ConsumerState<PostingPage> {
               onPressed: isActive ? onPosting : null,
               child: Text(
                 widget.action == "edit" ? "Lưu" : "Đăng bài",
-                style: TextStyle(
-                    color: isActive
-                        ? AppColors.executeButton
-                        : Colors.grey.shade300,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               )),
         )
       ],

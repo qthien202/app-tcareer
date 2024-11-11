@@ -50,7 +50,7 @@ class JobTypeWorkSpace extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
-              "Chọn hình thức làm việc",
+              "Chọn loại nơi làm việc",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),

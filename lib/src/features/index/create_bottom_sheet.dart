@@ -51,7 +51,7 @@ class CreateBottomSheet extends StatelessWidget {
               ),
               Text(
                 textAlign: TextAlign.center,
-                "Bạn có muốn đăng các mẹo và kinh nghiệm của mình hoặc thêm một công việc?",
+                "Bạn có muốn đăng các mẹo và kinh nghiệm của mình hoặc đăng tin tuyển dụng?",
                 style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12),
               ),
               const SizedBox(
@@ -86,7 +86,7 @@ class CreateBottomSheet extends StatelessWidget {
                       context.pushNamed('createJob');
                     },
                     child: Text(
-                      "Thêm công việc",
+                      "Đăng tin tuyển dụng",
                       style: TextStyle(color: Colors.white),
                     )),
               ),
