@@ -63,7 +63,13 @@ class JobEmployeeQty extends ConsumerWidget {
                           color: Colors.black),
                     ),
                     TextButton(
-                      onPressed: () => context.pop(),
+                      onPressed: () async {
+                        if (controller.job.positionsAvailable == null) {
+                          int value = numberOfEmployees.first['value'];
+                          await controller.setJob(positionsAvailable: value);
+                        }
+                        context.pop();
+                      },
                       child: const Text(
                         'Xong',
                         style:
@@ -81,7 +87,7 @@ class JobEmployeeQty extends ConsumerWidget {
                 // scrollController: FixedExtentScrollController(initialItem: selectedIndex),
                 onSelectedItemChanged: (index) async {
                   int value = numberOfEmployees[index]['value'];
-                  String name = numberOfEmployees[index]['title'];
+
                   await controller.setJob(positionsAvailable: value);
                 },
                 children: numberOfEmployees

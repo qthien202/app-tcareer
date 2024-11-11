@@ -70,7 +70,16 @@ class JobExperience extends ConsumerWidget {
                           color: Colors.black),
                     ),
                     TextButton(
-                      onPressed: () => context.pop(),
+                      onPressed: () async {
+                        if (controller.job.experienceRequired == null) {
+                          int value = experiences.first['value'];
+                          String name = experiences.first['title'];
+                          await controller.setJob(
+                              experienceRequired: value, experienceName: name);
+                        }
+
+                        context.pop();
+                      },
                       child: const Text(
                         'Xong',
                         style:

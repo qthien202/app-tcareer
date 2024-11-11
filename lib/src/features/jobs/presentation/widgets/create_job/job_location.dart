@@ -390,7 +390,7 @@ class _JobLocationState extends ConsumerState<JobLocation> {
                 onPressed: controller.selectedWard != null
                     ? () async {
                         String? address = addressController.text != ""
-                            ? "${addressController.text},"
+                            ? "${addressController.text}, "
                             : "";
                         String fullAddress =
                             "$address${controller.selectedWard?.wardName}, ${controller.selectedDistrict?.districtName}, ${controller.selectedProvince?.provinceName}";

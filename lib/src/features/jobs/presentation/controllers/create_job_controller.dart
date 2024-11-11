@@ -13,6 +13,7 @@ import 'package:app_tcareer/src/services/address/district.dart';
 import 'package:app_tcareer/src/services/address/province.dart';
 import 'package:app_tcareer/src/services/address/ward.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
+import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -361,9 +362,12 @@ class CreateJobController extends ChangeNotifier {
     AppUtils.loadingApi(() async {
       await uploadImage();
 
-      await createJobUseCase.postCreateJob(body: job!);
-
-      context.goNamed("jobs");
+      await createJobUseCase.postCreateJob(body: job);
+      job.reset();
+      showSnackBar("Thêm công việc thành công");
+      if (context.mounted) {
+        context.goNamed("jobs");
+      }
     }, context);
   }
 

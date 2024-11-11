@@ -59,6 +59,26 @@ class JobModel {
         _positionsAvailable != null;
   }
 
+  void reset() {
+    _title = null;
+    _jobTopicId = null;
+    _jobTopicName = null;
+    _jobRoleId = null;
+    _jobRoleName = null;
+    _jobType = null;
+    _jobDescription = null;
+    _detailLocation = null;
+    _latitude = null;
+    _longitude = null;
+    _employmentType = null;
+    _experienceName = null;
+    _ctyName = null;
+    _ctyImageUrl = null;
+    _experienceRequired = null;
+    _positionsAvailable = null;
+    _updatedAt = null;
+  }
+
   JobModel.fromJson(dynamic json) {
     _title = json['title'];
     _jobTopicId = json['job_topic_id'];
