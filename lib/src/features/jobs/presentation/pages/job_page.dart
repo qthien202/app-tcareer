@@ -6,6 +6,7 @@ import 'package:app_tcareer/src/widgets/notification_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -31,6 +32,15 @@ class JobPage extends ConsumerWidget {
               onRefresh: () async => await controller.getJobs(),
             ),
             sliverAppBar(ref, context),
+            sliverTab(),
+            SliverToBoxAdapter(
+                child: Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              width: ScreenUtil().screenWidth,
+              color: Colors.grey.shade100,
+              height: 10,
+            )),
+            sliverTitle(),
             recommendJobs(ref)
           ],
         ),
@@ -78,6 +88,18 @@ class JobPage extends ConsumerWidget {
     );
   }
 
+  Widget sliverTitle() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10),
+        child: Text(
+          "Đề xuất cho bạn",
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+      ),
+    );
+  }
+
   Widget recommendJobs(WidgetRef ref) {
     final controller = ref.watch(jobControllerProvider);
     print(">>>>>>>>>data: ${controller.jobs.length}");
@@ -93,6 +115,56 @@ class JobPage extends ConsumerWidget {
             final job = controller.jobs[index];
             return jobItem(job);
           },
+        ),
+      ),
+    );
+  }
+
+  Widget sliverTab() {
+    List<Map<String, dynamic>> tabs = [
+      {
+        "title": "Việc làm của tôi",
+        "onTap": () {},
+      },
+      {"title": "Việc làm đã ứng tuyển", "onTap": () {}},
+      {"title": "Đã xem hồ sơ", "onTap": () {}}
+    ];
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 5),
+        child: SizedBox(
+          height: 40,
+          child: ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemCount: tabs.length,
+            itemBuilder: (context, index) {
+              final tab = tabs[index];
+              return button(tab);
+            },
+            separatorBuilder: (context, index) => const SizedBox(
+              width: 15,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget button(Map<String, dynamic> tab) {
+    return GestureDetector(
+      onTap: tab['onTap'],
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(20)),
+        child: Text(
+          tab['title'],
+          style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600),
         ),
       ),
     );

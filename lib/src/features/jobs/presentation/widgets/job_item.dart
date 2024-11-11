@@ -19,7 +19,7 @@ Widget jobItem(JobModel job) {
   };
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-    margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+    margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(12),
       color: Colors.white,
@@ -40,6 +40,7 @@ Widget jobItem(JobModel job) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
+              flex: 1,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -53,7 +54,7 @@ Widget jobItem(JobModel job) {
               ),
             ),
             const SizedBox(
-              width: 10,
+              width: 20,
             ),
             Expanded(
               flex: 5,
@@ -75,7 +76,7 @@ Widget jobItem(JobModel job) {
                     height: 5,
                   ),
                   Text(
-                    job.detailLocation?.fullAddress ?? "",
+                    "${job.detailLocation?.districtName}, ${job.detailLocation?.provinceName} ",
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,

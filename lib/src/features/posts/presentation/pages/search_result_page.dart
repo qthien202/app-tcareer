@@ -91,7 +91,7 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
                   sliver: SliverToBoxAdapter(
                       child: Container(
                     margin: EdgeInsets.symmetric(vertical: 10),
-                    width: ScreenUtil().scaleWidth,
+                    width: ScreenUtil().screenWidth,
                     color: Colors.grey.shade100,
                     height: 10,
                   )),
