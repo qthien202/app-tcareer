@@ -1,3 +1,6 @@
+import 'package:app_tcareer/src/features/jobs/data/models/job_location_model.dart';
+import 'package:googleapis/clouddeploy/v1.dart';
+
 class JobModel {
   JobModel({
     String? title,
@@ -7,7 +10,7 @@ class JobModel {
     String? jobRoleName,
     String? jobType,
     String? jobDescription,
-    dynamic detailLocation,
+    JobLocationModel? detailLocation,
     num? latitude,
     num? longitude,
     String? employmentType,
@@ -16,6 +19,7 @@ class JobModel {
     String? ctyImageUrl,
     num? experienceRequired,
     num? positionsAvailable,
+    String? updatedAt,
   }) {
     _title = title;
     _jobTopicId = jobTopicId;
@@ -33,6 +37,7 @@ class JobModel {
     _ctyImageUrl = ctyImageUrl;
     _experienceRequired = experienceRequired;
     _positionsAvailable = positionsAvailable;
+    _updatedAt = updatedAt;
   }
 
   bool isValid() {
@@ -62,7 +67,7 @@ class JobModel {
     _jobRoleName = json['job_role_name'];
     _jobType = json['job_type'];
     _jobDescription = json['job_description'];
-    _detailLocation = json['detail_location'];
+    _detailLocation = JobLocationModel.fromJson(json['detail_location']);
     _latitude = json['latitude'];
     _longitude = json['longitude'];
     _employmentType = json['employment_type'];
@@ -71,6 +76,7 @@ class JobModel {
     _ctyImageUrl = json['cty_image_url'];
     _experienceRequired = json['experience_required'];
     _positionsAvailable = json['positions_available'];
+    _updatedAt = json['updated_at'];
   }
   String? _title;
   num? _jobTopicId;
@@ -79,7 +85,7 @@ class JobModel {
   String? _jobRoleName;
   String? _jobType;
   String? _jobDescription;
-  dynamic _detailLocation;
+  JobLocationModel? _detailLocation;
   num? _latitude;
   num? _longitude;
   String? _employmentType;
@@ -88,42 +94,43 @@ class JobModel {
   String? _ctyImageUrl;
   num? _experienceRequired;
   num? _positionsAvailable;
-  JobModel copyWith({
-    String? title,
-    num? jobTopicId,
-    String? jobTopicName,
-    num? jobRoleId,
-    String? jobRoleName,
-    String? jobType,
-    String? jobDescription,
-    dynamic detailLocation,
-    num? latitude,
-    num? longitude,
-    String? employmentType,
-    String? experienceName,
-    String? ctyName,
-    String? ctyImageUrl,
-    num? experienceRequired,
-    num? positionsAvailable,
-  }) =>
+  String? _updatedAt;
+  JobModel copyWith(
+          {String? title,
+          num? jobTopicId,
+          String? jobTopicName,
+          num? jobRoleId,
+          String? jobRoleName,
+          String? jobType,
+          String? jobDescription,
+          JobLocationModel? detailLocation,
+          num? latitude,
+          num? longitude,
+          String? employmentType,
+          String? experienceName,
+          String? ctyName,
+          String? ctyImageUrl,
+          num? experienceRequired,
+          num? positionsAvailable,
+          String? updatedAt}) =>
       JobModel(
-        title: title ?? _title,
-        jobTopicId: jobTopicId ?? _jobTopicId,
-        jobTopicName: jobTopicName ?? _jobTopicName,
-        jobRoleId: jobRoleId ?? _jobRoleId,
-        jobRoleName: jobRoleName ?? _jobRoleName,
-        jobType: jobType ?? _jobType,
-        jobDescription: jobDescription ?? _jobDescription,
-        detailLocation: detailLocation ?? _detailLocation,
-        latitude: latitude ?? _latitude,
-        longitude: longitude ?? _longitude,
-        employmentType: employmentType ?? _employmentType,
-        experienceName: experienceName ?? _experienceName,
-        ctyName: ctyName ?? _ctyName,
-        ctyImageUrl: ctyImageUrl ?? _ctyImageUrl,
-        experienceRequired: experienceRequired ?? _experienceRequired,
-        positionsAvailable: positionsAvailable ?? _positionsAvailable,
-      );
+          title: title ?? _title,
+          jobTopicId: jobTopicId ?? _jobTopicId,
+          jobTopicName: jobTopicName ?? _jobTopicName,
+          jobRoleId: jobRoleId ?? _jobRoleId,
+          jobRoleName: jobRoleName ?? _jobRoleName,
+          jobType: jobType ?? _jobType,
+          jobDescription: jobDescription ?? _jobDescription,
+          detailLocation: detailLocation ?? _detailLocation,
+          latitude: latitude ?? _latitude,
+          longitude: longitude ?? _longitude,
+          employmentType: employmentType ?? _employmentType,
+          experienceName: experienceName ?? _experienceName,
+          ctyName: ctyName ?? _ctyName,
+          ctyImageUrl: ctyImageUrl ?? _ctyImageUrl,
+          experienceRequired: experienceRequired ?? _experienceRequired,
+          positionsAvailable: positionsAvailable ?? _positionsAvailable,
+          updatedAt: updatedAt ?? _updatedAt);
   String? get title => _title;
   num? get jobTopicId => _jobTopicId;
   String? get jobTopicName => _jobTopicName;
@@ -131,7 +138,7 @@ class JobModel {
   String? get jobRoleName => _jobRoleName;
   String? get jobType => _jobType;
   String? get jobDescription => _jobDescription;
-  dynamic get detailLocation => _detailLocation;
+  JobLocationModel? get detailLocation => _detailLocation;
   num? get latitude => _latitude;
   num? get longitude => _longitude;
   String? get employmentType => _employmentType;
@@ -140,6 +147,7 @@ class JobModel {
   String? get ctyImageUrl => _ctyImageUrl;
   num? get experienceRequired => _experienceRequired;
   num? get positionsAvailable => _positionsAvailable;
+  String? get updatedAt => _updatedAt;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -159,6 +167,7 @@ class JobModel {
     map['cty_image_url'] = _ctyImageUrl;
     map['experience_required'] = _experienceRequired;
     map['positions_available'] = _positionsAvailable;
+    map['updated_at'] = _updatedAt;
     return map;
   }
 }

@@ -25,6 +25,7 @@ class JobPage extends ConsumerWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
           slivers: [
             CupertinoSliverRefreshControl(
               onRefresh: () async => await controller.getJobs(),

@@ -1,10 +1,22 @@
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/jobs.dart';
+import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 Widget jobItem(JobModel job) {
+  Map<String, dynamic> contentEmployee = {
+    "full-time": "Toàn thời gian",
+    "part-time": "Bán thời gian",
+    "contract": "Hợp đồng",
+    "internship": "Thực tập"
+  };
+  Map<String, dynamic> contentType = {
+    "onsite": "On-site",
+    "hybrid": "Hybrid",
+    "remote": "Remote"
+  };
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
     margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -63,7 +75,7 @@ Widget jobItem(JobModel job) {
                     height: 5,
                   ),
                   Text(
-                    job.detailLocation['full_address'] ?? "",
+                    job.detailLocation?.fullAddress ?? "",
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
@@ -82,7 +94,7 @@ Widget jobItem(JobModel job) {
                             color: Colors.grey.shade100,
                             borderRadius: BorderRadius.circular(20)),
                         child: Text(
-                          job.employmentType ?? "",
+                          contentEmployee[job.employmentType],
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 12,
@@ -104,36 +116,36 @@ Widget jobItem(JobModel job) {
                               fontWeight: FontWeight.w300),
                         ),
                       ),
-                      // Container(
-                      //   padding:
-                      //       EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      //   decoration: BoxDecoration(
-                      //       color: Colors.grey.shade100,
-                      //       borderRadius: BorderRadius.circular(20)),
-                      //   child: Text(
-                      //     "Thỏa thuận",
-                      //     style: TextStyle(
-                      //         color: Colors.black,
-                      //         fontSize: 12,
-                      //         fontWeight: FontWeight.w300),
-                      //   ),
-                      // ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text(
+                          contentType[job.jobType] ?? "",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ),
                     ],
                   )
                 ],
               ),
             ),
-            // Expanded(
-            //   flex: 1,
-            //   child: Column(
-            //     children: [
-            //       Text(
-            //         "1 giờ",
-            //         style: const TextStyle(color: Colors.grey, fontSize: 12),
-            //       ),
-            //     ],
-            //   ),
-            // )
+            Expanded(
+              flex: 1,
+              child: Column(
+                children: [
+                  Text(
+                    AppUtils.formatTimeStatusOnline(job.updatedAt ?? ""),
+                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                ],
+              ),
+            )
 
             // Expanded(child: Text("1"))
           ],

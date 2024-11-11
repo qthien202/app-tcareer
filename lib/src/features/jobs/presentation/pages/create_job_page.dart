@@ -32,7 +32,7 @@ class CreateJobPage extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 10),
           children: [
             const Text(
-              "Tạo công việc",
+              "Thêm công việc",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
@@ -40,35 +40,35 @@ class CreateJobPage extends ConsumerWidget {
             ),
             item(
               title: "Tiêu đề",
-              content: controller.job?.title,
-              hasContent: controller.job?.title != null,
+              content: controller.job.title,
+              hasContent: controller.job.title != null,
               onTap: () async => await controller.showBottomSheet(
                   child: const JobTitle(), context: context),
             ),
             item(
                 title: "Nghề nghiệp",
-                content: controller.job?.jobRoleName,
-                hasContent: controller.job?.jobRoleName != null,
+                content: controller.job.jobRoleName,
+                hasContent: controller.job.jobRoleName != null,
                 onTap: () async => context.goNamed("jobTopic")),
             item(
                 title: "Kinh nghiệm làm việc",
-                content: controller.job?.experienceName,
-                hasContent: controller.job?.experienceName != null,
+                content: controller.job.experienceName,
+                hasContent: controller.job.experienceName != null,
                 onTap: () async =>
                     await controller.showExperiencePicker(context)),
             item(
                 title: "Số lượng tuyển",
-                content: controller.job?.positionsAvailable != null
-                    ? "${controller.job?.positionsAvailable} nhân viên"
+                content: controller.job.positionsAvailable != null
+                    ? "${controller.job.positionsAvailable} nhân viên"
                     : "",
-                hasContent: controller.job?.positionsAvailable != null,
+                hasContent: controller.job.positionsAvailable != null,
                 onTap: () async =>
                     await controller.showEmployeeQtyPicker(context)),
             item(
                 title: "Hình thức làm việc",
-                hasContent: controller.job?.jobType != null,
+                hasContent: controller.job.jobType != null,
                 content:
-                    controller.getJobType(controller.job?.jobType ?? "") ?? "",
+                    controller.getJobType(controller.job.jobType ?? "") ?? "",
                 onTap: () async => await controller.showBottomSheet(
                       context: context,
                       child: const JobTypeWorkSpace(),
@@ -80,15 +80,15 @@ class CreateJobPage extends ConsumerWidget {
                 onTap: () async => context.goNamed("jobLocation")),
             item(
                 title: "Công ty",
-                hasContent: controller.job?.ctyName != null,
-                content: controller.job?.ctyName,
+                hasContent: controller.job.ctyName != null,
+                content: controller.job.ctyName,
                 onTap: () async => await controller.showBottomSheet(
                     context: context, child: const JobCty())),
             item(
                 title: "Loại hình làm việc",
-                hasContent: controller.job?.employmentType != null,
+                hasContent: controller.job.employmentType != null,
                 content: controller.getEmploymentType(
-                        controller.job?.employmentType ?? "") ??
+                        controller.job.employmentType ?? "") ??
                     "",
                 onTap: () async => await controller.showBottomSheet(
                       context: context,
@@ -96,9 +96,9 @@ class CreateJobPage extends ConsumerWidget {
                     )),
             item(
               title: "Mô tả chi tiết",
-              hasContent: controller.job?.jobDescription != null,
+              hasContent: controller.job.jobDescription != null,
               widget: Visibility(
-                visible: controller.job?.jobDescription != null,
+                visible: controller.job.jobDescription != null,
                 child: ConstrainedBox(
                   constraints: BoxConstraints(
                       maxHeight: ScreenUtil().screenHeight * .3,
@@ -106,7 +106,7 @@ class CreateJobPage extends ConsumerWidget {
                   child: ListView(
                     children: [
                       HtmlWidget(
-                        controller.job?.jobDescription ?? "",
+                        controller.job.jobDescription ?? "",
                         textStyle:
                             const TextStyle(overflow: TextOverflow.ellipsis),
                       ),
