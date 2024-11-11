@@ -27,16 +27,24 @@ class JobDescription extends ConsumerWidget {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           actions: [
-            TextButton(
-                onPressed: () async =>
-                    await controller.saveJobDescription(context),
-                child: const Text(
-                  "Lưu lại",
-                  style: TextStyle(
-                      color: AppColors.executeButton,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold),
-                )),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary),
+                  onPressed: controller.isHtmlValid
+                      ? () async {
+                          await controller.saveJobDescription(context);
+                        }
+                      : null,
+                  child: const Text(
+                    "Lưu lại",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold),
+                  )),
+            ),
           ],
           automaticallyImplyLeading: true,
           centerTitle: true,
@@ -64,7 +72,13 @@ class JobDescription extends ConsumerWidget {
                       hintTextPadding: EdgeInsets.zero,
                       textStyle: TextStyle(fontSize: 14),
                       onEditingComplete: (val) async {},
-                      onTextChanged: (val) async {},
+                      onTextChanged: (val) async {
+                        if (val.isEmpty) {
+                          controller.setIsHtmlValid(false);
+                        } else {
+                          controller.setIsHtmlValid(true);
+                        }
+                      },
                     ),
                   ],
                 ),

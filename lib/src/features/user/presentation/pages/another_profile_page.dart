@@ -61,7 +61,7 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: GestureDetector(
                         onTap: () => controller.showMenu(context),
-                        child: PhosphorIcon(
+                        child: const PhosphorIcon(
                           PhosphorIconsRegular.dotsThreeCircle,
                         ),
                       ),
@@ -84,17 +84,24 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
                       indicatorColor: Colors.black,
                       labelStyle: const TextStyle(color: Colors.black),
                       tabs: const [
-                        Tab(text: "Bài viết"),
-                        Tab(text: "Ảnh"),
-                        Tab(text: "Video"),
+                        Tab(text: "Giới thiệu"),
+                        Tab(text: "Hoạt động"),
+                        Tab(text: "Phương tiện"),
                       ],
                     ),
                   ),
                 ),
               ];
             },
-            body: TabBarView(
-              children: [postList(), Text("Ảnh"), Text("Video")],
+            body: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: TabBarView(
+                children: [
+                  const Text("Giới thiệu"),
+                  postList(),
+                  const Text("Phương tiện")
+                ],
+              ),
             ),
           ),
         ),

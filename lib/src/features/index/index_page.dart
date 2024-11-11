@@ -98,7 +98,8 @@ class _IndexPageState extends ConsumerState<IndexPage>
       body: widget.shell,
       bottomNavigationBar: Visibility(
         visible: state == true &&
-            routerState.fullPath?.startsWith("/conversation/chat") == false,
+            routerState.fullPath?.startsWith("/conversation/chat") == false &&
+            routerState.fullPath?.startsWith("/user/createResume") == false,
         child: BottomNavigationBar(
             showSelectedLabels: false,
             showUnselectedLabels: false,

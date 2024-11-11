@@ -7,6 +7,7 @@ import 'package:app_tcareer/src/features/jobs/presentation/pages/job_page.dart';
 import 'package:app_tcareer/src/features/notifications/presentation/pages/notification_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/home_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/posting_page.dart';
+import 'package:app_tcareer/src/features/user/presentation/pages/create_resume_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/media/user_media_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/profile_page.dart';
 import 'package:app_tcareer/src/routes/home_route.dart';
@@ -14,6 +15,8 @@ import 'package:app_tcareer/src/routes/transition_builder.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_from_message.dart';
+
+import '../features/user/data/models/create_resume_model.dart';
 
 enum RouteNames { home, jobs, notifications, user, temp }
 
@@ -122,6 +125,19 @@ class Index {
                         key: state.pageKey,
                         child: const UserMediaPage(),
                         transitionsBuilder: fadeTransitionBuilder),
+                    routes: []),
+                GoRoute(
+                    path: "createResume",
+                    name: "createResume",
+                    pageBuilder: (context, state) {
+                      final model = state.extra as CreateResumeModel;
+                      return CustomTransitionPage(
+                          key: state.pageKey,
+                          child: CreateResumePage(
+                            model: model,
+                          ),
+                          transitionsBuilder: fadeTransitionBuilder);
+                    },
                     routes: []),
               ]),
         ]),

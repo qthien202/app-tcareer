@@ -324,6 +324,12 @@ class CreateJobController extends ChangeNotifier {
     context.pop();
   }
 
+  bool isHtmlValid = false;
+  Future<void> setIsHtmlValid(bool value) async {
+    isHtmlValid = value;
+    notifyListeners();
+  }
+
   Future<void> handlePaste(TextSelectionDelegate delegate) async {
     delegate.pasteText(SelectionChangedCause.toolbar);
   }
