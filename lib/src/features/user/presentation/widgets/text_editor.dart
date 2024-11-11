@@ -1,7 +1,11 @@
+import 'package:app_tcareer/src/features/user/presentation/controllers/create_resume_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 
-Widget textEditor({required QuillEditorController quillController}) {
+Widget textEditor(
+    {required QuillEditorController quillController, required WidgetRef ref}) {
+  final controller = ref.watch(createResumeControllerProvider);
   return Padding(
     padding: const EdgeInsets.all(10),
     child: Column(
@@ -26,11 +30,11 @@ Widget textEditor({required QuillEditorController quillController}) {
                 textStyle: TextStyle(fontSize: 14),
                 onEditingComplete: (val) async {},
                 onTextChanged: (val) async {
-                  // if (val.isEmpty) {
-                  //   controller.setIsHtmlValid(false);
-                  // } else {
-                  //   controller.setIsHtmlValid(true);
-                  // }
+                  if (val.isEmpty) {
+                    controller.setIsHtmlValid(false);
+                  } else {
+                    controller.setIsHtmlValid(true);
+                  }
                 },
               ),
             ],

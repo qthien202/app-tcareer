@@ -12,6 +12,7 @@ import 'package:app_tcareer/src/features/posts/presentation/pages/posting_page.d
 import 'package:app_tcareer/src/features/user/presentation/pages/create_resume_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/media/user_media_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/profile_page.dart';
+import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_introduce.dart';
 import 'package:app_tcareer/src/routes/home_route.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
 import 'package:flutter/widgets.dart';
@@ -141,6 +142,17 @@ class Index {
                         key: state.pageKey,
                         child: const UserMediaPage(),
                         transitionsBuilder: fadeTransitionBuilder),
+                    routes: []),
+                GoRoute(
+                    path: "addIntroduce",
+                    name: "addIntroduce",
+                    pageBuilder: (context, state) {
+                      // final model = state.extra as CreateResumeModel;
+                      return CustomTransitionPage(
+                          key: state.pageKey,
+                          child: const AddIntroduce(),
+                          transitionsBuilder: fadeTransitionBuilder);
+                    },
                     routes: []),
                 GoRoute(
                     path: "createResume",

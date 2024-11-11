@@ -232,5 +232,6 @@ Widget contentWidget(String content) {
     trimCollapsedText: "Xem thêm",
     trimExpandedText: "Thu gọn",
     moreStyle: const TextStyle(fontWeight: FontWeight.bold),
+    lessStyle: const TextStyle(fontWeight: FontWeight.bold),
   );
 }

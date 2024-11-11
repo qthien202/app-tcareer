@@ -35,6 +35,8 @@ import 'package:app_tcareer/src/features/posts/data/models/quick_search_user_dat
 import 'package:app_tcareer/src/features/posts/data/models/quick_search_user_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/user_liked.dart';
 import 'package:app_tcareer/src/features/posts/data/models/user_liked_request.dart';
+import 'package:app_tcareer/src/features/user/data/models/create_resume_request.dart';
+import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
@@ -214,4 +216,10 @@ abstract class ApiServices {
 
   @GET('api/auth/career')
   Future<GetJobResponse> getJobs();
+
+  @POST('api/auth/create_resume')
+  Future postCreateResume({@Body() required CreateResumeRequest body});
+
+  @GET('api/auth/resume')
+  Future<ResumeModel> getResume({@Query('user_id') String? userId});
 }

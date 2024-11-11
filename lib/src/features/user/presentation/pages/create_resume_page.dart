@@ -1,5 +1,6 @@
 import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/user/data/models/create_resume_model.dart';
+import 'package:app_tcareer/src/features/user/presentation/controllers/create_resume_controller.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/text_editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,7 +11,7 @@ class CreateResumePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final controller = ref.watch(createJobControllerProvider);
+    final controller = ref.watch(createResumeControllerProvider);
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -26,7 +27,7 @@ class CreateResumePage extends ConsumerWidget {
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary),
-                  onPressed: model.onSave,
+                  onPressed: controller.isHtmlValid ? model.onSave : null,
                   child: const Text(
                     "Lưu lại",
                     style: TextStyle(
@@ -39,6 +40,6 @@ class CreateResumePage extends ConsumerWidget {
           automaticallyImplyLeading: true,
           centerTitle: true,
         ),
-        body: textEditor(quillController: model.textController));
+        body: textEditor(quillController: model.textController, ref: ref));
   }
 }

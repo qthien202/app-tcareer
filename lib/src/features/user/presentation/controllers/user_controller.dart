@@ -5,6 +5,7 @@ import 'package:app_tcareer/src/features/index/index_controller.dart';
 import 'package:app_tcareer/src/features/posts/data/models/posts_response.dart'
     as post_model;
 import 'package:app_tcareer/src/features/posts/usecases/post_use_case.dart';
+import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
@@ -21,6 +22,7 @@ class UserController extends ChangeNotifier {
   final Ref ref;
   UserController(this.userUseCase, this.postUseCase, this.ref) {
     getUserInfo();
+    getResume();
     getPost();
     // scrollController.addListener(() {
     //   loadMore();
@@ -117,7 +119,9 @@ class UserController extends ChangeNotifier {
     postCache.clear();
 
     // notifyListeners();
+
     await getUserInfo();
+    await getResume();
     await getPost();
   }
 
@@ -139,6 +143,12 @@ class UserController extends ChangeNotifier {
   bool isCurrentUser(int userId) {
     print(">>>>>>>>>>>isCurrent: ${userData?.data?.id == userId}");
     return userData?.data?.id == userId;
+  }
+
+  ResumeModel? resumeModel;
+  Future<void> getResume() async {
+    resumeModel = await userUseCase.getResume();
+    notifyListeners();
   }
 
   @override

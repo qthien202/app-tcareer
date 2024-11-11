@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:app_tcareer/src/features/user/data/models/create_resume_request.dart';
+import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/services/apis/api_service_provider.dart';
@@ -67,6 +69,16 @@ class UserRepository {
       {required File file, required String folderPath}) async {
     final storage = ref.watch(firebaseStorageServiceProvider);
     return await storage.uploadFile(file, folderPath);
+  }
+
+  Future postCreateResume({required CreateResumeRequest body}) async {
+    final api = ref.watch(apiServiceProvider);
+    return await api.postCreateResume(body: body);
+  }
+
+  Future<ResumeModel> getResume({String? userId}) async {
+    final api = ref.watch(apiServiceProvider);
+    return await api.getResume(userId: userId);
   }
 }
 
