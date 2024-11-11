@@ -127,7 +127,7 @@ class JobPage extends ConsumerWidget {
         "onTap": () {},
       },
       {"title": "Việc làm đã ứng tuyển", "onTap": () {}},
-      {"title": "Đã xem hồ sơ", "onTap": () {}}
+      {"title": "Việc làm đã lưu", "onTap": () {}}
     ];
     return SliverToBoxAdapter(
       child: Padding(
