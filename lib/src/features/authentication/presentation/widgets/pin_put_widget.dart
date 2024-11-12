@@ -38,7 +38,7 @@ Widget pinPutWidget({TextEditingController? controller}) {
     focusedPinTheme: focusedPinTheme,
     validator: (value) {
       if (value?.isEmpty == true) {
-        return "Mã OTP không được để trống";
+        return "Vui lòng nhập mã OTP";
       }
       if ((value?.length ?? 0) < 6) {
         return "Nhập đủ mã OTP";

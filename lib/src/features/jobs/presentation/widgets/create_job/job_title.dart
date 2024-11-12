@@ -41,7 +41,7 @@ class JobTitle extends ConsumerWidget {
               validator: (val) {
                 String value = val ?? '';
                 if (value.isEmpty) {
-                  return "Tiêu đề không được để trống";
+                  return "Vui lòng nhập tiêu đề";
                 }
                 if (value.length > 100) {
                   return "Tiêu đề chỉ được tối đa 100 ký tự";

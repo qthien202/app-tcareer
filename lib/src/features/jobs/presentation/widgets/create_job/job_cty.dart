@@ -89,7 +89,7 @@ class JobCty extends ConsumerWidget {
               validator: (val) {
                 String value = val ?? "";
                 if (value.isEmpty) {
-                  return "Tên công ty không được để trống";
+                  return "Vui lòng nhập tên công ty";
                 }
                 if (value.length > 50) {
                   return "Tên công ty chỉ được tối đa 50 ký tự";
@@ -110,8 +110,7 @@ class JobCty extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(10))),
                   onPressed: () async {
                     if (mediaController.selectedImage == null) {
-                      showSnackBarErrorException(
-                          "Ảnh đại diện công ty không được để trống");
+                      showSnackBarErrorException("Vui lòng chọn ảnh đại diện");
                     }
                     if (formKey.currentState?.validate() == true) {
                       await controller.setJob(

@@ -41,7 +41,6 @@ class _AddEducationState extends ConsumerState<AddEducation> {
   Widget build(BuildContext context) {
     final controller = ref.watch(createResumeControllerProvider);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
     return PopScope(
       onPopInvoked: (didPop) {
         if (didPop) {
@@ -49,6 +48,9 @@ class _AddEducationState extends ConsumerState<AddEducation> {
         }
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
+
+        // extendBody: true,
         backgroundColor: Colors.white,
         appBar: AppBar(
           automaticallyImplyLeading: true,
@@ -70,7 +72,7 @@ class _AddEducationState extends ConsumerState<AddEducation> {
         body: Form(
           key: formKey,
           child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             children: [
               Text(
                 widget.education != null
@@ -89,7 +91,7 @@ class _AddEducationState extends ConsumerState<AddEducation> {
                 validator: (val) {
                   String value = val ?? "";
                   if (value.isEmpty) {
-                    return "Trường không được để trống";
+                    return "Vui lòng nhập trường";
                   }
                   if (value.length < 10) {
                     return "Trường phải bắt đầu từ 10 kí tự trở lên";
@@ -106,7 +108,7 @@ class _AddEducationState extends ConsumerState<AddEducation> {
                 validator: (val) {
                   String value = val ?? "";
                   if (value.isEmpty) {
-                    return "Chuyên ngành không được để trống";
+                    return "Vui lòng nhập chuyên ngành";
                   }
                   if (value.length < 10) {
                     return "Chuyên ngành phải bắt đầu từ 5 kí tự trở lên";
@@ -197,11 +199,11 @@ class _AddEducationState extends ConsumerState<AddEducation> {
                             : controller.addEducation(context));
                       }
                     },
-                    child: Text(
+                    child: const Text(
                       "Lưu lại",
                       style: TextStyle(color: Colors.white),
                     )),
-              ),
+              )
             ],
           ),
         ),

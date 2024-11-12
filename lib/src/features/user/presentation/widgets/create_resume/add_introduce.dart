@@ -101,7 +101,7 @@ class _AddIntroduceState extends ConsumerState<AddIntroduce> {
       validator: (val) {
         String value = val ?? "";
         if (value.isEmpty) {
-          return "Tóm tắt không được để trống";
+          return "Vui lòng nhập tóm tắt";
         }
         if (value.length > 2600) {
           return "Tóm tắt chỉ được tối đa 2600 ký tự";

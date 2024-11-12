@@ -1,3 +1,5 @@
+import 'package:app_tcareer/src/features/user/data/models/experience_model.dart';
+
 import 'education_model.dart';
 
 class ResumeModel {
@@ -35,7 +37,7 @@ class Data {
     String? introduction,
     dynamic skills,
     dynamic careerObjective,
-    String? experience,
+    List<ExperienceModel>? experience,
     List<EducationModel>? education,
     String? createdAt,
     String? updatedAt,
@@ -57,7 +59,12 @@ class Data {
     _introduction = json['introduction'];
     _skills = json['skills'];
     _careerObjective = json['career_objective'];
-    _experience = json['experience'];
+    if (json['experience'] != null) {
+      _experience = [];
+      json['experience'].forEach((v) {
+        _experience?.add(ExperienceModel.fromJson(v));
+      });
+    }
     if (json['education'] != null) {
       _education = [];
       json['education'].forEach((v) {
@@ -72,7 +79,7 @@ class Data {
   String? _introduction;
   dynamic _skills;
   dynamic _careerObjective;
-  String? _experience;
+  List<ExperienceModel>? _experience;
   List<EducationModel>? _education;
   String? _createdAt;
   String? _updatedAt;
@@ -82,7 +89,7 @@ class Data {
     String? introduction,
     dynamic skills,
     dynamic careerObjective,
-    String? experience,
+    List<ExperienceModel>? experience,
     List<EducationModel>? education,
     String? createdAt,
     String? updatedAt,
@@ -103,7 +110,7 @@ class Data {
   String? get introduction => _introduction;
   dynamic get skills => _skills;
   dynamic get careerObjective => _careerObjective;
-  String? get experience => _experience;
+  List<ExperienceModel>? get experience => _experience;
   List<EducationModel>? get education => _education;
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;

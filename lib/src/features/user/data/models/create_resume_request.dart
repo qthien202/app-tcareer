@@ -1,11 +1,13 @@
 import 'package:app_tcareer/src/features/user/data/models/education_model.dart';
 
+import 'experience_model.dart';
+
 class CreateResumeRequest {
   CreateResumeRequest({
     String? skills,
     String? introduction,
     String? careerObjective,
-    String? experience,
+    List<ExperienceModel>? experience,
     List<EducationModel>? education,
   }) {
     _skills = skills;
@@ -26,18 +28,25 @@ class CreateResumeRequest {
         _education?.add(EducationModel.fromJson(v));
       });
     }
+
+    if (json['experience'] != null) {
+      _experience = [];
+      json['experience'].forEach((v) {
+        _experience?.add(ExperienceModel.fromJson(v));
+      });
+    }
     // _education = json['education'];
   }
   String? _skills;
   String? _introduction;
   String? _careerObjective;
-  String? _experience;
+  List<ExperienceModel>? _experience;
   List<EducationModel>? _education;
   CreateResumeRequest copyWith({
     String? skills,
     String? introduction,
     String? careerObjective,
-    String? experience,
+    List<ExperienceModel>? experience,
     List<EducationModel>? education,
   }) =>
       CreateResumeRequest(
@@ -50,7 +59,7 @@ class CreateResumeRequest {
   String? get skills => _skills;
   String? get introduction => _introduction;
   String? get careerObjective => _careerObjective;
-  String? get experience => _experience;
+  List<ExperienceModel>? get experience => _experience;
   List<EducationModel>? get education => _education;
 
   Map<String, dynamic> toJson() {

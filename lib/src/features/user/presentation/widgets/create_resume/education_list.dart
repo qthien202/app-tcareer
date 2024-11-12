@@ -70,12 +70,20 @@ class EducationList extends ConsumerWidget {
                             style: const TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(
-                            height: 2,
-                          ),
-                          Text(
-                            "${e?.startDate} - ${e?.endDate}",
-                            style: const TextStyle(fontSize: 12),
+                          Visibility(
+                            visible: e?.startDate != "" && e?.endDate != "",
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                Text(
+                                  "${e?.startDate} - ${e?.endDate}",
+                                  style: const TextStyle(fontSize: 12),
+                                ),
+                              ],
+                            ),
                           ),
                           const SizedBox(
                             height: 5,

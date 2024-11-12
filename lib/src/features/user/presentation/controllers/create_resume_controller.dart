@@ -1,6 +1,7 @@
 import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/user/data/models/create_resume_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/education_model.dart';
+import 'package:app_tcareer/src/features/user/data/models/experience_model.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
@@ -226,6 +227,74 @@ class CreateResumeController extends ChangeNotifier {
         ],
       ),
     );
+  }
+
+  TextEditingController positionTextController = TextEditingController();
+  TextEditingController ctyTextController = TextEditingController();
+  TextEditingController descriptionTextController = TextEditingController();
+  TextEditingController jobTypeTextController = TextEditingController();
+  Future<void> selectJobType(String value) async {
+    jobTypeTextController.text = value;
+    notifyListeners();
+  }
+
+  TextEditingController employmentTypeTextController = TextEditingController();
+  Future<void> selectEmploymentType(String value) async {
+    employmentTypeTextController.text = value;
+    notifyListeners();
+  }
+
+  Future<void> showBottomSheet(
+      {required BuildContext context, required Widget child}) async {
+    await showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      backgroundColor: Colors.grey.shade50,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: child,
+        );
+      },
+    );
+  }
+
+  Future<void> addExperience(BuildContext context) async {
+    List<ExperienceModel>? experienceData =
+        userController.resumeModel?.data?.experience;
+    final experience = ExperienceModel(
+        id: (experienceData?.length ?? 0) + 1,
+        jobDescription: descriptionTextController.text,
+        companyName: ctyTextController.text,
+        employmentType: employmentTypeTextController.text,
+        position: positionTextController.text,
+        workplaceType: jobTypeTextController.text,
+        startDate: startDateTextController.text,
+        endDate: endDateTextController.text);
+    if (experienceData != null) {
+      experienceData.add(experience);
+      await postCreateResume(
+          context: context,
+          body: CreateResumeRequest(experience: experienceData));
+    } else {
+      List<ExperienceModel> experiences = [];
+      final experience = ExperienceModel(
+          id: 1,
+          jobDescription: descriptionTextController.text,
+          companyName: ctyTextController.text,
+          employmentType: employmentTypeTextController.text,
+          position: positionTextController.text,
+          workplaceType: jobTypeTextController.text,
+          startDate: startDateTextController.text,
+          endDate: endDateTextController.text);
+      experiences.add(experience);
+      await postCreateResume(
+          context: context, body: CreateResumeRequest(experience: experiences));
+    }
   }
 }
 

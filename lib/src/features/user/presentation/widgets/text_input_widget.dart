@@ -16,6 +16,7 @@ class TextInputWidget extends StatefulWidget {
   final void Function(String)? onChanged;
   final void Function(String)? onSubmitted;
   final AutovalidateMode? autovalidateMode;
+  final FocusNode? focusNode;
 
   const TextInputWidget(
       {super.key,
@@ -33,7 +34,8 @@ class TextInputWidget extends StatefulWidget {
       this.onTap,
       this.prefixIcon,
       this.onChanged,
-      this.autovalidateMode});
+      this.autovalidateMode,
+      this.focusNode});
 
   @override
   TextInputWidgetState createState() => TextInputWidgetState();
@@ -83,6 +85,7 @@ class TextInputWidgetState extends State<TextInputWidget> {
           ),
           const SizedBox(height: 10),
           TextFormField(
+            focusNode: widget.focusNode,
             onChanged: widget.onChanged,
             // enabled: true,
             onFieldSubmitted: widget.onSubmitted,

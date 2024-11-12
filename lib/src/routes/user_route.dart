@@ -1,7 +1,9 @@
 import 'package:app_tcareer/src/features/user/data/models/create_resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/education_model.dart';
+import 'package:app_tcareer/src/features/user/data/models/experience_model.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/create_resume_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_education.dart';
+import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_experience.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_introduce.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/education_list.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
@@ -39,6 +41,19 @@ class UserRoute {
               key: state.pageKey,
               child: AddEducation(
                 education: education,
+              ),
+              transitionsBuilder: fadeTransitionBuilder);
+        },
+        routes: []),
+    GoRoute(
+        path: "resume/addExperience",
+        name: "addExperience",
+        pageBuilder: (context, state) {
+          ExperienceModel? experience = state.extra as ExperienceModel?;
+          return CustomTransitionPage(
+              key: state.pageKey,
+              child: AddExperience(
+                experience: experience,
               ),
               transitionsBuilder: fadeTransitionBuilder);
         },
