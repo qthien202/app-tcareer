@@ -42,13 +42,18 @@ class ResumeUser extends ConsumerWidget {
                 item(
                     title: "Kinh nghiệm",
                     content: "Thêm kinh nghiệm",
-                    hasContent:
-                        userController.resumeModel?.data?.experience != null &&
-                            userController.resumeModel?.data?.experience != "",
-                    // widget: HtmlWidget(
-                    //     userController.resumeModel?.data?.experience ?? ""),
+                    hasContent: userController
+                            .resumeModel?.data?.experience?.isNotEmpty ==
+                        true,
+                    widget: experienceList(ref),
                     onTap: () {
-                      context.goNamed("addExperience");
+                      if (userController
+                              .resumeModel?.data?.experience?.isNotEmpty ==
+                          true) {
+                        context.goNamed("resumeExperience");
+                      } else {
+                        context.goNamed("addExperience");
+                      }
                     }),
                 item(
                     title: "Trình độ học vấn",
@@ -160,11 +165,11 @@ class ResumeUser extends ConsumerWidget {
     );
   }
 
-  Widget contentWidget(String content) {
+  Widget contentWidget(String content, {int trimLines = 5}) {
     return ReadMoreText(
       content,
       trimMode: TrimMode.Line,
-      trimLines: 5,
+      trimLines: trimLines,
       colorClickableText: Colors.black,
       trimCollapsedText: "Xem thêm",
       trimExpandedText: "Thu gọn",
@@ -218,6 +223,77 @@ class ResumeUser extends ConsumerWidget {
                           style: const TextStyle(
                               fontWeight: FontWeight.w300, fontSize: 12),
                         ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList() ??
+          [],
+    );
+  }
+
+  Widget experienceList(WidgetRef ref) {
+    final userController = ref.watch(userControllerProvider);
+    return Column(
+      children: userController.resumeModel?.data?.experience?.map((e) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const PhosphorIcon(PhosphorIconsRegular.bagSimple),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          e.companyName ?? "",
+                          style: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          e.position ?? "",
+                          style: const TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          "${e.employmentType} • ${e.workplaceType}",
+                          style: const TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Visibility(
+                          visible: e.startDate != "" && e.endDate != "",
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 2,
+                              ),
+                              Text(
+                                "${e.startDate} - ${e.endDate}",
+                                style: const TextStyle(fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        contentWidget(e.jobDescription ?? "", trimLines: 3)
                       ],
                     ),
                   ),

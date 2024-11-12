@@ -27,10 +27,14 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
       final controller = ref.watch(createResumeControllerProvider);
       final data = widget.experience;
       if (widget.experience != null) {
-        // controller.schoolTextController.text = data?.school ?? "";
-        // controller.majorTextController.text = data?.major ?? "";
-        // controller.startDateTextController.text = data?.startDate ?? "";
-        // controller.endDateTextController.text = data?.endDate ?? "";
+        controller.positionTextController.text = data?.position ?? "";
+        controller.ctyTextController.text = data?.companyName ?? "";
+        controller.employmentTypeTextController.text =
+            data?.employmentType ?? "";
+        controller.jobTypeTextController.text = data?.workplaceType ?? "";
+        controller.startDateTextController.text = data?.startDate ?? "";
+        controller.endDateTextController.text = data?.endDate ?? "";
+        controller.descriptionTextController.text = data?.jobDescription ?? "";
       }
     });
   }
@@ -42,7 +46,7 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
     return PopScope(
       onPopInvoked: (didPop) {
         if (didPop) {
-          controller.clearEducation();
+          controller.clearExperience();
         }
       },
       child: KeyboardVisibilityBuilder(
@@ -63,7 +67,11 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: GestureDetector(
-                        onTap: () async {},
+                        onTap: () async {
+                          await controller.showConfirmDeleteExperience(
+                              context: context,
+                              experienceId: widget.experience?.id ?? 0);
+                        },
                         child: const PhosphorIcon(
                             PhosphorIconsRegular.trashSimple),
                       ),
@@ -228,7 +236,7 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
                     title: "Mô tả chi tiết",
                     hintText: "Nhập mô tả chi tiết",
                     isRequired: true,
-                    maxLine: 3,
+                    maxLine: 5,
                   ),
                   const SizedBox(
                     height: 30,
@@ -253,7 +261,12 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
                                     borderRadius: BorderRadius.circular(10))),
                             onPressed: () async {
                               if (formKey.currentState?.validate() == true) {
-                                await controller.addExperience(context);
+                                widget.experience != null
+                                    ? await controller.updateExperience(
+                                        context: context,
+                                        experienceId:
+                                            widget.experience?.id ?? 0)
+                                    : await controller.addExperience(context);
                               }
                             },
                             child: const Text(

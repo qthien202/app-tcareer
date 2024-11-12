@@ -198,6 +198,16 @@ class CreateResumeController extends ChangeNotifier {
     endDateTextController.clear();
   }
 
+  Future<void> clearExperience() async {
+    positionTextController.clear();
+    ctyTextController.clear();
+    employmentTypeTextController.clear();
+    jobTypeTextController.clear();
+    startDateTextController.clear();
+    endDateTextController.clear();
+    descriptionTextController.clear();
+  }
+
   Future<void> showConfirmDeleteEducation(
       {required BuildContext context, required int educationId}) async {
     showCupertinoDialog<void>(
@@ -295,6 +305,69 @@ class CreateResumeController extends ChangeNotifier {
       await postCreateResume(
           context: context, body: CreateResumeRequest(experience: experiences));
     }
+  }
+
+  Future<void> updateExperience(
+      {required BuildContext context, required int experienceId}) async {
+    List<ExperienceModel> experienceData =
+        userController.resumeModel?.data?.experience ?? [];
+    final index = experienceData.indexWhere((e) => e.id == experienceId);
+
+    if (index != -1) {
+      experienceData[index] = experienceData[index].copyWith(
+          jobDescription: descriptionTextController.text,
+          companyName: ctyTextController.text,
+          employmentType: employmentTypeTextController.text,
+          position: positionTextController.text,
+          workplaceType: jobTypeTextController.text,
+          startDate: startDateTextController.text,
+          endDate: endDateTextController.text);
+
+      await postCreateResume(
+          context: context,
+          body: CreateResumeRequest(experience: experienceData));
+    }
+  }
+
+  Future<void> deleteExperience(
+      {required BuildContext context, required int experienceId}) async {
+    List<ExperienceModel> experienceData =
+        userController.resumeModel?.data?.experience ?? [];
+    experienceData.removeWhere((e) => e.id == experienceId);
+    await postCreateResume(
+        context: context,
+        body: CreateResumeRequest(experience: experienceData));
+  }
+
+  Future<void> showConfirmDeleteExperience(
+      {required BuildContext context, required int experienceId}) async {
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Xóa kinh nghiệm'),
+        content: const Text('Bạn có chắc chắn muốn xóa kinh nghiệm này không?'),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            onPressed: () {
+              context.pop();
+            },
+            child: const Text(
+              'Hủy',
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () async {
+              await deleteExperience(
+                  context: context, experienceId: experienceId);
+              context.pop();
+            },
+            child: const Text('Xóa'),
+          ),
+        ],
+      ),
+    );
   }
 }
 
