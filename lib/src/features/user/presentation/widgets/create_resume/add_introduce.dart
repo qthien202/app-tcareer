@@ -113,6 +113,7 @@ class _AddIntroduceState extends ConsumerState<AddIntroduce> {
       // keyboardType: widget.keyboardType,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       maxLines: 10,
+      autofocus: true,
       // readOnly: widget.isReadOnly ?? false,
       controller: textEditController,
       textInputAction: TextInputAction.next,

@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'src/configs/app_colors.dart';
 import 'package:universal_io/io.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 
 class App extends ConsumerStatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;
@@ -39,11 +40,32 @@ class _AppState extends ConsumerState<App> {
             minTextAdapt: true,
             builder: (context, child) {
               ScreenUtil.init(context);
-
-              // Kiểm tra nếu ứng dụng đang chạy trên Web
-              // if (Platform.isAndroid || Platform.isIOS) {
+              final FlutterLocalization localization =
+                  FlutterLocalization.instance;
+              localization.init(
+                mapLocales: [
+                  const MapLocale('en', AppLocale.EN),
+                  const MapLocale('km', AppLocale.KM),
+                  const MapLocale('ja', AppLocale.JA),
+                  const MapLocale('vi', AppLocale.VI), // Thêm tiếng Việt
+                ],
+                initLanguageCode: 'en',
+              );
               return OverlaySupport.global(
                 child: MaterialApp.router(
+                  supportedLocales: localization.supportedLocales,
+                  localizationsDelegates: localization.localizationsDelegates,
+                  locale:
+                      const Locale('vi', 'VN'), // Thiết lập locale cho ứng dụng
+                  // localizationsDelegates: const [
+                  //   GlobalMaterialLocalizations.delegate,
+                  //   GlobalWidgetsLocalizations.delegate,
+                  //   GlobalCupertinoLocalizations.delegate,
+                  // ],
+                  // supportedLocales: const [
+                  //   Locale('en', 'US'), // English
+                  //   Locale('vi', 'VN'), // Vietnamese
+                  // ],
                   routerConfig: router,
                   debugShowCheckedModeBanner: false,
                   title: 'TCareer',
@@ -93,6 +115,15 @@ class _AppState extends ConsumerState<App> {
       },
     );
   }
+}
+
+mixin AppLocale {
+  static const String title = 'title';
+
+  static const Map<String, dynamic> EN = {title: 'Localization'};
+  static const Map<String, dynamic> KM = {title: 'ការធ្វើមូលដ្ឋានីយកម្ម'};
+  static const Map<String, dynamic> JA = {title: 'ローカリゼーション'};
+  static const Map<String, dynamic> VI = {title: 'Đa ngôn ngữ'};
 }
 
 // final goRouterProvider = Provider<GoRouter>((ref) {

@@ -1,45 +1,57 @@
+import 'package:app_tcareer/src/features/user/data/models/education_model.dart';
+
 class CreateResumeRequest {
   CreateResumeRequest({
-      String? skills, 
-      String? introduction, 
-      String? careerObjective, 
-      String? experience, 
-      String? education,}){
+    String? skills,
+    String? introduction,
+    String? careerObjective,
+    String? experience,
+    List<EducationModel>? education,
+  }) {
     _skills = skills;
     _introduction = introduction;
     _careerObjective = careerObjective;
     _experience = experience;
     _education = education;
-}
+  }
 
   CreateResumeRequest.fromJson(dynamic json) {
     _skills = json['skills'];
     _introduction = json['introduction'];
     _careerObjective = json['career_objective'];
     _experience = json['experience'];
-    _education = json['education'];
+    if (json['education'] != null) {
+      _education = [];
+      json['education'].forEach((v) {
+        _education?.add(EducationModel.fromJson(v));
+      });
+    }
+    // _education = json['education'];
   }
   String? _skills;
   String? _introduction;
   String? _careerObjective;
   String? _experience;
-  String? _education;
-CreateResumeRequest copyWith({  String? skills,
-  String? introduction,
-  String? careerObjective,
-  String? experience,
-  String? education,
-}) => CreateResumeRequest(  skills: skills ?? _skills,
-  introduction: introduction ?? _introduction,
-  careerObjective: careerObjective ?? _careerObjective,
-  experience: experience ?? _experience,
-  education: education ?? _education,
-);
+  List<EducationModel>? _education;
+  CreateResumeRequest copyWith({
+    String? skills,
+    String? introduction,
+    String? careerObjective,
+    String? experience,
+    List<EducationModel>? education,
+  }) =>
+      CreateResumeRequest(
+        skills: skills ?? _skills,
+        introduction: introduction ?? _introduction,
+        careerObjective: careerObjective ?? _careerObjective,
+        experience: experience ?? _experience,
+        education: education ?? _education,
+      );
   String? get skills => _skills;
   String? get introduction => _introduction;
   String? get careerObjective => _careerObjective;
   String? get experience => _experience;
-  String? get education => _education;
+  List<EducationModel>? get education => _education;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -50,5 +62,4 @@ CreateResumeRequest copyWith({  String? skills,
     map['education'] = _education;
     return map;
   }
-
 }

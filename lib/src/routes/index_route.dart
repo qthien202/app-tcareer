@@ -12,7 +12,9 @@ import 'package:app_tcareer/src/features/posts/presentation/pages/posting_page.d
 import 'package:app_tcareer/src/features/user/presentation/pages/create_resume_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/media/user_media_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/profile_page.dart';
+import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_education.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_introduce.dart';
+import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/education_list.dart';
 import 'package:app_tcareer/src/routes/home_route.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
 import 'package:flutter/widgets.dart';
@@ -144,7 +146,7 @@ class Index {
                         transitionsBuilder: fadeTransitionBuilder),
                     routes: []),
                 GoRoute(
-                    path: "addIntroduce",
+                    path: "resume/addIntroduce",
                     name: "addIntroduce",
                     pageBuilder: (context, state) {
                       // final model = state.extra as CreateResumeModel;
@@ -155,7 +157,29 @@ class Index {
                     },
                     routes: []),
                 GoRoute(
-                    path: "createResume",
+                    path: "resume/addEducation",
+                    name: "addEducation",
+                    pageBuilder: (context, state) {
+                      // final model = state.extra as CreateResumeModel;
+                      return CustomTransitionPage(
+                          key: state.pageKey,
+                          child: const AddEducation(),
+                          transitionsBuilder: fadeTransitionBuilder);
+                    },
+                    routes: []),
+                GoRoute(
+                    path: "resume/education",
+                    name: "resumeEducation",
+                    pageBuilder: (context, state) {
+                      // final model = state.extra as CreateResumeModel;
+                      return CustomTransitionPage(
+                          key: state.pageKey,
+                          child: const EducationList(),
+                          transitionsBuilder: fadeTransitionBuilder);
+                    },
+                    routes: []),
+                GoRoute(
+                    path: "resume/createResume",
                     name: "createResume",
                     pageBuilder: (context, state) {
                       final model = state.extra as CreateResumeModel;

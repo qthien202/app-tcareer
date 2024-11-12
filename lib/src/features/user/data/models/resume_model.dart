@@ -1,16 +1,22 @@
+import 'education_model.dart';
+
 class ResumeModel {
   ResumeModel({
-      Data? data,}){
+    Data? data,
+  }) {
     _data = data;
-}
+  }
 
   ResumeModel.fromJson(dynamic json) {
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
   Data? _data;
-ResumeModel copyWith({  Data? data,
-}) => ResumeModel(  data: data ?? _data,
-);
+  ResumeModel copyWith({
+    Data? data,
+  }) =>
+      ResumeModel(
+        data: data ?? _data,
+      );
   Data? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -20,20 +26,20 @@ ResumeModel copyWith({  Data? data,
     }
     return map;
   }
-
 }
 
 class Data {
   Data({
-      num? id, 
-      num? userId, 
-      String? introduction, 
-      dynamic skills, 
-      dynamic careerObjective, 
-      dynamic experience, 
-      dynamic education, 
-      String? createdAt, 
-      String? updatedAt,}){
+    num? id,
+    num? userId,
+    String? introduction,
+    dynamic skills,
+    dynamic careerObjective,
+    String? experience,
+    List<EducationModel>? education,
+    String? createdAt,
+    String? updatedAt,
+  }) {
     _id = id;
     _userId = userId;
     _introduction = introduction;
@@ -43,7 +49,7 @@ class Data {
     _education = education;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _id = json['id'];
@@ -52,7 +58,12 @@ class Data {
     _skills = json['skills'];
     _careerObjective = json['career_objective'];
     _experience = json['experience'];
-    _education = json['education'];
+    if (json['education'] != null) {
+      _education = [];
+      json['education'].forEach((v) {
+        _education?.add(EducationModel.fromJson(v));
+      });
+    }
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
   }
@@ -61,36 +72,39 @@ class Data {
   String? _introduction;
   dynamic _skills;
   dynamic _careerObjective;
-  dynamic _experience;
-  dynamic _education;
+  String? _experience;
+  List<EducationModel>? _education;
   String? _createdAt;
   String? _updatedAt;
-Data copyWith({  num? id,
-  num? userId,
-  String? introduction,
-  dynamic skills,
-  dynamic careerObjective,
-  dynamic experience,
-  dynamic education,
-  String? createdAt,
-  String? updatedAt,
-}) => Data(  id: id ?? _id,
-  userId: userId ?? _userId,
-  introduction: introduction ?? _introduction,
-  skills: skills ?? _skills,
-  careerObjective: careerObjective ?? _careerObjective,
-  experience: experience ?? _experience,
-  education: education ?? _education,
-  createdAt: createdAt ?? _createdAt,
-  updatedAt: updatedAt ?? _updatedAt,
-);
+  Data copyWith({
+    num? id,
+    num? userId,
+    String? introduction,
+    dynamic skills,
+    dynamic careerObjective,
+    String? experience,
+    List<EducationModel>? education,
+    String? createdAt,
+    String? updatedAt,
+  }) =>
+      Data(
+        id: id ?? _id,
+        userId: userId ?? _userId,
+        introduction: introduction ?? _introduction,
+        skills: skills ?? _skills,
+        careerObjective: careerObjective ?? _careerObjective,
+        experience: experience ?? _experience,
+        education: education ?? _education,
+        createdAt: createdAt ?? _createdAt,
+        updatedAt: updatedAt ?? _updatedAt,
+      );
   num? get id => _id;
   num? get userId => _userId;
   String? get introduction => _introduction;
   dynamic get skills => _skills;
   dynamic get careerObjective => _careerObjective;
-  dynamic get experience => _experience;
-  dynamic get education => _education;
+  String? get experience => _experience;
+  List<EducationModel>? get education => _education;
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
 
@@ -107,5 +121,4 @@ Data copyWith({  num? id,
     map['updated_at'] = _updatedAt;
     return map;
   }
-
 }

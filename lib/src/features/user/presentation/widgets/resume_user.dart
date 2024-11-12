@@ -3,6 +3,7 @@ import 'package:app_tcareer/src/features/user/data/models/create_resume_model.da
 import 'package:app_tcareer/src/features/user/data/models/create_resume_request.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/create_resume_controller.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
@@ -17,91 +18,90 @@ class ResumeUser extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(createResumeControllerProvider);
     final userController = ref.watch(userControllerProvider);
-    return ListView(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      children: [
-        item(
-            title: "Giới thiệu",
-            content: userController.resumeModel?.data?.introduction != ""
-                ? null
-                : "Thêm giới thiệu bản thân",
-            hasContent: userController.resumeModel?.data?.introduction != "",
-            widget: contentWidget(
-                userController.resumeModel?.data?.introduction ?? ""),
-            onTap: () {
-              // final model = CreateResumeModel(
-              //   textController: controller.introduceController,
-              //   profileTopic: ProfileTopic.introduce,
-              //   title: "Giới thiệu",
-              //   onSave: () async {
-              //     await controller.postCreateResume(
-              //         context: context,
-              //         body: CreateResumeRequest(
-              //             introduction:
-              //                 await controller.introduceController.getText()));
-              //   },
-              // );
-              context.goNamed("addIntroduce");
-            }),
-        item(
-            title: "Kinh nghiệm",
-            content: userController.resumeModel?.data?.experience != ""
-                ? null
-                : "Thêm kinh nghiệm",
-            hasContent: userController.resumeModel?.data?.experience != "",
-            widget: HtmlWidget(userController.resumeModel?.data?.experience),
-            onTap: () {
-              final model = CreateResumeModel(
-                textController: controller.experienceController,
-                profileTopic: ProfileTopic.experience,
-                title: "Kinh nghiệm",
-                onSave: () async {
-                  await controller.postCreateResume(
-                      context: context,
-                      body: CreateResumeRequest(
-                          introduction:
-                              userController.resumeModel?.data?.introduction,
-                          experience:
-                              await controller.experienceController.getText()));
-                },
-              );
-              context.goNamed("createResume", extra: model);
-            }),
-        item(
-            title: "Trình độ học vấn",
-            content: "Thêm trình độ học vấn",
-            onTap: () {
-              final model = CreateResumeModel(
-                textController: controller.educationController,
-                profileTopic: ProfileTopic.education,
-                title: "Trình độ học vấn",
-                onSave: () async {
-                  await controller.postCreateResume(
-                      context: context,
-                      body: CreateResumeRequest(
-                          education:
-                              await controller.educationController.getText()));
-                },
-              );
-              context.goNamed("createResume", extra: model);
-            }),
-        item(
-            title: "Kỹ năng",
-            content: "Thêm kỹ năng",
-            onTap: () {
-              final model = CreateResumeModel(
-                textController: controller.skillController,
-                profileTopic: ProfileTopic.skill,
-                title: "Kỹ năng",
-                onSave: () async {
-                  await controller.postCreateResume(
-                      context: context,
-                      body: CreateResumeRequest(
-                          skills: await controller.skillController.getText()));
-                },
-              );
-              context.goNamed("createResume", extra: model);
-            })
+    return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
+      slivers: [
+        CupertinoSliverRefreshControl(
+          onRefresh: () async => await userController.getResume(),
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+            child: Column(
+              children: [
+                item(
+                    title: "Giới thiệu",
+                    content: "Thêm giới thiệu bản thân",
+                    hasContent:
+                        userController.resumeModel?.data?.introduction != null,
+                    widget: contentWidget(
+                        userController.resumeModel?.data?.introduction ?? ""),
+                    onTap: () {
+                      context.goNamed("addIntroduce");
+                    }),
+                item(
+                    title: "Kinh nghiệm",
+                    content: "Thêm kinh nghiệm",
+                    hasContent:
+                        userController.resumeModel?.data?.experience != null &&
+                            userController.resumeModel?.data?.experience != "",
+                    widget: HtmlWidget(
+                        userController.resumeModel?.data?.experience ?? ""),
+                    onTap: () {
+                      final model = CreateResumeModel(
+                        textController: controller.experienceController,
+                        profileTopic: ProfileTopic.experience,
+                        title: "Kinh nghiệm",
+                        onSave: () async {
+                          await controller.postCreateResume(
+                              context: context,
+                              body: CreateResumeRequest(
+                                  introduction: userController
+                                      .resumeModel?.data?.introduction,
+                                  experience: await controller
+                                      .experienceController
+                                      .getText()));
+                        },
+                      );
+                      context.goNamed("createResume", extra: model);
+                    }),
+                item(
+                    title: "Trình độ học vấn",
+                    hasContent:
+                        userController.resumeModel?.data?.education != null,
+                    content: userController.resumeModel?.data?.education != null
+                        ? null
+                        : "Thêm trình độ học vấn",
+                    widget: educationList(ref),
+                    onTap: () {
+                      if (userController.resumeModel?.data?.education != null) {
+                        context.goNamed("resumeEducation");
+                      } else {
+                        context.goNamed("addEducation");
+                      }
+                    }),
+                item(
+                    title: "Kỹ năng",
+                    content: "Thêm kỹ năng",
+                    onTap: () {
+                      final model = CreateResumeModel(
+                        textController: controller.skillController,
+                        profileTopic: ProfileTopic.skill,
+                        title: "Kỹ năng",
+                        onSave: () async {
+                          await controller.postCreateResume(
+                              context: context,
+                              body: CreateResumeRequest(
+                                  skills: await controller.skillController
+                                      .getText()));
+                        },
+                      );
+                      context.goNamed("createResume", extra: model);
+                    })
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
@@ -144,9 +144,9 @@ class ResumeUser extends ConsumerWidget {
                   height: 5,
                 ),
                 Visibility(
-                  visible: content != null,
-                  replacement: widget ?? const Center(),
-                  child: Text(
+                  visible: hasContent,
+                  child: widget ?? const Center(),
+                  replacement: Text(
                     content ?? "",
                     style: const TextStyle(
                         fontSize: 12, fontWeight: FontWeight.w300),
@@ -186,6 +186,54 @@ class ResumeUser extends ConsumerWidget {
       trimExpandedText: "Thu gọn",
       moreStyle: const TextStyle(fontWeight: FontWeight.bold),
       lessStyle: const TextStyle(fontWeight: FontWeight.bold),
+    );
+  }
+
+  Widget educationList(WidgetRef ref) {
+    final userController = ref.watch(userControllerProvider);
+    return Column(
+      children: userController.resumeModel?.data?.education?.map((e) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const PhosphorIcon(PhosphorIconsRegular.graduationCap),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          e.school ?? "",
+                          style: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          "${e.startDate} - ${e.endDate}",
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          e.major ?? "",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w300, fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList() ??
+          [],
     );
   }
 }
