@@ -36,56 +36,60 @@ class EducationList extends ConsumerWidget {
           final e = resumeData?.education?[index];
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-              margin: const EdgeInsets.symmetric(vertical: 8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 2,
-                    blurRadius: 4,
-                    offset: const Offset(0, 1), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const PhosphorIcon(PhosphorIconsRegular.graduationCap),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          e?.school ?? "",
-                          style: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(
-                          height: 2,
-                        ),
-                        Text(
-                          "${e?.startDate} - ${e?.endDate}",
-                          style: const TextStyle(fontSize: 12),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          e?.major ?? "",
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w300, fontSize: 12),
-                        ),
-                      ],
+            child: GestureDetector(
+              onTap: () => context.goNamed("addEducation", extra: e),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 4,
+                      offset: const Offset(0, 1), // changes position of shadow
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const PhosphorIcon(PhosphorIconsRegular.graduationCap),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            e?.school ?? "",
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            height: 2,
+                          ),
+                          Text(
+                            "${e?.startDate} - ${e?.endDate}",
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            e?.major ?? "",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w300, fontSize: 12),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );

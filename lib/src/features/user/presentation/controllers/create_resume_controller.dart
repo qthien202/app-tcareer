@@ -135,16 +135,57 @@ class CreateResumeController extends ChangeNotifier {
   TextEditingController majorTextController = TextEditingController();
   List<EducationModel> educations = [];
 
-  Future<void> addEduction(BuildContext context) async {
+  Future<void> addEducation(BuildContext context) async {
+    List<EducationModel>? educationsData =
+        userController.resumeModel?.data?.education;
     final education = EducationModel(
-        id: educations.length + 1,
+        id: (educationsData?.length ?? 0) + 1,
         school: schoolTextController.text,
         major: majorTextController.text,
         startDate: startDateTextController.text,
         endDate: endDateTextController.text);
-    educations.add(education);
-    await postCreateResume(
-        context: context, body: CreateResumeRequest(education: educations));
+    if (educationsData != null) {
+      educationsData.add(education);
+      await postCreateResume(
+          context: context,
+          body: CreateResumeRequest(education: educationsData));
+    } else {
+      final education = EducationModel(
+          id: educations.length + 1,
+          school: schoolTextController.text,
+          major: majorTextController.text,
+          startDate: startDateTextController.text,
+          endDate: endDateTextController.text);
+      educations.add(education);
+      await postCreateResume(
+          context: context, body: CreateResumeRequest(education: educations));
+    }
+  }
+
+  Future<void> updateEducation(
+      {required BuildContext context, required int educationId}) async {
+    List<EducationModel> educationsData =
+        userController.resumeModel?.data?.education ?? [];
+    final index = educationsData.indexWhere((e) => e.id == educationId);
+
+    if (index != -1) {
+      educationsData[index] = educationsData[index].copyWith(
+          school: schoolTextController.text,
+          major: majorTextController.text,
+          startDate: startDateTextController.text,
+          endDate: endDateTextController.text);
+
+      await postCreateResume(
+          context: context,
+          body: CreateResumeRequest(education: educationsData));
+    }
+  }
+
+  Future<void> clearEducation() async {
+    schoolTextController.clear();
+    majorTextController.clear();
+    startDateTextController.clear();
+    endDateTextController.clear();
   }
 }
 

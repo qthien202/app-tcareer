@@ -15,6 +15,7 @@ import 'package:app_tcareer/src/features/user/presentation/pages/profile_page.da
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_education.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_introduce.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/education_list.dart';
+import 'package:app_tcareer/src/routes/conversation_route.dart';
 import 'package:app_tcareer/src/routes/home_route.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
 import 'package:flutter/widgets.dart';
@@ -22,6 +23,7 @@ import 'package:go_router/go_router.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_from_message.dart';
 
 import '../features/user/data/models/create_resume_model.dart';
+import 'user_route.dart';
 
 enum RouteNames { home, jobs, notifications, user, temp }
 
@@ -85,48 +87,7 @@ class Index {
                     child: ConversationPage(),
                     transitionsBuilder: fadeTransitionBuilder);
               },
-              routes: [
-                GoRoute(
-                    path: "chat/:userId/:clientId",
-                    name: "chat",
-                    pageBuilder: (context, state) {
-                      String userId = state.pathParameters['userId'].toString();
-                      String clientId =
-                          state.pathParameters['clientId'].toString();
-                      String? content =
-                          state.uri.queryParameters['content'].toString() ?? "";
-                      return CustomTransitionPage(
-                          child: ChatPage(
-                            userId: userId,
-                            clientId: clientId,
-                            content: content,
-                          ),
-                          transitionsBuilder: fadeTransitionBuilder);
-                    },
-                    routes: []),
-                GoRoute(
-                    path: "search",
-                    name: "conversationSearch",
-                    pageBuilder: (context, state) {
-                      return const CustomTransitionPage(
-                          child: ConversationSearchPage(),
-                          transitionsBuilder: fadeTransitionBuilder);
-                    },
-                    routes: [
-                      GoRoute(
-                          path: "match",
-                          name: "messagesMatch",
-                          pageBuilder: (context, state) {
-                            final user = state.extra as Data;
-                            return CustomTransitionPage(
-                                child: MessagesMatchPage(
-                                  user: user,
-                                ),
-                                transitionsBuilder: fadeTransitionBuilder);
-                          },
-                          routes: []),
-                    ]),
-              ]),
+              routes: ConversationRoute.routes),
         ]),
         StatefulShellBranch(routes: [
           GoRoute(
@@ -136,62 +97,7 @@ class Index {
                   key: state.pageKey,
                   child: const ProfilePage(),
                   transitionsBuilder: fadeTransitionBuilder),
-              routes: [
-                GoRoute(
-                    path: "media",
-                    name: "userMedia",
-                    pageBuilder: (context, state) => CustomTransitionPage(
-                        key: state.pageKey,
-                        child: const UserMediaPage(),
-                        transitionsBuilder: fadeTransitionBuilder),
-                    routes: []),
-                GoRoute(
-                    path: "resume/addIntroduce",
-                    name: "addIntroduce",
-                    pageBuilder: (context, state) {
-                      // final model = state.extra as CreateResumeModel;
-                      return CustomTransitionPage(
-                          key: state.pageKey,
-                          child: const AddIntroduce(),
-                          transitionsBuilder: fadeTransitionBuilder);
-                    },
-                    routes: []),
-                GoRoute(
-                    path: "resume/addEducation",
-                    name: "addEducation",
-                    pageBuilder: (context, state) {
-                      // final model = state.extra as CreateResumeModel;
-                      return CustomTransitionPage(
-                          key: state.pageKey,
-                          child: const AddEducation(),
-                          transitionsBuilder: fadeTransitionBuilder);
-                    },
-                    routes: []),
-                GoRoute(
-                    path: "resume/education",
-                    name: "resumeEducation",
-                    pageBuilder: (context, state) {
-                      // final model = state.extra as CreateResumeModel;
-                      return CustomTransitionPage(
-                          key: state.pageKey,
-                          child: const EducationList(),
-                          transitionsBuilder: fadeTransitionBuilder);
-                    },
-                    routes: []),
-                GoRoute(
-                    path: "resume/createResume",
-                    name: "createResume",
-                    pageBuilder: (context, state) {
-                      final model = state.extra as CreateResumeModel;
-                      return CustomTransitionPage(
-                          key: state.pageKey,
-                          child: CreateResumePage(
-                            model: model,
-                          ),
-                          transitionsBuilder: fadeTransitionBuilder);
-                    },
-                    routes: []),
-              ]),
+              routes: UserRoute.routes),
         ]),
         StatefulShellBranch(routes: [
           GoRoute(

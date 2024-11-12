@@ -125,7 +125,6 @@ class AppRouter {
       },
       routes: [
         Index.router,
-
         GoRoute(
           path: "/${RouteNames.splash.name}",
           name: RouteNames.splash.name,
@@ -204,7 +203,6 @@ class AppRouter {
             ),
           ],
         ),
-
         GoRoute(
             path: "/createJob",
             name: "createJob",
@@ -256,7 +254,6 @@ class AppRouter {
                   },
                   routes: []),
             ]),
-
         GoRoute(
             path: "/${RouteNames.posting.name}",
             name: RouteNames.posting.name,
@@ -294,7 +291,6 @@ class AppRouter {
                 },
               ),
             ]),
-
         GoRoute(
             path: "/appPhoto",
             name: "appPhoto",
@@ -308,23 +304,6 @@ class AppRouter {
                 transitionsBuilder: fadeTransitionBuilder,
               );
             }),
-        // GoRoute(
-        //   path: "/detail/:id",
-        //   name: "detail",
-        //   pageBuilder: (context, state) {
-        //     final postId = state.pathParameters["id"] ?? "";
-        //     final notificationType =
-        //         state.uri.queryParameters["notificationType"] ?? "";
-        //     print(">>>>>>>>>>>>>>>type0: ${notificationType}");
-        //     return CustomTransitionPage(
-        //         key: state.pageKey,
-        //         child: PostDetailPage(
-        //           postId,
-        //           notificationType: notificationType,
-        //         ),
-        //         transitionsBuilder: fadeTransitionBuilder);
-        //   },
-        // ),
       ],
       refreshListenable: GoRouterRefreshStream(),
       // observers: [CustomNavigatorObserver(ref)]
@@ -338,39 +317,3 @@ class GoRouterRefreshStream extends ChangeNotifier {
     super.notifyListeners();
   }
 }
-
-// class CustomNavigatorObserver extends NavigatorObserver {
-//   final WidgetRef ref;
-//
-//   CustomNavigatorObserver(this.ref);
-//
-//   @override
-//   void didPop(Route route, Route? previousRoute) {
-//     if (route.settings.name == 'chat' ||
-//         route.settings.name == 'conversation') {
-//       _handleUserStatusUpdate();
-//     }
-//     super.didPop(route, previousRoute);
-//   }
-//
-//   @override
-//   void didPush(Route route, Route? previousRoute) {
-//     if (previousRoute?.settings.name == 'chat' ||
-//         previousRoute?.settings.name == 'conversation') {
-//       _handleUserStatusUpdate();
-//     }
-//     super.didPush(route, previousRoute);
-//   }
-//
-//   void _handleUserStatusUpdate() {
-//     // Sử dụng Future.microtask để chạy bất đồng bộ mà không gây ảnh hưởng tới các phương thức chính
-//     Future.microtask(() async {
-//       final userUtil = ref.read(userUtilsProvider);
-//       final isAuthenticated = await userUtil.isAuthenticated();
-//       print(">>>>>>>>>>>>>isAuthenticated: $isAuthenticated");
-//       if (isAuthenticated) {
-//         ref.read(connectionUseCaseProvider).setUserOnlineStatus();
-//       }
-//     });
-//   }
-// }
