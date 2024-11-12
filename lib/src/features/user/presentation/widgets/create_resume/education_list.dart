@@ -22,10 +22,10 @@ class EducationList extends ConsumerWidget {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: GestureDetector(
-                onTap: () => context.goNamed("addEducation"),
-                child: PhosphorIcon(PhosphorIconsRegular.plus)),
+                onTap: () => context.pushNamed("addEducation"),
+                child: const PhosphorIcon(PhosphorIconsRegular.plus)),
           )
         ],
       ),
@@ -37,7 +37,7 @@ class EducationList extends ConsumerWidget {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: GestureDetector(
-              onTap: () => context.goNamed("addEducation", extra: e),
+              onTap: () => context.pushNamed("addEducation", extra: e),
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 15),

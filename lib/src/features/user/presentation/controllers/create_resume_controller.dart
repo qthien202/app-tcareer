@@ -181,11 +181,51 @@ class CreateResumeController extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteEducation(
+      {required BuildContext context, required int educationId}) async {
+    List<EducationModel> educationsData =
+        userController.resumeModel?.data?.education ?? [];
+    educationsData.removeWhere((e) => e.id == educationId);
+    await postCreateResume(
+        context: context, body: CreateResumeRequest(education: educationsData));
+  }
+
   Future<void> clearEducation() async {
     schoolTextController.clear();
     majorTextController.clear();
     startDateTextController.clear();
     endDateTextController.clear();
+  }
+
+  Future<void> showConfirmDeleteEducation(
+      {required BuildContext context, required int educationId}) async {
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Xóa trình độ học vấn'),
+        content:
+            const Text('Bạn có chắc chắn muốn xóa trình độ học vấn này không?'),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            onPressed: () {
+              context.pop();
+            },
+            child: const Text(
+              'Hủy',
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () async {
+              await deleteEducation(context: context, educationId: educationId);
+              context.pop();
+            },
+            child: const Text('Xóa'),
+          ),
+        ],
+      ),
+    );
   }
 }
 

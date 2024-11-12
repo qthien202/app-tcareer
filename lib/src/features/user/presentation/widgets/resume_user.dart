@@ -67,11 +67,10 @@ class ResumeUser extends ConsumerWidget {
                     }),
                 item(
                     title: "Trình độ học vấn",
-                    hasContent:
-                        userController.resumeModel?.data?.education != null,
-                    content: userController.resumeModel?.data?.education != null
-                        ? null
-                        : "Thêm trình độ học vấn",
+                    hasContent: userController
+                            .resumeModel?.data?.education?.isNotEmpty ==
+                        true,
+                    content: "Thêm trình độ học vấn",
                     widget: educationList(ref),
                     onTap: () {
                       if (userController.resumeModel?.data?.education != null) {
@@ -144,13 +143,13 @@ class ResumeUser extends ConsumerWidget {
                   height: 5,
                 ),
                 Visibility(
-                  visible: hasContent,
-                  child: widget ?? const Center(),
+                  visible: hasContent == true,
                   replacement: Text(
                     content ?? "",
                     style: const TextStyle(
                         fontSize: 12, fontWeight: FontWeight.w300),
                   ),
+                  child: widget ?? const Center(),
                 ),
               ],
             ),

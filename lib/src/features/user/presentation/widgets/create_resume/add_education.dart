@@ -53,6 +53,19 @@ class _AddEducationState extends ConsumerState<AddEducation> {
         appBar: AppBar(
           automaticallyImplyLeading: true,
           backgroundColor: Colors.white,
+          actions: [
+            Visibility(
+              visible: widget.education != null,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: GestureDetector(
+                  onTap: () async => controller.showConfirmDeleteEducation(
+                      context: context, educationId: widget.education?.id ?? 0),
+                  child: PhosphorIcon(PhosphorIconsRegular.trashSimple),
+                ),
+              ),
+            )
+          ],
         ),
         body: Form(
           key: formKey,

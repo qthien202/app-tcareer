@@ -148,6 +148,8 @@ class UserController extends ChangeNotifier {
   ResumeModel? resumeModel;
   Future<void> getResume() async {
     resumeModel = await userUseCase.getResume();
+    print(
+        ">>>>>>>>>>>>>>>>>>isEmpty: ${resumeModel?.data?.education?.isEmpty}");
     notifyListeners();
   }
 
