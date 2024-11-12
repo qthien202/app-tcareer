@@ -8,6 +8,7 @@ import 'package:app_tcareer/src/features/user/presentation/controllers/user_cont
 import 'package:app_tcareer/src/features/user/presentation/widgets/connect_button.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/information.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/information_loading.dart';
+import 'package:app_tcareer/src/features/user/presentation/widgets/resume_another.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -97,7 +98,7 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: TabBarView(
                 children: [
-                  const Text("Giới thiệu"),
+                  const ResumeAnother(),
                   postList(),
                   const Text("Phương tiện")
                 ],
@@ -130,13 +131,11 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
     final controller = ref.watch(anotherUserControllerProvider);
     return NotificationListener<ScrollNotification>(
       onNotification: (ScrollNotification scrollInfo) {
-        // Kiểm tra xem đã cuộn đến cuối danh sách chưa
         if (scrollInfo.metrics.pixels >=
             scrollInfo.metrics.maxScrollExtent - 50) {
-          // Gọi hàm tải thêm bài viết
           controller.loadMore();
         }
-        return true; // Ngăn chặn việc lan truyền thêm
+        return true;
       },
       child: CustomScrollView(
         physics: const BouncingScrollPhysics(),

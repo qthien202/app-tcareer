@@ -2,6 +2,7 @@ import 'package:app_tcareer/src/features/index/index_controller.dart';
 import 'package:app_tcareer/src/features/posts/data/models/posts_response.dart'
     as post_model;
 import 'package:app_tcareer/src/features/posts/usecases/post_use_case.dart';
+import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/another_menu.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
@@ -25,6 +26,14 @@ class AnotherUserController extends ChangeNotifier {
 
     anotherUserData = await userUseCase.getUserById(userId);
 
+    notifyListeners();
+  }
+
+  ResumeModel? resumeModel;
+  Future<void> getResume(String userId) async {
+    resumeModel = await userUseCase.getResume(userId: userId);
+    print(
+        ">>>>>>>>>>>>>>>>>>isEmpty: ${resumeModel?.data?.education?.isEmpty}");
     notifyListeners();
   }
 
@@ -78,6 +87,7 @@ class AnotherUserController extends ChangeNotifier {
     notifyListeners();
     page = 1;
     await getUserById(userId);
+    await getResume(userId);
     await getPost(userId);
   }
 
@@ -114,6 +124,7 @@ class AnotherUserController extends ChangeNotifier {
     page = 1;
     // notifyListeners();
     await getUserById(anotherUserData?.data?.id.toString() ?? "");
+    await getResume(anotherUserData?.data?.id.toString() ?? "");
     await getPost(anotherUserData?.data?.id.toString() ?? "");
   }
 
