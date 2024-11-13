@@ -23,6 +23,7 @@ import 'package:go_router/go_router.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_from_message.dart';
 
 import '../features/user/data/models/create_resume_model.dart';
+import 'job_route.dart';
 import 'user_route.dart';
 
 enum RouteNames { home, jobs, notifications, user, temp }
@@ -52,21 +53,7 @@ class Index {
                   key: state.pageKey,
                   child: const JobPage(),
                   transitionsBuilder: fadeTransitionBuilder),
-              routes: [
-                GoRoute(
-                    path: "detail",
-                    name: "jobDetail",
-                    pageBuilder: (context, state) {
-                      final job = state.extra as JobModel;
-                      return CustomTransitionPage(
-                          key: state.pageKey,
-                          child: JobDetailPage(
-                            job: job,
-                          ),
-                          transitionsBuilder: fadeTransitionBuilder);
-                    },
-                    routes: []),
-              ]),
+              routes: JobRoute.routes),
         ]),
         StatefulShellBranch(routes: [
           GoRoute(

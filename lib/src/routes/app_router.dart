@@ -59,7 +59,7 @@ class AppRouter {
     return GoRouter(
       navigatorKey: navigatorKey,
       debugLogDiagnostics: true,
-      initialLocation: "/home",
+      initialLocation: "/jobs/apply",
       redirect: (context, state) async {
         final userUtils = ref.watch(userUtilsProvider);
         final isAuthenticated = await userUtils.isAuthenticated();

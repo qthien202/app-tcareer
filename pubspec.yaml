@@ -132,6 +132,7 @@ dependencies:
   flutter_html: ^3.0.0-beta.2
   flutter_localization: ^0.2.1
   flutter_keyboard_visibility: ^6.0.0
+  dotted_border: ^2.1.0
 
 
 #  quill_html_editor: ^2.2.8

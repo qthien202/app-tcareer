@@ -97,7 +97,7 @@ class _IndexPageState extends ConsumerState<IndexPage>
     bool isRouteValid =
         routerState.fullPath?.startsWith("/conversation/chat") == false &&
             routerState.fullPath?.startsWith("/user/resume") == false &&
-            routerState.fullPath?.startsWith('/jobs/detail') == false;
+            routerState.fullPath?.startsWith('/jobs/') == false;
     return Scaffold(
       body: widget.shell,
       bottomNavigationBar: Visibility(

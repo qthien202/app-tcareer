@@ -36,7 +36,7 @@ class JobRepository {
   Future<List<JobRolesModel>> getJobRoles(num topicId) async =>
       await apiServices.getJobRoles(topicId: topicId);
 
-  Future<String> uploadImage(
+  Future<String> uploadFile(
       {required File file, required String folderPath}) async {
     return await storageService.uploadFile(file, folderPath);
   }

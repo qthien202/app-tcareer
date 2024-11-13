@@ -7,6 +7,7 @@ import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class JobDetailPage extends ConsumerWidget {
@@ -131,7 +132,7 @@ class JobDetailPage extends ConsumerWidget {
           jobDescription()
         ],
       ),
-      bottomNavigationBar: bottomAppBar(),
+      bottomNavigationBar: bottomAppBar(context),
     );
   }
 
@@ -289,7 +290,7 @@ class JobDetailPage extends ConsumerWidget {
     );
   }
 
-  Widget bottomAppBar() {
+  Widget bottomAppBar(BuildContext context) {
     return BottomAppBar(
       color: Colors.white,
       child: Row(
@@ -318,7 +319,7 @@ class JobDetailPage extends ConsumerWidget {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primary,
                       padding: EdgeInsets.symmetric(vertical: 15)),
-                  onPressed: () {},
+                  onPressed: () => context.goNamed("applyJob"),
                   child: Text(
                     "Ứng tuyển ngay",
                     style: TextStyle(
