@@ -73,19 +73,7 @@ class ResumeUser extends ConsumerWidget {
                     title: "Kỹ năng",
                     content: "Thêm kỹ năng",
                     onTap: () {
-                      final model = CreateResumeModel(
-                        textController: controller.skillController,
-                        profileTopic: ProfileTopic.skill,
-                        title: "Kỹ năng",
-                        onSave: () async {
-                          await controller.postCreateResume(
-                              context: context,
-                              body: CreateResumeRequest(
-                                  skills: await controller.skillController
-                                      .getText()));
-                        },
-                      );
-                      context.goNamed("createResume", extra: model);
+                      context.goNamed("addSkill");
                     })
               ],
             ),

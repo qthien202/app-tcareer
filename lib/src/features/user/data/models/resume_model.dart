@@ -1,4 +1,5 @@
 import 'package:app_tcareer/src/features/user/data/models/experience_model.dart';
+import 'package:app_tcareer/src/features/user/data/models/skill_model.dart';
 
 import 'education_model.dart';
 
@@ -35,7 +36,7 @@ class Data {
     num? id,
     num? userId,
     String? introduction,
-    dynamic skills,
+    List<SkillModel>? skills,
     dynamic careerObjective,
     List<ExperienceModel>? experience,
     List<EducationModel>? education,
@@ -57,7 +58,6 @@ class Data {
     _id = json['id'];
     _userId = json['user_id'];
     _introduction = json['introduction'];
-    _skills = json['skills'];
     _careerObjective = json['career_objective'];
     if (json['experience'] != null) {
       _experience = [];
@@ -71,13 +71,19 @@ class Data {
         _education?.add(EducationModel.fromJson(v));
       });
     }
+    if (json['skills'] != null) {
+      _skills = [];
+      json['skills'].forEach((v) {
+        _skills?.add(SkillModel.fromJson(v));
+      });
+    }
     _createdAt = json['created_at'];
     _updatedAt = json['updated_at'];
   }
   num? _id;
   num? _userId;
   String? _introduction;
-  dynamic _skills;
+  List<SkillModel>? _skills;
   dynamic _careerObjective;
   List<ExperienceModel>? _experience;
   List<EducationModel>? _education;
@@ -87,7 +93,7 @@ class Data {
     num? id,
     num? userId,
     String? introduction,
-    dynamic skills,
+    List<SkillModel>? skills,
     dynamic careerObjective,
     List<ExperienceModel>? experience,
     List<EducationModel>? education,
@@ -108,7 +114,7 @@ class Data {
   num? get id => _id;
   num? get userId => _userId;
   String? get introduction => _introduction;
-  dynamic get skills => _skills;
+  List<SkillModel>? get skills => _skills;
   dynamic get careerObjective => _careerObjective;
   List<ExperienceModel>? get experience => _experience;
   List<EducationModel>? get education => _education;

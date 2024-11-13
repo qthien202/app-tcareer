@@ -2,6 +2,7 @@ import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/user/data/models/create_resume_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/education_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/experience_model.dart';
+import 'package:app_tcareer/src/features/user/data/models/skill_model.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
@@ -368,6 +369,24 @@ class CreateResumeController extends ChangeNotifier {
         ],
       ),
     );
+  }
+
+  TextEditingController skillTextController = TextEditingController();
+  Future<void> addSkill(BuildContext context) async {
+    List<SkillModel>? skillData = userController.resumeModel?.data?.skills;
+    final skill = SkillModel(
+        id: (skillData?.length ?? 0) + 1, name: skillTextController.text);
+    if (skillData != null) {
+      skillData.add(skill);
+      await postCreateResume(
+          context: context, body: CreateResumeRequest(skills: skillData));
+    } else {
+      List<SkillModel> skills = [];
+      final skill = SkillModel(id: 1, name: skillTextController.text);
+      skills.add(skill);
+      await postCreateResume(
+          context: context, body: CreateResumeRequest(skills: skills));
+    }
   }
 }
 
