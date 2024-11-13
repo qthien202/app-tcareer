@@ -9,6 +9,7 @@ import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_skill.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/education_list.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/experience_list.dart';
+import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/skill_list.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
 import 'package:go_router/go_router.dart';
 
@@ -93,6 +94,17 @@ class UserRoute {
           return CustomTransitionPage(
               key: state.pageKey,
               child: const ExperienceList(),
+              transitionsBuilder: fadeTransitionBuilder);
+        },
+        routes: []),
+    GoRoute(
+        path: "resume/skill",
+        name: "resumeSkill",
+        pageBuilder: (context, state) {
+          // final model = state.extra as CreateResumeModel;
+          return CustomTransitionPage(
+              key: state.pageKey,
+              child: const SkillList(),
               transitionsBuilder: fadeTransitionBuilder);
         },
         routes: []),

@@ -340,6 +340,14 @@ class CreateResumeController extends ChangeNotifier {
         body: CreateResumeRequest(experience: experienceData));
   }
 
+  Future<void> deleteSkill(
+      {required BuildContext context, required int skillId}) async {
+    List<SkillModel> skillData = userController.resumeModel?.data?.skills ?? [];
+    skillData.removeWhere((e) => e.id == skillId);
+    await postCreateResume(
+        context: context, body: CreateResumeRequest(skills: skillData));
+  }
+
   Future<void> showConfirmDeleteExperience(
       {required BuildContext context, required int experienceId}) async {
     showCupertinoDialog<void>(
@@ -387,6 +395,48 @@ class CreateResumeController extends ChangeNotifier {
       await postCreateResume(
           context: context, body: CreateResumeRequest(skills: skills));
     }
+  }
+
+  Future<void> updateSkill(
+      {required BuildContext context, required int skillId}) async {
+    List<SkillModel> skillData = userController.resumeModel?.data?.skills ?? [];
+    final index = skillData.indexWhere((e) => e.id == skillId);
+    if (index != -1) {
+      skillData[index] =
+          skillData[index].copyWith(name: skillTextController.text);
+      await postCreateResume(
+          context: context, body: CreateResumeRequest(skills: skillData));
+    }
+  }
+
+  Future<void> showConfirmDeleteSkill(
+      {required BuildContext context, required int skillId}) async {
+    showCupertinoDialog<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Xóa kỹ năng'),
+        content: const Text('Bạn có chắc chắn muốn xóa kĩ năng này không?'),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            onPressed: () {
+              context.pop();
+            },
+            child: const Text(
+              'Hủy',
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () async {
+              await deleteSkill(context: context, skillId: skillId);
+              context.pop();
+            },
+            child: const Text('Xóa'),
+          ),
+        ],
+      ),
+    );
   }
 }
 

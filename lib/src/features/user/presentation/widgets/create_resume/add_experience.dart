@@ -46,7 +46,8 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
     return PopScope(
       onPopInvoked: (didPop) {
         if (didPop) {
-          controller.clearExperience();
+          // controller.clearExperience();
+          formKey.currentState?.reset();
         }
       },
       child: KeyboardVisibilityBuilder(

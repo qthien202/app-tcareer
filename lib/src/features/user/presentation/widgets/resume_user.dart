@@ -72,8 +72,15 @@ class ResumeUser extends ConsumerWidget {
                 item(
                     title: "Kỹ năng",
                     content: "Thêm kỹ năng",
+                    widget: skillList(ref),
+                    hasContent:
+                        userController.resumeModel?.data?.skills?.isNotEmpty ==
+                            true,
                     onTap: () {
-                      context.goNamed("addSkill");
+                      userController.resumeModel?.data?.skills?.isNotEmpty ==
+                              true
+                          ? context.goNamed("resumeSkill")
+                          : context.goNamed("addSkill");
                     })
               ],
             ),
@@ -282,6 +289,45 @@ class ResumeUser extends ConsumerWidget {
                           height: 5,
                         ),
                         contentWidget(e.jobDescription ?? "", trimLines: 3)
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList() ??
+          [],
+    );
+  }
+
+  Widget skillList(WidgetRef ref) {
+    final userController = ref.watch(userControllerProvider);
+    return Column(
+      children: userController.resumeModel?.data?.skills?.map((e) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const PhosphorIcon(
+                    PhosphorIconsFill.circle,
+                    size: 8,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          e.name,
+                          style: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w400),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
                       ],
                     ),
                   ),
