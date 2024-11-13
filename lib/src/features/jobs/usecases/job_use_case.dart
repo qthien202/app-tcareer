@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
@@ -15,6 +17,12 @@ class JobUseCase {
       await jobRepository.getJobRoles(topicId);
 
   Future<GetJobResponse> getJobs() async => await jobRepository.getJobs();
+  Future<String> uploadFile(
+          {required File file,
+          required String folderPath,
+          String contentType = "image/jpg"}) async =>
+      await jobRepository.uploadFile(
+          file: file, folderPath: folderPath, contentType: contentType);
 }
 
 final jobUseCaseProvider =

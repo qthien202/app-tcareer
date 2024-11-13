@@ -9,13 +9,17 @@ import 'package:uuid/uuid.dart';
 class FirebaseStorageService {
   final storage = FirebaseStorage.instance;
 
-  Future<String> uploadFile(File file, String folderPath) async {
+  Future<String> uploadFile(File file, String folderPath,
+      {String contentType = "image/jpg"}) async {
     final uuid = Uuid();
     String fileName = uuid.v4();
     String path = "$folderPath/$fileName";
     final ref = storage.ref().child(path);
     try {
-      UploadTask uploadTask = ref.putFile(file);
+      UploadTask uploadTask = ref.putFile(
+        file,
+        SettableMetadata(contentType: contentType),
+      );
       TaskSnapshot snapshot = await uploadTask;
       String url = await snapshot.ref.getDownloadURL();
       return url;

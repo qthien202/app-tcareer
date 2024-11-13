@@ -11,6 +11,7 @@ class ApplyJobPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.watch(applyJobControllerProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -32,7 +33,22 @@ class ApplyJobPage extends ConsumerWidget {
           const SizedBox(
             height: 20,
           ),
-          cvItem(ref)
+          cvItem(ref),
+          const SizedBox(
+            height: 20,
+          ),
+          ElevatedButton(
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
+              onPressed: controller.selectedFile != null
+                  ? () async {
+                      await controller.uploadFile(context);
+                    }
+                  : null,
+              child: Text(
+                "Tải CV lên",
+                style: TextStyle(color: Colors.white),
+              ))
         ],
       ),
     );
