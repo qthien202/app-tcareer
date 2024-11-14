@@ -2,6 +2,7 @@ import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_item.dart';
+import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 
 import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
 import 'package:flutter/material.dart';
@@ -163,7 +164,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
           jobDescription()
         ],
       ),
-      bottomNavigationBar: bottomAppBar(context),
+      bottomNavigationBar: bottomAppBar(context, ref),
     );
   }
 
@@ -321,46 +322,66 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
     );
   }
 
-  Widget bottomAppBar(BuildContext context) {
+  Widget bottomAppBar(BuildContext context, WidgetRef ref) {
+    final userController = ref.watch(userControllerProvider);
+    final userId = userController.userData?.data?.id;
+    bool isClient = userId == widget.job.userId;
     return BottomAppBar(
       color: Colors.white,
-      child: Row(
-        // crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            padding: EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              border: Border.all(color: Colors.grey.shade200),
+      child: Visibility(
+        visible: !isClient,
+        replacement: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+                backgroundColor: Colors.red,
+                padding: const EdgeInsets.symmetric(vertical: 15)),
+            onPressed: () => {},
+            child: const Text(
+              "Xóa công việc",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14),
+            )),
+        child: Row(
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.grey.shade200),
+              ),
+              child: const PhosphorIcon(
+                PhosphorIconsRegular.chatCenteredDots,
+                color: AppColors.primary,
+                size: 25,
+              ),
             ),
-            child: const PhosphorIcon(
-              PhosphorIconsRegular.chatCenteredDots,
-              color: AppColors.primary,
-              size: 25,
+            const SizedBox(
+              width: 10,
             ),
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-          Expanded(
-              flex: 4,
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                      backgroundColor: AppColors.primary,
-                      padding: const EdgeInsets.symmetric(vertical: 15)),
-                  onPressed: () => context.pushNamed("applyJob",
-                      queryParameters: {"id": widget.job.id.toString()}),
-                  child: const Text(
-                    "Ứng tuyển ngay",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14),
-                  )))
-        ],
+            Expanded(
+                flex: 4,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        backgroundColor: AppColors.primary,
+                        padding: const EdgeInsets.symmetric(vertical: 15)),
+                    onPressed: () => context.pushNamed("applyJob",
+                        queryParameters: {"id": widget.job.id.toString()}),
+                    child: const Text(
+                      "Ứng tuyển ngay",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                    )))
+          ],
+        ),
       ),
     );
   }

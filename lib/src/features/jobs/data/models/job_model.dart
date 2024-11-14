@@ -3,6 +3,7 @@ import 'package:app_tcareer/src/features/jobs/data/models/job_location_model.dar
 class JobModel {
   JobModel({
     num? id,
+    num? userId,
     String? title,
     num? jobTopicId,
     String? jobTopicName,
@@ -22,6 +23,7 @@ class JobModel {
     String? updatedAt,
   }) {
     _id = id;
+    _userId = userId;
     _title = title;
     _jobTopicId = jobTopicId;
     _jobTopicName = jobTopicName;
@@ -82,6 +84,7 @@ class JobModel {
 
   JobModel.fromJson(dynamic json) {
     _id = json['id'];
+    _userId = json['user_id'];
     _title = json['title'];
     _jobTopicId = json['job_topic_id'];
     _jobTopicName = json['job_topic_name'];
@@ -101,6 +104,7 @@ class JobModel {
     _updatedAt = json['updated_at'];
   }
   num? _id;
+  num? _userId;
   String? _title;
   num? _jobTopicId;
   String? _jobTopicName;
@@ -120,6 +124,7 @@ class JobModel {
   String? _updatedAt;
   JobModel copyWith(
           {num? id,
+          num? userId,
           String? title,
           num? jobTopicId,
           String? jobTopicName,
@@ -138,6 +143,7 @@ class JobModel {
           num? positionsAvailable,
           String? updatedAt}) =>
       JobModel(
+          userId: userId ?? _userId,
           id: id ?? _id,
           title: title ?? _title,
           jobTopicId: jobTopicId ?? _jobTopicId,
@@ -157,6 +163,7 @@ class JobModel {
           positionsAvailable: positionsAvailable ?? _positionsAvailable,
           updatedAt: updatedAt ?? _updatedAt);
   num? get id => _id;
+  num? get userId => _userId;
   String? get title => _title;
   num? get jobTopicId => _jobTopicId;
   String? get jobTopicName => _jobTopicName;
@@ -178,6 +185,7 @@ class JobModel {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
+    map['user_id'] = _userId;
     map['title'] = _title;
     map['job_topic_id'] = _jobTopicId;
     map['job_topic_name'] = _jobTopicName;
