@@ -88,6 +88,7 @@ class ApplyJobPage extends ConsumerWidget {
     TextEditingController phoneController = TextEditingController();
     TextEditingController addressController = TextEditingController();
     emailController.text = userController.userData?.data?.email ?? "";
+    phoneController.text = userController.userData?.data?.phone ?? "";
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
@@ -148,11 +149,6 @@ class ApplyJobPage extends ConsumerWidget {
             title: "Điện thoại",
             isReadOnly: true,
             controller: phoneController,
-          ),
-          TextInput(
-            title: "Địa chỉ",
-            isReadOnly: true,
-            controller: addressController,
           ),
         ],
       ),
