@@ -96,7 +96,7 @@ class ResumeUser extends ConsumerWidget {
       void Function()? onTap,
       String? content,
       Widget? widget}) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),

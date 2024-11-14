@@ -10,13 +10,32 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class JobDetailPage extends ConsumerWidget {
+class JobDetailPage extends ConsumerStatefulWidget {
   final JobModel job;
   const JobDetailPage({super.key, required this.job});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(jobControllerProvider);
+  ConsumerState<JobDetailPage> createState() => _JobDetailPageState();
+}
+
+class _JobDetailPageState extends ConsumerState<JobDetailPage> {
+  ScrollController scrollController = ScrollController();
+  double positionPixel = 0.0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    scrollController.addListener(() {
+      setState(() {
+        positionPixel = scrollController.position.pixels;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // final controller = ref.watch(jobControllerProvider);
+
     Map<String, dynamic> contentEmployee = {
       "full-time": "Toàn thời gian",
       "part-time": "Bán thời gian",
@@ -33,13 +52,25 @@ class JobDetailPage extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: true,
-        centerTitle: true,
-        title: const Text(
-          "Chi tiết công việc",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        centerTitle: false,
+        title: Visibility(
+          visible: positionPixel >= 100,
+          child: Text(
+            widget.job.title ?? "",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+          ),
         ),
+        actions: [
+          GestureDetector(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: PhosphorIcon(PhosphorIconsRegular.bookmarkSimple),
+            ),
+          )
+        ],
       ),
       body: ListView(
+        controller: scrollController,
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         children: [
           Row(
@@ -50,7 +81,7 @@ class JobDetailPage extends ConsumerWidget {
                 child: cachedImageWidget(
                   height: 50,
                   width: 50,
-                  imageUrl: job.ctyImageUrl ?? "",
+                  imageUrl: widget.job.ctyImageUrl ?? "",
                   fit: BoxFit.cover,
                 ),
               ),
@@ -58,7 +89,7 @@ class JobDetailPage extends ConsumerWidget {
                 width: 10,
               ),
               Text(
-                job.ctyName ?? "",
+                widget.job.ctyName ?? "",
                 style:
                     const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
               )
@@ -68,7 +99,7 @@ class JobDetailPage extends ConsumerWidget {
             height: 10,
           ),
           Text(
-            job.title ?? "",
+            widget.job.title ?? "",
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(
@@ -84,7 +115,7 @@ class JobDetailPage extends ConsumerWidget {
                     color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(20)),
                 child: Text(
-                  contentEmployee[job.employmentType],
+                  contentEmployee[widget.job.employmentType],
                   style: const TextStyle(
                       color: Colors.black,
                       fontSize: 12,
@@ -99,7 +130,7 @@ class JobDetailPage extends ConsumerWidget {
                     color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(20)),
                 child: Text(
-                  "${job.experienceRequired.toString()} năm",
+                  "${widget.job.experienceRequired.toString()} năm",
                   style: const TextStyle(
                       color: Colors.black,
                       fontSize: 12,
@@ -113,7 +144,7 @@ class JobDetailPage extends ConsumerWidget {
                     color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(20)),
                 child: Text(
-                  contentType[job.jobType] ?? "",
+                  contentType[widget.job.jobType] ?? "",
                   style: const TextStyle(
                       color: Colors.black,
                       fontSize: 12,
@@ -185,27 +216,27 @@ class JobDetailPage extends ConsumerWidget {
       {
         "icon": PhosphorIconsThin.calendar,
         "title": "Kinh nghiệm",
-        "content": "${job.experienceRequired} năm"
+        "content": "${widget.job.experienceRequired} năm"
       },
       {
         "icon": PhosphorIconsThin.users,
         "title": "Số lượng tuyển",
-        "content": "${job.positionsAvailable} người"
+        "content": "${widget.job.positionsAvailable} người"
       },
       {
         "icon": PhosphorIconsThin.briefcase,
         "title": "Loại công việc",
-        "content": contentEmployee[job.employmentType]
+        "content": contentEmployee[widget.job.employmentType]
       },
       {
         "icon": PhosphorIconsThin.buildingOffice,
         "title": "Loại nơi làm việc",
-        "content": contentType[job.jobType]
+        "content": contentType[widget.job.jobType]
       },
       {
         "icon": PhosphorIconsThin.mapPin,
         "title": "Địa điểm làm việc",
-        "content": job.detailLocation?.fullAddress
+        "content": widget.job.detailLocation?.fullAddress
       },
     ];
     return Column(
@@ -284,7 +315,7 @@ class JobDetailPage extends ConsumerWidget {
           const SizedBox(
             height: 15,
           ),
-          HtmlWidget(job.jobDescription ?? "")
+          HtmlWidget(widget.job.jobDescription ?? "")
         ],
       ),
     );
