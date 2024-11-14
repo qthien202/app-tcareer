@@ -1,8 +1,8 @@
 import 'package:app_tcareer/src/features/jobs/data/models/job_location_model.dart';
-import 'package:googleapis/clouddeploy/v1.dart';
 
 class JobModel {
   JobModel({
+    num? id,
     String? title,
     num? jobTopicId,
     String? jobTopicName,
@@ -21,6 +21,7 @@ class JobModel {
     num? positionsAvailable,
     String? updatedAt,
   }) {
+    _id = id;
     _title = title;
     _jobTopicId = jobTopicId;
     _jobTopicName = jobTopicName;
@@ -80,6 +81,7 @@ class JobModel {
   }
 
   JobModel.fromJson(dynamic json) {
+    _id = json['id'];
     _title = json['title'];
     _jobTopicId = json['job_topic_id'];
     _jobTopicName = json['job_topic_name'];
@@ -98,6 +100,7 @@ class JobModel {
     _positionsAvailable = json['positions_available'];
     _updatedAt = json['updated_at'];
   }
+  num? _id;
   String? _title;
   num? _jobTopicId;
   String? _jobTopicName;
@@ -116,7 +119,8 @@ class JobModel {
   num? _positionsAvailable;
   String? _updatedAt;
   JobModel copyWith(
-          {String? title,
+          {num? id,
+          String? title,
           num? jobTopicId,
           String? jobTopicName,
           num? jobRoleId,
@@ -134,6 +138,7 @@ class JobModel {
           num? positionsAvailable,
           String? updatedAt}) =>
       JobModel(
+          id: id ?? _id,
           title: title ?? _title,
           jobTopicId: jobTopicId ?? _jobTopicId,
           jobTopicName: jobTopicName ?? _jobTopicName,
@@ -151,6 +156,7 @@ class JobModel {
           experienceRequired: experienceRequired ?? _experienceRequired,
           positionsAvailable: positionsAvailable ?? _positionsAvailable,
           updatedAt: updatedAt ?? _updatedAt);
+  num? get id => _id;
   String? get title => _title;
   num? get jobTopicId => _jobTopicId;
   String? get jobTopicName => _jobTopicName;
@@ -171,6 +177,7 @@ class JobModel {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
+    map['id'] = _id;
     map['title'] = _title;
     map['job_topic_id'] = _jobTopicId;
     map['job_topic_name'] = _jobTopicName;

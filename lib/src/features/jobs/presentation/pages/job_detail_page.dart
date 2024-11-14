@@ -351,7 +351,8 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                           borderRadius: BorderRadius.circular(8)),
                       backgroundColor: AppColors.primary,
                       padding: const EdgeInsets.symmetric(vertical: 15)),
-                  onPressed: () => context.pushNamed("applyJob"),
+                  onPressed: () => context.pushNamed("applyJob",
+                      queryParameters: {"id": widget.job.id.toString()}),
                   child: const Text(
                     "Ứng tuyển ngay",
                     style: TextStyle(

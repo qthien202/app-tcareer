@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_tcareer/src/features/jobs/data/models/apply_job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
@@ -43,6 +44,9 @@ class JobRepository {
     return await storageService.uploadFile(file, folderPath,
         contentType: contentType);
   }
+
+  Future<void> postSubmitApplication(ApplyJobModel body) async =>
+      await apiServices.postSubmitApplication(body: body);
 
   Future<GetJobResponse> getJobs() async => await apiServices.getJobs();
 }

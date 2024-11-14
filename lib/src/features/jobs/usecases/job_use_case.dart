@@ -6,6 +6,8 @@ import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/repository/job_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/models/apply_job_model.dart';
+
 class JobUseCase {
   final JobRepository jobRepository;
   JobUseCase(this.jobRepository);
@@ -23,6 +25,8 @@ class JobUseCase {
           String contentType = "image/jpg"}) async =>
       await jobRepository.uploadFile(
           file: file, folderPath: folderPath, contentType: contentType);
+  Future<void> postSubmitApplication({required ApplyJobModel body}) async =>
+      await jobRepository.postSubmitApplication(body);
 }
 
 final jobUseCaseProvider =

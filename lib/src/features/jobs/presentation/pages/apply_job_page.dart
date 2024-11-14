@@ -6,7 +6,6 @@ import 'package:app_tcareer/src/features/jobs/presentation/pages/cv_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/text_input.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +13,8 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class ApplyJobPage extends ConsumerWidget {
-  const ApplyJobPage({super.key});
+  final num jobId;
+  const ApplyJobPage({super.key, required this.jobId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -67,7 +67,12 @@ class ApplyJobPage extends ConsumerWidget {
                   backgroundColor: AppColors.primary,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10))),
-              onPressed: controller.selectedFile != null ? () async {} : null,
+              onPressed: controller.selectedFile != null
+                  ? () async {
+                      await controller.submitApplication(
+                          jobId: jobId, context: context);
+                    }
+                  : null,
               child: const Text(
                 "Ứng tuyển",
                 style: TextStyle(color: Colors.white),

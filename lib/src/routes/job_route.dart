@@ -24,9 +24,12 @@ class JobRoute {
         path: "apply",
         name: "applyJob",
         pageBuilder: (context, state) {
+          final jobId = num.parse(state.uri.queryParameters['id'] ?? "");
           return CustomTransitionPage(
               key: state.pageKey,
-              child: ApplyJobPage(),
+              child: ApplyJobPage(
+                jobId: jobId,
+              ),
               transitionsBuilder: fadeTransitionBuilder);
         },
         routes: []),
