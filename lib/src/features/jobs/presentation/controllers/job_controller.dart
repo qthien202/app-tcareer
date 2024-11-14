@@ -18,6 +18,28 @@ class JobController extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  List<JobModel> postedJobs = [];
+  GetJobResponse? postedJobRes;
+  Future<void> getPostedJob() async {
+    postedJobs.clear();
+    postedJobRes = await jobUseCase.getPostedJob();
+    if (postedJobRes != null) {
+      postedJobs.addAll(postedJobRes?.data as Iterable<JobModel>);
+      notifyListeners();
+    }
+  }
+
+  List<JobModel> appliedJobs = [];
+  GetJobResponse? appliedJobRes;
+  Future<void> getAppliedJob() async {
+    appliedJobs.clear();
+    appliedJobRes = await jobUseCase.getAppliedJob();
+    if (appliedJobRes != null) {
+      appliedJobs.addAll(appliedJobRes?.data as Iterable<JobModel>);
+      notifyListeners();
+    }
+  }
 }
 
 final jobControllerProvider = ChangeNotifierProvider((ref) {

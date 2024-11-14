@@ -50,6 +50,11 @@ class JobRepository {
       await apiServices.postSubmitApplication(body: body);
 
   Future<GetJobResponse> getJobs() async => await apiServices.getJobs();
+
+  Future<GetJobResponse> getPostedJob() async =>
+      await apiServices.getPostedJob();
+  Future<GetJobResponse> getAppliedJob() async =>
+      await apiServices.getAppliedJob();
 }
 
 final jobRepositoryProvider = Provider((ref) {

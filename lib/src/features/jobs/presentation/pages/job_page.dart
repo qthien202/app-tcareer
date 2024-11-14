@@ -32,7 +32,7 @@ class JobPage extends ConsumerWidget {
               onRefresh: () async => await controller.getJobs(),
             ),
             sliverAppBar(ref, context),
-            sliverTab(),
+            sliverTab(context),
             SliverToBoxAdapter(
                 child: Container(
               margin: EdgeInsets.symmetric(vertical: 10),
@@ -120,13 +120,16 @@ class JobPage extends ConsumerWidget {
     );
   }
 
-  Widget sliverTab() {
+  Widget sliverTab(BuildContext context) {
     List<Map<String, dynamic>> tabs = [
       {
         "title": "Việc làm của tôi",
-        "onTap": () {},
+        "onTap": () => context.pushNamed("postedJob"),
       },
-      {"title": "Việc làm đã ứng tuyển", "onTap": () {}},
+      {
+        "title": "Việc làm đã ứng tuyển",
+        "onTap": () => context.pushNamed("appliedJob"),
+      },
       {"title": "Việc làm đã lưu", "onTap": () {}}
     ];
     return SliverToBoxAdapter(

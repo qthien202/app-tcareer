@@ -19,6 +19,10 @@ class JobUseCase {
       await jobRepository.getJobRoles(topicId);
 
   Future<GetJobResponse> getJobs() async => await jobRepository.getJobs();
+  Future<GetJobResponse> getPostedJob() async =>
+      await jobRepository.getPostedJob();
+  Future<GetJobResponse> getAppliedJob() async =>
+      await jobRepository.getAppliedJob();
   Future<String> uploadFile(
           {required File file,
           required String folderPath,

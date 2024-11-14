@@ -226,4 +226,10 @@ abstract class ApiServices {
 
   @POST('api/auth/submit-application')
   Future postSubmitApplication({@Body() required ApplyJobModel body});
+
+  @GET('api/auth/get-posted-jobs')
+  Future<GetJobResponse> getPostedJob();
+
+  @GET('api/auth/get-applied-jobs')
+  Future<GetJobResponse> getAppliedJob();
 }

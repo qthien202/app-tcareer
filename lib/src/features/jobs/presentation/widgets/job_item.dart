@@ -20,7 +20,7 @@ Widget jobItem(JobModel job, BuildContext context) {
   };
   return InkWell(
     onTap: () {
-      context.goNamed("jobDetail", extra: job);
+      context.pushNamed("jobDetail", extra: job);
     },
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
