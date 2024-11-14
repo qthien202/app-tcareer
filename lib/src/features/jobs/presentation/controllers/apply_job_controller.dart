@@ -32,6 +32,11 @@ class ApplyJobController extends ChangeNotifier {
     }
   }
 
+  Future<void> removeFile() async {
+    selectedFile = null;
+    notifyListeners();
+  }
+
   Future<void> uploadFile(BuildContext context) async {
     const uuid = Uuid();
     final id = uuid.v4();

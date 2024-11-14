@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/apply_job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/cv_page.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/text_input.dart';
+import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -31,38 +33,122 @@ class ApplyJobPage extends ConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         children: [
-          Text(
+          const Text(
+            "Thông tin liên hệ",
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          userInformation(ref),
+          const SizedBox(
+            height: 10,
+          ),
+          const Text(
             "CV ứng tuyển",
             style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
           ),
           const SizedBox(
-            height: 20,
+            height: 10,
           ),
           cvItem(ref, context),
           const SizedBox(
             height: 20,
           ),
-          ElevatedButton(
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
-              onPressed: controller.selectedFile != null
-                  ? () async {
-                      await controller.uploadFile(context);
-                    }
-                  : null,
-              child: Text(
-                "Tải CV lên",
+        ],
+      ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        child: SizedBox(
+          height: 50,
+          width: ScreenUtil().screenWidth,
+          child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))),
+              onPressed: controller.selectedFile != null ? () async {} : null,
+              child: const Text(
+                "Ứng tuyển",
                 style: TextStyle(color: Colors.white),
               )),
+        ),
+      ),
+    );
+  }
+
+  Widget userInformation(WidgetRef ref) {
+    final userController = ref.watch(userControllerProvider);
+    TextEditingController emailController = TextEditingController();
+    TextEditingController phoneController = TextEditingController();
+    TextEditingController addressController = TextEditingController();
+    emailController.text = userController.userData?.data?.email ?? "";
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: const Offset(0, 1), // changes position of shadow
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                children: [
+                  CircleAvatar(
+                    radius: 18,
+                    backgroundImage: NetworkImage(
+                        userController.userData?.data?.avatar ?? ""),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    userController.userData?.data?.fullName ?? "",
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.w500),
+                  ),
+                  Text(
+                    "Lập trình viên",
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+                  )
+                ],
+              ),
+            ],
+          ),
           const SizedBox(
             height: 10,
           ),
-          TextButton(
-              onPressed: () => context.pushNamed('viewCV',
-                  extra: PdfModel(
-                      url:
-                          "https://firebasestorage.googleapis.com/v0/b/tcareer-4fa7d.appspot.com/o/cv%2F6d21eb7b-5d6c-451b-aadf-746b99082de8%2Fc046a1e6-26a5-48e6-8ba8-e4169f4679ef?alt=media&token=b6246f1d-b3ce-427c-8dc9-fde4b30f267a")),
-              child: Text("Mở cv"))
+          TextInput(
+            title: "Email",
+            isReadOnly: true,
+            controller: emailController,
+          ),
+          TextInput(
+            title: "Điện thoại",
+            isReadOnly: true,
+            controller: phoneController,
+          ),
+          TextInput(
+            title: "Địa chỉ",
+            isReadOnly: true,
+            controller: addressController,
+          ),
         ],
       ),
     );
@@ -71,16 +157,25 @@ class ApplyJobPage extends ConsumerWidget {
   Widget cvItem(WidgetRef ref, BuildContext context) {
     final controller = ref.watch(applyJobControllerProvider);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       width: ScreenUtil().screenWidth,
-      height: 200,
+      height: controller.selectedFile != null ? 100 : 200,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.blue)),
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: const Offset(0, 1), // changes position of shadow
+          ),
+        ],
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "Tải CV từ điện thoại",
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
           ),
@@ -97,9 +192,9 @@ class ApplyJobPage extends ConsumerWidget {
                 child: DottedBorder(
                   color: Colors.blue,
                   borderType: BorderType.RRect,
-                  radius: Radius.circular(8),
+                  radius: const Radius.circular(8),
                   // padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Center(
+                  child: const Center(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -109,7 +204,7 @@ class ApplyJobPage extends ConsumerWidget {
                           color: Colors.blue,
                           size: 28,
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 10,
                         ),
                         Text(
@@ -117,7 +212,7 @@ class ApplyJobPage extends ConsumerWidget {
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 5,
                         ),
                         Text(
@@ -132,9 +227,11 @@ class ApplyJobPage extends ConsumerWidget {
               ),
             ),
             child: fileItem(
-                fileName: controller.fileName ?? "",
-                file: controller.selectedFile,
-                context: context),
+              fileName: controller.fileName ?? "",
+              file: controller.selectedFile,
+              context: context,
+              onDelete: () => controller.removeFile(),
+            ),
           )
         ],
       ),
@@ -142,29 +239,49 @@ class ApplyJobPage extends ConsumerWidget {
   }
 
   Widget fileItem(
-      {File? file, required String fileName, required BuildContext context}) {
+      {File? file,
+      required String fileName,
+      required BuildContext context,
+      void Function()? onDelete}) {
     return InkWell(
       onTap: () => context.pushNamed("viewCV",
           extra: PdfModel(file: file, fileName: fileName)),
       child: Container(
-        padding: EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5),
         width: ScreenUtil().screenWidth,
         decoration: BoxDecoration(
             border: Border.all(color: Colors.blue),
             borderRadius: BorderRadius.circular(8)),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            PhosphorIcon(
+            const PhosphorIcon(
               PhosphorIconsFill.filePdf,
               color: Colors.redAccent,
             ),
             const SizedBox(
-              width: 10,
+              width: 5,
             ),
-            Text(
-              fileName,
-              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12),
-            )
+            Expanded(
+              child: Column(
+                children: [
+                  Text(
+                    fileName,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+                onTap: onDelete,
+                child: const Icon(
+                  Icons.close,
+                  size: 20,
+                  color: Colors.black,
+                ))
           ],
         ),
       ),
