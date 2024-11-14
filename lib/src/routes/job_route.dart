@@ -1,5 +1,6 @@
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/apply_job_page.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/cv_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
 import 'package:go_router/go_router.dart';
@@ -26,6 +27,19 @@ class JobRoute {
           return CustomTransitionPage(
               key: state.pageKey,
               child: ApplyJobPage(),
+              transitionsBuilder: fadeTransitionBuilder);
+        },
+        routes: []),
+    GoRoute(
+        path: "viewCV",
+        name: "viewCV",
+        pageBuilder: (context, state) {
+          final pdfModel = state.extra as PdfModel;
+          return CustomTransitionPage(
+              key: state.pageKey,
+              child: CVPage(
+                pdfModel: pdfModel,
+              ),
               transitionsBuilder: fadeTransitionBuilder);
         },
         routes: []),
