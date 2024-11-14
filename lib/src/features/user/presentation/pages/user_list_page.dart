@@ -64,8 +64,11 @@ class UserListPage extends ConsumerWidget {
               itemBuilder: (context, index) {
                 final user = users[index];
                 return ListTile(
-                    onTap: () => postController.goToProfile(
-                        userId: user.id.toString() ?? "", context: context),
+                    onTap: () {
+                      context.pop();
+                      postController.goToProfile(
+                          userId: user.id.toString() ?? "", context: context);
+                    },
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(user.avatar ?? ""),
                     ),
