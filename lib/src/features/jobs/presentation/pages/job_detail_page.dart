@@ -145,7 +145,7 @@ class JobDetailPage extends ConsumerWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withOpacity(0.1),
             spreadRadius: 2,
             blurRadius: 4,
             offset: const Offset(0, 1), // changes position of shadow
@@ -155,7 +155,7 @@ class JobDetailPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "Thông tin chung",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
@@ -267,7 +267,7 @@ class JobDetailPage extends ConsumerWidget {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withOpacity(0.1),
             spreadRadius: 2,
             blurRadius: 4,
             offset: const Offset(0, 1), // changes position of shadow
@@ -277,7 +277,7 @@ class JobDetailPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "Chi tiết tin tuyển dụng",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
@@ -296,31 +296,32 @@ class JobDetailPage extends ConsumerWidget {
       child: Row(
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-              decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(28)),
-              child: PhosphorIcon(
-                PhosphorIconsRegular.bookmarkSimple,
-                color: AppColors.primary,
-                size: 30,
-              ),
+          Container(
+            padding: EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(color: Colors.grey.shade200),
+            ),
+            child: const PhosphorIcon(
+              PhosphorIconsRegular.chatCenteredDots,
+              color: AppColors.primary,
+              size: 25,
             ),
           ),
           const SizedBox(
-            width: 25,
+            width: 10,
           ),
           Expanded(
               flex: 4,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
                       backgroundColor: AppColors.primary,
-                      padding: EdgeInsets.symmetric(vertical: 15)),
-                  onPressed: () => context.goNamed("applyJob"),
-                  child: Text(
+                      padding: const EdgeInsets.symmetric(vertical: 15)),
+                  onPressed: () => context.pushNamed("applyJob"),
+                  child: const Text(
                     "Ứng tuyển ngay",
                     style: TextStyle(
                         color: Colors.white,

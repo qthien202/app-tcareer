@@ -48,7 +48,7 @@ class ExperienceList extends ConsumerWidget {
                     color: Colors.white,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
+                        color: Colors.grey.withOpacity(0.1),
                         spreadRadius: 2,
                         blurRadius: 4,
                         offset:

@@ -96,52 +96,52 @@ class ResumeUser extends ConsumerWidget {
       void Function()? onTap,
       String? content,
       Widget? widget}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 4,
-            offset: const Offset(0, 1), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Visibility(
-                  visible: hasContent == true,
-                  replacement: Text(
-                    content ?? "",
-                    style: const TextStyle(
-                        fontSize: 12, fontWeight: FontWeight.w300),
-                  ),
-                  child: widget ?? const Center(),
-                ),
-              ],
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+        margin: const EdgeInsets.symmetric(vertical: 8),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 4,
+              offset: const Offset(0, 1), // changes position of shadow
             ),
-          ),
-          InkWell(
-            onTap: onTap,
-            child: Visibility(
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Visibility(
+                    visible: hasContent == true,
+                    replacement: Text(
+                      content ?? "",
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.w300),
+                    ),
+                    child: widget ?? const Center(),
+                  ),
+                ],
+              ),
+            ),
+            Visibility(
               visible: hasContent,
               replacement: const PhosphorIcon(
                 PhosphorIconsRegular.plusCircle,
@@ -153,9 +153,9 @@ class ResumeUser extends ConsumerWidget {
                 color: Colors.black,
                 size: 25,
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
