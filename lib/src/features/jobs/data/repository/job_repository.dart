@@ -40,9 +40,10 @@ class JobRepository {
   Future<String> uploadFile(
       {required File file,
       required String folderPath,
+      String? fileName,
       String contentType = "image/jpg"}) async {
     return await storageService.uploadFile(file, folderPath,
-        contentType: contentType);
+        contentType: contentType, fileName: fileName);
   }
 
   Future<void> postSubmitApplication(ApplyJobModel body) async =>

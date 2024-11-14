@@ -22,8 +22,7 @@ class CVPage extends ConsumerWidget {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         backgroundColor: Colors.white,
-        title:
-            Text(pdfModel.file != null ? pdfModel.fileName.toString() : "CV"),
+        title: Text(pdfModel.fileName.toString()),
       ),
       body: Visibility(
         visible: pdfModel.url != null,

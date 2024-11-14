@@ -22,9 +22,13 @@ class JobUseCase {
   Future<String> uploadFile(
           {required File file,
           required String folderPath,
+          String? fileName,
           String contentType = "image/jpg"}) async =>
       await jobRepository.uploadFile(
-          file: file, folderPath: folderPath, contentType: contentType);
+          file: file,
+          folderPath: folderPath,
+          contentType: contentType,
+          fileName: fileName);
   Future<void> postSubmitApplication({required ApplyJobModel body}) async =>
       await jobRepository.postSubmitApplication(body);
 }

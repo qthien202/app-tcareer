@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:app_tcareer/src/features/jobs/data/models/apply_job_model.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/job_use_case.dart';
+import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:file_picker/file_picker.dart';
@@ -13,7 +15,8 @@ import 'package:uuid/uuid.dart';
 
 class ApplyJobController extends ChangeNotifier {
   JobUseCase jobUseCase;
-  ApplyJobController(this.jobUseCase);
+  Ref ref;
+  ApplyJobController(this.jobUseCase, this.ref);
   File? selectedFile;
   String? fileName; // Khai báo biến để lưu tệp
 
@@ -47,6 +50,7 @@ class ApplyJobController extends ChangeNotifier {
     String? url = await jobUseCase.uploadFile(
         file: File(selectedFile?.path ?? ""),
         folderPath: "cv/$id",
+        fileName: fileName,
         contentType: "application/pdf");
     if (url != "") {
       fileUrl = url;
@@ -55,22 +59,30 @@ class ApplyJobController extends ChangeNotifier {
     return fileUrl;
   }
 
+  bool? isApplied = false;
   Future<void> submitApplication(
       {required num jobId, required BuildContext context}) async {
+    final jobController = ref.read(jobControllerProvider);
+    final userController = ref.watch(userControllerProvider);
+    String? cvFile = userController.userData?.data?.cvFile;
     AppUtils.loadingApi(() async {
-      String? fileUrl = await uploadFile(context);
+      if (selectedFile != null) {
+        cvFile = await uploadFile(context);
+      }
 
       await jobUseCase.postSubmitApplication(
-          body: ApplyJobModel(cvFile: fileUrl, jobId: jobId));
+          body: ApplyJobModel(cvFile: cvFile, jobId: jobId));
       showSnackBar("Bạn đã ứng tuyển thành công");
       selectedFile = null;
       fileName = null;
+      isApplied = true;
       context.pop();
+      await jobController.getJobs();
     }, context);
   }
 }
 
 final applyJobControllerProvider = ChangeNotifierProvider((ref) {
   final jobUseCase = ref.read(jobUseCaseProvider);
-  return ApplyJobController(jobUseCase);
+  return ApplyJobController(jobUseCase, ref);
 });

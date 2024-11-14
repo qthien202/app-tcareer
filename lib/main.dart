@@ -45,7 +45,7 @@ void main() async {
     }
   }
   await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.playIntegrity,
+    androidProvider: AndroidProvider.debug,
     appleProvider: AppleProvider.appAttest,
     webProvider: ReCaptchaV3Provider(""),
   );

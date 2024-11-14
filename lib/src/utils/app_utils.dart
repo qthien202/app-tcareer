@@ -15,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 class AppUtils {
   static showLoading(BuildContext context) {
     showDialog(
+      barrierDismissible: false,
       context: context,
       builder: (context) => Center(
         child: circularLoadingWidget(),

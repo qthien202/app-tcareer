@@ -34,6 +34,7 @@ class Data {
     String? shortName,
     String? fullName,
     String? avatar,
+    String? cvFile,
     String? email,
     String? phone,
     num? followerCount,
@@ -62,6 +63,7 @@ class Data {
     _shortName = json['short_name'];
     _fullName = json['full_name'];
     _avatar = json['avatar'];
+    _cvFile = json['cv_file'];
     _email = json['email'];
     _phone = json['phone'];
     _followerCount = json['follower_count'];
@@ -75,6 +77,7 @@ class Data {
   String? _shortName;
   String? _fullName;
   String? _avatar;
+  String? _cvFile;
   String? _email;
   String? _phone;
   num? _followerCount;
@@ -88,6 +91,7 @@ class Data {
     String? shortName,
     String? fullName,
     String? avatar,
+    String? cvFile,
     String? phone,
     String? email,
     num? followerCount,
@@ -102,6 +106,7 @@ class Data {
         shortName: shortName ?? _shortName,
         fullName: fullName ?? _fullName,
         avatar: avatar ?? _avatar,
+        cvFile: cvFile ?? _cvFile,
         email: email ?? _email,
         phone: phone ?? _phone,
         followerCount: followerCount ?? _followerCount,
@@ -115,6 +120,7 @@ class Data {
   String? get shortName => _shortName;
   String? get fullName => _fullName;
   String? get avatar => _avatar;
+  String? get cvFile => _cvFile;
   String? get email => _email;
   num? get followerCount => _followerCount;
   num? get friendCount => _friendCount;
@@ -130,6 +136,7 @@ class Data {
     map['short_name'] = _shortName;
     map['full_name'] = _fullName;
     map['avatar'] = _avatar;
+    map['cv_file'] = _cvFile;
     map['email'] = _email;
     map['phone'] = _phone;
     map['follower_count'] = _followerCount;

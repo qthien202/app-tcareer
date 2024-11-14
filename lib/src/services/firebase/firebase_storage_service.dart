@@ -10,9 +10,9 @@ class FirebaseStorageService {
   final storage = FirebaseStorage.instance;
 
   Future<String> uploadFile(File file, String folderPath,
-      {String contentType = "image/jpg"}) async {
+      {String contentType = "image/jpg", String? fileName}) async {
     final uuid = Uuid();
-    String fileName = uuid.v4();
+    fileName = fileName ?? uuid.v4();
     String path = "$folderPath/$fileName";
     final ref = storage.ref().child(path);
     try {

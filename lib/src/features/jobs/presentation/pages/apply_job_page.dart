@@ -19,6 +19,7 @@ class ApplyJobPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(applyJobControllerProvider);
+    final userController = ref.watch(userControllerProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -67,7 +68,8 @@ class ApplyJobPage extends ConsumerWidget {
                   backgroundColor: AppColors.primary,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10))),
-              onPressed: controller.selectedFile != null
+              onPressed: controller.selectedFile != null ||
+                      userController.userData?.data?.cvFile != null
                   ? () async {
                       await controller.submitApplication(
                           jobId: jobId, context: context);
@@ -89,6 +91,7 @@ class ApplyJobPage extends ConsumerWidget {
     TextEditingController addressController = TextEditingController();
     emailController.text = userController.userData?.data?.email ?? "";
     phoneController.text = userController.userData?.data?.phone ?? "";
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
@@ -157,10 +160,13 @@ class ApplyJobPage extends ConsumerWidget {
 
   Widget cvItem(WidgetRef ref, BuildContext context) {
     final controller = ref.watch(applyJobControllerProvider);
+    final userController = ref.watch(userControllerProvider);
+    String? cvFile = userController.userData?.data?.cvFile;
+    String? userName = userController.userData?.data?.fullName;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       width: ScreenUtil().screenWidth,
-      height: controller.selectedFile != null ? 100 : 200,
+      height: controller.selectedFile != null ? 100 : 300,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: Colors.white,
@@ -176,6 +182,24 @@ class ApplyJobPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Visibility(
+              visible: cvFile != null && controller.selectedFile == null,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "CV tải lên gần đây",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  fileItemRecent(context: context, url: cvFile),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              )),
           const Text(
             "Tải CV từ điện thoại",
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
@@ -283,6 +307,48 @@ class ApplyJobPage extends ConsumerWidget {
                   size: 20,
                   color: Colors.black,
                 ))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget fileItemRecent(
+      {String? url, required BuildContext context, void Function()? onDelete}) {
+    Uri uri = Uri.parse(url ?? "");
+    String path = Uri.decodeComponent(uri.path);
+    String fileName = path.split('/').last;
+    print(">>>>>>>>>>fileName: $fileName");
+    return InkWell(
+      onTap: () => context.pushNamed("viewCV",
+          extra: PdfModel(url: url, fileName: fileName)),
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        width: ScreenUtil().screenWidth,
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.blue),
+            borderRadius: BorderRadius.circular(8)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const PhosphorIcon(
+              PhosphorIconsFill.filePdf,
+              color: Colors.redAccent,
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Column(
+              children: [
+                Text(
+                  fileName,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 12,
+                      overflow: TextOverflow.ellipsis),
+                ),
+              ],
+            ),
           ],
         ),
       ),
