@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_location_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
@@ -20,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
 import 'package:uuid/uuid.dart';
 
@@ -166,7 +168,8 @@ class CreateJobController extends ChangeNotifier {
       String? ctyName,
       String? ctyImageUrl,
       num? experienceRequired,
-      num? positionsAvailable}) async {
+      num? positionsAvailable,
+      String? expiredDate}) async {
     job = job.copyWith(
         title: title,
         jobTopicId: jobTopicId,
@@ -183,7 +186,8 @@ class CreateJobController extends ChangeNotifier {
         jobRoleId: jobRoleId,
         jobRoleName: jobRoleName,
         experienceName: experienceName,
-        positionsAvailable: positionsAvailable);
+        positionsAvailable: positionsAvailable,
+        expiredDate: expiredDate);
     print(">>>>>>>>>>body: ${jsonEncode(job)}");
     notifyListeners();
   }
@@ -385,6 +389,84 @@ class CreateJobController extends ChangeNotifier {
     if (imageUrl != "") {
       job = job.copyWith(ctyImageUrl: imageUrl);
     }
+  }
+
+  Future<void> showExpiredDatePicker({
+    required BuildContext context,
+  }) async {
+    DateTime initialDate = job.expiredDate != null
+        ? DateFormat('dd/MM/yyyy').parse(job.expiredDate ?? "")
+        : DateTime.now();
+    await showCupertinoModalPopup<DateTime>(
+      context: context,
+      builder: (BuildContext builder) {
+        return ClipRRect(
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+          child: Container(
+            height: 250,
+            color: CupertinoColors.systemBackground.resolveFrom(context),
+            child: Column(
+              children: [
+                Material(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    // height: 40,
+                    color: Colors.white,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Ngày hết hạn đăng tuyển',
+                          style: TextStyle(
+                              letterSpacing: 0,
+                              decoration: TextDecoration.none,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            await setJob(expiredDate: selectedExpiredDate);
+                            context.pop();
+                          },
+                          child: const Text(
+                            'Xong',
+                            style: TextStyle(
+                                color: AppColors.primary, fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: CupertinoDatePicker(
+                    dateOrder: DatePickerDateOrder.dmy,
+                    mode: CupertinoDatePickerMode.date,
+                    initialDateTime: initialDate,
+                    minimumDate: DateTime(DateTime.now().year,
+                        DateTime.now().month, DateTime.now().day),
+                    maximumDate: DateTime(2101),
+                    onDateTimeChanged: (pickedDate) async {
+                      await selectExpiredDate(value: pickedDate);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  String? selectedExpiredDate;
+  Future<void> selectExpiredDate({required DateTime value}) async {
+    final formattedDate = DateFormat('dd/MM/yyyy').format(value);
+    selectedExpiredDate = formattedDate;
+
+    notifyListeners();
   }
 }
 

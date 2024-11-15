@@ -1,28 +1,28 @@
 import 'package:app_tcareer/src/features/jobs/data/models/job_location_model.dart';
 
 class JobModel {
-  JobModel({
-    num? id,
-    num? userId,
-    String? title,
-    bool? isApplied,
-    num? jobTopicId,
-    String? jobTopicName,
-    num? jobRoleId,
-    String? jobRoleName,
-    String? jobType,
-    String? jobDescription,
-    JobLocationModel? detailLocation,
-    num? latitude,
-    num? longitude,
-    String? employmentType,
-    String? experienceName,
-    String? ctyName,
-    String? ctyImageUrl,
-    num? experienceRequired,
-    num? positionsAvailable,
-    String? updatedAt,
-  }) {
+  JobModel(
+      {num? id,
+      num? userId,
+      String? title,
+      bool? isApplied,
+      num? jobTopicId,
+      String? jobTopicName,
+      num? jobRoleId,
+      String? jobRoleName,
+      String? jobType,
+      String? jobDescription,
+      JobLocationModel? detailLocation,
+      num? latitude,
+      num? longitude,
+      String? employmentType,
+      String? experienceName,
+      String? ctyName,
+      String? ctyImageUrl,
+      num? experienceRequired,
+      num? positionsAvailable,
+      String? updatedAt,
+      String? expiredDate}) {
     _id = id;
     _userId = userId;
     _title = title;
@@ -42,6 +42,7 @@ class JobModel {
     _experienceRequired = experienceRequired;
     _positionsAvailable = positionsAvailable;
     _updatedAt = updatedAt;
+    _expiredDate = expiredDate;
   }
 
   bool isValid() {
@@ -60,7 +61,8 @@ class JobModel {
         _ctyName != null &&
         _ctyImageUrl != null &&
         _experienceRequired != null &&
-        _positionsAvailable != null;
+        _positionsAvailable != null &&
+        _expiredDate != null;
   }
 
   void reset() {
@@ -81,6 +83,7 @@ class JobModel {
     _experienceRequired = null;
     _positionsAvailable = null;
     _updatedAt = null;
+    _expiredDate = null;
   }
 
   JobModel.fromJson(dynamic json) {
@@ -104,6 +107,7 @@ class JobModel {
     _experienceRequired = json['experience_required'];
     _positionsAvailable = json['positions_available'];
     _updatedAt = json['updated_at'];
+    _expiredDate = json['expired_date'];
   }
   num? _id;
   num? _userId;
@@ -125,6 +129,7 @@ class JobModel {
   num? _experienceRequired;
   num? _positionsAvailable;
   String? _updatedAt;
+  String? _expiredDate;
   JobModel copyWith(
           {num? id,
           num? userId,
@@ -145,7 +150,8 @@ class JobModel {
           String? ctyImageUrl,
           num? experienceRequired,
           num? positionsAvailable,
-          String? updatedAt}) =>
+          String? updatedAt,
+          String? expiredDate}) =>
       JobModel(
           userId: userId ?? _userId,
           id: id ?? _id,
@@ -166,7 +172,8 @@ class JobModel {
           ctyImageUrl: ctyImageUrl ?? _ctyImageUrl,
           experienceRequired: experienceRequired ?? _experienceRequired,
           positionsAvailable: positionsAvailable ?? _positionsAvailable,
-          updatedAt: updatedAt ?? _updatedAt);
+          updatedAt: updatedAt ?? _updatedAt,
+          expiredDate: expiredDate ?? _expiredDate);
   num? get id => _id;
   num? get userId => _userId;
   String? get title => _title;
@@ -187,6 +194,7 @@ class JobModel {
   num? get experienceRequired => _experienceRequired;
   num? get positionsAvailable => _positionsAvailable;
   String? get updatedAt => _updatedAt;
+  String? get expiredDate => _expiredDate;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -210,6 +218,7 @@ class JobModel {
     map['experience_required'] = _experienceRequired;
     map['positions_available'] = _positionsAvailable;
     map['updated_at'] = _updatedAt;
+    map['expired_date'] = _expiredDate;
     return map;
   }
 }
