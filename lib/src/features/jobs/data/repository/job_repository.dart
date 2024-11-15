@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_tcareer/src/features/jobs/data/models/applicant_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/apply_job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
@@ -56,6 +57,9 @@ class JobRepository {
       await apiServices.getPostedJob(page: page);
   Future<GetJobResponse> getAppliedJob({int? page}) async =>
       await apiServices.getAppliedJob(page: page);
+
+  Future<ApplicantResponse> getApplicants({required num jobId}) async =>
+      await apiServices.getApplicants(jobId: jobId);
 }
 
 final jobRepositoryProvider = Provider((ref) {

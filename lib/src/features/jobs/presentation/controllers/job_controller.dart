@@ -1,3 +1,5 @@
+import 'package:app_tcareer/src/features/jobs/data/models/applicant_model.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/applicant_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/job_use_case.dart';
@@ -94,6 +96,20 @@ class JobController extends ChangeNotifier {
     }
   }
 
+  ApplicantResponse? applicantResponse;
+  List<ApplicantModel> applicants = [];
+  Future<void> getApplicants(num jobId) async {
+    applicantResponse = await jobUseCase.getApplicants(jobId: jobId);
+    if (applicantResponse?.data != null) {
+      final newApplicants = applicantResponse?.data
+          ?.where((newApplicant) =>
+              !applicants.any((applicant) => applicant.id == newApplicant.id))
+          .toList();
+      applicants.addAll(newApplicants as Iterable<ApplicantModel>);
+    }
+    notifyListeners();
+  }
+
   Future<void> refreshJob() async {
     jobResponse = null;
     jobs.clear();
@@ -113,6 +129,11 @@ class JobController extends ChangeNotifier {
     appliedJobs.clear();
     appliedPage = 1;
     await getAppliedJob();
+  }
+
+  Future<void> resetApplicants() async {
+    applicantResponse = null;
+    applicants.clear();
   }
 }
 

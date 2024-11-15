@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_tcareer/src/features/jobs/data/models/applicant_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
@@ -36,6 +37,8 @@ class JobUseCase {
           fileName: fileName);
   Future<void> postSubmitApplication({required ApplyJobModel body}) async =>
       await jobRepository.postSubmitApplication(body);
+  Future<ApplicantResponse> getApplicants({required num jobId}) async =>
+      await jobRepository.getApplicants(jobId: jobId);
 }
 
 final jobUseCaseProvider =

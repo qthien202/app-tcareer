@@ -351,11 +351,14 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
             style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8)),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.primary,
                 padding: const EdgeInsets.symmetric(vertical: 15)),
-            onPressed: () => {},
+            onPressed: () {
+              context.pushNamed("applicants",
+                  queryParameters: {"id": widget.job.id.toString()});
+            },
             child: const Text(
-              "Xóa công việc",
+              "Xem danh sách ứng viên",
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

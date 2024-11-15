@@ -1,6 +1,8 @@
+import 'package:app_tcareer/src/features/jobs/data/models/applicant_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/chat/presentation/pages/job_chat_page.dart';
 import 'package:app_tcareer/src/features/jobs/chat/presentation/pages/job_conversation_page.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/applicants_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/applied_job_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/apply_job_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/cv_page.dart';
@@ -76,9 +78,24 @@ class JobRoute {
         name: "applyJob",
         pageBuilder: (context, state) {
           final jobId = num.parse(state.uri.queryParameters['id'] ?? "");
+          ApplicantModel? applicant = state.extra as ApplicantModel?;
           return CustomTransitionPage(
               key: state.pageKey,
               child: ApplyJobPage(
+                jobId: jobId,
+                applicant: applicant,
+              ),
+              transitionsBuilder: fadeTransitionBuilder);
+        },
+        routes: []),
+    GoRoute(
+        path: "applicants",
+        name: "applicants",
+        pageBuilder: (context, state) {
+          final jobId = num.parse(state.uri.queryParameters['id'] ?? "");
+          return CustomTransitionPage(
+              key: state.pageKey,
+              child: ApplicantsPage(
                 jobId: jobId,
               ),
               transitionsBuilder: fadeTransitionBuilder);

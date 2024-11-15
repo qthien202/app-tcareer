@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/applicant_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/apply_job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/cv_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/text_input.dart';
@@ -14,20 +15,22 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class ApplyJobPage extends ConsumerWidget {
   final num jobId;
-  const ApplyJobPage({super.key, required this.jobId});
+  final ApplicantModel? applicant;
+  const ApplyJobPage({super.key, required this.jobId, this.applicant});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(applyJobControllerProvider);
     final userController = ref.watch(userControllerProvider);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         automaticallyImplyLeading: true,
         centerTitle: true,
-        title: const Text(
-          "Ứng tuyển",
+        title: Text(
+          applicant != null ? "Hồ sơ ứng viên" : "Ứng tuyển",
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
       ),
@@ -89,8 +92,12 @@ class ApplyJobPage extends ConsumerWidget {
     TextEditingController emailController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
     TextEditingController addressController = TextEditingController();
-    emailController.text = userController.userData?.data?.email ?? "";
-    phoneController.text = userController.userData?.data?.phone ?? "";
+    emailController.text = applicant != null
+        ? applicant?.email.toString() ?? ""
+        : userController.userData?.data?.email ?? "";
+    phoneController.text = applicant != null
+        ? applicant?.phone.toString() ?? ""
+        : userController.userData?.data?.phone ?? "";
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -116,8 +123,9 @@ class ApplyJobPage extends ConsumerWidget {
                 children: [
                   CircleAvatar(
                     radius: 18,
-                    backgroundImage: NetworkImage(
-                        userController.userData?.data?.avatar ?? ""),
+                    backgroundImage: NetworkImage(applicant != null
+                        ? applicant?.avatar ?? ""
+                        : userController.userData?.data?.avatar ?? ""),
                   ),
                 ],
               ),
@@ -128,7 +136,9 @@ class ApplyJobPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    userController.userData?.data?.fullName ?? "",
+                    applicant != null
+                        ? applicant?.fullName ?? ""
+                        : userController.userData?.data?.fullName ?? "",
                     style: const TextStyle(
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
@@ -161,8 +171,10 @@ class ApplyJobPage extends ConsumerWidget {
   Widget cvItem(WidgetRef ref, BuildContext context) {
     final controller = ref.watch(applyJobControllerProvider);
     final userController = ref.watch(userControllerProvider);
-    String? cvFile = userController.userData?.data?.cvFile;
-    String? userName = userController.userData?.data?.fullName;
+    String? cvFile = applicant != null
+        ? applicant?.cvFile ?? ""
+        : userController.userData?.data?.cvFile;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       width: ScreenUtil().screenWidth,
@@ -200,62 +212,70 @@ class ApplyJobPage extends ConsumerWidget {
                   ),
                 ],
               )),
-          const Text(
-            "Tải CV từ điện thoại",
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
           Visibility(
-            visible: controller.selectedFile != null,
-            replacement: InkWell(
-              onTap: () async => await controller.pickFile(),
-              child: SizedBox(
-                width: ScreenUtil().screenWidth,
-                height: 140,
-                child: DottedBorder(
-                  color: Colors.blue,
-                  borderType: BorderType.RRect,
-                  radius: const Radius.circular(8),
-                  // padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: const Center(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        PhosphorIcon(
-                          PhosphorIconsFill.fileArrowUp,
-                          color: Colors.blue,
-                          size: 28,
+            visible: applicant == null,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Tải CV từ điện thoại",
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Visibility(
+                  visible: controller.selectedFile != null,
+                  replacement: InkWell(
+                    onTap: () async => await controller.pickFile(),
+                    child: SizedBox(
+                      width: ScreenUtil().screenWidth,
+                      height: 140,
+                      child: DottedBorder(
+                        color: Colors.blue,
+                        borderType: BorderType.RRect,
+                        radius: const Radius.circular(8),
+                        // padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: const Center(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              PhosphorIcon(
+                                PhosphorIconsFill.fileArrowUp,
+                                color: Colors.blue,
+                                size: 28,
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Nhấn để tải lên",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "Hỗ trợ định dạng .pdf",
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w300),
+                              )
+                            ],
+                          ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Nhấn để tải lên",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          "Hỗ trợ định dạng .pdf",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w300),
-                        )
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
-            child: fileItem(
-              fileName: controller.fileName ?? "",
-              file: controller.selectedFile,
-              context: context,
-              onDelete: () => controller.removeFile(),
+                  child: fileItem(
+                    fileName: controller.fileName ?? "",
+                    file: controller.selectedFile,
+                    context: context,
+                    onDelete: () => controller.removeFile(),
+                  ),
+                )
+              ],
             ),
           )
         ],
