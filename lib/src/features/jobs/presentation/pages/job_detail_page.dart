@@ -341,7 +341,6 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
         controller.isApplied = false;
       });
     }
-    print(">>>>>>>>>>>>isApplied: ${controller.isApplied}");
 
     bool isClient = userId == widget.job.userId;
     return BottomAppBar(

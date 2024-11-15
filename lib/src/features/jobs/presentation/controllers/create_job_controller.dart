@@ -433,7 +433,7 @@ class CreateJobController extends ChangeNotifier {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        const Text(
                           'Chọn hạn nộp hồ sơ',
                           style: TextStyle(
                               letterSpacing: 0,

@@ -216,7 +216,7 @@ abstract class ApiServices {
       {@Path('topic') required num topicId});
 
   @GET('api/auth/career')
-  Future<GetJobResponse> getJobs();
+  Future<GetJobResponse> getJobs({@Query('page') int? page});
 
   @POST('api/auth/create_resume')
   Future postCreateResume({@Body() required CreateResumeRequest body});

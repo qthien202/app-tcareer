@@ -16,6 +16,7 @@ class JobPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(jobControllerProvider);
+    bool hasData = controller.jobs.isNotEmpty;
     if (controller.jobs.isEmpty) {
       Future.microtask(() async {
         await controller.getJobs();
@@ -26,10 +27,11 @@ class JobPage extends ConsumerWidget {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: CustomScrollView(
+          controller: controller.jobScrollController,
           physics: const BouncingScrollPhysics(),
           slivers: [
             CupertinoSliverRefreshControl(
-              onRefresh: () async => await controller.getJobs(),
+              onRefresh: () async => await controller.refreshJob(),
             ),
             sliverAppBar(ref, context),
             sliverTab(context),
@@ -41,7 +43,18 @@ class JobPage extends ConsumerWidget {
               height: 10,
             )),
             sliverTitle(),
-            recommendJobs(ref)
+            recommendJobs(ref),
+            SliverToBoxAdapter(
+              child: Visibility(
+                visible: hasData &&
+                    controller.jobs.length !=
+                        controller.jobResponse?.meta?.total,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: circularLoadingWidget(),
+                ),
+              ),
+            ),
           ],
         ),
       ),
