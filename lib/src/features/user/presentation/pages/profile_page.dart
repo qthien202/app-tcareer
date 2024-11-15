@@ -7,6 +7,7 @@ import 'package:app_tcareer/src/features/posts/presentation/widgets/shared_post_
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/information.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/information_loading.dart';
+import 'package:app_tcareer/src/features/user/presentation/widgets/posted_job_user.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/resume_user.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -90,9 +91,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                       indicatorColor: Colors.black,
                       labelStyle: const TextStyle(color: Colors.black),
                       tabs: [
-                        Tab(text: "Thông tin"),
-                        Tab(text: "Hoạt động"),
-                        Tab(text: "Phương tiện"),
+                        const Tab(text: "Thông tin"),
+                        const Tab(text: "Hoạt động"),
+                        const Tab(text: "Công việc"),
                       ],
                     ),
                   ),
@@ -102,7 +103,11 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
             body: Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: TabBarView(
-                children: [ResumeUser(), postList(), Text("Phương tiện")],
+                children: [
+                  const ResumeUser(),
+                  postList(),
+                  const PostedJobUser()
+                ],
               ),
             ),
           ),

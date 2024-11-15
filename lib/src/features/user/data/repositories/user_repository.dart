@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
 import 'package:app_tcareer/src/features/user/data/models/create_resume_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
@@ -79,6 +80,11 @@ class UserRepository {
   Future<ResumeModel> getResume({String? userId}) async {
     final api = ref.watch(apiServiceProvider);
     return await api.getResume(userId: userId);
+  }
+
+  Future<GetJobResponse> getPostedJob({int? page}) async {
+    final api = ref.read(apiServiceProvider);
+    return await api.getPostedJob(page: page);
   }
 }
 

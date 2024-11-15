@@ -1,3 +1,4 @@
+import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
 import 'package:app_tcareer/src/features/user/data/models/create_resume_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
@@ -26,6 +27,9 @@ class UserUseCase {
 
   Future<ResumeModel> getResume({String? userId}) async =>
       await userRepository.getResume(userId: userId);
+
+  Future<GetJobResponse> getPostedJob({int? page}) async =>
+      await userRepository.getPostedJob(page: page);
 }
 
 final userUseCaseProvider =
