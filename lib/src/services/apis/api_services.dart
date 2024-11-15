@@ -163,7 +163,8 @@ abstract class ApiServices {
   Future postHiddenPost({@Path('id') required String postId});
 
   @GET("api/auth/get_conversation/{id}")
-  Future<Conversation> getConversation({@Path('id') required String userId});
+  Future<Conversation> getConversation(
+      {@Path('id') required String userId, @Query('isJob') int? isJob});
 
   @POST('api/auth/send_message')
   Future postSendMessage({@Body() required SendMessageRequest body});
@@ -178,7 +179,7 @@ abstract class ApiServices {
       {@Body() required MarkReadMessageRequest body});
 
   @GET('api/auth/get_all_conversation')
-  Future<AllConversation> getAllConversation();
+  Future<AllConversation> getAllConversation({@Query('isJob') int? isJob});
 
   @POST('auth/user/phone')
   Future postCheckUserPhone({@Body() required CheckUserPhoneRequest body});

@@ -39,9 +39,9 @@ class ChatRepository {
         channelName: channelName, data: data);
   }
 
-  Future<Conversation> getConversation(String userId) async {
+  Future<Conversation> getConversation(String userId, {int? isJob}) async {
     final api = ref.watch(apiServiceProvider);
-    return await api.getConversation(userId: userId);
+    return await api.getConversation(userId: userId, isJob: isJob);
   }
 
   Future<void> sendMessage(SendMessageRequest body) async {
@@ -111,9 +111,9 @@ class ChatRepository {
     return await api.postMarkDeliveredMessage(body: body);
   }
 
-  Future<AllConversation> getAllConversation() async {
+  Future<AllConversation> getAllConversation({int? isJob}) async {
     final api = ref.watch(apiServiceProvider);
-    return await api.getAllConversation();
+    return await api.getAllConversation(isJob: isJob);
   }
 
   Stream<DatabaseEvent> listenUserStatus(String userId) {

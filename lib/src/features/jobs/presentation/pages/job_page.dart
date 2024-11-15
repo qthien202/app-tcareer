@@ -91,6 +91,17 @@ class JobPage extends ConsumerWidget {
             child: GestureDetector(
                 onTap: () => context.pushNamed("notifications"),
                 child: notificationIcon(ref))),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: GestureDetector(
+            onTap: () => context.pushNamed("jobConversation"),
+            child: const PhosphorIcon(
+              PhosphorIconsRegular.chatCircleDots,
+              color: Colors.black,
+              size: 20,
+            ),
+          ),
+        ),
       ],
       // bottom: PreferredSize(
       //   preferredSize: postingController.isLoading == true

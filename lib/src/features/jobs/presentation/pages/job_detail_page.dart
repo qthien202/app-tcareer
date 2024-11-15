@@ -364,17 +364,27 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
         child: Row(
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              padding: EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.grey.shade200),
-              ),
-              child: const PhosphorIcon(
-                PhosphorIconsRegular.chatCenteredDots,
-                color: AppColors.primary,
-                size: 25,
+            GestureDetector(
+              onTap: () async {
+                String clientId =
+                    userController.userData?.data?.id.toString() ?? "";
+                context.pushNamed("jobChat", pathParameters: {
+                  "userId": widget.job.userId.toString(),
+                  "clientId": clientId
+                });
+              },
+              child: Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: const PhosphorIcon(
+                  PhosphorIconsRegular.chatCenteredDots,
+                  color: AppColors.primary,
+                  size: 25,
+                ),
               ),
             ),
             const SizedBox(
