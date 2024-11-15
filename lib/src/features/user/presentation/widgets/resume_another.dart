@@ -37,21 +37,35 @@ class ResumeAnother extends ConsumerWidget {
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: Column(
                   children: [
-                    item(
-                      title: "Giới thiệu",
-                      widget: contentWidget(
-                          controller.resumeModel?.data?.introduction ?? ""),
+                    Visibility(
+                      visible:
+                          controller.resumeModel?.data?.introduction != null,
+                      child: item(
+                        title: "Giới thiệu",
+                        widget: contentWidget(
+                            controller.resumeModel?.data?.introduction ?? ""),
+                      ),
                     ),
-                    item(
-                      title: "Kinh nghiệm",
-                      widget: experienceList(ref),
+                    Visibility(
+                      visible: controller.resumeModel?.data?.experience != null,
+                      child: item(
+                        title: "Kinh nghiệm",
+                        widget: experienceList(ref),
+                      ),
                     ),
-                    item(
-                      title: "Trình độ học vấn",
-                      widget: educationList(ref),
+                    Visibility(
+                      visible: controller.resumeModel?.data?.education != null,
+                      child: item(
+                        title: "Trình độ học vấn",
+                        widget: educationList(ref),
+                      ),
                     ),
-                    item(
-                      title: "Kỹ năng",
+                    Visibility(
+                      visible: controller.resumeModel?.data?.skills != null,
+                      child: item(
+                        title: "Kỹ năng",
+                        widget: skillList(ref),
+                      ),
                     )
                   ],
                 ),
@@ -231,6 +245,45 @@ class ResumeAnother extends ConsumerWidget {
                           height: 5,
                         ),
                         contentWidget(e.jobDescription ?? "", trimLines: 3)
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList() ??
+          [],
+    );
+  }
+
+  Widget skillList(WidgetRef ref) {
+    final controller = ref.watch(anotherUserControllerProvider);
+    return Column(
+      children: controller.resumeModel?.data?.skills?.map((e) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const PhosphorIcon(
+                    PhosphorIconsFill.circle,
+                    size: 8,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          e.name,
+                          style: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w400),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
                       ],
                     ),
                   ),

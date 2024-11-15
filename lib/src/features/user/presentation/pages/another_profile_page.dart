@@ -85,7 +85,7 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
                       indicatorColor: Colors.black,
                       labelStyle: const TextStyle(color: Colors.black),
                       tabs: const [
-                        Tab(text: "Giới thiệu"),
+                        Tab(text: "Thông tin"),
                         Tab(text: "Hoạt động"),
                         Tab(text: "Phương tiện"),
                       ],
