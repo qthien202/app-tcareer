@@ -70,7 +70,7 @@ Widget jobChatBottomAppBar(WidgetRef ref, BuildContext context,
               ),
             ),
             Visibility(
-              visible: media.selectedAsset.isNotEmpty,
+              visible: controller.hasContent || media.selectedAsset.isNotEmpty,
               replacement: GestureDetector(
                 onTap: () async {
                   await media.getAlbums();
