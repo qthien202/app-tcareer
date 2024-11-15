@@ -228,8 +228,8 @@ abstract class ApiServices {
   Future postSubmitApplication({@Body() required ApplyJobModel body});
 
   @GET('api/auth/get-posted-jobs')
-  Future<GetJobResponse> getPostedJob();
+  Future<GetJobResponse> getPostedJob({@Query('page') int? page});
 
   @GET('api/auth/get-applied-jobs')
-  Future<GetJobResponse> getAppliedJob();
+  Future<GetJobResponse> getAppliedJob({@Query('page') int? page});
 }

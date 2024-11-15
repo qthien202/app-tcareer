@@ -10,9 +10,21 @@ class JobController extends ChangeNotifier {
     jobScrollController.addListener(() {
       loadJobMore();
     });
+
+    postedJobScrollController.addListener(() {
+      loadPostedJobMore();
+    });
+
+    appliedJobScrollController.addListener(() {
+      loadAppliedJobMore();
+    });
   }
   ScrollController jobScrollController = ScrollController();
+  ScrollController postedJobScrollController = ScrollController();
+  ScrollController appliedJobScrollController = ScrollController();
   int jobPage = 1;
+  int postedPage = 1;
+  int appliedPage = 1;
   List<JobModel> jobs = [];
   GetJobResponse? jobResponse;
   Future<void> getJobs() async {
@@ -29,10 +41,12 @@ class JobController extends ChangeNotifier {
   List<JobModel> postedJobs = [];
   GetJobResponse? postedJobRes;
   Future<void> getPostedJob() async {
-    postedJobs.clear();
-    postedJobRes = await jobUseCase.getPostedJob();
-    if (postedJobRes != null) {
-      postedJobs.addAll(postedJobRes?.data as Iterable<JobModel>);
+    postedJobRes = await jobUseCase.getPostedJob(page: postedPage);
+    if (postedJobRes?.data != null) {
+      final newJobs = postedJobRes?.data
+          ?.where((newJob) => !postedJobs.any((job) => job.id == newJob.id))
+          .toList();
+      postedJobs.addAll(newJobs as Iterable<JobModel>);
       notifyListeners();
     }
   }
@@ -47,13 +61,35 @@ class JobController extends ChangeNotifier {
     }
   }
 
+  Future<void> loadPostedJobMore() async {
+    if (postedJobScrollController.position.maxScrollExtent ==
+        postedJobScrollController.offset) {
+      if (postedJobs.length < (postedJobRes?.meta?.total ?? 0)) {
+        postedPage += 1;
+        await getPostedJob();
+      }
+    }
+  }
+
+  Future<void> loadAppliedJobMore() async {
+    if (appliedJobScrollController.position.maxScrollExtent ==
+        appliedJobScrollController.offset) {
+      if (appliedJobs.length < (appliedJobRes?.meta?.total ?? 0)) {
+        appliedPage += 1;
+        await getAppliedJob();
+      }
+    }
+  }
+
   List<JobModel> appliedJobs = [];
   GetJobResponse? appliedJobRes;
   Future<void> getAppliedJob() async {
-    appliedJobs.clear();
-    appliedJobRes = await jobUseCase.getAppliedJob();
-    if (appliedJobRes != null) {
-      appliedJobs.addAll(appliedJobRes?.data as Iterable<JobModel>);
+    appliedJobRes = await jobUseCase.getAppliedJob(page: appliedPage);
+    if (appliedJobRes?.data != null) {
+      final newJobs = appliedJobRes?.data
+          ?.where((newJob) => !appliedJobs.any((job) => job.id == newJob.id))
+          .toList();
+      appliedJobs.addAll(newJobs as Iterable<JobModel>);
       notifyListeners();
     }
   }
@@ -63,6 +99,20 @@ class JobController extends ChangeNotifier {
     jobs.clear();
     jobPage = 1;
     await getJobs();
+  }
+
+  Future<void> refreshPostedJob() async {
+    postedJobRes = null;
+    postedJobs.clear();
+    postedPage = 1;
+    await getPostedJob();
+  }
+
+  Future<void> refreshAppliedJob() async {
+    appliedJobRes = null;
+    appliedJobs.clear();
+    appliedPage = 1;
+    await getAppliedJob();
   }
 }
 

@@ -52,10 +52,10 @@ class JobRepository {
   Future<GetJobResponse> getJobs({int? page}) async =>
       await apiServices.getJobs(page: page);
 
-  Future<GetJobResponse> getPostedJob() async =>
-      await apiServices.getPostedJob();
-  Future<GetJobResponse> getAppliedJob() async =>
-      await apiServices.getAppliedJob();
+  Future<GetJobResponse> getPostedJob({int? page}) async =>
+      await apiServices.getPostedJob(page: page);
+  Future<GetJobResponse> getAppliedJob({int? page}) async =>
+      await apiServices.getAppliedJob(page: page);
 }
 
 final jobRepositoryProvider = Provider((ref) {

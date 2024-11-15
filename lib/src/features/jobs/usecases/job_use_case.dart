@@ -20,10 +20,10 @@ class JobUseCase {
 
   Future<GetJobResponse> getJobs({int? page}) async =>
       await jobRepository.getJobs(page: page);
-  Future<GetJobResponse> getPostedJob() async =>
-      await jobRepository.getPostedJob();
-  Future<GetJobResponse> getAppliedJob() async =>
-      await jobRepository.getAppliedJob();
+  Future<GetJobResponse> getPostedJob({int? page}) async =>
+      await jobRepository.getPostedJob(page: page);
+  Future<GetJobResponse> getAppliedJob({int? page}) async =>
+      await jobRepository.getAppliedJob(page: page);
   Future<String> uploadFile(
           {required File file,
           required String folderPath,

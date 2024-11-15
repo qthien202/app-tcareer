@@ -29,6 +29,7 @@ class _PostedJobPageState extends ConsumerState<PostedJobPage> {
     BuildContext context,
   ) {
     final controller = ref.watch(jobControllerProvider);
+    bool hasData = controller.postedJobs.isNotEmpty;
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -42,12 +43,24 @@ class _PostedJobPageState extends ConsumerState<PostedJobPage> {
           actions: [],
         ),
         body: CustomScrollView(
+          controller: controller.postedJobScrollController,
           physics: const BouncingScrollPhysics(),
           slivers: [
             CupertinoSliverRefreshControl(
-              onRefresh: () async => await controller.getPostedJob(),
+              onRefresh: () async => await controller.refreshPostedJob(),
             ),
-            postedList(ref)
+            postedList(ref),
+            SliverToBoxAdapter(
+              child: Visibility(
+                visible: hasData &&
+                    controller.postedJobs.length !=
+                        controller.postedJobRes?.meta?.total,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: circularLoadingWidget(),
+                ),
+              ),
+            ),
           ],
         ));
   }
