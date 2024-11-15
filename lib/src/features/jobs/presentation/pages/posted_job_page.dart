@@ -37,7 +37,7 @@ class _PostedJobPageState extends ConsumerState<PostedJobPage> {
           automaticallyImplyLeading: true,
           centerTitle: false,
           title: const Text(
-            "Việc làm của bạn",
+            "Việc làm của tôi",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
           ),
           actions: [],
