@@ -240,7 +240,7 @@ class _JobLocationState extends ConsumerState<JobLocation> {
 
   Widget addressSelected() {
     final controller = ref.watch(createJobControllerProvider);
-    TextEditingController addressController = TextEditingController();
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Column(
@@ -373,7 +373,7 @@ class _JobLocationState extends ConsumerState<JobLocation> {
                     "Tên đường, Tòa nhà, Số nhà.",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  fullAddress(controller: addressController)
+                  fullAddress(controller: controller.addressController)
                 ],
               )),
           const SizedBox(
@@ -389,9 +389,10 @@ class _JobLocationState extends ConsumerState<JobLocation> {
                         borderRadius: BorderRadius.circular(10))),
                 onPressed: controller.selectedWard != null
                     ? () async {
-                        String? address = addressController.text != ""
-                            ? "${addressController.text}, "
-                            : "";
+                        String? address =
+                            controller.addressController.text != ""
+                                ? "${controller.addressController.text}, "
+                                : "";
                         String fullAddress =
                             "$address${controller.selectedWard?.wardName}, ${controller.selectedDistrict?.districtName}, ${controller.selectedProvince?.provinceName}";
                         await controller.getLatLngFromAddress(
@@ -402,7 +403,7 @@ class _JobLocationState extends ConsumerState<JobLocation> {
                       }
                     : null,
                 child: Text(
-                  "Hoàn thành",
+                  "Lưu lại",
                   style: TextStyle(color: Colors.white),
                 )),
           ),

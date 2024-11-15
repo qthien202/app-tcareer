@@ -91,8 +91,8 @@ class JobCty extends ConsumerWidget {
                 if (value.isEmpty) {
                   return "Vui lòng nhập tên công ty";
                 }
-                if (value.length > 50) {
-                  return "Tên công ty chỉ được tối đa 50 ký tự";
+                if (value.length > 100) {
+                  return "Tên công ty chỉ được tối đa 100 ký tự";
                 }
                 return null;
               },

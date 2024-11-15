@@ -6,8 +6,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class JobController extends ChangeNotifier {
   final JobUseCase jobUseCase;
-  JobController(this.jobUseCase);
-
+  JobController(this.jobUseCase) {
+    jobScrollController.addListener(() {});
+  }
+  ScrollController jobScrollController = ScrollController();
+  int jobPage = 1;
   List<JobModel> jobs = [];
   GetJobResponse? jobResponse;
   Future<void> getJobs() async {

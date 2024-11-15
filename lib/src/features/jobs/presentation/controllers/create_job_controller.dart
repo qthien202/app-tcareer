@@ -135,8 +135,7 @@ class CreateJobController extends ChangeNotifier {
     addressType = AddressType.fullAddress;
     selectedWard = ward;
     await setJobLocation(
-        wardId: num.parse(selectedWard?.wardCode ?? ""),
-        wardName: selectedWard?.wardName);
+        wardId: selectedWard?.wardCode, wardName: selectedWard?.wardName);
     notifyListeners();
   }
 
@@ -268,7 +267,7 @@ class CreateJobController extends ChangeNotifier {
     String? provinceName,
     num? districtId,
     String? districtName,
-    num? wardId,
+    String? wardId,
     String? wardName,
     String? fullAddress,
   }) async {
@@ -368,12 +367,30 @@ class CreateJobController extends ChangeNotifier {
     notifyListeners();
   }
 
+  clearData() {
+    selectedExpiredDate = "";
+    selectedJobTopic = null;
+    selectedJobRole = null;
+    selectedProvince = null;
+    selectedDistrict = null;
+    selectedWard = null;
+    selectedJobEmploymentType = null;
+    selectedJobTypeWorkSpace = null;
+    addressController.clear();
+  }
+
   Future<void> postCreateJob(BuildContext context) async {
+    DateFormat inputFormat = DateFormat("dd/MM/yyyy");
+    DateFormat outputFormat = DateFormat("yyyy/MM/dd");
+    DateTime dateTime = inputFormat.parse(job.expiredDate ?? "");
+    String outputDate = outputFormat.format(dateTime);
+    job = job.copyWith(expiredDate: outputDate);
     AppUtils.loadingApi(() async {
       await uploadImage();
 
       await createJobUseCase.postCreateJob(body: job);
       job.reset();
+      clearData();
       showSnackBar("Thêm công việc thành công");
       if (context.mounted) {
         context.goNamed("jobs");
@@ -417,7 +434,7 @@ class CreateJobController extends ChangeNotifier {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Ngày hết hạn đăng tuyển',
+                          'Chọn hạn nộp hồ sơ',
                           style: TextStyle(
                               letterSpacing: 0,
                               decoration: TextDecoration.none,
@@ -468,6 +485,8 @@ class CreateJobController extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  TextEditingController addressController = TextEditingController();
 }
 
 final createJobControllerProvider = ChangeNotifierProvider((ref) {

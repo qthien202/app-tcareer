@@ -1,14 +1,15 @@
 class JobLocationModel {
   JobLocationModel({
-      num? provinceId, 
-      String? provinceName, 
-      num? districtId, 
-      String? districtName, 
-      num? wardId, 
-      String? wardName, 
-      String? fullAddress, 
-      num? latitude, 
-      num? longitude,}){
+    num? provinceId,
+    String? provinceName,
+    num? districtId,
+    String? districtName,
+    String? wardId,
+    String? wardName,
+    String? fullAddress,
+    num? latitude,
+    num? longitude,
+  }) {
     _provinceId = provinceId;
     _provinceName = provinceName;
     _districtId = districtId;
@@ -18,7 +19,7 @@ class JobLocationModel {
     _fullAddress = fullAddress;
     _latitude = latitude;
     _longitude = longitude;
-}
+  }
 
   JobLocationModel.fromJson(dynamic json) {
     _provinceId = json['province_id'];
@@ -35,35 +36,38 @@ class JobLocationModel {
   String? _provinceName;
   num? _districtId;
   String? _districtName;
-  num? _wardId;
+  String? _wardId;
   String? _wardName;
   String? _fullAddress;
   num? _latitude;
   num? _longitude;
-JobLocationModel copyWith({  num? provinceId,
-  String? provinceName,
-  num? districtId,
-  String? districtName,
-  num? wardId,
-  String? wardName,
-  String? fullAddress,
-  num? latitude,
-  num? longitude,
-}) => JobLocationModel(  provinceId: provinceId ?? _provinceId,
-  provinceName: provinceName ?? _provinceName,
-  districtId: districtId ?? _districtId,
-  districtName: districtName ?? _districtName,
-  wardId: wardId ?? _wardId,
-  wardName: wardName ?? _wardName,
-  fullAddress: fullAddress ?? _fullAddress,
-  latitude: latitude ?? _latitude,
-  longitude: longitude ?? _longitude,
-);
+  JobLocationModel copyWith({
+    num? provinceId,
+    String? provinceName,
+    num? districtId,
+    String? districtName,
+    String? wardId,
+    String? wardName,
+    String? fullAddress,
+    num? latitude,
+    num? longitude,
+  }) =>
+      JobLocationModel(
+        provinceId: provinceId ?? _provinceId,
+        provinceName: provinceName ?? _provinceName,
+        districtId: districtId ?? _districtId,
+        districtName: districtName ?? _districtName,
+        wardId: wardId ?? _wardId,
+        wardName: wardName ?? _wardName,
+        fullAddress: fullAddress ?? _fullAddress,
+        latitude: latitude ?? _latitude,
+        longitude: longitude ?? _longitude,
+      );
   num? get provinceId => _provinceId;
   String? get provinceName => _provinceName;
   num? get districtId => _districtId;
   String? get districtName => _districtName;
-  num? get wardId => _wardId;
+  String? get wardId => _wardId;
   String? get wardName => _wardName;
   String? get fullAddress => _fullAddress;
   num? get latitude => _latitude;
@@ -82,5 +86,4 @@ JobLocationModel copyWith({  num? provinceId,
     map['longitude'] = _longitude;
     return map;
   }
-
 }

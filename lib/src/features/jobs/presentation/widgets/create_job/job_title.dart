@@ -67,7 +67,7 @@ class JobTitle extends ConsumerWidget {
                     }
                   },
                   child: Text(
-                    "Hoàn thành",
+                    "Lưu lại",
                     style: TextStyle(color: Colors.white),
                   )),
             ),

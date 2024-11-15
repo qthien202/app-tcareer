@@ -90,10 +90,17 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
               const SizedBox(
                 width: 10,
               ),
-              Text(
-                widget.job.ctyName ?? "",
-                style:
-                    const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      widget.job.ctyName ?? "",
+                      style: const TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
               )
             ],
           ),

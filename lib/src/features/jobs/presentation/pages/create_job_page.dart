@@ -109,9 +109,9 @@ class CreateJobPage extends ConsumerWidget {
                             child: const JobEmploymentType(),
                           )),
                   item(
-                      title: "Ngày hết hạn đăng tuyển",
-                      content: controller.job.expiredDate ??
-                          "Thêm ngày hết hạn đăng tuyển",
+                      title: "Hạn nộp hồ sơ",
+                      content:
+                          controller.job.expiredDate ?? "Thêm hạn nộp hồ sơ",
                       hasContent: controller.job.expiredDate != null,
                       onTap: () async => await controller.showExpiredDatePicker(
                           context: context)),
