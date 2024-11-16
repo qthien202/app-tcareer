@@ -457,22 +457,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.5"
-  extended_image:
-    dependency: transitive
-    description:
-      name: extended_image
-      sha256: "613875dc319f17546ea07499b5f0774755709a19a36dfde812e5eda9eb7a5c8c"
-      url: "https://pub.dev"
-    source: hosted
-    version: "9.0.7"
-  extended_image_library:
-    dependency: transitive
-    description:
-      name: extended_image_library
-      sha256: "9a94ec9314aa206cfa35f16145c3cd6e2c924badcc670eaaca8a3a8063a68cd7"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.5"
   fake_async:
     dependency: transitive
     description:
@@ -948,14 +932,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.9.3"
-  flutter_staggered_grid_view:
-    dependency: transitive
-    description:
-      name: flutter_staggered_grid_view
-      sha256: "19e7abb550c96fbfeb546b23f3ff356ee7c59a019a651f8f102a4ba9b7349395"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.7.0"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -1222,14 +1198,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.2"
-  http_client_helper:
-    dependency: transitive
-    description:
-      name: http_client_helper
-      sha256: "8a9127650734da86b5c73760de2b404494c968a3fd55602045ffec789dac3cb1"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -1358,14 +1326,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.2.1+1"
-  infinite_scroll_pagination:
-    dependency: "direct main"
-    description:
-      name: infinite_scroll_pagination
-      sha256: b68bce20752fcf36c7739e60de4175494f74e99e9a69b4dd2fe3a1dd07a7f16a
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.0"
   intl:
     dependency: "direct main"
     description:
@@ -1462,14 +1422,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
-  like_button:
-    dependency: "direct main"
-    description:
-      name: like_button
-      sha256: "08e6a45b78888412df5d351786c550205ad3a677e72a0820d5bbc0b063c8a463"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.5"
   lints:
     dependency: transitive
     description:
@@ -1742,14 +1694,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.6.1"
-  photo_manager_image_provider:
-    dependency: transitive
-    description:
-      name: photo_manager_image_provider
-      sha256: b6015b67b32f345f57cf32c126f871bced2501236c405aafaefa885f7c821e4f
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.0"
   photo_view:
     dependency: "direct main"
     description:
@@ -2030,27 +1974,11 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.0"
-  skeletonizer:
-    dependency: "direct main"
-    description:
-      name: skeletonizer
-      sha256: "3b202e4fa9c49b017d368fb0e570d4952bcd19972b67b2face071bdd68abbfae"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.4.2"
   sky_engine:
     dependency: transitive
     description: flutter
     source: sdk
     version: "0.0.99"
-  sliver_tools:
-    dependency: transitive
-    description:
-      name: sliver_tools
-      sha256: eae28220badfb9d0559207badcbbc9ad5331aac829a88cb0964d330d2a4636a6
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.12"
   smooth_page_indicator:
     dependency: "direct main"
     description:
@@ -2499,22 +2427,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.14.0"
-  wechat_assets_picker:
-    dependency: "direct main"
-    description:
-      name: wechat_assets_picker
-      sha256: "9e0fd685eb624da897decb3ea71336325d2beeba1ac7706cd3cd42e2c1090b79"
-      url: "https://pub.dev"
-    source: hosted
-    version: "9.4.0"
-  wechat_picker_library:
-    dependency: transitive
-    description:
-      name: wechat_picker_library
-      sha256: a42e09cb85b15fc9410f6a69671371cc60aa99c4a1f7967f6593a7f665f6f47a
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.5"
   win32:
     dependency: transitive
     description:

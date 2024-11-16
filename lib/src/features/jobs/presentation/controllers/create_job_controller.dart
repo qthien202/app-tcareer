@@ -175,6 +175,7 @@ class CreateJobController extends ChangeNotifier {
         jobType: jobType,
         jobDescription: jobDescription,
         detailLocation: detailLocation,
+        province: detailLocation?.provinceName,
         latitude: latitude,
         longitude: longitude,
         experienceRequired: experienceRequired,

@@ -16,7 +16,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:readmore/readmore.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 import 'engagement_widget.dart';
 

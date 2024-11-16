@@ -21,6 +21,7 @@ import 'package:app_tcareer/src/features/jobs/data/models/apply_job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/job_search_request.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_comment_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
@@ -243,4 +244,8 @@ abstract class ApiServices {
 
   @GET('api/auth/get-job-favorites')
   Future<GetJobResponse> getJobFavorites({@Query('page') int? page});
+
+  @GET('api/auth/jobs-search')
+  Future<GetJobResponse> getSearchJob(
+      {@Queries() required JobSearchRequest query});
 }

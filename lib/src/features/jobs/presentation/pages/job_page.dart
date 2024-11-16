@@ -79,7 +79,7 @@ class JobPage extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () => context.pushNamed("searchJob"),
             child: const PhosphorIcon(
               PhosphorIconsRegular.magnifyingGlass,
               color: Colors.black,

@@ -9,11 +9,33 @@ import 'package:app_tcareer/src/features/jobs/presentation/pages/cv_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/job_favorite_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/posted_job_page.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/search_job_page.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/search_job_result_page.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
 import 'package:go_router/go_router.dart';
 
 class JobRoute {
   static final List<RouteBase> routes = [
+    GoRoute(
+        path: "search",
+        name: "searchJob",
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+              key: state.pageKey,
+              child: SearchJobPage(),
+              transitionsBuilder: fadeTransitionBuilder);
+        },
+        routes: []),
+    GoRoute(
+      path: "searchResult",
+      name: "searchJobResult",
+      builder: (context, state) {
+        final query = state.uri.queryParameters['q'] ?? "";
+        return SearchJobResultPage(
+          query: query,
+        );
+      },
+    ),
     GoRoute(
         path: "posted",
         name: "postedJob",

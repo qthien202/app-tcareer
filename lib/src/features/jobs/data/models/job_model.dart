@@ -8,6 +8,7 @@ class JobModel {
       bool? isApplied,
       bool? isFavorite,
       num? jobTopicId,
+      String? province,
       String? jobTopicName,
       num? jobRoleId,
       String? jobRoleName,
@@ -46,6 +47,7 @@ class JobModel {
     _expiredDate = expiredDate;
     _isApplied = isApplied;
     _isFavorite = isFavorite;
+    _province = province;
   }
 
   bool isValid() {
@@ -65,7 +67,8 @@ class JobModel {
         _ctyImageUrl != null &&
         _experienceRequired != null &&
         _positionsAvailable != null &&
-        _expiredDate != null;
+        _expiredDate != null &&
+        province != null;
   }
 
   void reset() {
@@ -87,6 +90,7 @@ class JobModel {
     _positionsAvailable = null;
     _updatedAt = null;
     _expiredDate = null;
+    _province = null;
   }
 
   JobModel.fromJson(dynamic json) {
@@ -112,6 +116,7 @@ class JobModel {
     _positionsAvailable = json['positions_available'];
     _updatedAt = json['updated_at'];
     _expiredDate = json['expired_date'];
+    _province = json['province'];
   }
   num? _id;
   num? _userId;
@@ -135,29 +140,32 @@ class JobModel {
   num? _positionsAvailable;
   String? _updatedAt;
   String? _expiredDate;
-  JobModel copyWith(
-          {num? id,
-          num? userId,
-          String? title,
-          bool? isApplied,
-          bool? isFavorite,
-          num? jobTopicId,
-          String? jobTopicName,
-          num? jobRoleId,
-          String? jobRoleName,
-          String? jobType,
-          String? jobDescription,
-          JobLocationModel? detailLocation,
-          num? latitude,
-          num? longitude,
-          String? employmentType,
-          String? experienceName,
-          String? ctyName,
-          String? ctyImageUrl,
-          num? experienceRequired,
-          num? positionsAvailable,
-          String? updatedAt,
-          String? expiredDate}) =>
+  String? _province;
+  JobModel copyWith({
+    num? id,
+    num? userId,
+    String? title,
+    bool? isApplied,
+    bool? isFavorite,
+    num? jobTopicId,
+    String? jobTopicName,
+    num? jobRoleId,
+    String? jobRoleName,
+    String? jobType,
+    String? jobDescription,
+    JobLocationModel? detailLocation,
+    num? latitude,
+    num? longitude,
+    String? employmentType,
+    String? experienceName,
+    String? ctyName,
+    String? ctyImageUrl,
+    num? experienceRequired,
+    num? positionsAvailable,
+    String? updatedAt,
+    String? expiredDate,
+    String? province,
+  }) =>
       JobModel(
           userId: userId ?? _userId,
           id: id ?? _id,
@@ -180,7 +188,8 @@ class JobModel {
           experienceRequired: experienceRequired ?? _experienceRequired,
           positionsAvailable: positionsAvailable ?? _positionsAvailable,
           updatedAt: updatedAt ?? _updatedAt,
-          expiredDate: expiredDate ?? _expiredDate);
+          expiredDate: expiredDate ?? _expiredDate,
+          province: province ?? _province);
   num? get id => _id;
   num? get userId => _userId;
   String? get title => _title;
@@ -203,6 +212,7 @@ class JobModel {
   num? get positionsAvailable => _positionsAvailable;
   String? get updatedAt => _updatedAt;
   String? get expiredDate => _expiredDate;
+  String? get province => _province;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -228,6 +238,7 @@ class JobModel {
     map['positions_available'] = _positionsAvailable;
     map['updated_at'] = _updatedAt;
     map['expired_date'] = _expiredDate;
+    map['province'] = _province;
     return map;
   }
 }
