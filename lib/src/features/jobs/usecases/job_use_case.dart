@@ -39,6 +39,12 @@ class JobUseCase {
       await jobRepository.postSubmitApplication(body);
   Future<ApplicantResponse> getApplicants({required num jobId}) async =>
       await jobRepository.getApplicants(jobId: jobId);
+
+  Future<GetJobResponse> getJobFavorites({int? page}) async =>
+      await jobRepository.getAppliedJob(page: page);
+
+  Future<void> postAddJobFavorite({required num jobId}) async =>
+      await jobRepository.postAddJobFavorite(jobId: jobId);
 }
 
 final jobUseCaseProvider =

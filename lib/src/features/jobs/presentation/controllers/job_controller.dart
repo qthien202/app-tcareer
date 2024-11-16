@@ -3,6 +3,9 @@ import 'package:app_tcareer/src/features/jobs/data/models/applicant_response.dar
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/job_use_case.dart';
+import 'package:app_tcareer/src/utils/app_utils.dart';
+import 'package:app_tcareer/src/utils/snackbar_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -140,6 +143,14 @@ class JobController extends ChangeNotifier {
   Future<void> resetApplicants() async {
     applicantResponse = null;
     applicants.clear();
+  }
+
+  Future<void> postAddJobFavorite(
+      {required num jobId, required BuildContext context}) async {
+    AppUtils.loadingApi(() async {
+      await jobUseCase.postAddJobFavorite(jobId: jobId);
+      showSnackBar("Lưu việc làm thành công");
+    }, context);
   }
 }
 

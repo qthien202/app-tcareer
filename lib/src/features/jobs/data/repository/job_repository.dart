@@ -60,6 +60,12 @@ class JobRepository {
 
   Future<ApplicantResponse> getApplicants({required num jobId}) async =>
       await apiServices.getApplicants(jobId: jobId);
+
+  Future<GetJobResponse> getJobFavorites({int? page}) async =>
+      await apiServices.getAppliedJob(page: page);
+
+  Future<void> postAddJobFavorite({required num jobId}) async =>
+      await apiServices.postAddJobFavorite(jobId: jobId);
 }
 
 final jobRepositoryProvider = Provider((ref) {

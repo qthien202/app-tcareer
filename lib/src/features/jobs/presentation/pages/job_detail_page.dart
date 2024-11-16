@@ -36,7 +36,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final controller = ref.watch(jobControllerProvider);
+    final controller = ref.watch(jobControllerProvider);
 
     Map<String, dynamic> contentEmployee = {
       "full-time": "Toàn thời gian",
@@ -51,26 +51,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
     };
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: true,
-        centerTitle: false,
-        title: Visibility(
-          visible: positionPixel >= 100,
-          child: Text(
-            widget.job.title ?? "",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
-          ),
-        ),
-        actions: [
-          GestureDetector(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: PhosphorIcon(PhosphorIconsRegular.bookmarkSimple),
-            ),
-          )
-        ],
-      ),
+      appBar: appBar(),
       body: ListView(
         controller: scrollController,
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -377,7 +358,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                 });
               },
               child: Container(
-                padding: EdgeInsets.all(12),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   shape: BoxShape.circle,
@@ -430,6 +411,44 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
           ],
         ),
       ),
+    );
+  }
+
+  PreferredSizeWidget appBar() {
+    final userController = ref.watch(userControllerProvider);
+    final userId = userController.userData?.data?.id;
+    final controller = ref.watch(jobControllerProvider);
+    bool? isApplied = widget.job.isApplied;
+
+    bool isClient = userId == widget.job.userId;
+    return AppBar(
+      backgroundColor: Colors.white,
+      automaticallyImplyLeading: true,
+      centerTitle: false,
+      title: Visibility(
+        visible: positionPixel >= 100,
+        child: Text(
+          widget.job.title ?? "",
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+        ),
+      ),
+      actions: [
+        Visibility(
+          visible: !isClient,
+          replacement: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: PhosphorIcon(PhosphorIconsRegular.dotsThreeVertical),
+          ),
+          child: GestureDetector(
+            onTap: () async => await controller.postAddJobFavorite(
+                context: context, jobId: widget.job.id ?? 0),
+            child: const Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: PhosphorIcon(PhosphorIconsRegular.bookmarkSimple),
+            ),
+          ),
+        )
+      ],
     );
   }
 }
