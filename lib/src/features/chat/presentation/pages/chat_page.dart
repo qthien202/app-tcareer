@@ -36,6 +36,7 @@ class ChatPage extends ConsumerStatefulWidget {
 class _ChatPageState extends ConsumerState<ChatPage> {
   final DraggableScrollableController draggableScrollableController =
       DraggableScrollableController();
+  ItemScrollController itemScrollController = ItemScrollController();
   @override
   void initState() {
     // TODO: implement initState
@@ -46,7 +47,9 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       // controller.listenPresence(widget.userId);
       await controller.listenMessage();
       if (widget.content != null) {
-        await controller.directToMessage(widget.content ?? "");
+        await controller.directToMessage(
+            content: widget.content ?? "",
+            itemScrollController: itemScrollController);
       }
     });
 
@@ -78,6 +81,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           }
 
           controller.contentController.clear();
+
           // ref
           //     .watch(indexControllerProvider.notifier)
           //     .setBottomNavigationBarVisibility(true);
@@ -132,44 +136,50 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   }
 
   Widget messages() {
-    final controller = ref.watch(chatControllerProvider);
-    final mediaController = ref.watch(chatMediaControllerProvider);
-    final messages = controller.messages;
-    return Expanded(
-      // flex: 5,
-      child: ScrollablePositionedList.separated(
-        reverse: true,
-        itemScrollController: controller.itemScrollController,
-        padding: const EdgeInsets.symmetric(horizontal: 10).copyWith(
-            bottom: controller.isShowMedia
-                ? ScreenUtil().screenHeight * .37
-                : controller.isShowEmoji
-                    ? ScreenUtil().screenHeight * .4
-                    : 60,
-            top: 5),
-        itemCount: messages.length,
-        itemBuilder: (context, index) {
-          bool isFirstIndex = messages.length - index == messages.length;
-          final message = messages.reversed.toList()[index];
+    return Consumer(
+      builder: (context, ref, child) {
+        final controller = ref.watch(chatControllerProvider);
 
-          bool isMe = message.senderId.toString() == widget.clientId;
-          return messageBox(
-              type: message.type,
-              context: context,
-              isFirstIndex: isFirstIndex,
-              status: message.status ?? "",
-              avatarUrl: controller.user?.userAvatar ?? "",
-              media: message.mediaUrl ?? <String>[],
-              ref: ref,
-              message: message.content ?? "",
-              isMe: isMe,
-              createdAt: message.createdAt ?? "",
-              messageId: message.id ?? 0);
-        },
-        separatorBuilder: (context, index) => const SizedBox(
-          height: 2,
-        ),
-      ),
+        final messages = controller.messages;
+        // assert(_scrollableListState == null, 'ItemScrollController đã được liên kết với ScrollablePositionedList khác!');
+
+        return Expanded(
+          // flex: 5,
+          child: ScrollablePositionedList.separated(
+            reverse: true,
+            itemScrollController: itemScrollController,
+            padding: const EdgeInsets.symmetric(horizontal: 10).copyWith(
+                bottom: controller.isShowMedia
+                    ? ScreenUtil().screenHeight * .37
+                    : controller.isShowEmoji
+                        ? ScreenUtil().screenHeight * .4
+                        : 60,
+                top: 5),
+            itemCount: messages.length,
+            itemBuilder: (context, index) {
+              bool isFirstIndex = messages.length - index == messages.length;
+              final message = messages.reversed.toList()[index];
+
+              bool isMe = message.senderId.toString() == widget.clientId;
+              return messageBox(
+                  type: message.type,
+                  context: context,
+                  isFirstIndex: isFirstIndex,
+                  status: message.status ?? "",
+                  avatarUrl: controller.user?.userAvatar ?? "",
+                  media: message.mediaUrl ?? <String>[],
+                  ref: ref,
+                  message: message.content ?? "",
+                  isMe: isMe,
+                  createdAt: message.createdAt ?? "",
+                  messageId: message.id ?? 0);
+            },
+            separatorBuilder: (context, index) => const SizedBox(
+              height: 2,
+            ),
+          ),
+        );
+      },
     );
   }
 

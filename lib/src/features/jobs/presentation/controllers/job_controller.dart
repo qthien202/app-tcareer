@@ -131,6 +131,12 @@ class JobController extends ChangeNotifier {
     await getAppliedJob();
   }
 
+  Future<void> refreshApplicant(num jobId) async {
+    applicantResponse = null;
+    applicants.clear();
+    await getApplicants(jobId);
+  }
+
   Future<void> resetApplicants() async {
     applicantResponse = null;
     applicants.clear();

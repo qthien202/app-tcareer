@@ -1,6 +1,7 @@
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_controller.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -27,9 +28,9 @@ class _ApplicantsPageState extends ConsumerState<ApplicantsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = ref.watch(jobControllerProvider);
     return PopScope(
       onPopInvoked: (didPop) {
-        final controller = ref.watch(jobControllerProvider);
         if (didPop) {
           controller.resetApplicants();
         }
@@ -47,7 +48,14 @@ class _ApplicantsPageState extends ConsumerState<ApplicantsPage> {
           actions: [],
         ),
         body: CustomScrollView(
-          slivers: [applicants()],
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            CupertinoSliverRefreshControl(
+              onRefresh: () async =>
+                  await controller.refreshApplicant(widget.jobId ?? 0),
+            ),
+            applicants()
+          ],
         ),
       ),
     );

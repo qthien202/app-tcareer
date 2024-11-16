@@ -14,6 +14,7 @@ import 'package:app_tcareer/src/features/chat/data/models/user.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_conversation.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/chat_media_controller.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
+import 'package:app_tcareer/src/features/chat/presentation/pages/chat_page.dart';
 import 'package:app_tcareer/src/features/chat/presentation/pages/media/chat_media_page.dart';
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
 import 'package:app_tcareer/src/features/index/index_controller.dart';
@@ -600,20 +601,22 @@ class ChatController extends ChangeNotifier {
     );
   }
 
-  final ItemScrollController itemScrollController = ItemScrollController();
-  Future<void> directToMessage(String content) async {
+  Future<void> directToMessage(
+      {String? content,
+      required ItemScrollController itemScrollController}) async {
     final index = messages.indexWhere((message) => message.content == content);
 
     if (index != -1) {
       final reverseIndex = messages.length - 1 - index;
       itemScrollController.jumpTo(index: reverseIndex);
     }
-
     notifyListeners();
   }
 }
 
-final chatControllerProvider = ChangeNotifierProvider<ChatController>((ref) {
-  final chatUseCase = ref.watch(chatUseCaseProvider);
+final chatControllerProvider =
+    ChangeNotifierProvider.autoDispose<ChatController>((ref) {
+  final chatUseCase = ref.read(chatUseCaseProvider);
+  ref.keepAlive();
   return ChatController(chatUseCase, ref);
 });
