@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-Widget jobItem(JobModel job, BuildContext context) {
+Widget jobItem(JobModel job, BuildContext context, int index) {
   Map<String, dynamic> contentEmployee = {
     "full-time": "Toàn thời gian",
     "part-time": "Bán thời gian",
@@ -20,7 +20,8 @@ Widget jobItem(JobModel job, BuildContext context) {
   };
   return InkWell(
     onTap: () {
-      context.pushNamed("jobDetail", extra: job);
+      context
+          .pushNamed("jobDetail", queryParameters: {"index": index.toString()});
     },
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),

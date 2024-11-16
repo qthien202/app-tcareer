@@ -84,7 +84,7 @@ class _AppliedJobPageState extends ConsumerState<AppliedJobPage> {
             childCount: controller.appliedJobs.length,
             (context, index) {
               final job = controller.appliedJobs[index];
-              return jobItem(job, context);
+              return jobItem(job, context, index);
             },
           ),
         ),

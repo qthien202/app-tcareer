@@ -13,8 +13,8 @@ import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class JobDetailPage extends ConsumerStatefulWidget {
-  final JobModel job;
-  const JobDetailPage({super.key, required this.job});
+  final int index;
+  const JobDetailPage({super.key, required this.index});
 
   @override
   ConsumerState<JobDetailPage> createState() => _JobDetailPageState();
@@ -37,7 +37,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(jobControllerProvider);
-
+    final job = controller.jobs[widget.index];
     Map<String, dynamic> contentEmployee = {
       "full-time": "Toàn thời gian",
       "part-time": "Bán thời gian",
@@ -64,7 +64,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                 child: cachedImageWidget(
                   height: 50,
                   width: 50,
-                  imageUrl: widget.job.ctyImageUrl ?? "",
+                  imageUrl: job.ctyImageUrl ?? "",
                   fit: BoxFit.cover,
                 ),
               ),
@@ -76,7 +76,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.job.ctyName ?? "",
+                      job.ctyName ?? "",
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.w400),
                     ),
@@ -89,7 +89,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
             height: 10,
           ),
           Text(
-            widget.job.title ?? "",
+            job.title ?? "",
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           const SizedBox(
@@ -105,7 +105,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                     color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(20)),
                 child: Text(
-                  contentEmployee[widget.job.employmentType],
+                  contentEmployee[job.employmentType],
                   style: const TextStyle(
                       color: Colors.black,
                       fontSize: 12,
@@ -120,7 +120,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                     color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(20)),
                 child: Text(
-                  "${widget.job.experienceRequired.toString()} năm",
+                  "${job.experienceRequired.toString()} năm",
                   style: const TextStyle(
                       color: Colors.black,
                       fontSize: 12,
@@ -134,7 +134,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                     color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(20)),
                 child: Text(
-                  contentType[widget.job.jobType] ?? "",
+                  contentType[job.jobType] ?? "",
                   style: const TextStyle(
                       color: Colors.black,
                       fontSize: 12,
@@ -190,6 +190,8 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
   }
 
   Widget jobInfo() {
+    final controller = ref.watch(jobControllerProvider);
+    final job = controller.jobs[widget.index];
     Map<String, dynamic> contentEmployee = {
       "full-time": "Toàn thời gian",
       "part-time": "Bán thời gian",
@@ -206,27 +208,27 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
       {
         "icon": PhosphorIconsThin.calendar,
         "title": "Kinh nghiệm",
-        "content": "${widget.job.experienceRequired} năm"
+        "content": "${job.experienceRequired} năm"
       },
       {
         "icon": PhosphorIconsThin.users,
         "title": "Số lượng tuyển",
-        "content": "${widget.job.positionsAvailable} người"
+        "content": "${job.positionsAvailable} người"
       },
       {
         "icon": PhosphorIconsThin.briefcase,
         "title": "Loại công việc",
-        "content": contentEmployee[widget.job.employmentType]
+        "content": contentEmployee[job.employmentType]
       },
       {
         "icon": PhosphorIconsThin.buildingOffice,
         "title": "Loại nơi làm việc",
-        "content": contentType[widget.job.jobType]
+        "content": contentType[job.jobType]
       },
       {
         "icon": PhosphorIconsThin.mapPin,
         "title": "Địa điểm làm việc",
-        "content": widget.job.detailLocation?.fullAddress
+        "content": job.detailLocation?.fullAddress
       },
     ];
     return Column(
@@ -280,6 +282,8 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
   }
 
   Widget jobDescription() {
+    final controller = ref.watch(jobControllerProvider);
+    final job = controller.jobs[widget.index];
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -305,7 +309,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
           const SizedBox(
             height: 15,
           ),
-          HtmlWidget(widget.job.jobDescription ?? "")
+          HtmlWidget(job.jobDescription ?? "")
         ],
       ),
     );
@@ -315,7 +319,9 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
     final userController = ref.watch(userControllerProvider);
     final userId = userController.userData?.data?.id;
     final controller = ref.watch(applyJobControllerProvider);
-    bool? isApplied = widget.job.isApplied;
+    final jobController = ref.watch(jobControllerProvider);
+    final job = jobController.jobs[widget.index];
+    bool? isApplied = job.isApplied;
     if (controller.isApplied == true) {
       setState(() {
         isApplied = controller.isApplied;
@@ -323,7 +329,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
       });
     }
 
-    bool isClient = userId == widget.job.userId;
+    bool isClient = userId == job.userId;
     return BottomAppBar(
       color: Colors.white,
       child: Visibility(
@@ -336,7 +342,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                 padding: const EdgeInsets.symmetric(vertical: 15)),
             onPressed: () {
               context.pushNamed("applicants",
-                  queryParameters: {"id": widget.job.id.toString()});
+                  queryParameters: {"id": job.id.toString()});
             },
             child: const Text(
               "Xem danh sách ứng viên",
@@ -353,7 +359,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                 String clientId =
                     userController.userData?.data?.id.toString() ?? "";
                 context.pushNamed("jobChat", pathParameters: {
-                  "userId": widget.job.userId.toString(),
+                  "userId": job.userId.toString(),
                   "clientId": clientId
                 });
               },
@@ -399,7 +405,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                           backgroundColor: AppColors.primary,
                           padding: const EdgeInsets.symmetric(vertical: 15)),
                       onPressed: () => context.pushNamed("applyJob",
-                          queryParameters: {"id": widget.job.id.toString()}),
+                          queryParameters: {"id": job.id.toString()}),
                       child: const Text(
                         "Ứng tuyển ngay",
                         style: TextStyle(
@@ -418,9 +424,10 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
     final userController = ref.watch(userControllerProvider);
     final userId = userController.userData?.data?.id;
     final controller = ref.watch(jobControllerProvider);
-    bool? isApplied = widget.job.isApplied;
+    final job = controller.jobs[widget.index];
+    bool? isFavorite = job.isFavorite;
 
-    bool isClient = userId == widget.job.userId;
+    bool isClient = userId == job.userId;
     return AppBar(
       backgroundColor: Colors.white,
       automaticallyImplyLeading: true,
@@ -428,7 +435,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
       title: Visibility(
         visible: positionPixel >= 100,
         child: Text(
-          widget.job.title ?? "",
+          job.title ?? "",
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
       ),
@@ -441,10 +448,17 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
           ),
           child: GestureDetector(
             onTap: () async => await controller.postAddJobFavorite(
-                context: context, jobId: widget.job.id ?? 0),
-            child: const Padding(
+                context: context,
+                jobId: job.id ?? 0,
+                isJobFavorite: isFavorite),
+            child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: PhosphorIcon(PhosphorIconsRegular.bookmarkSimple),
+              child: PhosphorIcon(
+                isFavorite == true
+                    ? PhosphorIconsFill.bookmarkSimple
+                    : PhosphorIconsRegular.bookmarkSimple,
+                color: isFavorite == true ? Colors.blue : Colors.black,
+              ),
             ),
           ),
         )

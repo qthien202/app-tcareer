@@ -83,7 +83,7 @@ class _PostedJobPageState extends ConsumerState<PostedJobPage> {
             childCount: controller.postedJobs.length,
             (context, index) {
               final job = controller.postedJobs[index];
-              return jobItem(job, context);
+              return jobItem(job, context, index);
             },
           ),
         ),

@@ -6,6 +6,7 @@ class JobModel {
       num? userId,
       String? title,
       bool? isApplied,
+      bool? isFavorite,
       num? jobTopicId,
       String? jobTopicName,
       num? jobRoleId,
@@ -43,6 +44,8 @@ class JobModel {
     _positionsAvailable = positionsAvailable;
     _updatedAt = updatedAt;
     _expiredDate = expiredDate;
+    _isApplied = isApplied;
+    _isFavorite = isFavorite;
   }
 
   bool isValid() {
@@ -91,6 +94,7 @@ class JobModel {
     _userId = json['user_id'];
     _title = json['title'];
     _isApplied = json['is_applied'];
+    _isFavorite = json['is_favorite'];
     _jobTopicId = json['job_topic_id'];
     _jobTopicName = json['job_topic_name'];
     _jobRoleId = json['job_role_id'];
@@ -113,6 +117,7 @@ class JobModel {
   num? _userId;
   String? _title;
   bool? _isApplied;
+  bool? _isFavorite;
   num? _jobTopicId;
   String? _jobTopicName;
   num? _jobRoleId;
@@ -135,6 +140,7 @@ class JobModel {
           num? userId,
           String? title,
           bool? isApplied,
+          bool? isFavorite,
           num? jobTopicId,
           String? jobTopicName,
           num? jobRoleId,
@@ -157,6 +163,7 @@ class JobModel {
           id: id ?? _id,
           title: title ?? _title,
           isApplied: isApplied ?? _isApplied,
+          isFavorite: isFavorite ?? _isFavorite,
           jobTopicId: jobTopicId ?? _jobTopicId,
           jobTopicName: jobTopicName ?? _jobTopicName,
           jobRoleId: jobRoleId ?? _jobRoleId,
@@ -178,6 +185,7 @@ class JobModel {
   num? get userId => _userId;
   String? get title => _title;
   bool? get isApplied => _isApplied;
+  bool? get isFavorite => _isFavorite;
   num? get jobTopicId => _jobTopicId;
   String? get jobTopicName => _jobTopicName;
   num? get jobRoleId => _jobRoleId;
@@ -202,6 +210,7 @@ class JobModel {
     map['user_id'] = _userId;
     map['title'] = _title;
     map['is_applied'] = _isApplied;
+    map['is_favorite'] - _isFavorite;
     map['job_topic_id'] = _jobTopicId;
     map['job_topic_name'] = _jobTopicName;
     map['job_role_id'] = _jobRoleId;

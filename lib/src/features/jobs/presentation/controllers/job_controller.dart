@@ -145,11 +145,28 @@ class JobController extends ChangeNotifier {
     applicants.clear();
   }
 
-  Future<void> postAddJobFavorite(
-      {required num jobId, required BuildContext context}) async {
+  bool? isFavorite;
+  Future<void> postAddJobFavorite({
+    required num jobId,
+    required BuildContext context,
+    bool? isJobFavorite,
+  }) async {
+    final index = jobs.indexWhere((job) => job.id == jobId);
+
     AppUtils.loadingApi(() async {
       await jobUseCase.postAddJobFavorite(jobId: jobId);
-      showSnackBar("Lưu việc làm thành công");
+      // print(">>>>>>>>>isFavorite1: $isJobFavorite");
+      if (isJobFavorite == true) {
+        final newJob = jobs[index].copyWith(isFavorite: false);
+        jobs[index] = newJob;
+        showSnackBar("Đã bỏ lưu việc làm");
+      } else {
+        final newJob = jobs[index].copyWith(isFavorite: true);
+        jobs[index] = newJob;
+        showSnackBar("Lưu việc làm thành công");
+      }
+
+      notifyListeners();
     }, context);
   }
 }

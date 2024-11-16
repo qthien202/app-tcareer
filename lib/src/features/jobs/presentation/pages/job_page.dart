@@ -37,7 +37,7 @@ class JobPage extends ConsumerWidget {
             sliverTab(context),
             SliverToBoxAdapter(
                 child: Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
+              margin: const EdgeInsets.symmetric(vertical: 10),
               width: ScreenUtil().screenWidth,
               color: Colors.grey.shade100,
               height: 10,
@@ -113,9 +113,9 @@ class JobPage extends ConsumerWidget {
   }
 
   Widget sliverTitle() {
-    return SliverToBoxAdapter(
+    return const SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10),
+        padding: EdgeInsets.only(right: 15, left: 15, bottom: 10),
         child: Text(
           "Đề xuất cho bạn",
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -137,7 +137,7 @@ class JobPage extends ConsumerWidget {
           childCount: controller.jobs.length,
           (context, index) {
             final job = controller.jobs[index];
-            return jobItem(job, context);
+            return jobItem(job, context, index);
           },
         ),
       ),
@@ -162,7 +162,7 @@ class JobPage extends ConsumerWidget {
         child: SizedBox(
           height: 40,
           child: ListView.separated(
-            padding: EdgeInsets.symmetric(horizontal: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15),
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
             itemCount: tabs.length,
@@ -183,7 +183,7 @@ class JobPage extends ConsumerWidget {
     return GestureDetector(
       onTap: tab['onTap'],
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
         alignment: Alignment.center,
         decoration: BoxDecoration(
             color: Colors.white,
@@ -191,7 +191,8 @@ class JobPage extends ConsumerWidget {
             borderRadius: BorderRadius.circular(20)),
         child: Text(
           tab['title'],
-          style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600),
+          style:
+              const TextStyle(color: Colors.grey, fontWeight: FontWeight.w600),
         ),
       ),
     );

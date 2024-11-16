@@ -64,11 +64,11 @@ class JobRoute {
         path: "detail",
         name: "jobDetail",
         pageBuilder: (context, state) {
-          final job = state.extra as JobModel;
+          int index = int.parse(state.uri.queryParameters['index'] ?? "");
           return CustomTransitionPage(
               key: state.pageKey,
               child: JobDetailPage(
-                job: job,
+                index: index,
               ),
               transitionsBuilder: fadeTransitionBuilder);
         },
