@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:app_tcareer/src/features/index/index_page.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/applicant_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/apply_job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/cv_page.dart';
@@ -61,28 +62,97 @@ class ApplyJobPage extends ConsumerWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: SizedBox(
-          height: 50,
-          width: ScreenUtil().screenWidth,
-          child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10))),
-              onPressed: controller.selectedFile != null ||
-                      userController.userData?.data?.cvFile != null
-                  ? () async {
-                      await controller.submitApplication(
-                          jobId: jobId, context: context);
-                    }
-                  : null,
-              child: const Text(
-                "Ứng tuyển",
-                style: TextStyle(color: Colors.white),
-              )),
-        ),
+      bottomNavigationBar: Visibility(
+          visible: applicant != null,
+          replacement: bottomApply(context: context, ref: ref),
+          child: bottomApplicant(context: context, ref: ref)),
+    );
+  }
+
+  Widget bottomApplicant(
+      {required BuildContext context, required WidgetRef ref}) {
+    final userController = ref.watch(userControllerProvider);
+    return BottomAppBar(
+      color: Colors.white,
+      child: Row(
+        // crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          GestureDetector(
+            onTap: () async {
+              String clientId =
+                  userController.userData?.data?.id.toString() ?? "";
+              context.pushNamed("jobChat", pathParameters: {
+                "userId": applicant?.userId.toString() ?? "",
+                "clientId": clientId
+              });
+            },
+            child: Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.grey.shade200),
+              ),
+              child: const PhosphorIcon(
+                PhosphorIconsRegular.chatCenteredDots,
+                color: AppColors.primary,
+                size: 25,
+              ),
+            ),
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+          Expanded(
+              flex: 4,
+              child: Visibility(
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        backgroundColor: AppColors.primary,
+                        padding: const EdgeInsets.symmetric(vertical: 15)),
+                    onPressed: () => context.pushNamed("profile",
+                            queryParameters: {
+                              "userId": applicant?.userId.toString() ?? ""
+                            }),
+                    child: const Text(
+                      "Xem trang cá nhân",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14),
+                    )),
+              ))
+        ],
+      ),
+    );
+  }
+
+  Widget bottomApply({required BuildContext context, required WidgetRef ref}) {
+    final userController = ref.watch(userControllerProvider);
+    final controller = ref.watch(applyJobControllerProvider);
+    return BottomAppBar(
+      color: Colors.white,
+      child: SizedBox(
+        height: 50,
+        width: ScreenUtil().screenWidth,
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10))),
+            onPressed: controller.selectedFile != null ||
+                    userController.userData?.data?.cvFile != null
+                ? () async {
+                    await controller.submitApplication(
+                        jobId: jobId, context: context);
+                  }
+                : null,
+            child: const Text(
+              "Ứng tuyển",
+              style: TextStyle(color: Colors.white),
+            )),
       ),
     );
   }
@@ -178,7 +248,11 @@ class ApplyJobPage extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       width: ScreenUtil().screenWidth,
-      height: controller.selectedFile != null ? 100 : 300,
+      height: controller.selectedFile != null
+          ? 100
+          : applicant != null
+              ? 60
+              : 300,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: Colors.white,
@@ -199,16 +273,28 @@ class ApplyJobPage extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "CV tải lên gần đây",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(
-                    height: 10,
+                  Visibility(
+                    visible: applicant == null,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "CV tải lên gần đây",
+                          style: TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
                   ),
                   fileItemRecent(context: context, url: cvFile),
-                  const SizedBox(
-                    height: 20,
+                  Visibility(
+                    visible: applicant == null,
+                    child: const SizedBox(
+                      height: 20,
+                    ),
                   ),
                 ],
               )),
