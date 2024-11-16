@@ -1,5 +1,6 @@
 import 'package:app_tcareer/src/features/jobs/data/models/jobs.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_controller.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_item.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:app_tcareer/src/widgets/notification_icon.dart';
@@ -137,7 +138,7 @@ class JobPage extends ConsumerWidget {
           childCount: controller.jobs.length,
           (context, index) {
             final job = controller.jobs[index];
-            return jobItem(job, context, index);
+            return jobItem(job, context, JobType.job);
           },
         ),
       ),

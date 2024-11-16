@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app_tcareer/src/features/jobs/data/models/apply_job_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_controller.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/job_use_case.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
@@ -77,7 +78,10 @@ class ApplyJobController extends ChangeNotifier {
       fileName = null;
       isApplied = true;
       context.pop();
-      await jobController.getJobs();
+      jobController.jobs.clear();
+      jobController.jobFavorites.clear();
+      jobController.getJobs();
+      jobController.getJobFavorites();
     }, context);
   }
 }

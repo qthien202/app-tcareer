@@ -1,5 +1,6 @@
 import 'package:app_tcareer/src/features/jobs/data/models/applicant_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_controller.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_item.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
@@ -21,6 +22,7 @@ class _JobFavoritePageState extends ConsumerState<JobFavoritePage> {
     super.initState();
     Future.microtask(() async {
       final controller = ref.read(jobControllerProvider);
+      controller.jobFavorites.clear();
       await controller.getJobFavorites();
     });
   }
@@ -84,7 +86,7 @@ class _JobFavoritePageState extends ConsumerState<JobFavoritePage> {
             childCount: controller.jobFavorites.length,
             (context, index) {
               final job = controller.jobFavorites[index];
-              return jobItem(job, context, index);
+              return jobItem(job, context, JobType.favorite);
             },
           ),
         ),

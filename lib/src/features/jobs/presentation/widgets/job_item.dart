@@ -1,12 +1,13 @@
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/jobs.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-Widget jobItem(JobModel job, BuildContext context, int index) {
+Widget jobItem(JobModel job, BuildContext context, JobType type) {
   Map<String, dynamic> contentEmployee = {
     "full-time": "Toàn thời gian",
     "part-time": "Bán thời gian",
@@ -20,8 +21,7 @@ Widget jobItem(JobModel job, BuildContext context, int index) {
   };
   return InkWell(
     onTap: () {
-      context
-          .pushNamed("jobDetail", queryParameters: {"index": index.toString()});
+      context.pushNamed("jobDetail", extra: {"job": job, "type": type});
     },
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),

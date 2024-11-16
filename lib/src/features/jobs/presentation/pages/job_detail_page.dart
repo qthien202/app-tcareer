@@ -12,9 +12,12 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+enum JobType { job, postedJob, applied, favorite }
+
 class JobDetailPage extends ConsumerStatefulWidget {
-  final int index;
-  const JobDetailPage({super.key, required this.index});
+  final JobModel job;
+  final JobType jobType;
+  const JobDetailPage({super.key, required this.job, required this.jobType});
 
   @override
   ConsumerState<JobDetailPage> createState() => _JobDetailPageState();
@@ -27,6 +30,12 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    Future.microtask(() {
+      final controller = ref.watch(jobControllerProvider);
+      setState(() {
+        controller.isFavorite = widget.job.isFavorite ?? false;
+      });
+    });
     scrollController.addListener(() {
       setState(() {
         positionPixel = scrollController.position.pixels;
@@ -37,7 +46,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(jobControllerProvider);
-    final job = controller.jobs[widget.index];
+
     Map<String, dynamic> contentEmployee = {
       "full-time": "Toàn thời gian",
       "part-time": "Bán thời gian",
@@ -49,111 +58,118 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
       "hybrid": "Hybrid",
       "remote": "Remote"
     };
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: appBar(),
-      body: ListView(
-        controller: scrollController,
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: cachedImageWidget(
-                  height: 50,
-                  width: 50,
-                  imageUrl: job.ctyImageUrl ?? "",
-                  fit: BoxFit.cover,
+    return PopScope(
+      onPopInvoked: (didPop) {
+        if (didPop) {
+          controller.isFavorite = false;
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: appBar(),
+        body: ListView(
+          controller: scrollController,
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: cachedImageWidget(
+                    height: 50,
+                    width: 50,
+                    imageUrl: widget.job.ctyImageUrl ?? "",
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      job.ctyName ?? "",
-                      style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.w400),
-                    ),
-                  ],
+                const SizedBox(
+                  width: 10,
                 ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            job.title ?? "",
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Text(
-                  contentEmployee[job.employmentType],
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w300),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.job.ctyName ?? "",
+                        style: const TextStyle(
+                            fontSize: 14, fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              widget.job.title ?? "",
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    contentEmployee[widget.job.employmentType],
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300),
+                  ),
                 ),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 5),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Text(
-                  "${job.experienceRequired.toString()} năm",
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w300),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    "${widget.job.experienceRequired.toString()} năm",
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300),
+                  ),
                 ),
-              ),
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(20)),
-                child: Text(
-                  contentType[job.jobType] ?? "",
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w300),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    contentType[widget.job.jobType] ?? "",
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          information(),
-          const SizedBox(
-            height: 10,
-          ),
-          jobDescription()
-        ],
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            information(),
+            const SizedBox(
+              height: 10,
+            ),
+            jobDescription()
+          ],
+        ),
+        bottomNavigationBar: bottomAppBar(context, ref),
       ),
-      bottomNavigationBar: bottomAppBar(context, ref),
     );
   }
 
@@ -191,7 +207,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
 
   Widget jobInfo() {
     final controller = ref.watch(jobControllerProvider);
-    final job = controller.jobs[widget.index];
+    final job = widget.job;
     Map<String, dynamic> contentEmployee = {
       "full-time": "Toàn thời gian",
       "part-time": "Bán thời gian",
@@ -283,7 +299,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
 
   Widget jobDescription() {
     final controller = ref.watch(jobControllerProvider);
-    final job = controller.jobs[widget.index];
+    final job = widget.job;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -320,7 +336,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
     final userId = userController.userData?.data?.id;
     final controller = ref.watch(applyJobControllerProvider);
     final jobController = ref.watch(jobControllerProvider);
-    final job = jobController.jobs[widget.index];
+    final job = widget.job;
     bool? isApplied = job.isApplied;
     if (controller.isApplied == true) {
       setState(() {
@@ -424,7 +440,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
     final userController = ref.watch(userControllerProvider);
     final clientId = userController.userData?.data?.id;
     final controller = ref.watch(jobControllerProvider);
-    final job = controller.jobs[widget.index];
+    final job = widget.job;
     bool? isFavorite = job.isFavorite;
     print(">>>>>>>>>clientId: $clientId");
     print(">>>>>>>>>>userId: ${job.userId}");
@@ -450,16 +466,15 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
           ),
           child: GestureDetector(
             onTap: () async => await controller.postAddJobFavorite(
-                context: context,
-                jobId: job.id ?? 0,
-                isJobFavorite: isFavorite),
+                context: context, jobId: job.id ?? 0, type: widget.jobType),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: PhosphorIcon(
-                isFavorite == true
+                controller.isFavorite == true
                     ? PhosphorIconsFill.bookmarkSimple
                     : PhosphorIconsRegular.bookmarkSimple,
-                color: isFavorite == true ? Colors.blue : Colors.black,
+                color:
+                    controller.isFavorite == true ? Colors.blue : Colors.black,
               ),
             ),
           ),

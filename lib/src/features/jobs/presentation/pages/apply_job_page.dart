@@ -14,8 +14,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import 'job_detail_page.dart';
+
 class ApplyJobPage extends ConsumerWidget {
   final num jobId;
+
   final ApplicantModel? applicant;
   const ApplyJobPage({super.key, required this.jobId, this.applicant});
 

@@ -1,4 +1,5 @@
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_controller.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_item.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
@@ -20,6 +21,7 @@ class _PostedJobPageState extends ConsumerState<PostedJobPage> {
     super.initState();
     Future.microtask(() async {
       final controller = ref.read(jobControllerProvider);
+      controller.postedJobs.clear();
       await controller.getPostedJob();
     });
   }
@@ -83,7 +85,7 @@ class _PostedJobPageState extends ConsumerState<PostedJobPage> {
             childCount: controller.postedJobs.length,
             (context, index) {
               final job = controller.postedJobs[index];
-              return jobItem(job, context, index);
+              return jobItem(job, context, JobType.postedJob);
             },
           ),
         ),

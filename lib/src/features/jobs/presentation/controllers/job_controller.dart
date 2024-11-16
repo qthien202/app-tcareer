@@ -2,6 +2,7 @@ import 'package:app_tcareer/src/features/jobs/data/models/applicant_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/applicant_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/job_use_case.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/utils/snackbar_utils.dart';
@@ -170,29 +171,43 @@ class JobController extends ChangeNotifier {
     applicants.clear();
   }
 
-  bool? isFavorite;
-  Future<void> postAddJobFavorite({
-    required num jobId,
-    required BuildContext context,
-    bool? isJobFavorite,
-  }) async {
-    final index = jobs.indexWhere((job) => job.id == jobId);
+  bool isFavorite = false;
 
+  Future<void> postAddJobFavorite(
+      {required num jobId,
+      required BuildContext context,
+      required JobType type}) async {
     AppUtils.loadingApi(() async {
       await jobUseCase.postAddJobFavorite(jobId: jobId);
       // print(">>>>>>>>>isFavorite1: $isJobFavorite");
-      if (isJobFavorite == true) {
-        final newJob = jobs[index].copyWith(isFavorite: false);
-        jobs[index] = newJob;
+      if (isFavorite == true) {
+        isFavorite = false;
         showSnackBar("Đã bỏ lưu việc làm");
       } else {
-        final newJob = jobs[index].copyWith(isFavorite: true);
-        jobs[index] = newJob;
+        isFavorite = true;
         showSnackBar("Lưu việc làm thành công");
       }
-
+      await handleUpdateJob(type);
       notifyListeners();
     }, context);
+  }
+
+  Future<void> handleUpdateJob(JobType type) async {
+    if (type == JobType.favorite) {
+      jobFavorites.clear();
+      await getJobFavorites();
+    }
+    if (type == JobType.postedJob) {
+      postedJobs.clear();
+      await getPostedJob();
+    }
+    if (type == JobType.applied) {
+      appliedJobs.clear();
+      await getAppliedJob();
+    } else {
+      jobs.clear();
+      await getJobs();
+    }
   }
 }
 

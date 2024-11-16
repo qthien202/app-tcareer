@@ -1,3 +1,4 @@
+import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_item.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
@@ -72,7 +73,7 @@ class _PostedJobUserState extends ConsumerState<PostedJobUser> {
             childCount: controller.postedJobs.length,
             (context, index) {
               final job = controller.postedJobs[index];
-              return jobItem(job, context, index);
+              return jobItem(job, context, JobType.postedJob);
             },
           ),
         ),
