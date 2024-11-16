@@ -27,6 +27,7 @@ class JobController extends ChangeNotifier {
   ScrollController jobScrollController = ScrollController();
   ScrollController postedJobScrollController = ScrollController();
   ScrollController appliedJobScrollController = ScrollController();
+  ScrollController jobFavoriteScrollController = ScrollController();
   int jobPage = 1;
   int postedPage = 1;
   int appliedPage = 1;
@@ -86,6 +87,16 @@ class JobController extends ChangeNotifier {
     }
   }
 
+  Future<void> loadJobFavoriteMore() async {
+    if (jobFavoriteScrollController.position.maxScrollExtent ==
+        jobFavoriteScrollController.offset) {
+      if (jobFavorites.length < (jobFavoriteRes?.meta?.total ?? 0)) {
+        favoritePage += 1;
+        await getJobFavorites();
+      }
+    }
+  }
+
   List<JobModel> appliedJobs = [];
   GetJobResponse? appliedJobRes;
   Future<void> getAppliedJob() async {
@@ -95,6 +106,20 @@ class JobController extends ChangeNotifier {
           ?.where((newJob) => !appliedJobs.any((job) => job.id == newJob.id))
           .toList();
       appliedJobs.addAll(newJobs as Iterable<JobModel>);
+      notifyListeners();
+    }
+  }
+
+  List<JobModel> jobFavorites = [];
+  GetJobResponse? jobFavoriteRes;
+  int favoritePage = 1;
+  Future<void> getJobFavorites() async {
+    jobFavoriteRes = await jobUseCase.getJobFavorites(page: favoritePage);
+    if (jobFavoriteRes?.data != null) {
+      final newJobs = jobFavoriteRes?.data
+          ?.where((newJob) => !jobFavorites.any((job) => job.id == newJob.id))
+          .toList();
+      jobFavorites.addAll(newJobs as Iterable<JobModel>);
       notifyListeners();
     }
   }

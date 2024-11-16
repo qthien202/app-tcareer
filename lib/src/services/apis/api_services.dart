@@ -242,5 +242,5 @@ abstract class ApiServices {
   Future postAddJobFavorite({@Path('id') required num jobId});
 
   @GET('api/auth/get-job-favorites')
-  Future<GetJobResponse> getJobFavorites();
+  Future<GetJobResponse> getJobFavorites({@Query('page') int? page});
 }

@@ -62,7 +62,7 @@ class JobRepository {
       await apiServices.getApplicants(jobId: jobId);
 
   Future<GetJobResponse> getJobFavorites({int? page}) async =>
-      await apiServices.getAppliedJob(page: page);
+      await apiServices.getJobFavorites(page: page);
 
   Future<void> postAddJobFavorite({required num jobId}) async =>
       await apiServices.postAddJobFavorite(jobId: jobId);

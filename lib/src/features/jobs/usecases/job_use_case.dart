@@ -41,7 +41,7 @@ class JobUseCase {
       await jobRepository.getApplicants(jobId: jobId);
 
   Future<GetJobResponse> getJobFavorites({int? page}) async =>
-      await jobRepository.getAppliedJob(page: page);
+      await jobRepository.getJobFavorites(page: page);
 
   Future<void> postAddJobFavorite({required num jobId}) async =>
       await jobRepository.postAddJobFavorite(jobId: jobId);

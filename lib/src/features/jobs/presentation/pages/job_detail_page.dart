@@ -422,12 +422,14 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
 
   PreferredSizeWidget appBar() {
     final userController = ref.watch(userControllerProvider);
-    final userId = userController.userData?.data?.id;
+    final clientId = userController.userData?.data?.id;
     final controller = ref.watch(jobControllerProvider);
     final job = controller.jobs[widget.index];
     bool? isFavorite = job.isFavorite;
+    print(">>>>>>>>>clientId: $clientId");
+    print(">>>>>>>>>>userId: ${job.userId}");
+    bool isClient = clientId == job.userId;
 
-    bool isClient = userId == job.userId;
     return AppBar(
       backgroundColor: Colors.white,
       automaticallyImplyLeading: true,
