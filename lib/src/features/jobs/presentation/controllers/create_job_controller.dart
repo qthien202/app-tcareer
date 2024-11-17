@@ -188,7 +188,7 @@ class CreateJobController extends ChangeNotifier {
         experienceName: experienceName,
         positionsAvailable: positionsAvailable,
         expiredDate: expiredDate);
-    print(">>>>>>>>>>body: ${jsonEncode(job)}");
+
     notifyListeners();
   }
 
