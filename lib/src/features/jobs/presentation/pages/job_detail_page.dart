@@ -4,12 +4,14 @@ import 'package:app_tcareer/src/features/jobs/presentation/controllers/apply_job
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_item.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
+import 'package:app_tcareer/src/utils/app_utils.dart';
 
 import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 enum JobType { job, postedJob, applied, favorite }
@@ -208,6 +210,10 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
   Widget jobInfo() {
     final controller = ref.watch(jobControllerProvider);
     final job = widget.job;
+    // DateFormat inputFormat = DateFormat("dd/MM/yyyy");
+    // DateFormat outputFormat = DateFormat("yyyy/MM/dd");
+    // DateTime dateTime = inputFormat.parse(widget.job.expiredDate ?? "");
+    // String outputDate = outputFormat.format(dateTime);
     Map<String, dynamic> contentEmployee = {
       "full-time": "Toàn thời gian",
       "part-time": "Bán thời gian",
@@ -245,6 +251,11 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
         "icon": PhosphorIconsThin.mapPin,
         "title": "Địa điểm làm việc",
         "content": job.detailLocation?.fullAddress
+      },
+      {
+        "icon": PhosphorIconsThin.clock,
+        "title": "Hạn nộp hồ sơ",
+        "content": AppUtils.formatDate(job.expiredDate ?? "")
       },
     ];
     return Column(

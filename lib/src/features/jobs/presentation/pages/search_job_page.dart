@@ -36,16 +36,19 @@ class SearchJobPage extends ConsumerWidget {
           ),
         ),
       ),
-      body: CustomScrollView(
-        // controller: controller.jobScrollController,
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          CupertinoSliverRefreshControl(
-            onRefresh: () async => await controller.getSearchJob(),
-          ),
-          // sliverAppBar(ref, context),
-          jobList(ref),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: CustomScrollView(
+          // controller: controller.jobScrollController,
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            CupertinoSliverRefreshControl(
+              onRefresh: () async => await controller.getSearchJob(),
+            ),
+            // sliverAppBar(ref, context),
+            jobList(ref),
+          ],
+        ),
       ),
     );
   }
@@ -77,17 +80,23 @@ class SearchJobPage extends ConsumerWidget {
     final controller = ref.watch(searchJobControllerProvider);
     print(">>>>>>>>>data: ${controller.jobs.length}");
     return SliverVisibility(
-      visible: controller.jobs.isNotEmpty,
+      visible: !controller.isLoading,
       replacementSliver: SliverToBoxAdapter(
-        child: emptyWidget("Không tìm thấy công việc nào!"),
+        child: circularLoadingWidget(),
       ),
-      sliver: SliverList(
-        delegate: SliverChildBuilderDelegate(
-          childCount: controller.jobs.length,
-          (context, index) {
-            final job = controller.jobs[index];
-            return jobItem(job, context, JobType.job);
-          },
+      sliver: SliverVisibility(
+        visible: controller.jobRes != null && controller.jobs.isEmpty,
+        sliver: SliverToBoxAdapter(
+          child: emptyWidget("Không tìm thấy công việc nào!"),
+        ),
+        replacementSliver: SliverList(
+          delegate: SliverChildBuilderDelegate(
+            childCount: controller.jobs.length,
+            (context, index) {
+              final job = controller.jobs[index];
+              return jobItem(job, context, JobType.job);
+            },
+          ),
         ),
       ),
     );

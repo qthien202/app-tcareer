@@ -338,4 +338,10 @@ class AppUtils {
 
     return formattedTime; // Trả về chuỗi giờ phút
   }
+
+  static String formatDate(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+    return formattedDate;
+  }
 }
