@@ -111,14 +111,10 @@ class SearchJobController extends ChangeNotifier {
       isScrollControlled: true,
       context: context,
       builder: (context) {
-        return Padding(
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: ConstrainedBox(
-              constraints:
-                  BoxConstraints(maxHeight: ScreenUtil().screenHeight * .6),
-              child: child),
-        );
+        return ConstrainedBox(
+            constraints:
+                BoxConstraints(maxHeight: ScreenUtil().screenHeight * .6),
+            child: child);
       },
     );
   }
@@ -137,13 +133,57 @@ class SearchJobController extends ChangeNotifier {
     notifyListeners();
   }
 
+  List<String> selectedWorkSpaces = [];
+  Future<void> selectWorkSpace(
+      {required bool isSelected, required String value}) async {
+    isSelected
+        ? selectedWorkSpaces.add(value)
+        : selectedWorkSpaces.remove(value);
+    notifyListeners();
+  }
+
+  List<String> selectedEmploymentTypes = [];
+  Future<void> selectEmploymentType(
+      {required bool isSelected, required String value}) async {
+    isSelected
+        ? selectedEmploymentTypes.add(value)
+        : selectedEmploymentTypes.remove(value);
+
+    notifyListeners();
+  }
+
+  List<String> selectedExperiences = [];
+  Future<void> selectExperience(
+      {required bool isSelected, required String value}) async {
+    isSelected
+        ? selectedExperiences.add(value)
+        : selectedExperiences.remove(value);
+    print(">>>>>>>>>isSelected: $isSelected");
+    notifyListeners();
+  }
+
   Future<void> searchFromAddress() async {
     await setJobSearchRequest(province: selectedProvinces);
     await refreshSearchJob();
   }
 
+  Future<void> searchFromWorkSpace() async {
+    await setJobSearchRequest(jobType: selectedWorkSpaces);
+    await refreshSearchJob();
+  }
+
   Future<void> searchFromJobTopic() async {
     await setJobSearchRequest(jobTopicId: selectedJobTopics);
+    await refreshSearchJob();
+  }
+
+  Future<void> searchFromEmploymentType() async {
+    await setJobSearchRequest(employmentType: selectedEmploymentTypes);
+    await refreshSearchJob();
+  }
+
+  Future<void> searchFromExperience() async {
+    await setJobSearchRequest(experienceRequired: selectedExperiences);
     await refreshSearchJob();
   }
 
@@ -154,6 +194,21 @@ class SearchJobController extends ChangeNotifier {
 
   clearJobTopic() {
     selectedJobTopics.clear();
+    notifyListeners();
+  }
+
+  clearWorkSpace() {
+    selectedWorkSpaces.clear();
+    notifyListeners();
+  }
+
+  clearEmploymentType() {
+    selectedEmploymentTypes.clear();
+    notifyListeners();
+  }
+
+  clearExperience() {
+    selectedExperiences.clear();
     notifyListeners();
   }
 }

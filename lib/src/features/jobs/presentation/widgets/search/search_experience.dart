@@ -10,104 +10,149 @@ class SearchExperience extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.read(searchJobControllerProvider);
+    final controller = ref.watch(searchJobControllerProvider);
     List<Map<String, dynamic>> experiences = [
       {
-        "value": 0,
+        "value": "0", // Đổi từ int sang String
         "title": "Dưới 1 năm",
       },
       {
-        "value": 1,
+        "value": "1",
         "title": "1 năm",
       },
       {
-        "value": 2,
+        "value": "2",
         "title": "2 năm",
       },
       {
-        "value": 3,
+        "value": "3",
         "title": "3 năm",
       },
       {
-        "value": 4,
+        "value": "4",
         "title": "4 năm",
       },
       {
-        "value": 5,
+        "value": "5",
         "title": "5 năm",
       },
       {
-        "value": 6,
+        "value": "6",
         "title": "Trên 5 năm",
       },
     ];
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-      child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
-        height: 250,
-        child: Column(
-          children: [
-            Material(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                // height: 40,
-                color: Colors.white,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Chọn số năm kinh nghiệm',
-                      style: TextStyle(
-                          letterSpacing: 0,
-                          decoration: TextDecoration.none,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        // if (controller.job.experienceRequired == null) {
-                        //   int value = experiences.first['value'];
-                        //   String name = experiences.first['title'];
-                        //   await controller.setJob(
-                        //       experienceRequired: value, experienceName: name);
-                        // }
 
-                        context.pop();
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 10,
+          ),
+          Center(
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                  color: Colors.grey, borderRadius: BorderRadius.circular(5)),
+              width: 30,
+              height: 4,
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Text(
+              "Chọn kinh nghiệm",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Expanded(
+            child: ListView.separated(
+              // physics: const NeverScrollableScrollPhysics(),
+              // shrinkWrap: true,
+              separatorBuilder: (context, index) => const SizedBox(
+                height: 10,
+              ),
+              itemCount: experiences.length,
+              itemBuilder: (context, index) {
+                final item = experiences[index];
+                return CheckboxListTile(
+                    activeColor: AppColors.primary,
+                    value: controller.selectedExperiences
+                            .contains(item['value'].toString()) ==
+                        true,
+                    // controlAffinity: ListTileControlAffinity.leading,
+                    title: Text(item['title']),
+                    onChanged: (isSelected) async =>
+                        await controller.selectExperience(
+                            isSelected: isSelected ?? false,
+                            value: item['value'].toString()));
+              },
+            ),
+          ),
+          BottomAppBar(
+            color: Colors.white,
+            child: Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          backgroundColor: Colors.grey.shade50,
+                          padding: const EdgeInsets.symmetric(vertical: 15)),
+                      onPressed: () {
+                        if (controller.selectedExperiences.isNotEmpty) {
+                          controller.clearExperience();
+                        }
+                      },
+                      child: Text(
+                        "Bỏ chọn tất cả",
+                        style: TextStyle(
+                            color: controller.selectedExperiences.isNotEmpty
+                                ? Colors.black
+                                : Colors.grey.shade300,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14),
+                      )),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          backgroundColor: AppColors.primary,
+                          padding: const EdgeInsets.symmetric(vertical: 15)),
+                      onPressed: () async {
+                        if (controller.selectedExperiences.isNotEmpty) {
+                          await controller.searchFromExperience();
+                          context.pop();
+                        } else {
+                          await controller.refreshSearchJob();
+                          context.pop();
+                        }
                       },
                       child: const Text(
-                        'Xong',
-                        style:
-                            TextStyle(color: AppColors.primary, fontSize: 14),
-                      ),
-                    ),
-                  ],
+                        "Áp dụng",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14),
+                      )),
                 ),
-              ),
+              ],
             ),
-            Expanded(
-              child: CupertinoPicker(
-                backgroundColor: Colors.white,
-                itemExtent: 32.0,
-                // scrollController: FixedExtentScrollController(initialItem: selectedIndex),
-                onSelectedItemChanged: (index) async {
-                  int value = experiences[index]['value'];
-                  String name = experiences[index]['title'];
-                  // await controller.setJob(
-                  //     experienceRequired: value, experienceName: name);
-                },
-                children: experiences
-                    .map((experience) =>
-                        Center(child: Text(experience['title'])))
-                    .toList(),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/search_job_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class SearchEmploymentType extends ConsumerWidget {
   const SearchEmploymentType({super.key});
@@ -13,17 +14,17 @@ class SearchEmploymentType extends ConsumerWidget {
       {
         "value": "full-time",
         "title": "Full time",
-        "subTitle": "Làm việc toàn thời gian.",
+        "subTitle": "Toàn thời gian.",
       },
       {
         "value": "part-time",
         "title": "Part time",
-        "subTitle": "Làm việc bán thời gian.",
+        "subTitle": "Bán thời gian.",
       },
       {
         "value": "contract",
         "title": "Contract",
-        "subTitle": "Làm việc theo hợp đồng.",
+        "subTitle": "Theo hợp đồng.",
       },
       {
         "value": "internship",
@@ -69,11 +70,72 @@ class SearchEmploymentType extends ConsumerWidget {
             itemBuilder: (context, index) {
               final item = employmentTypes[index];
               return CheckboxListTile(
-                  value: false,
+                  activeColor: AppColors.primary,
+                  value: controller.selectedEmploymentTypes
+                      .contains(item['value']),
                   // controlAffinity: ListTileControlAffinity.leading,
-                  title: Text(item['title']),
-                  onChanged: (value) {});
+                  title: Text(item['subTitle']),
+                  onChanged: (isSelected) async =>
+                      await controller.selectEmploymentType(
+                          isSelected: isSelected ?? false,
+                          value: item['value']));
             },
+          ),
+          BottomAppBar(
+            color: Colors.white,
+            child: Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          backgroundColor: Colors.grey.shade50,
+                          padding: const EdgeInsets.symmetric(vertical: 15)),
+                      onPressed: () {
+                        if (controller.selectedEmploymentTypes.isNotEmpty) {
+                          controller.clearEmploymentType();
+                        }
+                      },
+                      child: Text(
+                        "Bỏ chọn tất cả",
+                        style: TextStyle(
+                            color: controller.selectedEmploymentTypes.isNotEmpty
+                                ? Colors.black
+                                : Colors.grey.shade300,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14),
+                      )),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          backgroundColor: AppColors.primary,
+                          padding: const EdgeInsets.symmetric(vertical: 15)),
+                      onPressed: () async {
+                        if (controller.selectedEmploymentTypes.isNotEmpty) {
+                          await controller.searchFromEmploymentType();
+                          context.pop();
+                        } else {
+                          await controller.refreshSearchJob();
+                          context.pop();
+                        }
+                      },
+                      child: const Text(
+                        "Áp dụng",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14),
+                      )),
+                ),
+              ],
+            ),
           ),
         ],
       ),

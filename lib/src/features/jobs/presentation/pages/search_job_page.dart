@@ -1,6 +1,7 @@
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/search_job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_item.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/search/search_employment_type.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/search/search_experience.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/search/search_work_space.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/search_bar_widget.dart';
@@ -146,7 +147,8 @@ class _SearchJobPageState extends ConsumerState<SearchJobPage> {
       },
       {
         "title": "Kinh nghiệm",
-        "onTap": () async => await controller.showCupertinoModalPicker(context)
+        "onTap": () async => await controller.showBottomSheet(
+            context: context, child: const SearchExperience())
       },
       {
         "title": "Loại nơi làm việc",
