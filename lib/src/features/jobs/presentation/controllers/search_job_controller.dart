@@ -2,7 +2,9 @@ import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart'
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_search_request.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/search/search_employment_type.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/search/search_experience.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/search/search_work_space.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/create_job_use_case.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/job_use_case.dart';
 import 'package:app_tcareer/src/features/posts/data/models/debouncer.dart';
@@ -39,6 +41,7 @@ class SearchJobController extends ChangeNotifier {
         jobTopicId: jobTopicId,
         jobType: jobType,
         province: province);
+    notifyListeners();
   }
 
   Future<void> getSearchJob() async {
@@ -218,3 +221,28 @@ final searchJobControllerProvider = ChangeNotifierProvider((ref) {
   final createJobUseCase = ref.read(createJobUseCaseProvider);
   return SearchJobController(jobUseCase, createJobUseCase);
 });
+
+class TabItem {
+  final String title;
+  final void Function()? onTap;
+  final bool isActive;
+
+  TabItem({
+    required this.title,
+    required this.onTap,
+    required this.isActive,
+  });
+
+  // Phương thức copyWith
+  TabItem copyWith({
+    String? title,
+    void Function()? onTap,
+    bool? isActive,
+  }) {
+    return TabItem(
+      title: title ?? this.title,
+      onTap: onTap ?? this.onTap,
+      isActive: isActive ?? this.isActive,
+    );
+  }
+}

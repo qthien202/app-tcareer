@@ -1,3 +1,4 @@
+import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/search_job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_item.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/search/search_employment_type.dart';
@@ -29,6 +30,7 @@ class _SearchJobPageState extends ConsumerState<SearchJobPage> {
     super.initState();
     Future.microtask(() async {
       final controller = ref.read(searchJobControllerProvider);
+
       controller.jobs.clear();
       await controller.getSearchJob();
     });
@@ -37,6 +39,7 @@ class _SearchJobPageState extends ConsumerState<SearchJobPage> {
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(searchJobControllerProvider);
+
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -136,30 +139,41 @@ class _SearchJobPageState extends ConsumerState<SearchJobPage> {
 
   Widget tabs(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(searchJobControllerProvider);
-    List<Map<String, dynamic>> tabs = [
-      {
-        "title": "Địa điểm",
-        "onTap": () => context.pushNamed("searchAddress"),
-      },
-      {
-        "title": "Ngành nghề",
-        "onTap": () => context.pushNamed("searchTopic"),
-      },
-      {
-        "title": "Kinh nghiệm",
-        "onTap": () async => await controller.showBottomSheet(
-            context: context, child: const SearchExperience())
-      },
-      {
-        "title": "Loại nơi làm việc",
-        "onTap": () async => await controller.showBottomSheet(
-            context: context, child: const SearchWorkSpace())
-      },
-      {
-        "title": "Loại công việc",
-        "onTap": () async => await controller.showBottomSheet(
-            context: context, child: const SearchEmploymentType())
-      },
+    List<TabItem> tabs = [
+      TabItem(
+        title: "Địa điểm",
+        onTap: () => context.pushNamed("searchAddress"),
+        isActive: controller.selectedProvinces.isNotEmpty,
+      ),
+      TabItem(
+        title: "Ngành nghề",
+        onTap: () => context.pushNamed("searchTopic"),
+        isActive: controller.selectedJobTopics.isNotEmpty,
+      ),
+      TabItem(
+        title: "Kinh nghiệm",
+        onTap: () async => await controller.showBottomSheet(
+          context: context,
+          child: const SearchExperience(),
+        ),
+        isActive: controller.selectedExperiences.isNotEmpty,
+      ),
+      TabItem(
+        title: "Loại nơi làm việc",
+        onTap: () async => await controller.showBottomSheet(
+          context: context,
+          child: const SearchWorkSpace(),
+        ),
+        isActive: controller.searchRequest.jobType != null,
+      ),
+      TabItem(
+        title: "Loại công việc",
+        onTap: () async => await controller.showBottomSheet(
+          context: context,
+          child: const SearchEmploymentType(),
+        ),
+        isActive: controller.searchRequest.employmentType != null,
+      ),
     ];
     return Padding(
       padding: const EdgeInsets.only(top: 5),
@@ -179,20 +193,26 @@ class _SearchJobPageState extends ConsumerState<SearchJobPage> {
     );
   }
 
-  Widget button(Map<String, dynamic> tab) {
+  Widget button(TabItem tab) {
+    print(">>>>>>>>isActive: ${tab.isActive}");
     return GestureDetector(
-      onTap: tab['onTap'],
+      onTap: tab.onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: Colors.grey.shade200.withOpacity(0.5),
-            // border: Border.all(color: Colors.grey.shade300),
-            borderRadius: BorderRadius.circular(8)),
+          color: tab.isActive
+              ? Colors.transparent
+              : Colors.grey.shade200.withOpacity(0.5),
+          border: tab.isActive ? Border.all(color: AppColors.primary) : null,
+          borderRadius: BorderRadius.circular(8),
+        ),
         child: Text(
-          tab['title'],
-          style:
-              const TextStyle(color: Colors.black, fontWeight: FontWeight.w400),
+          tab.title,
+          style: TextStyle(
+            color: tab.isActive ? AppColors.primary : Colors.black,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
     );
@@ -222,6 +242,6 @@ class _SliverTabHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
-    return false;
+    return true;
   }
 }
