@@ -1,4 +1,5 @@
 import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:app_tcareer/src/features/authentication/presentation/controllers/job_topic_controller.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/chat_controller.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
@@ -32,10 +33,15 @@ class _IndexPageState extends ConsumerState<IndexPage>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     Future.microtask(() async {
-      final jobRepository = ref.watch(jobRepositoryProvider);
-      final response = await jobRepository.getTopicJobFavorite();
-      if (response.data?.isEmpty == true) {
-        context.goNamed("topics");
+      final userUtils = ref.watch(userUtilsProvider);
+      String? topics = await userUtils.loadCache("topics");
+      final jobTopicController = ref.watch(jobTopicControllerProvider);
+      if (topics == null) {
+        await jobTopicController.getTopicFavorite(context);
+        if (jobTopicController.topicFavorites != null &&
+            jobTopicController.topicFavorites?.data?.isEmpty == true) {
+          context.goNamed("topics");
+        }
       }
     });
   }

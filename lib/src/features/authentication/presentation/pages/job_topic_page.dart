@@ -27,7 +27,17 @@ class JobTopicPage extends ConsumerWidget {
           "Lĩnh vực quan tâm",
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        actions: null,
+        actions: [
+          TextButton(
+              onPressed: () async {
+                await controller.cancelSetTopic();
+                context.goNamed("home");
+              },
+              child: Text(
+                "Bỏ qua",
+                style: TextStyle(color: Colors.grey.shade400),
+              ))
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
