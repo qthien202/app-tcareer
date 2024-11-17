@@ -102,48 +102,51 @@ class _IndexPageState extends ConsumerState<IndexPage>
       body: widget.shell,
       bottomNavigationBar: Visibility(
         visible: state == true && isRouteValid,
-        child: BottomNavigationBar(
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            // selectedItemColor: Colors.black,
-            // unselectedItemColor: Colors.grey,
-            // unselectedLabelStyle: TextStyle(fontSize: 10),
-            // selectedLabelStyle: TextStyle(fontSize: 10),
-            onTap: (index) {
-              if (index == 5) return;
-              if (index != 2) {
-                if (index == widget.shell.currentIndex) {
-                  final GoRouter router = GoRouter.of(context);
-                  String currentRoute =
-                      router.routeInformationProvider.value.uri.toString();
-                  String route = items[index]['route'];
-                  print(">>>>>>>>>>>>>>>>A");
-                  context.goNamed(route, extra: "reload");
+        child: Padding(
+          padding: const EdgeInsets.all(0),
+          child: BottomNavigationBar(
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              // selectedItemColor: Colors.black,
+              // unselectedItemColor: Colors.grey,
+              unselectedLabelStyle: const TextStyle(fontSize: 0),
+              selectedLabelStyle: const TextStyle(fontSize: 0),
+              onTap: (index) {
+                if (index == 5) return;
+                if (index != 2) {
+                  if (index == widget.shell.currentIndex) {
+                    final GoRouter router = GoRouter.of(context);
+                    String currentRoute =
+                        router.routeInformationProvider.value.uri.toString();
+                    String route = items[index]['route'];
+                    print(">>>>>>>>>>>>>>>>A");
+                    context.goNamed(route, extra: "reload");
+                  } else {
+                    widget.shell.goBranch(index);
+                  }
                 } else {
-                  widget.shell.goBranch(index);
+                  // context.pushNamed("posting");
+                  ref
+                      .read(indexControllerProvider.notifier)
+                      .showCreateBottomSheet(context);
                 }
-              } else {
-                // context.pushNamed("posting");
-                ref
-                    .read(indexControllerProvider.notifier)
-                    .showCreateBottomSheet(context);
-              }
-            },
-            currentIndex: widget.shell.currentIndex,
-            items: items.asMap().entries.map((entry) {
-              final item = entry.value;
-              final index = entry.key;
-              return BottomNavigationBarItem(
-                  icon: PhosphorIcon(
-                    item['icon'],
-                    size: index != 2 ? 25 : 30,
-                  ),
-                  activeIcon: PhosphorIcon(
-                    item['activeIcon'],
-                    size: index != 2 ? 25 : 30,
-                  ),
-                  label: item['label']);
-            }).toList()),
+              },
+              currentIndex: widget.shell.currentIndex,
+              items: items.asMap().entries.map((entry) {
+                final item = entry.value;
+                final index = entry.key;
+                return BottomNavigationBarItem(
+                    icon: PhosphorIcon(
+                      item['icon'],
+                      size: index != 2 ? 25 : 30,
+                    ),
+                    activeIcon: PhosphorIcon(
+                      item['activeIcon'],
+                      size: index != 2 ? 25 : 30,
+                    ),
+                    label: item['label']);
+              }).toList()),
+        ),
       ),
     );
   }
