@@ -58,25 +58,7 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
                       child: const Icon(Icons.arrow_back)),
                   centerTitle: false,
                   toolbarHeight: 30,
-                  actions: [
-                    // Padding(
-                    //   padding: const EdgeInsets.symmetric(horizontal: 2),
-                    //   child: ElevatedButton(
-                    //       style: ElevatedButton.styleFrom(
-                    //           backgroundColor: AppColors.primary),
-                    //       // style: ElevatedButton.styleFrom(
-                    //       //     shape: RoundedRectangleBorder(
-                    //       //         borderRadius: BorderRadius.circular(20)),
-                    //       //     backgroundColor: AppColors.executeButton),
-                    //       onPressed: () {},
-                    //       child: const Text(
-                    //         "Theo dõi",
-                    //         style: TextStyle(
-                    //             color: Colors.white,
-                    //             fontWeight: FontWeight.bold),
-                    //       )),
-                    // )
-                  ],
+                  actions: [],
                 ),
                 SliverToBoxAdapter(child: userInfo()),
                 SliverToBoxAdapter(
@@ -272,36 +254,34 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
               width: 10,
             ),
             Expanded(
-              child: SizedBox(
-                height: 35,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    side: BorderSide(color: Colors.grey.shade200, width: 1.2),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  onPressed: () => context.pushNamed("chat", pathParameters: {
-                    "userId":
-                        controller.anotherUserData?.data?.id.toString() ?? "",
-                    "clientId":
-                        userController.userData?.data?.id.toString() ?? ""
-                  }),
-                  child: const Text("Nhắn tin",
-                      style: TextStyle(color: Colors.black)),
+                child: GestureDetector(
+              onTap: () => context.pushNamed("chat", pathParameters: {
+                "userId": controller.anotherUserData?.data?.id.toString() ?? "",
+                "clientId": userController.userData?.data?.id.toString() ?? ""
+              }),
+              child: Container(
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: Colors.transparent,
+                    border: Border.all(color: Colors.grey.shade300),
+                    borderRadius: BorderRadius.circular(10)),
+                child: Text(
+                  "Nhắn tin",
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
                 ),
               ),
-            ),
+            )),
             const SizedBox(
               width: 10,
             ),
             Container(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  border: Border.all(color: Colors.grey.shade300, width: 1.5),
-                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: const PhosphorIcon(
                   PhosphorIconsRegular.plus,

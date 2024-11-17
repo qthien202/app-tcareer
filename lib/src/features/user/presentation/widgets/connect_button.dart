@@ -20,33 +20,45 @@ Widget connectButton(
     "default": onConnect
   };
   return Expanded(
-    child: SizedBox(
-      height: 35,
-      child: Visibility(
-        visible: friendStatus != "is_friend",
-        replacement: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            side: BorderSide(color: Colors.grey.shade200, width: 1.2),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
+    child: Visibility(
+      visible: friendStatus != "is_friend",
+      replacement: button(
+          title: friendStatusMap[friendStatus],
+          titleColor: Colors.black,
+          buttonColor: Colors.transparent,
+          onTap: onDelete),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
           ),
-          onPressed: onDelete,
-          child: Text(friendStatusMap[friendStatus],
-              style: const TextStyle(color: Colors.black)),
         ),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          onPressed: connectCallBack[friendStatus],
-          child: Text(friendStatusMap[friendStatus],
-              style: const TextStyle(color: Colors.white)),
-        ),
+        onPressed: connectCallBack[friendStatus],
+        child: Text(friendStatusMap[friendStatus],
+            style: const TextStyle(color: Colors.white)),
+      ),
+    ),
+  );
+}
+
+Widget button(
+    {required String title,
+    required Color titleColor,
+    required Color buttonColor,
+    void Function()? onTap}) {
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          color: buttonColor,
+          border: Border.all(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(10)),
+      child: Text(
+        title,
+        style: TextStyle(color: titleColor, fontWeight: FontWeight.bold),
       ),
     ),
   );
