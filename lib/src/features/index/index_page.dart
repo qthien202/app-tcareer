@@ -107,7 +107,7 @@ class _IndexPageState extends ConsumerState<IndexPage>
           child: BottomNavigationBar(
               showSelectedLabels: false,
               showUnselectedLabels: false,
-              // selectedItemColor: Colors.black,
+              // selectedItemColor: AppColors.primary,
               unselectedItemColor: Colors.grey,
               unselectedLabelStyle: const TextStyle(fontSize: 0),
               selectedLabelStyle: const TextStyle(fontSize: 0),

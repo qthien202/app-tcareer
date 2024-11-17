@@ -17,6 +17,7 @@ class JobSearchRequest {
     this.employmentType,
   });
 
+  // Tạo từ JSON
   JobSearchRequest.fromJson(dynamic json) {
     q = json['q'];
     experienceRequired = json['experience_required']?.cast<String>();
@@ -27,6 +28,7 @@ class JobSearchRequest {
     employmentType = json['employment_type']?.cast<String>();
   }
 
+  // Phương thức copyWith để sao chép đối tượng và thay đổi các giá trị nếu cần
   JobSearchRequest copyWith({
     String? q,
     List<String>? experienceRequired,
@@ -47,27 +49,30 @@ class JobSearchRequest {
     );
   }
 
+  // Chuyển đối tượng thành Map để sử dụng trong URL query parameters
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     if (q != null && q!.isNotEmpty) map['q'] = q;
+
     if (experienceRequired != null) {
-      map['experience_required'] = experienceRequired;
+      map['experience_required[]'] = experienceRequired;
     }
     if (jobTopicId != null) {
-      map['job_topic_id'] = jobTopicId;
+      map['job_topic_id[]'] = jobTopicId;
     }
     if (jobRoleId != null) {
-      map['job_role_id'] = jobRoleId;
+      map['job_role_id[]'] = jobRoleId;
     }
     if (jobType != null) {
-      map['job_type'] = jobType;
+      map['job_type[]'] = jobType;
     }
     if (province != null) {
-      map['province'] = province;
+      map['province[]'] = province;
     }
     if (employmentType != null) {
-      map['employment_type'] = employmentType;
+      map['employment_type[]'] = employmentType;
     }
+
     return map;
   }
 }
