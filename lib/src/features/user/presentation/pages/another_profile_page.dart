@@ -1,3 +1,4 @@
+import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/post_loading_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/post_widget.dart';
@@ -58,15 +59,23 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
                   centerTitle: false,
                   toolbarHeight: 30,
                   actions: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: GestureDetector(
-                        onTap: () => controller.showMenu(context),
-                        child: const PhosphorIcon(
-                          PhosphorIconsRegular.dotsThreeCircle,
-                        ),
-                      ),
-                    )
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 2),
+                    //   child: ElevatedButton(
+                    //       style: ElevatedButton.styleFrom(
+                    //           backgroundColor: AppColors.primary),
+                    //       // style: ElevatedButton.styleFrom(
+                    //       //     shape: RoundedRectangleBorder(
+                    //       //         borderRadius: BorderRadius.circular(20)),
+                    //       //     backgroundColor: AppColors.executeButton),
+                    //       onPressed: () {},
+                    //       child: const Text(
+                    //         "Theo dõi",
+                    //         style: TextStyle(
+                    //             color: Colors.white,
+                    //             fontWeight: FontWeight.bold),
+                    //       )),
+                    // )
                   ],
                 ),
                 SliverToBoxAdapter(child: userInfo()),
@@ -244,7 +253,7 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
     return Visibility(
       visible: controller.anotherUserData != null,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -284,6 +293,21 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
                 ),
               ),
             ),
+            const SizedBox(
+              width: 10,
+            ),
+            Container(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey.shade300, width: 1.5),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const PhosphorIcon(
+                  PhosphorIconsRegular.plus,
+                  color: Colors.black,
+                  size: 18,
+                )),
           ],
         ),
       ),

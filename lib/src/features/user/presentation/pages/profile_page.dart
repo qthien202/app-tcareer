@@ -90,10 +90,10 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                       dividerColor: Colors.transparent,
                       indicatorColor: Colors.black,
                       labelStyle: const TextStyle(color: Colors.black),
-                      tabs: [
-                        const Tab(text: "Thông tin"),
-                        const Tab(text: "Hoạt động"),
-                        const Tab(text: "Công việc"),
+                      tabs: const [
+                        Tab(text: "Thông tin"),
+                        Tab(text: "Hoạt động"),
+                        Tab(text: "Công việc"),
                       ],
                     ),
                   ),

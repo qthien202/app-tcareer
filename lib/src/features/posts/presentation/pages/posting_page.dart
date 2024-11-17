@@ -213,8 +213,8 @@ class _PostingPageState extends ConsumerState<PostingPage> {
               onPressed: isActive ? onPosting : null,
               child: Text(
                 widget.action == "edit" ? "Lưu" : "Đăng bài",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
               )),
         )
       ],

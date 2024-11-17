@@ -14,53 +14,71 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import 'job_detail_page.dart';
 
-class SearchJobPage extends ConsumerWidget {
+class SearchJobPage extends ConsumerStatefulWidget {
   const SearchJobPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SearchJobPage> createState() => _SearchJobPageState();
+}
+
+class _SearchJobPageState extends ConsumerState<SearchJobPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask(() async {
+      final controller = ref.read(searchJobControllerProvider);
+      controller.jobs.clear();
+      await controller.getSearchJob();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final controller = ref.watch(searchJobControllerProvider);
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        centerTitle: false,
-        leadingWidth: 40,
-        automaticallyImplyLeading: false,
-        title: searchBarWidget(
-          onChanged: (val) async => await controller.onSearch(),
-          onSubmitted: (val) async => await controller.onSearch(),
-          controller: controller.queryController,
-        ),
-        leading: GestureDetector(
-          onTap: () => context.pop(),
-          child: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          centerTitle: false,
+          leadingWidth: 40,
+          automaticallyImplyLeading: false,
+          title: searchBarWidget(
+            autofocus: false,
+            onChanged: (val) async => await controller.onSearch(),
+            onSubmitted: (val) async => await controller.onSearch(),
+            controller: controller.queryController,
+          ),
+          leading: GestureDetector(
+            onTap: () => context.pop(),
+            child: const Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
           ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: CustomScrollView(
-          // controller: controller.jobScrollController,
-          physics: const BouncingScrollPhysics(),
-          slivers: [
-            CupertinoSliverRefreshControl(
-              onRefresh: () async => await controller.getSearchJob(),
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverPersistentHeader(
+                  pinned: true,
+                  delegate:
+                      _SliverTabHeaderDelegate(child: tabs(context, ref))),
+            ];
+          },
+          body: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: CustomScrollView(
+              // controller: controller.jobScrollController,
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                CupertinoSliverRefreshControl(
+                  onRefresh: () async => await controller.getSearchJob(),
+                ),
+                jobList(ref),
+              ],
             ),
-            sliverTab(context, ref),
-            SliverToBoxAdapter(
-                child: Visibility(
-              visible: controller.jobs.isNotEmpty,
-              child: SizedBox(
-                height: 10,
-              ),
-            )),
-            jobList(ref),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 
   Widget searchJob(WidgetRef ref, BuildContext context) {
@@ -90,9 +108,12 @@ class SearchJobPage extends ConsumerWidget {
     final controller = ref.watch(searchJobControllerProvider);
     print(">>>>>>>>>data: ${controller.jobs.length}");
     return SliverVisibility(
-      visible: !controller.isLoading,
+      visible: controller.jobRes != null,
       replacementSliver: SliverToBoxAdapter(
-        child: circularLoadingWidget(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: circularLoadingWidget(),
+        ),
       ),
       sliver: SliverVisibility(
         visible: controller.jobRes != null && controller.jobs.isEmpty,
@@ -112,7 +133,7 @@ class SearchJobPage extends ConsumerWidget {
     );
   }
 
-  Widget sliverTab(BuildContext context, WidgetRef ref) {
+  Widget tabs(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(searchJobControllerProvider);
     List<Map<String, dynamic>> tabs = [
       {
@@ -138,24 +159,19 @@ class SearchJobPage extends ConsumerWidget {
             context: context, child: const SearchEmploymentType())
       },
     ];
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 5),
-        child: SizedBox(
-          height: 40,
-          child: ListView.separated(
-            padding: const EdgeInsets.symmetric(horizontal: 15),
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: tabs.length,
-            itemBuilder: (context, index) {
-              final tab = tabs[index];
-              return button(tab);
-            },
-            separatorBuilder: (context, index) => const SizedBox(
-              width: 15,
-            ),
-          ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 5),
+      child: ListView.separated(
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        itemCount: tabs.length,
+        itemBuilder: (context, index) {
+          final tab = tabs[index];
+          return button(tab);
+        },
+        separatorBuilder: (context, index) => const SizedBox(
+          width: 15,
         ),
       ),
     );
@@ -168,15 +184,42 @@ class SearchJobPage extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.grey.shade300),
+            color: Colors.grey.shade200.withOpacity(0.5),
+            // border: Border.all(color: Colors.grey.shade300),
             borderRadius: BorderRadius.circular(8)),
         child: Text(
           tab['title'],
           style:
-              const TextStyle(color: Colors.grey, fontWeight: FontWeight.w600),
+              const TextStyle(color: Colors.black, fontWeight: FontWeight.w400),
         ),
       ),
     );
+  }
+}
+
+class _SliverTabHeaderDelegate extends SliverPersistentHeaderDelegate {
+  final Widget child;
+  _SliverTabHeaderDelegate({required this.child});
+
+  @override
+  double get minExtent => 50; // Chiều cao tối thiểu của header
+  @override
+  double get maxExtent => 50; // Chiều cao tối đa của header
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Material(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: child,
+      ),
+    );
+  }
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
   }
 }

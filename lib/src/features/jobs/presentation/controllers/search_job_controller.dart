@@ -22,7 +22,6 @@ class SearchJobController extends ChangeNotifier {
   List<JobModel> jobs = [];
   TextEditingController queryController = TextEditingController();
   Future<void> getSearchJob() async {
-    setIsLoading(true);
     jobRes = await jobUseCase.getSearchJob(
         query: JobSearchRequest(q: queryController.text));
     if (jobRes?.data != null) {
@@ -31,20 +30,15 @@ class SearchJobController extends ChangeNotifier {
           .toList();
       jobs.addAll(newJobs as Iterable<JobModel>);
       print(">>>>>>>>>>jobs: $jobs");
-      setIsLoading(false);
       notifyListeners();
     }
   }
 
   Future<void> onSearch() async {
     deBouncer.run(() async {
-      if (queryController.text.isNotEmpty) {
-        await getSearchJob();
-      } else {
-        jobRes = null;
-        jobs.clear();
-        notifyListeners();
-      }
+      jobRes = null;
+      jobs.clear();
+      await getSearchJob();
     });
   }
 
