@@ -24,6 +24,7 @@ import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_search_request.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/topic_job_favorite_response.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_comment_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/like_comment_request.dart';
@@ -252,4 +253,7 @@ abstract class ApiServices {
 
   @POST('api/auth/add-job-topics-favorites')
   Future postAddJobTopic({@Body() required AddJobTopicRequest body});
+
+  @GET('api/auth/topic-job-favorite')
+  Future<TopicJobFavoriteResponse> getTopicJobFavorite();
 }

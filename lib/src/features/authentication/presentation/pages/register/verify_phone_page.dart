@@ -60,8 +60,7 @@ class VerifyPhonePage extends ConsumerWidget {
                       authButtonWidget(
                           context: context,
                           onPressed: () async {
-                            // await controller.checkUserPhone(context);
-                            context.pushNamed("register");
+                            await controller.checkUserPhone(context);
                           },
                           title: "Gửi mã xác thực"),
                       const SizedBox(

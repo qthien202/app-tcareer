@@ -114,7 +114,8 @@ class AppRouter {
           '/forgotPassword/resetPassword': '/forgotPassword/resetPassword',
           '/login': '/login',
           '/intro': '/intro',
-          '/verifyPhone': '/verifyPhone'
+          '/verifyPhone': '/verifyPhone',
+          '/topics': '/topics'
         };
 
         if (isAuthenticated != true ||

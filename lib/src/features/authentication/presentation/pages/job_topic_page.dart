@@ -18,22 +18,16 @@ class JobTopicPage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => context.pop(),
-          icon: const Icon(Icons.arrow_back),
-        ),
+        automaticallyImplyLeading: false,
+        // leading: IconButton(
+        //   onPressed: () => context.pop(),
+        //   icon: const Icon(Icons.arrow_back),
+        // ),
         title: const Text(
           "Lĩnh vực quan tâm",
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        actions: [
-          TextButton(
-              onPressed: () => context.goNamed("home"),
-              child: Text(
-                "Bỏ qua",
-                style: TextStyle(color: Colors.grey.shade400),
-              ))
-        ],
+        actions: null,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),

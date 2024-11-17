@@ -2,6 +2,7 @@ import 'package:app_tcareer/firebase_options.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/login_request.dart';
 import 'package:app_tcareer/src/features/authentication/usecases/login_use_case.dart';
 import 'package:app_tcareer/src/configs/app_constants.dart';
+import 'package:app_tcareer/src/features/jobs/data/repository/job_repository.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,12 +19,12 @@ class LoginController extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Future<void> login(BuildContext context,
       {String? phone, String? password}) async {
+    final jobRepository = ref.watch(jobRepositoryProvider);
+
     AppUtils.loadingApi(() async {
       await loginUseCaseProvider.login(
           phone: phone ?? phoneController.text,
           password: password ?? passController.text);
-      context.replaceNamed("login");
-      // context.goNamed("home");
     }, context);
   }
 
@@ -34,9 +35,9 @@ class LoginController extends ChangeNotifier {
   }
 
   Future<void> signInWithGoogle(BuildContext context) async {
+    final jobRepository = ref.watch(jobRepositoryProvider);
     AppUtils.loadingApi(() async {
       await loginUseCaseProvider.loginWithGoogle();
-      context.replaceNamed("login");
     }, context);
 
     // context.goNamed("home");

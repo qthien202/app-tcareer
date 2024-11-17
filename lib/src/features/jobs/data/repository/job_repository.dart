@@ -7,6 +7,7 @@ import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart'
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_search_request.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/topic_job_favorite_response.dart';
 import 'package:app_tcareer/src/services/address/address_services.dart';
 import 'package:app_tcareer/src/services/address/district.dart';
 import 'package:app_tcareer/src/services/address/province.dart';
@@ -74,6 +75,9 @@ class JobRepository {
       await apiServices.getSearchJob(query: query);
   Future<void> postAddJobTopic({required AddJobTopicRequest body}) async =>
       await apiServices.postAddJobTopic(body: body);
+
+  Future<TopicJobFavoriteResponse> getTopicJobFavorite() async =>
+      await apiServices.getTopicJobFavorite();
 }
 
 final jobRepositoryProvider = Provider((ref) {

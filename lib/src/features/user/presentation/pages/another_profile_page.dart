@@ -273,21 +273,27 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
                 ),
               ),
             )),
-            const SizedBox(
-              width: 10,
-            ),
-            Container(
-                padding: EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey.shade300),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const PhosphorIcon(
-                  PhosphorIconsRegular.plus,
-                  color: Colors.black,
-                  size: 18,
-                )),
+            Visibility(
+                visible: friendStatus == null,
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const PhosphorIcon(
+                          PhosphorIconsRegular.plus,
+                          color: Colors.black,
+                          size: 18,
+                        )),
+                  ],
+                ))
           ],
         ),
       ),

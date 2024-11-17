@@ -3,6 +3,7 @@ import 'package:app_tcareer/src/features/chat/presentation/controllers/chat_cont
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
 import 'package:app_tcareer/src/features/index/index_controller.dart';
+import 'package:app_tcareer/src/features/jobs/data/repository/job_repository.dart';
 import 'package:app_tcareer/src/features/notifications/presentation/controllers/notification_controller.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
@@ -30,14 +31,13 @@ class _IndexPageState extends ConsumerState<IndexPage>
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // Future.microtask(()async{
-    //   final routeState = GoRouterState.of(context);
-    //   if(routeState.fullPath?.contains("conversation") == true){
-    //     await ref.read(conversationControllerProvider).onInit().then((val) {
-    //       print(">>>>>>>>>>running listen");
-    //     });
-    //   }
-    // });
+    Future.microtask(() async {
+      final jobRepository = ref.watch(jobRepositoryProvider);
+      final response = await jobRepository.getTopicJobFavorite();
+      if (response.data?.isEmpty == true) {
+        context.goNamed("topics");
+      }
+    });
   }
 
   @override
