@@ -11,6 +11,8 @@ import 'package:app_tcareer/src/features/jobs/presentation/pages/job_favorite_pa
 import 'package:app_tcareer/src/features/jobs/presentation/pages/posted_job_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/search_job_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/search_job_result_page.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/search/search_address.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/widgets/search/search_job_topic.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
 import 'package:go_router/go_router.dart';
 
@@ -36,6 +38,26 @@ class JobRoute {
         );
       },
     ),
+    GoRoute(
+        path: "address",
+        name: "searchAddress",
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+              key: state.pageKey,
+              child: const SearchAddress(),
+              transitionsBuilder: fadeTransitionBuilder);
+        },
+        routes: []),
+    GoRoute(
+        path: "topic",
+        name: "searchTopic",
+        pageBuilder: (context, state) {
+          return CustomTransitionPage(
+              key: state.pageKey,
+              child: const SearchJobTopic(),
+              transitionsBuilder: fadeTransitionBuilder);
+        },
+        routes: []),
     GoRoute(
         path: "posted",
         name: "postedJob",
