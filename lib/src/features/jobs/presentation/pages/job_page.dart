@@ -71,7 +71,7 @@ class JobPage extends ConsumerWidget {
       floating: true,
       pinned: false, // AppBar không cố định
       title: const Text(
-        "Công việc",
+        "Việc làm",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
       ),
       // leadingWidth: 120,

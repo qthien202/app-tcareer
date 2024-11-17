@@ -17,7 +17,7 @@ class SearchAddress extends ConsumerWidget {
       backgroundColor: Colors.white,
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
+          const SliverAppBar(
             automaticallyImplyLeading: true,
             pinned: true,
             centerTitle: false,
@@ -45,34 +45,10 @@ class SearchAddress extends ConsumerWidget {
           (context, index) {
             final province = controller.provinces[index];
             bool isLastIndex = controller.provinces.length - index == 1;
-            return Padding(
-              padding: const EdgeInsets.only(left: 30, top: 10),
-              child: GestureDetector(
-                onTap: () {},
-                child: Container(
-                  color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Text(province.provinceName ?? ""),
-                      ),
-                      Visibility(
-                        visible: !isLastIndex,
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5),
-                          child: Divider(
-                            height: 1,
-                            color: Color(0xffEEEEEE),
-                            // color: Colors.grey.shade200,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            return CheckboxListTile(
+              title: Text(province.provinceName ?? ""),
+              value: false,
+              onChanged: (val) {},
             );
           },
         ),

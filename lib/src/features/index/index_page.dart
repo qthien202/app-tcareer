@@ -71,7 +71,7 @@ class _IndexPageState extends ConsumerState<IndexPage>
         'icon': PhosphorIconsThin.bagSimple,
         'activeIcon': PhosphorIconsFill.bagSimple,
         'route': 'jobs',
-        "label": "Công việc"
+        "label": "Việc làm"
       },
       {
         'icon': PhosphorIconsThin.plusCircle,
@@ -80,8 +80,8 @@ class _IndexPageState extends ConsumerState<IndexPage>
         "label": "Tạo mới"
       },
       {
-        'icon': PhosphorIconsThin.chatCentered,
-        'activeIcon': PhosphorIconsFill.chatCentered,
+        'icon': PhosphorIconsThin.chatCenteredDots,
+        'activeIcon': PhosphorIconsFill.chatCenteredDots,
         'route': 'conversation',
         "label": "Tin nhắn"
       },
@@ -108,7 +108,7 @@ class _IndexPageState extends ConsumerState<IndexPage>
               showSelectedLabels: false,
               showUnselectedLabels: false,
               // selectedItemColor: Colors.black,
-              // unselectedItemColor: Colors.grey,
+              unselectedItemColor: Colors.grey,
               unselectedLabelStyle: const TextStyle(fontSize: 0),
               selectedLabelStyle: const TextStyle(fontSize: 0),
               onTap: (index) {
