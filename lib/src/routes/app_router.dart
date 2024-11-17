@@ -3,6 +3,7 @@ import 'package:app_tcareer/src/features/authentication/data/models/verify_otp.d
 import 'package:app_tcareer/src/features/authentication/data/repositories/auth_repository.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/forgot_password/forgot_password_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/forgot_password/reset_password_page.dart';
+import 'package:app_tcareer/src/features/authentication/presentation/pages/job_topic_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/login/login_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/register/register_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/register/verify_phone_page.dart';
@@ -59,7 +60,7 @@ class AppRouter {
     return GoRouter(
       navigatorKey: navigatorKey,
       debugLogDiagnostics: true,
-      initialLocation: "/home",
+      initialLocation: "/topics",
       redirect: (context, state) async {
         final userUtils = ref.watch(userUtilsProvider);
         final isAuthenticated = await userUtils.isAuthenticated();
@@ -306,6 +307,15 @@ class AppRouter {
                 transitionsBuilder: fadeTransitionBuilder,
               );
             }),
+        GoRoute(
+          path: "/topics",
+          name: "topics",
+          pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const JobTopicPage(),
+            transitionsBuilder: fadeTransitionBuilder,
+          ),
+        ),
       ],
       refreshListenable: GoRouterRefreshStream(),
       // observers: [CustomNavigatorObserver(ref)]

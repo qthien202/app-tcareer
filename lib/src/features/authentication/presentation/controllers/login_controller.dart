@@ -11,7 +11,8 @@ import 'package:go_router/go_router.dart';
 
 class LoginController extends ChangeNotifier {
   final LoginUseCase loginUseCaseProvider;
-  LoginController(this.loginUseCaseProvider);
+  final Ref ref;
+  LoginController(this.loginUseCaseProvider, this.ref);
   TextEditingController phoneController = TextEditingController();
   TextEditingController passController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();

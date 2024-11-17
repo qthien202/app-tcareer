@@ -26,8 +26,9 @@ class RegisterController extends StateNotifier<void> {
     AppUtils.loadingApi(() async {
       final body = RegisterRequest(
           name: fullNameController.text,
+          // phone: phoneController.text,
+          phone: "077123456789",
           email: emailController.text.isNotEmpty ? emailController.text : null,
-          phone: phoneController.text,
           password: passController.text);
       await registerUseCaseProvider.register(body);
       await loginController.login(context,

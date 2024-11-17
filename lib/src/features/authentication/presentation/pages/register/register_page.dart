@@ -64,20 +64,11 @@ class RegisterPage extends ConsumerWidget {
                         ),
                         TextInputForm(
                           controller: controller.emailController,
-                          // isRequired: true,
+                          isRequired: true,
                           title: "Email",
                           hintText: "Nhập email",
-                          validator: Validator.emailCanEmpty,
+                          validator: Validator.email,
                         ),
-                        // TextInputForm(
-                        //   isRequired: true,
-                        //   // isReadOnly: true,
-                        //   controller: controller.phoneController,
-                        //   // isRequired: true,
-                        //   title: "Điện thoại",
-                        //   hintText: "Nhập số điện thoại",
-                        //   validator: Validator.phone,
-                        // ),
                         TextInputForm(
                           isRequired: true,
                           validator: Validator.password,

@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final loginControllerProvider = ChangeNotifierProvider<LoginController>((ref) {
   final loginUseCaseProvider = ref.watch(loginUseCase);
-  return LoginController(loginUseCaseProvider);
+  return LoginController(loginUseCaseProvider, ref);
 });
 
 final registerControllerProvider = Provider<RegisterController>((ref) {
