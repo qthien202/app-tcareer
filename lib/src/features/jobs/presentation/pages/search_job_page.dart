@@ -1,5 +1,6 @@
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/search_job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/job_item.dart';
+import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/search_bar_widget.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -76,10 +77,10 @@ class SearchJobPage extends ConsumerWidget {
     final controller = ref.watch(searchJobControllerProvider);
     print(">>>>>>>>>data: ${controller.jobs.length}");
     return SliverVisibility(
-      visible: controller.jobRes != null,
-      // replacementSliver: SliverToBoxAdapter(
-      //   child: circularLoadingWidget(),
-      // ),
+      visible: controller.jobs.isNotEmpty,
+      replacementSliver: SliverToBoxAdapter(
+        child: emptyWidget("Không tìm thấy công việc nào!"),
+      ),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           childCount: controller.jobs.length,

@@ -171,6 +171,13 @@ class JobController extends ChangeNotifier {
     applicants.clear();
   }
 
+  Future<void> refreshJobFavorites() async {
+    jobFavoriteRes = null;
+    jobFavorites.clear();
+    favoritePage = 1;
+    await getJobFavorites();
+  }
+
   bool isFavorite = false;
 
   Future<void> postAddJobFavorite(
@@ -194,19 +201,16 @@ class JobController extends ChangeNotifier {
 
   Future<void> handleUpdateJob(JobType type) async {
     if (type == JobType.favorite) {
-      jobFavorites.clear();
-      await getJobFavorites();
+      await refreshJobFavorites();
     }
     if (type == JobType.postedJob) {
-      postedJobs.clear();
-      await getPostedJob();
+      await refreshPostedJob();
     }
     if (type == JobType.applied) {
-      appliedJobs.clear();
-      await getAppliedJob();
+      await refreshAppliedJob();
     } else {
       jobs.clear();
-      await getJobs();
+      await refreshJob();
     }
   }
 }

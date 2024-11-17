@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:app_tcareer/src/features/jobs/data/models/apply_job_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
@@ -77,11 +76,8 @@ class ApplyJobController extends ChangeNotifier {
       selectedFile = null;
       fileName = null;
       isApplied = true;
-      context.pop();
-      jobController.jobs.clear();
-      jobController.jobFavorites.clear();
-      jobController.getJobs();
-      jobController.getJobFavorites();
+      jobController.refreshJob();
+      jobController.refreshJobFavorites();
     }, context);
   }
 }

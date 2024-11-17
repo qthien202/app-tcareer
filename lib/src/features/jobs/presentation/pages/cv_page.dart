@@ -37,7 +37,7 @@ class CVPage extends ConsumerWidget {
           onPageError: (page, error) {
             print('$page: ${error.toString()}');
           },
-        ).fromAsset(pdfModel.file?.path ?? ""),
+        ).fromPath(pdfModel.file?.path ?? ""),
         child: const PDF().cachedFromUrl(
           pdfModel.url ?? "",
           placeholder: (progress) => Center(child: Text('$progress %')),

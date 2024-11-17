@@ -15,7 +15,7 @@ Widget emptyWidget(String content) {
           ),
           Text(
             content,
-            style: TextStyle(fontSize: 10, color: Colors.black38),
+            style: const TextStyle(fontSize: 10, color: Colors.black38),
           )
         ],
       ),
