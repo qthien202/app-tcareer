@@ -151,6 +151,11 @@ class SearchJobController extends ChangeNotifier {
     selectedProvinces.clear();
     notifyListeners();
   }
+
+  clearJobTopic() {
+    selectedJobTopics.clear();
+    notifyListeners();
+  }
 }
 
 final searchJobControllerProvider = ChangeNotifierProvider((ref) {

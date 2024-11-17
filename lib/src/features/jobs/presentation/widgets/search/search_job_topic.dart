@@ -43,7 +43,7 @@ class SearchJobTopic extends ConsumerWidget {
                       padding: const EdgeInsets.symmetric(vertical: 15)),
                   onPressed: () {
                     if (controller.selectedJobTopics.isNotEmpty) {
-                      controller.clearProvince();
+                      controller.clearJobTopic();
                     }
                   },
                   child: Text(
@@ -71,6 +71,7 @@ class SearchJobTopic extends ConsumerWidget {
                       await controller.searchFromJobTopic();
                       context.pop();
                     } else {
+                      await controller.refreshSearchJob();
                       context.pop();
                     }
                   },

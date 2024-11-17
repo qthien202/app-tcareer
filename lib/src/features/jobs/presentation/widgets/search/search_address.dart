@@ -71,6 +71,7 @@ class SearchAddress extends ConsumerWidget {
                       await controller.searchFromAddress();
                       context.pop();
                     } else {
+                      await controller.refreshSearchJob();
                       context.pop();
                     }
                   },
