@@ -65,8 +65,9 @@ class PostingController extends ChangeNotifier {
   Future<void> loadContentCache() async {
     final userUtils = ref.watch(userUtilsProvider);
     String? contentCache = await userUtils.loadCache("postContent");
+    final mediaController = ref.watch(mediaControllerProvider);
     if (contentCache != null) {
-      content = contentCache;
+      mediaController.contentController.text = contentCache;
       userUtils.removeCache("postContent");
       notifyListeners();
     }
@@ -85,7 +86,7 @@ class PostingController extends ChangeNotifier {
     await userUtils.removeCache("selectedAsset");
     mediaController.selectedAsset.clear();
     mediaController.imagePaths.clear();
-    content = null;
+    mediaController.contentController.clear();
     imagesWeb.clear();
     videoPicked?.clear();
 
@@ -105,7 +106,10 @@ class PostingController extends ChangeNotifier {
 
   Future<void> setCacheContent() async {
     final userUtils = ref.watch(userUtilsProvider);
-    await userUtils.saveCache(key: "postContent", value: content ?? "");
+    final mediaController = ref.watch(mediaControllerProvider);
+    await userUtils.saveCache(
+        key: "postContent",
+        value: mediaController.contentController.text ?? "");
   }
 
   Future<void> setCacheVideo() async {
@@ -169,7 +173,8 @@ class PostingController extends ChangeNotifier {
       clearPostCache(context);
       context.goNamed("home");
     } else if (mediaController.imagePaths.isNotEmpty ||
-        mediaController.videoPaths.isNotEmpty && content != null) {
+        mediaController.videoPaths.isNotEmpty &&
+            mediaController.contentController.text != null) {
       print(">>>>>>>>1");
       showModalPopup(
           context: context,
@@ -216,7 +221,9 @@ class PostingController extends ChangeNotifier {
       setLoadingProgress(0.75);
       await postUseCase.createPost(
           body: CreatePostRequest(
-              body: content, privacy: selectedPrivacy, mediaUrl: mediaUrl));
+              body: mediaController.contentController.text,
+              privacy: selectedPrivacy,
+              mediaUrl: mediaUrl));
       setLoadingProgress(1);
       showSnackBar("Tạo bài viết thành công");
       clearPostCache(context);
@@ -234,7 +241,7 @@ class PostingController extends ChangeNotifier {
     final newPost = post.Data(
         userId: user?.id,
         title: "temp",
-        body: content,
+        body: media.contentController.text,
         fullName: user?.fullName,
         avatar: user?.avatar,
         createdAt: AppUtils.formatTime(DateTime.now().toIso8601String()),
@@ -383,7 +390,7 @@ class PostingController extends ChangeNotifier {
     final post = postEdit.post;
     selectedPrivacy = post?.privacy ?? "";
     mediaController.contentController.text = post?.body ?? "";
-    setContent(post?.body ?? "");
+
     if (post?.mediaUrl?.isNotEmpty == true &&
         post?.mediaUrl?.any((media) => media.isVideo) == true) {
       mediaController.videoPaths = post?.mediaUrl ?? [];
@@ -479,11 +486,11 @@ class PostingController extends ChangeNotifier {
     notifyListeners();
   }
 
-  String? content;
-  Future<void> setContent(value) async {
-    content = value;
-    notifyListeners();
-  }
+  // String? content;
+  // Future<void> setContent(value) async {
+  //   content = value;
+  //   notifyListeners();
+  // }
 
   Future<void> showDeleteConfirm(
       {required BuildContext context, required String postId}) async {
@@ -524,6 +531,12 @@ class PostingController extends ChangeNotifier {
       context.pop();
       await postUseCase.deletePost(postId);
     }, context, (value) {});
+  }
+
+  String action = "create";
+  setAction(String value) {
+    action = value;
+    notifyListeners();
   }
 
   @override

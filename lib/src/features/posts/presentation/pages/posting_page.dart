@@ -49,6 +49,7 @@ class _PostingPageState extends ConsumerState<PostingPage> {
       if (widget.postEdit != null) {
         controller.setPostEdit(
             postEdit: widget.postEdit!, postId: widget.postId ?? "");
+        controller.setAction(widget.action ?? "");
       }
     });
 
@@ -74,6 +75,7 @@ class _PostingPageState extends ConsumerState<PostingPage> {
     return BackButtonListener(
       onBackButtonPressed: () async {
         await controller.showDialog(context);
+        controller.setAction("create");
         return true;
       },
       child: Scaffold(
@@ -85,7 +87,7 @@ class _PostingPageState extends ConsumerState<PostingPage> {
             context: context,
             onPop: () => controller.showDialog(context),
             onPosting: () async {
-              if (widget.action == "edit") {
+              if (controller.action == "edit") {
                 await controller.updatePost(
                     postId: widget.postId ?? "", context: context);
               } else {
@@ -143,8 +145,8 @@ class _PostingPageState extends ConsumerState<PostingPage> {
                     height: 5,
                   ),
                   postInput(
-                      controller: mediaController.contentController,
-                      onChanged: controller.setContent),
+                    controller: mediaController.contentController,
+                  ),
                   const SizedBox(
                     height: 5,
                   ),
@@ -175,6 +177,7 @@ class _PostingPageState extends ConsumerState<PostingPage> {
       required void Function()? onPop,
       required void Function()? onPosting,
       required bool isLoading}) {
+    final controller = ref.watch(postingControllerProvider);
     return AppBar(
       // bottom: PreferredSize(
       //   preferredSize: const Size.fromHeight(5),
@@ -212,7 +215,7 @@ class _PostingPageState extends ConsumerState<PostingPage> {
               //     backgroundColor: AppColors.executeButton),
               onPressed: isActive ? onPosting : null,
               child: Text(
-                widget.action == "edit" ? "Lưu" : "Đăng bài",
+                controller.action == "edit" ? "Lưu" : "Đăng bài",
                 style: const TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold),
               )),

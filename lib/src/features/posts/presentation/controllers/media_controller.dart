@@ -102,6 +102,7 @@ class MediaController extends ChangeNotifier {
     final userUtils = ref.watch(userUtilsProvider);
     await userUtils.removeCache("selectedAsset");
     await userUtils.removeCache("imageCache");
+    final posting = ref.read(postingControllerProvider);
 
     imagePaths.removeWhere((path) => !path.isImageNetWork);
     // Clear videoPaths as well
@@ -156,6 +157,10 @@ class MediaController extends ChangeNotifier {
     notifyListeners();
     print("Image Paths: $imagePaths");
     print("Video Paths: $videoPaths");
+    if (imagePaths.any((image) => image.isImageNetWork) ||
+        videoPaths.any((videoPaths) => videoPaths.isVideoNetWork)) {
+      posting.setAction("edit");
+    }
     context.pop();
   }
 

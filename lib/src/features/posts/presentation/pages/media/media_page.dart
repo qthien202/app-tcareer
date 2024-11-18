@@ -33,7 +33,7 @@ class _MediaPageState extends ConsumerState<MediaPage> {
     final postingController = ref.watch(postingControllerProvider);
     return BackButtonListener(
       onBackButtonPressed: () async {
-        postingController.setContent(widget.content);
+        // postingController.setContent(widget.content);
         Future.delayed(Duration.zero, () {
           controller.resetAutoPop();
           controller.clearData(context);
