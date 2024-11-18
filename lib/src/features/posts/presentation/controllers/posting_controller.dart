@@ -89,7 +89,6 @@ class PostingController extends ChangeNotifier {
     mediaController.contentController.clear();
     imagesWeb.clear();
     videoPicked?.clear();
-
     mediaController.videoPaths.clear();
     mediaController.videoThumbnail.clear();
     notifyListeners();
