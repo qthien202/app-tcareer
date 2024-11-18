@@ -65,6 +65,28 @@ class Validator {
     return fullname(valueDy);
   }
 
+  static String? firstName(valueDy) {
+    String value = valueDy ?? '';
+    if (value.isEmpty) {
+      return "Vui lòng nhập họ";
+    }
+    if (value.length < 2) {
+      return "Họ bắt đầu từ 2 ký tự trở lên";
+    }
+    return fullname(valueDy);
+  }
+
+  static String? lastName(valueDy) {
+    String value = valueDy ?? '';
+    if (value.isEmpty) {
+      return "Vui lòng nhập tên";
+    }
+    if (value.length < 2) {
+      return "Tên bắt đầu từ 2 ký tự trở lên";
+    }
+    return fullname(valueDy);
+  }
+
   static String? emailCanEmpty(valueDy) {
     String value = valueDy ?? '';
     if (value.isEmpty) {

@@ -8,10 +8,12 @@ import 'package:app_tcareer/src/features/posts/data/models/posts_response.dart'
     as post_model;
 import 'package:app_tcareer/src/features/posts/usecases/post_use_case.dart';
 import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
+import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
+import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -198,6 +200,22 @@ class UserController extends ChangeNotifier {
     lastNameController.text = user?.lastName ?? "";
     emailController.text = user?.email ?? "";
     phoneController.text = user?.phone ?? "";
+  }
+
+  Future<void> updateProfile(BuildContext context) async {
+    AppUtils.loadingApi(() async {
+      await userUseCase.putUpdateProfile(
+          body: UpdateProfileRequest(
+              avatar: userData?.data?.avatar ?? "",
+              firstName: firstNameController.text,
+              lastName: lastNameController.text,
+              email: emailController.text,
+              fullName:
+                  "${firstNameController.text} ${lastNameController.text}",
+              phone: phoneController.text));
+      showSnackBar("Cập nhật thông tin thành công");
+      await getUserInfo();
+    }, context);
   }
 }
 

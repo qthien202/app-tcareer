@@ -7,6 +7,7 @@ import 'package:app_tcareer/src/features/user/presentation/controllers/user_cont
 import 'package:app_tcareer/src/features/user/usercases/user_media_use_case.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
+import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -65,6 +66,7 @@ class UserMediaController extends ChangeNotifier {
       final croppedFile = await cropImage(image: file, context: context);
       if (croppedFile != null) {
         selectedImage = File(croppedFile.path);
+        context.pop();
       }
       notifyListeners();
     }
@@ -106,21 +108,26 @@ class UserMediaController extends ChangeNotifier {
   Future<void> updateAvatar(
       {required AssetEntity asset, required BuildContext context}) async {
     await selectImage(asset: asset, context: context);
-    final user = ref.watch(userControllerProvider);
+
+    final user = ref.read(userControllerProvider);
     final uuid = Uuid();
     final id = uuid.v4();
     if (selectedImage != null) {
-      AppUtils.loadingApi(() async {
-        final avatarUrl = await userMediaUseCase.uploadImage(
-            file: selectedImage!, folderPath: "avatars/$id");
-        await userUseCase.putUpdateProfile(
-            body: UpdateProfileRequest(avatar: avatarUrl));
-        final currentUser = user.userData?.data;
-        final updatedUser = currentUser?.copyWith(avatar: avatarUrl);
-        user.userData = user.userData?.copyWith(data: updatedUser);
-        notifyListeners();
-        context.goNamed("user");
-      }, context);
+      AppUtils.futureApi(
+        () async {
+          final avatarUrl = await userMediaUseCase.uploadImage(
+              file: selectedImage!, folderPath: "avatars/$id");
+          await userUseCase.putUpdateProfile(
+              body: UpdateProfileRequest(avatar: avatarUrl));
+          // final currentUser = user.userData?.data;
+          // final updatedUser = currentUser?.copyWith(avatar: avatarUrl);
+          // user.userData = user.userData?.copyWith(data: updatedUser);
+          await user.getUserInfo();
+          showSnackBar("Cập nhật ảnh đại diện thành công");
+        },
+        context,
+        (value) {},
+      );
     }
   }
 }
