@@ -220,7 +220,7 @@ class JobModel {
     map['user_id'] = _userId;
     map['title'] = _title;
     map['is_applied'] = _isApplied;
-    map['is_favorite'] - _isFavorite;
+    map['is_favorite'] = _isFavorite;
     map['job_topic_id'] = _jobTopicId;
     map['job_topic_name'] = _jobTopicName;
     map['job_role_id'] = _jobRoleId;
