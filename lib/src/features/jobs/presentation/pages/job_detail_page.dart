@@ -112,9 +112,39 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
             const SizedBox(
               height: 10,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+            Wrap(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              runSpacing: 10,
+              spacing: 10,
               children: [
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    widget.job.jobTopicName ?? "",
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300),
+                  ),
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    widget.job.jobRoleName ?? "",
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w300),
+                  ),
+                ),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -137,7 +167,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                       color: Colors.grey.shade100,
                       borderRadius: BorderRadius.circular(20)),
                   child: Text(
-                    "${widget.job.experienceRequired.toString()} năm",
+                    "${widget.job.experienceRequired != 0 ? widget.job.experienceRequired : "Dưới 1"} năm",
                     style: const TextStyle(
                         color: Colors.black,
                         fontSize: 12,
@@ -227,10 +257,16 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
     };
 
     List<Map<String, dynamic>> jobsInfo = [
+      // {
+      //   "icon": PhosphorIconsThin.user,
+      //   "title": "Người đăng tuyển",
+      //   "content": "${job.experienceRequired} năm"
+      // },
       {
         "icon": PhosphorIconsThin.calendar,
         "title": "Kinh nghiệm",
-        "content": "${job.experienceRequired} năm"
+        "content":
+            "${job.experienceRequired != 0 ? job.experienceRequired : "Dưới 1"} năm"
       },
       {
         "icon": PhosphorIconsThin.users,
