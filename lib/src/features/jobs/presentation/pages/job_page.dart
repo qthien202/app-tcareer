@@ -20,6 +20,7 @@ class JobPage extends ConsumerWidget {
     bool hasData = controller.jobs.isNotEmpty;
     if (controller.jobs.isEmpty) {
       Future.microtask(() async {
+        await controller.getCurrentPosition();
         await controller.getJobs();
       });
     }
@@ -43,7 +44,7 @@ class JobPage extends ConsumerWidget {
               color: Colors.grey.shade100,
               height: 10,
             )),
-            sliverTitle(),
+            sliverTitle(ref),
             recommendJobs(ref),
             SliverToBoxAdapter(
               child: Visibility(
@@ -113,13 +114,35 @@ class JobPage extends ConsumerWidget {
     );
   }
 
-  Widget sliverTitle() {
-    return const SliverToBoxAdapter(
+  Widget sliverTitle(WidgetRef ref) {
+    final controller = ref.watch(jobControllerProvider);
+    return SliverToBoxAdapter(
       child: Padding(
         padding: EdgeInsets.only(right: 15, left: 15, bottom: 10),
-        child: Text(
-          "Đề xuất cho bạn",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Đề xuất cho bạn",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            Visibility(
+              visible: controller.currentLocation != null,
+              child: Row(
+                children: [
+                  PhosphorIcon(
+                    PhosphorIconsFill.mapPin,
+                    color: Colors.blue,
+                    size: 15,
+                  ),
+                  Text(
+                    "${controller.currentLocation ?? ""}",
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

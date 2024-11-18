@@ -9,6 +9,8 @@ import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 class JobController extends ChangeNotifier {
   final JobUseCase jobUseCase;
@@ -35,7 +37,16 @@ class JobController extends ChangeNotifier {
   List<JobModel> jobs = [];
   GetJobResponse? jobResponse;
   Future<void> getJobs() async {
-    jobResponse = await jobUseCase.getJobs(page: jobPage);
+    if (currentPosition != null) {
+      jobResponse = await jobUseCase.getJobs(
+          page: jobPage,
+          lat: currentPosition?.latitude,
+          lng: currentPosition?.longitude);
+    } else {
+      jobResponse = await jobUseCase.getJobs(
+        page: jobPage,
+      );
+    }
     if (jobResponse?.data != null) {
       final newJobs = jobResponse?.data
           ?.where((newJob) => !jobs.any((job) => job.id == newJob.id))
@@ -143,6 +154,9 @@ class JobController extends ChangeNotifier {
     jobResponse = null;
     jobs.clear();
     jobPage = 1;
+    if (currentPosition != null) {
+      await getCurrentPosition();
+    }
     await getJobs();
   }
 
@@ -212,6 +226,58 @@ class JobController extends ChangeNotifier {
       jobs.clear();
       await refreshJob();
     }
+  }
+
+  Future<bool> isLocationServiceEnabled() async {
+    return await Geolocator.isLocationServiceEnabled();
+  }
+
+  Future<LocationPermission> checkAndRequestPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    return permission;
+  }
+
+  Position? currentPosition;
+  Future<void> getCurrentPosition() async {
+    if (!await Geolocator.isLocationServiceEnabled()) {
+      throw Exception("GPS chưa bật. Vui lòng bật GPS để tiếp tục.");
+    }
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    if (permission == LocationPermission.denied) {
+      throw Exception("Quyền truy cập vị trí bị từ chối.");
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      throw Exception("Quyền truy cập vị trí bị từ chối vĩnh viễn.");
+    }
+
+    currentPosition = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+    if (currentPosition != null) {
+      await getAddressFromLatLng(
+          lat: currentPosition?.latitude ?? 0,
+          lng: currentPosition?.longitude ?? 0);
+    }
+  }
+
+  String? currentLocation;
+  Future<void> getAddressFromLatLng(
+      {required double lat, required double lng}) async {
+    List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
+    print(">>>>>>>>>>>>place: ${placemarks.first.administrativeArea}");
+    String province = placemarks.first.administrativeArea ?? "";
+    String district = placemarks.first.subAdministrativeArea ?? "";
+    currentLocation = "$district, $province";
+    notifyListeners();
   }
 }
 

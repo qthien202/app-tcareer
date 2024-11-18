@@ -215,10 +215,10 @@ class ApplyJobPage extends ConsumerWidget {
                     style: const TextStyle(
                         fontSize: 14, fontWeight: FontWeight.w500),
                   ),
-                  Text(
-                    "Lập trình viên",
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
-                  )
+                  // Text(
+                  //   "Lập trình viên",
+                  //   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w300),
+                  // )
                 ],
               ),
             ],

@@ -20,8 +20,8 @@ class JobUseCase {
   Future<List<JobRolesModel>> getJobRoles(num topicId) async =>
       await jobRepository.getJobRoles(topicId);
 
-  Future<GetJobResponse> getJobs({int? page}) async =>
-      await jobRepository.getJobs(page: page);
+  Future<GetJobResponse> getJobs({int? page, double? lat, double? lng}) async =>
+      await jobRepository.getJobs(page: page, lat: lat, lng: lng);
   Future<GetJobResponse> getPostedJob({int? page}) async =>
       await jobRepository.getPostedJob(page: page);
   Future<GetJobResponse> getAppliedJob({int? page}) async =>

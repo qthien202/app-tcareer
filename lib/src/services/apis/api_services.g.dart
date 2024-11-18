@@ -1392,9 +1392,17 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<GetJobResponse> getJobs({int? page}) async {
+  Future<GetJobResponse> getJobs({
+    int? page,
+    double? lat,
+    double? lng,
+  }) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'page': page};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'latitude': lat,
+      r'longitude': lng,
+    };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;

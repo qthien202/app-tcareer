@@ -53,8 +53,8 @@ class JobRepository {
   Future<void> postSubmitApplication(ApplyJobModel body) async =>
       await apiServices.postSubmitApplication(body: body);
 
-  Future<GetJobResponse> getJobs({int? page}) async =>
-      await apiServices.getJobs(page: page);
+  Future<GetJobResponse> getJobs({int? page, double? lat, double? lng}) async =>
+      await apiServices.getJobs(page: page, lat: lat, lng: lng);
 
   Future<GetJobResponse> getPostedJob({int? page}) async =>
       await apiServices.getPostedJob(page: page);

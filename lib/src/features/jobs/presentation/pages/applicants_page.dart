@@ -118,14 +118,14 @@ class _ApplicantsPageState extends ConsumerState<ApplicantsPage> {
                               style: TextStyle(
                                   fontWeight: FontWeight.w500, fontSize: 14),
                             ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              applicant.career ?? "Lập trình viên",
-                              style: TextStyle(
-                                  fontSize: 12, fontWeight: FontWeight.w300),
-                            )
+                            // const SizedBox(
+                            //   height: 5,
+                            // ),
+                            // Text(
+                            //   applicant.career ?? "Lập trình viên",
+                            //   style: TextStyle(
+                            //       fontSize: 12, fontWeight: FontWeight.w300),
+                            // )
                           ],
                         ),
                       ),
