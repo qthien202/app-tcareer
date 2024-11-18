@@ -20,8 +20,11 @@ class JobPage extends ConsumerWidget {
     bool hasData = controller.jobs.isNotEmpty;
     if (controller.jobs.isEmpty) {
       Future.microtask(() async {
-        await controller.getCurrentPosition();
-        await controller.getJobs();
+        await controller.getCurrentPosition().then((val) async {
+          await controller.getJobs();
+        }).catchError((e) async {
+          await controller.getJobs();
+        });
       });
     }
     return Scaffold(
