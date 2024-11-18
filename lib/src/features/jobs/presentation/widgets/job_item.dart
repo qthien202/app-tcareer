@@ -98,7 +98,7 @@ Widget jobItem(JobModel job, BuildContext context, JobType type) {
                       children: [
                         Container(
                           padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                           decoration: BoxDecoration(
                               color: Colors.grey.shade100,
                               borderRadius: BorderRadius.circular(20)),
@@ -113,21 +113,21 @@ Widget jobItem(JobModel job, BuildContext context, JobType type) {
                         Container(
                           margin: EdgeInsets.symmetric(horizontal: 5),
                           padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                           decoration: BoxDecoration(
                               color: Colors.grey.shade100,
                               borderRadius: BorderRadius.circular(20)),
                           child: Text(
-                            "${job.experienceRequired.toString()} năm",
+                            "${job.experienceRequired != 0 ? job.experienceRequired : "Dưới 1"} năm",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontSize: 12,
+                                fontSize: 11,
                                 fontWeight: FontWeight.w300),
                           ),
                         ),
                         Container(
                           padding:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 5),
                           decoration: BoxDecoration(
                               color: Colors.grey.shade100,
                               borderRadius: BorderRadius.circular(20)),
