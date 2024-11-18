@@ -200,7 +200,45 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             stream: controller.listenUserStatus(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return circularLoadingWidget();
+                return GestureDetector(
+                  onTap: () {
+                    context.pushNamed('profile', queryParameters: {
+                      "userId": controller.user?.userId.toString()
+                    });
+                  },
+                  child: Container(
+                    color: Colors.white,
+                    child: Row(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundImage: CachedNetworkImageProvider(
+                            controller.user?.userAvatar ?? "",
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              controller.user?.userFullName ?? "",
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                );
               }
               final user = snapshot.data;
               return Visibility(
