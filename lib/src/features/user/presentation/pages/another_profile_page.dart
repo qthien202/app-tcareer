@@ -231,6 +231,7 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
     final connectionController =
         ref.watch(userConnectionControllerProvider(userId));
     final userController = ref.watch(userControllerProvider);
+    final anotherController = ref.watch(anotherUserControllerProvider);
 
     return Visibility(
       visible: controller.anotherUserData != null,
@@ -274,24 +275,28 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
               ),
             )),
             Visibility(
-                visible: friendStatus == null,
+                visible: false,
                 child: Row(
                   children: [
                     const SizedBox(
                       width: 10,
                     ),
-                    Container(
-                        padding: EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.grey.shade300),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const PhosphorIcon(
-                          PhosphorIconsRegular.plus,
-                          color: Colors.black,
-                          size: 18,
-                        )),
+                    GestureDetector(
+                      onTap: () async =>
+                          await connectionController.postFollow(context),
+                      child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const PhosphorIcon(
+                            PhosphorIconsRegular.plus,
+                            color: Colors.black,
+                            size: 18,
+                          )),
+                    ),
                   ],
                 ))
           ],

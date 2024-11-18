@@ -27,10 +27,9 @@ class UserConnectionController extends ChangeNotifier {
 
     // Lấy đối tượng `anotherUserData` và `currentFollowed`
     final currentUser = anotherUserController.anotherUserData;
-    final updateUser =
-        await connectionUseCase.postFollow(userId: userId, user: currentUser!);
-    anotherUserController.anotherUserData = updateUser;
-    context.pop();
+
+    await connectionUseCase.postFollow(userId: userId, user: currentUser!);
+    await anotherUserController.getUserById(userId);
     if (currentUser.data?.followed != true) {
       showSnackBar("Bạn đã theo dõi ${currentUser.data?.fullName}");
     }
@@ -242,6 +241,47 @@ class UserConnectionController extends ChangeNotifier {
       await anotherUserController.getUserById(userId);
       context.pop();
     });
+  }
+
+  Future<void> showModalDelete({
+    required BuildContext context,
+  }) async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoActionSheet(
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+                onPressed: () async {
+                  await postFollow(context);
+                },
+                child: const Text(
+                  'Bỏ theo dõi',
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                )),
+            Visibility(
+              // visible: currentUser,
+              child: CupertinoActionSheetAction(
+                  isDestructiveAction: true,
+                  onPressed: () async {
+                    await showModalDeleteFriend(context: context);
+                  },
+                  child: const Text(
+                    'Hủy kết bạn',
+                    style: TextStyle(fontSize: 16),
+                  )),
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+              isDefaultAction: true,
+              child: const Text(
+                'Hủy',
+                style: TextStyle(color: Colors.black, fontSize: 16),
+              ),
+              onPressed: () => context.pop()),
+        );
+      },
+    );
   }
 }
 
