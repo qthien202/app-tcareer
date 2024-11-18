@@ -32,7 +32,7 @@ Widget privacyBottomSheetWidget({required BuildContext context}) {
     builder: (context, ref, child) {
       final controller = ref.watch(postingControllerProvider);
       return ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: ScreenUtil().screenHeight * .33),
+        constraints: BoxConstraints(maxHeight: ScreenUtil().screenHeight * .34),
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(20),

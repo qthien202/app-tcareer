@@ -43,6 +43,11 @@ Widget postTemp({
   final controller = ref.read(postControllerProvider);
   final postingController = ref.watch(postingControllerProvider);
   final userController = ref.watch(userControllerProvider);
+  Map<String, dynamic> privacyIcon = {
+    "Public": Icons.public,
+    "Friend": Icons.group,
+    "Private": Icons.lock
+  };
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10),
     child: ClipRRect(
@@ -120,9 +125,7 @@ Widget postTemp({
                                       color: Colors.grey, fontSize: 10),
                                 ),
                                 Icon(
-                                  privacy == "Public"
-                                      ? Icons.public
-                                      : Icons.group,
+                                  privacyIcon[privacy],
                                   color: Colors.grey,
                                   size: 11,
                                 ),
