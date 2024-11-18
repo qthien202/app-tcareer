@@ -36,6 +36,7 @@ class UserController extends ChangeNotifier {
 
   Future<void> getUserInfo() async {
     userData = await userUseCase.getUserInfo();
+    setInfo();
     notifyListeners();
   }
 
@@ -184,6 +185,19 @@ class UserController extends ChangeNotifier {
         await getPostedJob();
       }
     }
+  }
+
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
+  setInfo() {
+    final user = userData?.data;
+    firstNameController.text = user?.firstName ?? "";
+    lastNameController.text = user?.lastName ?? "";
+    emailController.text = user?.email ?? "";
+    phoneController.text = user?.phone ?? "";
   }
 }
 

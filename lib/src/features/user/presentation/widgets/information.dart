@@ -17,13 +17,12 @@ Widget information(
     title: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(
+          height: 20,
+        ),
         Text(
           fullName,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-        ),
-        Text(
-          expertise ?? "Người dùng",
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
         ),
         const SizedBox(height: 10),
       ],
