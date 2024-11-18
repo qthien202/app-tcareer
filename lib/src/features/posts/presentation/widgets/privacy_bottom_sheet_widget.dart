@@ -21,12 +21,18 @@ Widget privacyBottomSheetWidget({required BuildContext context}) {
       "subTitle": "Bạn bè của bạn ở Tcareer",
       "icon": Icons.group
     },
+    {
+      "value": "Private",
+      "title": "Chỉ mình tôi",
+      "subTitle": "Chỉ mình tôi",
+      "icon": Icons.lock
+    },
   ];
   return Consumer(
     builder: (context, ref, child) {
       final controller = ref.watch(postingControllerProvider);
       return ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: ScreenUtil().screenHeight * .28),
+        constraints: BoxConstraints(maxHeight: ScreenUtil().screenHeight * .33),
         child: ClipRRect(
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(20),
