@@ -130,7 +130,7 @@ class _ApplicantsPageState extends ConsumerState<ApplicantsPage> {
                         ),
                       ),
                       Expanded(
-                        flex: 1,
+                        flex: 2,
                         child: Column(
                           children: [
                             Text(
