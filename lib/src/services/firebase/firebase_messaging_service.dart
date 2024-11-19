@@ -89,34 +89,64 @@ class FirebaseMessagingService {
     final postId = data["post_id"]?.toString();
     final userId = data['related_user_id']?.toString();
     final type = data['type']?.toString();
+    final applicationId = data['application_id']?.toString();
     final conversationId = data['conversation_id']?.toString();
 
-    if (context != null) {
-      if (postId != null &&
-          postId.isNotEmpty &&
-          type?.contains("COMMENT") == true) {
-        context.pushNamed(
-          "detail",
-          pathParameters: {"id": postId},
-          queryParameters: {"notificationType": type},
-        );
-      } else if (postId != null && postId.isNotEmpty) {
-        context.pushNamed(
-          "detail",
-          pathParameters: {"id": postId},
-        );
-      } else if (type?.contains("CHAT") == true &&
-          userId != null &&
-          userId.isNotEmpty) {
-        final userUtil = ref.watch(userUtilsProvider);
-        String clientId = await userUtil.getUserId();
-        context.pushReplacementNamed("chat",
-            pathParameters: {"userId": userId ?? "", "clientId": clientId});
-      } else if (userId != null && userId.isNotEmpty) {
-        context.pushNamed(
-          'profile',
-          queryParameters: {"userId": userId},
-        );
+    final actionMap = [
+      {
+        'condition': () =>
+            postId != null &&
+            postId.isNotEmpty &&
+            type?.contains("COMMENT") == true,
+        'action': () => context?.pushNamed(
+              "detail",
+              pathParameters: {"id": postId ?? ""},
+              queryParameters: {"notificationType": type},
+            ),
+      },
+      {
+        'condition': () => postId != null && postId.isNotEmpty,
+        'action': () => context?.pushNamed(
+              "detail",
+              pathParameters: {"id": postId ?? ""},
+            ),
+      },
+      {
+        'condition': () =>
+            type?.contains("CHAT") == true &&
+            userId != null &&
+            userId.isNotEmpty,
+        'action': () async {
+          final userUtil = ref.watch(userUtilsProvider);
+          String clientId = await userUtil.getUserId();
+          context?.pushReplacementNamed(
+            "chat",
+            pathParameters: {"userId": userId ?? "", "clientId": clientId},
+          );
+        },
+      },
+      {
+        'condition': () => userId != null && userId.isNotEmpty,
+        'action': () => context?.pushNamed(
+              'profile',
+              queryParameters: {"userId": userId},
+            ),
+      },
+      {
+        'condition': () =>
+            type?.contains("APPLICATION_SUBMITTED") == true &&
+            applicationId != null,
+        'action': () => context?.pushNamed(
+              'applyJob',
+              // queryParameters: {"userId": userId},
+            ),
+      },
+    ];
+
+    for (var item in actionMap) {
+      if (item['condition']!() as bool) {
+        item['action']!();
+        break;
       }
     }
   }

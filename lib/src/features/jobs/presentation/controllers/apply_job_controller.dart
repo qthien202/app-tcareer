@@ -78,6 +78,8 @@ class ApplyJobController extends ChangeNotifier {
       isApplied = true;
       jobController.refreshJob();
       jobController.refreshJobFavorites();
+      context.pop();
+      notifyListeners();
     }, context);
   }
 }
