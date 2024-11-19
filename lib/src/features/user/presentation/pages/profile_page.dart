@@ -45,7 +45,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 15),
                     child: GestureDetector(
-                      onTap: () => context.pushNamed("editProfile"),
+                      onTap: () => context.pushNamed("accountSetting"),
                       child: Container(
                         alignment: Alignment.center,
                         padding: const EdgeInsets.all(8),

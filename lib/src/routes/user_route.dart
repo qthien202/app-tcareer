@@ -2,6 +2,7 @@ import 'package:app_tcareer/src/features/user/data/models/create_resume_model.da
 import 'package:app_tcareer/src/features/user/data/models/education_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/experience_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/skill_model.dart';
+import 'package:app_tcareer/src/features/user/presentation/pages/account_setting_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/create_resume_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/edit_profile_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_education.dart';
@@ -24,6 +25,14 @@ class UserRoute {
         pageBuilder: (context, state) => CustomTransitionPage(
             key: state.pageKey,
             child: const UserMediaPage(),
+            transitionsBuilder: fadeTransitionBuilder),
+        routes: []),
+    GoRoute(
+        path: "setting",
+        name: "accountSetting",
+        pageBuilder: (context, state) => CustomTransitionPage(
+            key: state.pageKey,
+            child: const AccountSettingPage(),
             transitionsBuilder: fadeTransitionBuilder),
         routes: []),
     GoRoute(

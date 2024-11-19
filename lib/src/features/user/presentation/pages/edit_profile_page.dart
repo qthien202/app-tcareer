@@ -22,7 +22,7 @@ class EditProfilePage extends ConsumerWidget {
         backgroundColor: Colors.white,
         automaticallyImplyLeading: true,
         title: const Text(
-          "Thiết lập tài khoản",
+          "Chỉnh sửa thông tin",
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
@@ -83,12 +83,12 @@ class EditProfilePage extends ConsumerWidget {
               isRequired: true,
               title: "Email",
             ),
-            TextInputWidget(
-              validator: Validator.phone,
-              controller: controller.phoneController,
-              isRequired: true,
-              title: "Điện thoại",
-            ),
+            // TextInputWidget(
+            //   validator: Validator.phone,
+            //   controller: controller.phoneController,
+            //   isRequired: true,
+            //   title: "Điện thoại",
+            // ),
             const SizedBox(
               height: 20,
             ),
