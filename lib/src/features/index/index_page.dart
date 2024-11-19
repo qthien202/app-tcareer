@@ -104,7 +104,9 @@ class _IndexPageState extends ConsumerState<IndexPage>
         routerState.fullPath?.startsWith("/conversation/chat") == false &&
             routerState.fullPath?.startsWith("/user/resume") == false &&
             routerState.fullPath?.contains("/user/edit") == false &&
-            routerState.fullPath?.startsWith('/jobs/') == false;
+            routerState.fullPath?.startsWith('/jobs/') == false &&
+            routerState.fullPath?.startsWith('/user/setting/changePassword') ==
+                false;
     return Scaffold(
       body: widget.shell,
       bottomNavigationBar: Visibility(

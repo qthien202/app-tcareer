@@ -1,10 +1,14 @@
+import 'package:app_tcareer/src/features/authentication/data/models/verify_otp.dart';
 import 'package:app_tcareer/src/features/user/data/models/create_resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/education_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/experience_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/skill_model.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/account_setting_page.dart';
+import 'package:app_tcareer/src/features/user/presentation/pages/change_password/change_password_page.dart';
+import 'package:app_tcareer/src/features/user/presentation/pages/change_password/user_verify_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/create_resume_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/edit_profile_page.dart';
+import 'package:app_tcareer/src/features/user/presentation/pages/change_password/user_send_verification_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_education.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_experience.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_introduce.dart';
@@ -34,15 +38,45 @@ class UserRoute {
             key: state.pageKey,
             child: const AccountSettingPage(),
             transitionsBuilder: fadeTransitionBuilder),
-        routes: []),
-    GoRoute(
-        path: "edit",
-        name: "editProfile",
-        pageBuilder: (context, state) => CustomTransitionPage(
-            key: state.pageKey,
-            child: const EditProfilePage(),
-            transitionsBuilder: fadeTransitionBuilder),
-        routes: []),
+        routes: [
+          GoRoute(
+              path: "edit",
+              name: "editProfile",
+              pageBuilder: (context, state) => CustomTransitionPage(
+                  key: state.pageKey,
+                  child: EditProfilePage(),
+                  transitionsBuilder: fadeTransitionBuilder),
+              routes: []),
+          GoRoute(
+            path: "changePassword/sendVerification",
+            name: "sendVerification",
+            pageBuilder: (context, state) => CustomTransitionPage(
+                key: state.pageKey,
+                child: const UserSendVerificationPage(),
+                transitionsBuilder: fadeTransitionBuilder),
+          ),
+          GoRoute(
+              path: "changePassword/verify",
+              name: "userVerification",
+              pageBuilder: (context, state) {
+                VerifyOTP? verifyOTp = state.extra as VerifyOTP?;
+                return CustomTransitionPage(
+                  key: state.pageKey,
+                  child: UserVerifyPage(
+                    verifyOTP: verifyOTp,
+                  ),
+                  transitionsBuilder: fadeTransitionBuilder,
+                );
+              }),
+          GoRoute(
+            path: "changePassword/update",
+            name: "changePassword",
+            pageBuilder: (context, state) => CustomTransitionPage(
+                key: state.pageKey,
+                child: const ChangePasswordPage(),
+                transitionsBuilder: fadeTransitionBuilder),
+          ),
+        ]),
     GoRoute(
         path: "resume/addIntroduce",
         name: "addIntroduce",

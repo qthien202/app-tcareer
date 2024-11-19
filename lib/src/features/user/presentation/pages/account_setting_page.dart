@@ -2,6 +2,7 @@ import 'package:app_tcareer/src/features/user/presentation/controllers/user_cont
 import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
@@ -18,7 +19,7 @@ class AccountSettingPage extends ConsumerWidget {
         "icon": PhosphorIconsRegular.userCircleGear
       },
       {
-        "onTap": () => context.pushNamed("editProfile"),
+        "onTap": () => context.pushNamed("sendVerification"),
         "title": "Đổi mật khẩu",
         "icon": PhosphorIconsRegular.lock
       },
@@ -65,10 +66,11 @@ class AccountSettingPage extends ConsumerWidget {
             child: Column(
               // padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               children: settings.map((e) {
-                return GestureDetector(
+                return InkWell(
                   onTap: e['onTap'],
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    width: ScreenUtil().screenWidth,
                     child: Row(
                       children: [
                         PhosphorIcon(

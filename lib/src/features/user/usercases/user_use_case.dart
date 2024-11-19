@@ -1,14 +1,18 @@
+import 'package:app_tcareer/src/features/authentication/data/repositories/auth_repository.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
+import 'package:app_tcareer/src/features/user/data/models/change_password_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/create_resume_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/features/user/data/repositories/user_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserUseCase {
   final UserRepository userRepository;
-  UserUseCase(this.userRepository);
+  final AuthRepository authRepository;
+  UserUseCase(this.userRepository, this.authRepository);
 
   Future<Users> getUserInfo() async => await userRepository.getUserInfo();
   Future<Users> getUserById(String userId) async =>
@@ -30,7 +34,32 @@ class UserUseCase {
 
   Future<GetJobResponse> getPostedJob({int? page, num? userId}) async =>
       await userRepository.getPostedJob(page: page, userId: userId);
+
+  Future<void> verifyPhoneNumber(
+          {required String phoneNumber,
+          required void Function(PhoneAuthCredential phoneAuthCredential)
+              verificationCompleted,
+          required void Function(FirebaseAuthException firebaseAuthException)
+              verificationFailed,
+          required void Function(
+                  String verificationId, int? forceResendingToken)
+              codeSent,
+          required void Function(String verificationId)
+              codeAutoRetrievalTimeout}) async =>
+      await authRepository.verifyPhoneNumber(
+          phoneNumber: phoneNumber,
+          verificationCompleted: verificationCompleted,
+          verificationFailed: verificationFailed,
+          codeSent: codeSent,
+          codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+  Future<void> signInWithOTP(
+          {required String smsCode, required String verificationId}) async =>
+      await authRepository.signInWithOTP(
+          smsCode: smsCode, verificationId: verificationId);
+
+  Future<void> putChangPassword({required ChangePasswordRequest body}) async =>
+      await userRepository.putChangPassword(body: body);
 }
 
-final userUseCaseProvider =
-    Provider((ref) => UserUseCase(ref.watch(userRepositoryProvider)));
+final userUseCaseProvider = Provider((ref) =>
+    UserUseCase(ref.read(userRepositoryProvider), ref.read(authRepository)));

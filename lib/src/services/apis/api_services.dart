@@ -40,6 +40,7 @@ import 'package:app_tcareer/src/features/posts/data/models/quick_search_user_dat
 import 'package:app_tcareer/src/features/posts/data/models/quick_search_user_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/user_liked.dart';
 import 'package:app_tcareer/src/features/posts/data/models/user_liked_request.dart';
+import 'package:app_tcareer/src/features/user/data/models/change_password_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/create_resume_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
@@ -260,4 +261,7 @@ abstract class ApiServices {
 
   @GET('api/auth/topic-job-favorite')
   Future<TopicJobFavoriteResponse> getTopicJobFavorite();
+
+  @PUT('api/auth/users/change-password')
+  Future putChangePassword({@Body() required ChangePasswordRequest body});
 }

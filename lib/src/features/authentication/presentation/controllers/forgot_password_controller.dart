@@ -95,19 +95,26 @@ class ForgotPasswordController extends StateNotifier<void> {
   // String? verification;
   Future<void> verifyPhoneNumber(BuildContext context) async {
     String phone = "+84${textInputController.text.substring(1)}";
-    await registerUseCaseProvider.verifyPhoneNumber(
-      phoneNumber: phone,
-      verificationCompleted: (phoneAuthCredential) {},
-      verificationFailed: (firebaseAuthException) {},
-      codeSent: (verificationId, forceResendingToken) {
-        // verification = verificationId;
-        final verifyOTP = VerifyOTP(textInputController.text,
-            verificationId ?? "", TypeVerify.forgotPassword);
-        print(">>>>>>>>verificationId: $verificationId");
-        context.pushNamed("verify", extra: verifyOTP);
-      },
-      codeAutoRetrievalTimeout: (verificationId) {},
-    );
+    AppUtils.loadingApi(() async {
+      await registerUseCaseProvider.verifyPhoneNumber(
+        phoneNumber: phone,
+        verificationCompleted: (phoneAuthCredential) {},
+        verificationFailed: (firebaseAuthException) {
+          AlertDialogUtil.showAlert(
+              context: context,
+              title: "Có lỗi xảy ra",
+              content: firebaseAuthException.message ?? "");
+        },
+        codeSent: (verificationId, forceResendingToken) {
+          // verification = verificationId;
+          final verifyOTP = VerifyOTP(textInputController.text,
+              verificationId ?? "", TypeVerify.forgotPassword);
+          print(">>>>>>>>verificationId: $verificationId");
+          context.pushNamed("verify", extra: verifyOTP);
+        },
+        codeAutoRetrievalTimeout: (verificationId) {},
+      );
+    }, context);
   }
 
   Future<void> signInWithOTP(
@@ -115,9 +122,17 @@ class ForgotPasswordController extends StateNotifier<void> {
       required String verificationId,
       required BuildContext context}) async {
     AppUtils.loadingApi(() async {
-      await registerUseCaseProvider.signInWithOTP(
-          smsCode: smsCode, verificationId: verificationId);
-      context.pushNamed('resetPassword');
+      await registerUseCaseProvider
+          .signInWithOTP(smsCode: smsCode, verificationId: verificationId)
+          .then((val) {
+        context.pushNamed('resetPassword');
+      }).catchError((e) {
+        AlertDialogUtil.showAlert(
+            context: context,
+            title: "Lỗi xác thực",
+            content: "Mã xác thực không đúng, vui lòng thử lại sau");
+      });
+
       showSnackBar("Xác  thực thành công");
     }, context);
   }

@@ -9,6 +9,7 @@ class AlertDialogUtil {
       required String title,
       required String content}) {
     return AlertDialog(
+      backgroundColor: Colors.white,
       contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       // icon: Icon(
       //   Icons.error,

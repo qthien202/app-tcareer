@@ -59,8 +59,10 @@ class FirebaseAuthService {
       await auth.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       print('Lỗi Firebase Auth: ${e.message}');
+      return Future.error(e);
     } catch (e) {
       print('Lỗi không xác định: $e');
+      return Future.error(e);
     }
   }
 

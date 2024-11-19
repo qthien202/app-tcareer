@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:app_tcareer/src/configs/exceptions/api_exception.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heif_converter/heif_converter.dart';
@@ -42,6 +43,8 @@ class AppUtils {
       } else {
         checkException(error, context);
       }
+    } on FirebaseAuthException catch (e) {
+      return Future.error(e);
     }
     // catch (e) {
     //   context.pop();

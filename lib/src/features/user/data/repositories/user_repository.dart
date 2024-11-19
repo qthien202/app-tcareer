@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
+import 'package:app_tcareer/src/features/user/data/models/change_password_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/create_resume_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
@@ -85,6 +86,11 @@ class UserRepository {
   Future<GetJobResponse> getPostedJob({int? page, num? userId}) async {
     final api = ref.read(apiServiceProvider);
     return await api.getPostedJob(page: page, userId: userId);
+  }
+
+  Future<void> putChangPassword({required ChangePasswordRequest body}) async {
+    final api = ref.read(apiServiceProvider);
+    return await api.putChangePassword(body: body);
   }
 }
 
