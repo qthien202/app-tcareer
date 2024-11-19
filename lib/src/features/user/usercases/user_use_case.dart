@@ -28,8 +28,8 @@ class UserUseCase {
   Future<ResumeModel> getResume({String? userId}) async =>
       await userRepository.getResume(userId: userId);
 
-  Future<GetJobResponse> getPostedJob({int? page}) async =>
-      await userRepository.getPostedJob(page: page);
+  Future<GetJobResponse> getPostedJob({int? page, num? userId}) async =>
+      await userRepository.getPostedJob(page: page, userId: userId);
 }
 
 final userUseCaseProvider =

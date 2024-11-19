@@ -82,9 +82,9 @@ class UserRepository {
     return await api.getResume(userId: userId);
   }
 
-  Future<GetJobResponse> getPostedJob({int? page}) async {
+  Future<GetJobResponse> getPostedJob({int? page, num? userId}) async {
     final api = ref.read(apiServiceProvider);
-    return await api.getPostedJob(page: page);
+    return await api.getPostedJob(page: page, userId: userId);
   }
 }
 

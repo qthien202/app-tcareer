@@ -9,6 +9,7 @@ import 'package:app_tcareer/src/features/user/presentation/controllers/user_cont
 import 'package:app_tcareer/src/features/user/presentation/widgets/connect_button.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/information.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/information_loading.dart';
+import 'package:app_tcareer/src/features/user/presentation/widgets/posted_job_another.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/resume_another.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -78,7 +79,7 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
                       tabs: const [
                         Tab(text: "Thông tin"),
                         Tab(text: "Hoạt động"),
-                        Tab(text: "Phương tiện"),
+                        Tab(text: "Việc làm"),
                       ],
                     ),
                   ),
@@ -91,7 +92,7 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
                 children: [
                   const ResumeAnother(),
                   postList(),
-                  const Text("Phương tiện")
+                  const PostedJobAnother()
                 ],
               ),
             ),

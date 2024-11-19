@@ -7,14 +7,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PostedJobUser extends ConsumerStatefulWidget {
-  const PostedJobUser({super.key});
+import '../controllers/another_user_controller.dart';
+
+class PostedJobAnother extends ConsumerStatefulWidget {
+  const PostedJobAnother({super.key});
 
   @override
-  ConsumerState<PostedJobUser> createState() => _PostedJobUserState();
+  ConsumerState<PostedJobAnother> createState() => _PostedJobAnotherState();
 }
 
-class _PostedJobUserState extends ConsumerState<PostedJobUser> {
+class _PostedJobAnotherState extends ConsumerState<PostedJobAnother> {
   ScrollController scrollController = ScrollController();
 
   @override
@@ -22,7 +24,7 @@ class _PostedJobUserState extends ConsumerState<PostedJobUser> {
     // TODO: implement initState
     super.initState();
     Future.microtask(() {
-      final controller = ref.read(userControllerProvider);
+      final controller = ref.read(anotherUserControllerProvider);
       scrollController.addListener(() {
         controller.loadPostedJobMore(scrollController);
       });
@@ -31,14 +33,15 @@ class _PostedJobUserState extends ConsumerState<PostedJobUser> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = ref.watch(userControllerProvider);
+    final controller = ref.watch(anotherUserControllerProvider);
     bool hasData = controller.postedJobs.isNotEmpty;
     return CustomScrollView(
       controller: scrollController,
       physics: const BouncingScrollPhysics(),
       slivers: [
         CupertinoSliverRefreshControl(
-          onRefresh: () async => await controller.getPostedJob(),
+          onRefresh: () async => await controller
+              .getPostedJob(controller.anotherUserData?.data?.id ?? 0),
         ),
         postedList(ref),
         SliverToBoxAdapter(
@@ -57,7 +60,7 @@ class _PostedJobUserState extends ConsumerState<PostedJobUser> {
   }
 
   Widget postedList(WidgetRef ref) {
-    final controller = ref.watch(userControllerProvider);
+    final controller = ref.watch(anotherUserControllerProvider);
     return SliverVisibility(
       visible: controller.postedJobRes != null,
       replacementSliver: SliverToBoxAdapter(
@@ -66,7 +69,7 @@ class _PostedJobUserState extends ConsumerState<PostedJobUser> {
       sliver: SliverVisibility(
         visible: controller.postedJobs.isNotEmpty,
         replacementSliver: SliverToBoxAdapter(
-          child: emptyWidget("Bạn chưa đăng việc làm nào!"),
+          child: emptyWidget("Người dùng này chưa đăng việc làm nào!"),
         ),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(

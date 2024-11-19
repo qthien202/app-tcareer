@@ -39,44 +39,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
             physics: const AlwaysScrollableScrollPhysics(),
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
-                // SliverAppBar(
-                //   automaticallyImplyLeading: false,
-                //   toolbarHeight: 20,
-                //   centerTitle: false,
-                //   actions: [
-                //     PopupMenuButton(
-                //       color: Colors.white,
-                //       icon: const Icon(
-                //         Icons.menu,
-                //         color: Colors.black,
-                //       ),
-                //       itemBuilder: (context) {
-                //         return [
-                //           PopupMenuItem(
-                //             onTap: () => context.pushNamed("editProfile"),
-                //             child: const ListTile(
-                //               leading: Icon(
-                //                 Icons.edit,
-                //                 color: Colors.black,
-                //               ),
-                //               title: Text("Chỉnh sửa"),
-                //             ),
-                //           ),
-                //           PopupMenuItem(
-                //             onTap: () async => await controller.logout(context),
-                //             child: const ListTile(
-                //               leading: Icon(
-                //                 Icons.logout,
-                //                 color: Colors.black,
-                //               ),
-                //               title: Text("Đăng xuất"),
-                //             ),
-                //           ),
-                //         ];
-                //       },
-                //     )
-                //   ],
-                // ),
                 SliverToBoxAdapter(child: userInfo()),
                 SliverToBoxAdapter(
                   child: Padding(
@@ -114,7 +76,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                       tabs: const [
                         Tab(text: "Thông tin"),
                         Tab(text: "Hoạt động"),
-                        Tab(text: "Công việc"),
+                        Tab(text: "Việc làm"),
                       ],
                     ),
                   ),
