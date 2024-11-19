@@ -49,7 +49,9 @@ class NotificationPage extends ConsumerWidget {
             // separatorBuilder: (context, index) => const SizedBox(
             //   height: 10,
             // ),
-            itemCount: notifications?.length ?? 0,
+            itemCount: (notifications?.length ?? 0) > 20
+                ? 20
+                : notifications?.length ?? 0,
             itemBuilder: (context, index) {
               // print(">>>>>>>notification: $notifications");
               final notification = notifications?[index];
