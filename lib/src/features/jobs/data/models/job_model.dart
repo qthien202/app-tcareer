@@ -4,6 +4,7 @@ class JobModel {
   JobModel(
       {num? id,
       num? userId,
+      String? userName,
       String? title,
       bool? isApplied,
       bool? isFavorite,
@@ -96,6 +97,7 @@ class JobModel {
   JobModel.fromJson(dynamic json) {
     _id = json['id'];
     _userId = json['user_id'];
+    _userName = json['user_name'];
     _title = json['title'];
     _isApplied = json['is_applied'];
     _isFavorite = json['is_favorite'];
@@ -120,6 +122,7 @@ class JobModel {
   }
   num? _id;
   num? _userId;
+  String? _userName;
   String? _title;
   bool? _isApplied;
   bool? _isFavorite;
@@ -144,6 +147,7 @@ class JobModel {
   JobModel copyWith({
     num? id,
     num? userId,
+    String? userName,
     String? title,
     bool? isApplied,
     bool? isFavorite,
@@ -168,6 +172,7 @@ class JobModel {
   }) =>
       JobModel(
           userId: userId ?? _userId,
+          userName: userName ?? _userName,
           id: id ?? _id,
           title: title ?? _title,
           isApplied: isApplied ?? _isApplied,
@@ -192,6 +197,7 @@ class JobModel {
           province: province ?? _province);
   num? get id => _id;
   num? get userId => _userId;
+  String? get userName => _userName;
   String? get title => _title;
   bool? get isApplied => _isApplied;
   bool? get isFavorite => _isFavorite;
@@ -218,6 +224,7 @@ class JobModel {
     final map = <String, dynamic>{};
     map['id'] = _id;
     map['user_id'] = _userId;
+    map['user_name'] = _userName;
     map['title'] = _title;
     map['is_applied'] = _isApplied;
     map['is_favorite'] = _isFavorite;

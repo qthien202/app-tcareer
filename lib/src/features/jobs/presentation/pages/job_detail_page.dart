@@ -257,11 +257,11 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
     };
 
     List<Map<String, dynamic>> jobsInfo = [
-      // {
-      //   "icon": PhosphorIconsThin.user,
-      //   "title": "Người đăng tuyển",
-      //   "content": "${job.experienceRequired} năm"
-      // },
+      {
+        "icon": PhosphorIconsThin.user,
+        "title": "Người đăng tuyển",
+        "content": "${job.userName}"
+      },
       {
         "icon": PhosphorIconsThin.calendar,
         "title": "Kinh nghiệm",
