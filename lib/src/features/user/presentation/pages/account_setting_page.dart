@@ -88,7 +88,7 @@ class AccountSettingPage extends ConsumerWidget {
                               color: e['title'] == "Đăng xuất"
                                   ? Colors.red
                                   : Colors.black,
-                              fontSize: 14),
+                              fontSize: 15),
                         )
                       ],
                     ),
