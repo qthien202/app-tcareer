@@ -243,7 +243,7 @@ class UserConnectionController extends ChangeNotifier {
     });
   }
 
-  Future<void> showModalDelete({
+  Future<void> showModalConnect({
     required BuildContext context,
   }) async {
     showCupertinoModalPopup(
@@ -253,10 +253,54 @@ class UserConnectionController extends ChangeNotifier {
           actions: <Widget>[
             CupertinoActionSheetAction(
                 onPressed: () async {
+                  context.pop();
                   await postFollow(context);
                 },
                 child: const Text(
-                  'Bỏ theo dõi',
+                  'Theo dõi',
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                )),
+            Visibility(
+              // visible: currentUser,
+              child: CupertinoActionSheetAction(
+                  // isDestructiveAction: true,
+                  onPressed: () async {
+                    context.pop();
+                    await postAddFriend(context);
+                  },
+                  child: const Text(
+                    'Thêm bạn bè',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  )),
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+              isDefaultAction: true,
+              child: const Text(
+                'Hủy',
+                style: TextStyle(color: Colors.black, fontSize: 16),
+              ),
+              onPressed: () => context.pop()),
+        );
+      },
+    );
+  }
+
+  Future<void> showModalFollowing({
+    required BuildContext context,
+  }) async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoActionSheet(
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+                onPressed: () async {
+                  context.pop();
+                  await postAddFriend(context);
+                },
+                child: const Text(
+                  'Thêm bạn bè',
                   style: TextStyle(fontSize: 16, color: Colors.black),
                 )),
             Visibility(
@@ -264,10 +308,11 @@ class UserConnectionController extends ChangeNotifier {
               child: CupertinoActionSheetAction(
                   isDestructiveAction: true,
                   onPressed: () async {
-                    await showModalDeleteFriend(context: context);
+                    context.pop();
+                    await postFollow(context);
                   },
                   child: const Text(
-                    'Hủy kết bạn',
+                    'Bỏ theo dõi',
                     style: TextStyle(fontSize: 16),
                   )),
             ),

@@ -160,7 +160,7 @@ class AuthRepository {
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
   }
 
-  Future<void> signInWithOTP(
+  Future<UserCredential> signInWithOTP(
       {required String smsCode, required String verificationId}) async {
     final fireBaseAuth = ref.watch(firebaseAuthServiceProvider);
     return await fireBaseAuth.signInWithOTP(

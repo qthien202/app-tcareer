@@ -50,13 +50,14 @@ class FirebaseAuthService {
         codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
   }
 
-  Future<void> signInWithOTP(
+  Future<UserCredential> signInWithOTP(
       {required String smsCode, required String verificationId}) async {
+    UserCredential user;
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: verificationId, smsCode: smsCode);
 
-      await auth.signInWithCredential(credential);
+      user = await auth.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       print('Lỗi Firebase Auth: ${e.message}');
       return Future.error(e);
@@ -64,6 +65,7 @@ class FirebaseAuthService {
       print('Lỗi không xác định: $e');
       return Future.error(e);
     }
+    return user;
   }
 
   User? get currentUser => auth.currentUser;

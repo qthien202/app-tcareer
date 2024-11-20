@@ -1,23 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-Widget connectButton(
-    {required String friendStatus,
-    void Function()? onConnect,
-    void Function()? onConfirm,
-    void Function()? onDelete,
-    void Function()? onCancelRequest}) {
+Widget connectButton({
+  required String friendStatus,
+  void Function()? onConnect,
+  void Function()? onConfirm,
+  void Function()? onDelete,
+  void Function()? onCancelRequest,
+  void Function()? onFollowing,
+}) {
   Map<String, dynamic> friendStatusMap = {
     "is_friend": "Bạn bè",
     "sent_request": "Hủy yêu cầu",
     "received_request": "Phản hồi",
-    "default": "Thêm bạn bè"
+    "default": "Kết nối",
+    "followed": "Đang theo dõi"
   };
   Map<String, dynamic> connectCallBack = {
     "is_friend": onDelete,
     "sent_request": onCancelRequest,
     "received_request": onConfirm,
-    "default": onConnect
+    "default": onConnect,
+    "followed": onFollowing
   };
   return Expanded(
     child: Visibility(

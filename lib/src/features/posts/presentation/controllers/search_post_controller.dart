@@ -153,9 +153,14 @@ class SearchPostController extends ChangeNotifier {
 
   Future<void> setSearchHistory() async {
     userUtils.removeCache("searchHistory");
-    searchHistory.add(queryController.text);
-    await userUtils.saveCacheList(
-        key: "searchHistory", value: searchHistory.cast<String>());
+    List<String>? loadedHistory =
+        await userUtils.loadCacheList("searchHistory");
+    if (searchHistory
+        .any((e) => loadedHistory?.any((item) => item != e) == true)) {
+      searchHistory.add(queryController.text);
+      await userUtils.saveCacheList(
+          key: "searchHistory", value: searchHistory.cast<String>());
+    }
   }
 
   List<String> searchHistory = []; // Đảm bảo kiểu dữ liệu là List<String>

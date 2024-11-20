@@ -233,7 +233,9 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
         ref.watch(userConnectionControllerProvider(userId));
     final userController = ref.watch(userControllerProvider);
     final anotherController = ref.watch(anotherUserControllerProvider);
-
+    friendStatus = controller.anotherUserData?.data?.followed == true
+        ? "followed"
+        : (friendStatus ?? "default");
     return Visibility(
       visible: controller.anotherUserData != null,
       child: Padding(
@@ -242,16 +244,17 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
           mainAxisSize: MainAxisSize.max,
           children: [
             connectButton(
-              friendStatus: friendStatus ?? "default",
-              onConnect: () async =>
-                  await connectionController.postAddFriend(context),
-              onConfirm: () async => await connectionController
-                  .showModalConfirmRequest(context: context),
-              onCancelRequest: () async =>
-                  await connectionController.cancelRequest(context),
-              onDelete: () async => await connectionController
-                  .showModalDeleteFriend(context: context),
-            ),
+                friendStatus: friendStatus,
+                onConnect: () async => await connectionController
+                    .showModalConnect(context: context),
+                onConfirm: () async => await connectionController
+                    .showModalConfirmRequest(context: context),
+                onCancelRequest: () async =>
+                    await connectionController.cancelRequest(context),
+                onDelete: () async => await connectionController
+                    .showModalDeleteFriend(context: context),
+                onFollowing: () async => await connectionController
+                    .showModalFollowing(context: context)),
             const SizedBox(
               width: 10,
             ),

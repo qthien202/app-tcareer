@@ -52,7 +52,7 @@ class UserUseCase {
           verificationFailed: verificationFailed,
           codeSent: codeSent,
           codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
-  Future<void> signInWithOTP(
+  Future<UserCredential> signInWithOTP(
           {required String smsCode, required String verificationId}) async =>
       await authRepository.signInWithOTP(
           smsCode: smsCode, verificationId: verificationId);
