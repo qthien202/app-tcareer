@@ -221,6 +221,7 @@ class JobController extends ChangeNotifier {
         isFavorite = true;
         showSnackBar("Lưu việc làm thành công");
       }
+      await getJobDetail(jobId.toString());
       await handleUpdateJob(type);
       notifyListeners();
     }, context);
@@ -290,6 +291,13 @@ class JobController extends ChangeNotifier {
     String province = placemarks.first.administrativeArea ?? "";
     String district = placemarks.first.subAdministrativeArea ?? "";
     currentLocation = "$district, $province";
+    notifyListeners();
+  }
+
+  JobModel? job;
+  Future<void> getJobDetail(String jobId) async {
+    final response = await jobUseCase.getJobDetail(jobId: num.parse(jobId));
+    job = JobModel.fromJson(response['data']);
     notifyListeners();
   }
 }

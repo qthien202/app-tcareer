@@ -125,7 +125,7 @@ class JobRoute {
           return CustomTransitionPage(
               key: state.pageKey,
               child: JobDetailPage(
-                job: job,
+                jobId: job.id.toString(),
                 jobType: type,
               ),
               transitionsBuilder: fadeTransitionBuilder);

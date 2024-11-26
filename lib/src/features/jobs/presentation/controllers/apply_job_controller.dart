@@ -76,6 +76,7 @@ class ApplyJobController extends ChangeNotifier {
       selectedFile = null;
       fileName = null;
       isApplied = true;
+      jobController.getJobDetail(jobId.toString());
       jobController.refreshJob();
       jobController.refreshJobFavorites();
       context.pop();

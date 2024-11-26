@@ -7,6 +7,7 @@ import 'package:app_tcareer/src/features/user/presentation/controllers/user_cont
 import 'package:app_tcareer/src/utils/app_utils.dart';
 
 import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
+import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
@@ -17,9 +18,9 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 enum JobType { job, postedJob, applied, favorite }
 
 class JobDetailPage extends ConsumerStatefulWidget {
-  final JobModel job;
+  final String jobId;
   final JobType jobType;
-  const JobDetailPage({super.key, required this.job, required this.jobType});
+  const JobDetailPage({super.key, required this.jobId, required this.jobType});
 
   @override
   ConsumerState<JobDetailPage> createState() => _JobDetailPageState();
@@ -32,11 +33,12 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.microtask(() {
-      final controller = ref.watch(jobControllerProvider);
+    Future.microtask(() async {
+      final controller = ref.read(jobControllerProvider);
       setState(() {
-        controller.isFavorite = widget.job.isFavorite ?? false;
+        controller.job = null;
       });
+      await controller.getJobDetail(widget.jobId);
     });
     scrollController.addListener(() {
       setState(() {
@@ -70,134 +72,151 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
         backgroundColor: Colors.white,
         appBar: appBar(),
         body: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
           controller: scrollController,
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: cachedImageWidget(
-                    height: 50,
-                    width: 50,
-                    imageUrl: widget.job.ctyImageUrl ?? "",
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            Visibility(
+                visible: controller.job == null,
+                child: circularLoadingWidget()),
+            Visibility(
+              visible: controller.job != null,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        widget.job.ctyName ?? "",
-                        style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w400),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: cachedImageWidget(
+                          height: 50,
+                          width: 50,
+                          imageUrl: controller.job?.ctyImageUrl ?? "",
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              controller.job?.ctyName ?? "",
+                              style: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    controller.job?.title ?? "",
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Wrap(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    runSpacing: 10,
+                    spacing: 10,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text(
+                          controller.job?.jobTopicName ?? "",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text(
+                          controller.job?.jobRoleName ?? "",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text(
+                          controller.job?.employmentType != null
+                              ? contentEmployee[controller.job?.employmentType]
+                              : "",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300),
+                        ),
+                      ),
+                      // Container(
+                      //   margin: const EdgeInsets.symmetric(horizontal: 5),
+                      //   padding:
+                      //       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      //   decoration: BoxDecoration(
+                      //       color: Colors.grey.shade100,
+                      //       borderRadius: BorderRadius.circular(20)),
+                      //   child: Text(
+                      //     "${job?.experienceRequired != 0 ? job?.experienceRequired : "Dưới 1"} năm",
+                      //     style: const TextStyle(
+                      //         color: Colors.black,
+                      //         fontSize: 12,
+                      //         fontWeight: FontWeight.w300),
+                      //   ),
+                      // ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                            color: Colors.grey.shade100,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text(
+                          controller.job?.jobType != null
+                              ? contentType[controller.job?.jobType]
+                              : "",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w300),
+                        ),
                       ),
                     ],
                   ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              widget.job.title ?? "",
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Wrap(
-              // mainAxisAlignment: MainAxisAlignment.start,
-              runSpacing: 10,
-              spacing: 10,
-              children: [
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text(
-                    widget.job.jobTopicName ?? "",
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300),
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text(
-                    widget.job.jobRoleName ?? "",
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300),
+                  information(),
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text(
-                    contentEmployee[widget.job.employmentType],
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text(
-                    "${widget.job.experienceRequired != 0 ? widget.job.experienceRequired : "Dưới 1"} năm",
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300),
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text(
-                    contentType[widget.job.jobType] ?? "",
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w300),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            information(),
-            const SizedBox(
-              height: 10,
-            ),
-            jobDescription()
+                  jobDescription()
+                ],
+              ),
+            )
           ],
         ),
         bottomNavigationBar: bottomAppBar(context, ref),
@@ -239,10 +258,10 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
 
   Widget jobInfo() {
     final controller = ref.watch(jobControllerProvider);
-    final job = widget.job;
+
     // DateFormat inputFormat = DateFormat("dd/MM/yyyy");
     // DateFormat outputFormat = DateFormat("yyyy/MM/dd");
-    // DateTime dateTime = inputFormat.parse(widget.job.expiredDate ?? "");
+    // DateTime dateTime = inputFormat.parse(job?.expiredDate ?? "");
     // String outputDate = outputFormat.format(dateTime);
     Map<String, dynamic> contentEmployee = {
       "full-time": "Toàn thời gian",
@@ -260,38 +279,44 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
       {
         "icon": PhosphorIconsThin.user,
         "title": "Người đăng tuyển",
-        "content": "${job.userName}"
+        "content": "${controller.job?.userName}"
       },
       {
         "icon": PhosphorIconsThin.calendar,
         "title": "Kinh nghiệm",
         "content":
-            "${job.experienceRequired != 0 ? job.experienceRequired : "Dưới 1"} năm"
+            "${controller.job?.experienceRequired != 0 ? controller.job?.experienceRequired : "Dưới 1"} năm"
       },
       {
         "icon": PhosphorIconsThin.users,
         "title": "Số lượng tuyển",
-        "content": "${job.positionsAvailable} người"
+        "content": "${controller.job?.positionsAvailable} người"
       },
       {
         "icon": PhosphorIconsThin.briefcase,
         "title": "Loại công việc",
-        "content": contentEmployee[job.employmentType]
+        "content": controller.job?.employmentType != null
+            ? contentEmployee[controller.job?.employmentType]
+            : null
       },
       {
         "icon": PhosphorIconsThin.buildingOffice,
         "title": "Loại nơi làm việc",
-        "content": contentType[job.jobType]
+        "content": controller.job?.jobType != null
+            ? contentType[controller.job?.jobType]
+            : null
       },
       {
         "icon": PhosphorIconsThin.mapPin,
         "title": "Địa điểm làm việc",
-        "content": job.detailLocation?.fullAddress
+        "content": controller.job?.detailLocation?.fullAddress
       },
       {
         "icon": PhosphorIconsThin.clock,
         "title": "Hạn nộp hồ sơ",
-        "content": AppUtils.formatDate(job.expiredDate ?? "")
+        "content": controller.job?.expiredDate != null
+            ? AppUtils.formatDate(controller.job?.expiredDate ?? "")
+            : null
       },
     ];
     return Column(
@@ -330,7 +355,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                 Column(
                   children: [
                     Text(
-                      info['content'],
+                      info['content'] ?? "",
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.w500),
                     ),
@@ -346,7 +371,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
 
   Widget jobDescription() {
     final controller = ref.watch(jobControllerProvider);
-    final job = widget.job;
+    final job = controller.job;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -372,7 +397,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
           const SizedBox(
             height: 15,
           ),
-          HtmlWidget(job.jobDescription ?? "")
+          HtmlWidget(job?.jobDescription ?? "")
         ],
       ),
     );
@@ -383,101 +408,99 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
     final userId = userController.userData?.data?.id;
     final controller = ref.watch(applyJobControllerProvider);
     final jobController = ref.watch(jobControllerProvider);
-    final job = widget.job;
-    bool? isApplied = job.isApplied;
-    if (controller.isApplied == true) {
-      setState(() {
-        isApplied = controller.isApplied;
-        controller.isApplied = false;
-      });
-    }
+    final job = jobController.job;
 
-    bool isClient = userId == job.userId;
+    controller.isApplied = job?.isApplied ?? false;
+
+    bool isClient = userId == job?.userId;
     return BottomAppBar(
       color: Colors.white,
       child: Visibility(
-        visible: !isClient,
-        replacement: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8)),
-                backgroundColor: AppColors.primary,
-                padding: const EdgeInsets.symmetric(vertical: 15)),
-            onPressed: () {
-              context.pushNamed("applicants",
-                  queryParameters: {"id": job.id.toString()});
-            },
-            child: const Text(
-              "Xem danh sách ứng viên",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14),
-            )),
-        child: Row(
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () async {
-                String clientId =
-                    userController.userData?.data?.id.toString() ?? "";
-                context.pushNamed("jobChat", pathParameters: {
-                  "userId": job.userId.toString(),
-                  "clientId": clientId
-                });
+        visible: jobController.job != null,
+        child: Visibility(
+          visible: !isClient,
+          replacement: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                  backgroundColor: AppColors.primary,
+                  padding: const EdgeInsets.symmetric(vertical: 15)),
+              onPressed: () {
+                context.pushNamed("applicants",
+                    queryParameters: {"id": job?.id.toString()});
               },
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.grey.shade200),
-                ),
-                child: const PhosphorIcon(
-                  PhosphorIconsRegular.chatCenteredDots,
-                  color: AppColors.primary,
-                  size: 25,
+              child: const Text(
+                "Xem danh sách ứng viên",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14),
+              )),
+          child: Row(
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  String clientId =
+                      userController.userData?.data?.id.toString() ?? "";
+                  context.pushNamed("jobChat", pathParameters: {
+                    "userId": job?.userId.toString() ?? "",
+                    "clientId": clientId
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.grey.shade200),
+                  ),
+                  child: const PhosphorIcon(
+                    PhosphorIconsRegular.chatCenteredDots,
+                    color: AppColors.primary,
+                    size: 25,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-                flex: 4,
-                child: Visibility(
-                  visible: isApplied != true,
-                  replacement: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          backgroundColor: AppColors.primary,
-                          padding: const EdgeInsets.symmetric(vertical: 15)),
-                      onPressed: null,
-                      child: const Text(
-                        "Đã ứng tuyển",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14),
-                      )),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8)),
-                          backgroundColor: AppColors.primary,
-                          padding: const EdgeInsets.symmetric(vertical: 15)),
-                      onPressed: () => context.pushNamed("applyJob",
-                          queryParameters: {"id": job.id.toString()}),
-                      child: const Text(
-                        "Ứng tuyển ngay",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14),
-                      )),
-                ))
-          ],
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                  flex: 4,
+                  child: Visibility(
+                    visible: controller.isApplied != true,
+                    replacement: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            backgroundColor: AppColors.primary,
+                            padding: const EdgeInsets.symmetric(vertical: 15)),
+                        onPressed: null,
+                        child: const Text(
+                          "Đã ứng tuyển",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14),
+                        )),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8)),
+                            backgroundColor: AppColors.primary,
+                            padding: const EdgeInsets.symmetric(vertical: 15)),
+                        onPressed: () => context.pushNamed("applyJob",
+                            queryParameters: {"id": job?.id.toString()}),
+                        child: const Text(
+                          "Ứng tuyển ngay",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14),
+                        )),
+                  ))
+            ],
+          ),
         ),
       ),
     );
@@ -487,11 +510,9 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
     final userController = ref.watch(userControllerProvider);
     final clientId = userController.userData?.data?.id;
     final controller = ref.watch(jobControllerProvider);
-    final job = widget.job;
-    bool? isFavorite = job.isFavorite;
-    print(">>>>>>>>>clientId: $clientId");
-    print(">>>>>>>>>>userId: ${job.userId}");
-    bool isClient = clientId == job.userId;
+    final job = controller.job;
+    controller.isFavorite = job?.isFavorite ?? false;
+    bool isClient = clientId == job?.userId;
 
     return AppBar(
       backgroundColor: Colors.white,
@@ -500,7 +521,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
       title: Visibility(
         visible: positionPixel >= 100,
         child: Text(
-          job.title ?? "",
+          job?.title ?? "",
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
       ),
@@ -513,7 +534,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
           ),
           child: GestureDetector(
             onTap: () async => await controller.postAddJobFavorite(
-                context: context, jobId: job.id ?? 0, type: widget.jobType),
+                context: context, jobId: job?.id ?? 0, type: widget.jobType),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: PhosphorIcon(

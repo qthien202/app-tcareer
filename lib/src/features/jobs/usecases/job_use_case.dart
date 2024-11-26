@@ -54,6 +54,8 @@ class JobUseCase {
 
   Future getApplicationDetail({required num applicationId}) async =>
       await jobRepository.getApplicationDetail(applicationId: applicationId);
+  Future getJobDetail({required num jobId}) async =>
+      await jobRepository.getJobDetail(jobId: jobId);
 }
 
 final jobUseCaseProvider =
