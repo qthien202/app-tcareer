@@ -1,4 +1,5 @@
 import 'package:app_tcareer/main.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,7 @@ class NotificationService {
             "related_user_id": message.data['related_user_id'],
             "type": message.data['type'],
             "application_id": message.data['application_id'],
+            "job_id": message.data['job_id']
           },
               // autoDismissible: true,
               displayOnForeground: true,
@@ -87,18 +89,19 @@ class NotificationService {
     final userId = payload["related_user_id"]?.toString();
     final type = payload['type']?.toString();
     final applicationId = payload['application_id']?.toString();
-
+    final context = navigatorKey.currentContext;
+    final jobId = payload['job_id']?.toString();
     if (postId != null &&
         postId.isNotEmpty &&
         type?.contains("COMMENT") == true) {
       // Điều hướng đến chi tiết bài viết với type là COMMENT
-      navigatorKey.currentContext?.pushNamed(
+      context?.pushNamed(
         "detail",
         pathParameters: {"id": postId},
         queryParameters: {"notificationType": type},
       );
     } else if (postId != null && postId.isNotEmpty) {
-      navigatorKey.currentContext?.pushNamed(
+      context?.pushNamed(
         "detail",
         pathParameters: {"id": postId},
       );
@@ -107,11 +110,11 @@ class NotificationService {
         userId.isNotEmpty) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String clientId = prefs.getString("userId").toString();
-      navigatorKey.currentContext?.pushReplacementNamed("chat",
+      context?.pushReplacementNamed("chat",
           pathParameters: {"userId": userId ?? "", "clientId": clientId});
     } else if (userId != null && userId.isNotEmpty) {
       print(">>>>>>>>>>>2");
-      navigatorKey.currentContext?.pushNamed(
+      context?.pushNamed(
         'profile',
         queryParameters: {"userId": userId},
       );
@@ -121,6 +124,9 @@ class NotificationService {
       print(">>>>>>>>>>>>>>123123");
       navigatorKey.currentContext?.pushNamed("applyJob",
           queryParameters: {"applicationId": applicationId});
+    } else if (type?.contains("APPLICATION_VIEWED") == true) {
+      context?.pushReplacementNamed("jobDetail",
+          extra: {"jobId": jobId, "type": JobType.applied});
     }
   }
 }

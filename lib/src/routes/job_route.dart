@@ -120,12 +120,12 @@ class JobRoute {
         name: "jobDetail",
         pageBuilder: (context, state) {
           final data = state.extra as Map<String, dynamic>;
-          final job = data['job'] as JobModel;
+          final jobId = data['jobId'] as String;
           final type = data['type'] as JobType;
           return CustomTransitionPage(
               key: state.pageKey,
               child: JobDetailPage(
-                jobId: job.id.toString(),
+                jobId: jobId,
                 jobType: type,
               ),
               transitionsBuilder: fadeTransitionBuilder);

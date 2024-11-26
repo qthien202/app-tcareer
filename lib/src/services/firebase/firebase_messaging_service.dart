@@ -1,5 +1,6 @@
 import 'package:app_tcareer/app.dart';
 import 'package:app_tcareer/main.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/services/notifications/notification_service.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -91,6 +92,7 @@ class FirebaseMessagingService {
     final type = data['type']?.toString();
     final applicationId = data['application_id']?.toString();
     final conversationId = data['conversation_id']?.toString();
+    final jobId = data['job_id']?.toString();
 
     if (context != null) {
       if (postId != null &&
@@ -121,6 +123,9 @@ class FirebaseMessagingService {
       } else if (type?.contains("APPLICATION_SUBMITTED") == true) {
         context.pushNamed("applyJob",
             queryParameters: {"applicationId": applicationId});
+      } else if (type?.contains("APPLICATION_VIEWED") == true) {
+        context.pushReplacementNamed("jobDetail",
+            extra: {"jobId": jobId, "type": JobType.applied});
       }
     }
   }
@@ -144,6 +149,7 @@ Future<void> backgroundHandler(RemoteMessage message) async {
   final userId = data['related_user_id']?.toString();
   final type = data['type']?.toString();
   final applicationId = data['application_id']?.toString();
+  final jobId = data['job_id']?.toString();
 
   if (context != null) {
     if (postId != null &&
@@ -174,6 +180,9 @@ Future<void> backgroundHandler(RemoteMessage message) async {
     } else if (type?.contains("APPLICATION_SUBMITTED") == true) {
       context.pushNamed("applyJob",
           queryParameters: {"applicationId": applicationId});
+    } else if (type?.contains("APPLICATION_VIEWED") == true) {
+      context.pushReplacementNamed("jobDetail",
+          extra: {"jobId": jobId, "type": JobType.applied});
     }
   }
 }
