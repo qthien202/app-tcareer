@@ -107,7 +107,7 @@ dependencies:
   chewie: ^1.8.5
   badges: ^3.1.2
   permission_handler: ^11.3.1
-  ably_flutter: ^1.2.35
+  ably_flutter: ^1.2.36
   emoji_picker_flutter: ^2.2.0
   jwt_decoder: ^2.0.1
   twilio_flutter: ^0.9.0
