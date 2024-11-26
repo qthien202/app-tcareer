@@ -52,7 +52,8 @@ class NotificationService {
               payload: {
             "post_id": message.data["post_id"],
             "related_user_id": message.data['related_user_id'],
-            "type": message.data['type']
+            "type": message.data['type'],
+            "application_id": message.data['application_id'],
           },
               // autoDismissible: true,
               displayOnForeground: true,
@@ -85,6 +86,7 @@ class NotificationService {
     final postId = payload["post_id"]?.toString();
     final userId = payload["related_user_id"]?.toString();
     final type = payload['type']?.toString();
+    final applicationId = payload['application_id']?.toString();
 
     if (postId != null &&
         postId.isNotEmpty &&
@@ -113,6 +115,12 @@ class NotificationService {
         'profile',
         queryParameters: {"userId": userId},
       );
+    } else if (type?.contains("APPLICATION_SUBMITTED") == true &&
+        applicationId != null &&
+        applicationId.isNotEmpty) {
+      print(">>>>>>>>>>>>>>123123");
+      navigatorKey.currentContext?.pushNamed("applyJob",
+          queryParameters: {"applicationId": applicationId});
     }
   }
 }

@@ -49,8 +49,8 @@ class ChangePasswordController extends ChangeNotifier {
       await userUseCase
           .signInWithOTP(smsCode: smsCode, verificationId: verificationId)
           .then((val) async {
-        print(">>>>>>>>>>user: $val}");
-        context.pushNamed("changePassword");
+        print(">>>>>>>>>>idToken: ${await val.user?.getIdToken()}");
+        // context.pushNamed("changePassword");
       }).catchError((e) async {
         await AlertDialogUtil.showAlert(
             context: context,

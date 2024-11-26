@@ -18,9 +18,9 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'job_detail_page.dart';
 
 class ApplyJobPage extends ConsumerStatefulWidget {
-  final num jobId;
+  final num? jobId;
   final num? applicationId;
-  const ApplyJobPage({super.key, required this.jobId, this.applicationId});
+  const ApplyJobPage({super.key, this.jobId, this.applicationId});
 
   @override
   ConsumerState<ApplyJobPage> createState() => _ApplyJobPageState();
@@ -33,6 +33,7 @@ class _ApplyJobPageState extends ConsumerState<ApplyJobPage> {
     super.initState();
     Future.microtask(() async {
       final controller = ref.read(jobControllerProvider);
+      controller.application = null;
       if (widget.applicationId != null) {
         await controller.getApplicationDetail(widget.applicationId ?? 0);
       }
@@ -168,7 +169,7 @@ class _ApplyJobPageState extends ConsumerState<ApplyJobPage> {
                     userController.userData?.data?.cvFile != null
                 ? () async {
                     await controller.submitApplication(
-                        jobId: widget.jobId, context: context);
+                        jobId: widget.jobId ?? 0, context: context);
                   }
                 : null,
             child: const Text(
@@ -468,18 +469,20 @@ class _ApplyJobPageState extends ConsumerState<ApplyJobPage> {
               color: Colors.redAccent,
             ),
             const SizedBox(
-              width: 20,
+              width: 10,
             ),
-            Column(
-              children: [
-                Text(
-                  fileName,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12,
-                      overflow: TextOverflow.ellipsis),
-                ),
-              ],
+            Expanded(
+              child: Column(
+                children: [
+                  Text(
+                    fileName,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12,
+                        overflow: TextOverflow.ellipsis),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

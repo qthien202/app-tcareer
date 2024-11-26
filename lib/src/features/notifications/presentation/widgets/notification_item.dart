@@ -16,6 +16,7 @@ Widget notificationItem(
   String? type = notification['type'];
   String notificationId = notification['notification_id'] ?? "";
   bool? isRead = notification['is_read'] ?? false;
+  int? applicationId = notification['job_application_id'];
 
   return GestureDetector(
     onTap: () => controller.directToPage(
@@ -23,7 +24,8 @@ Widget notificationItem(
         context: context,
         postId: postId,
         relatedUserId: relatedUserId,
-        type: type),
+        type: type,
+        applicationId: applicationId.toString()),
     child: Container(
       padding: EdgeInsets.symmetric(vertical: 10),
       color:

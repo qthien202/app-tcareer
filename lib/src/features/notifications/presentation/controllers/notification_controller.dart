@@ -41,7 +41,8 @@ class NotificationController extends ChangeNotifier {
       required String notificationId,
       int? relatedUserId,
       int? postId,
-      String? type}) async {
+      String? type,
+      String? applicationId}) async {
     print(">>>>>>>>>>userId: $relatedUserId");
     print(">>>>>>>>>>>>postId: $postId");
     readNotification(notificationId);
@@ -56,6 +57,10 @@ class NotificationController extends ChangeNotifier {
       context.pushNamed("detail",
           pathParameters: {"id": postId.toString()},
           queryParameters: {"notificationType": type});
+    }
+    if (type?.contains("APPLICATION_SUBMITTED") == true) {
+      context.pushNamed("applyJob",
+          queryParameters: {"applicationId": applicationId});
     }
   }
 

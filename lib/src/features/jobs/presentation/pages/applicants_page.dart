@@ -81,10 +81,7 @@ class _ApplicantsPageState extends ConsumerState<ApplicantsPage> {
               return InkWell(
                 onTap: () => context.pushNamed(
                   "applyJob",
-                  queryParameters: {
-                    "id": applicant.jobId.toString(),
-                    "applicationId": applicant.id.toString()
-                  },
+                  queryParameters: {"applicationId": applicant.id.toString()},
                 ),
                 child: Container(
                   padding:
