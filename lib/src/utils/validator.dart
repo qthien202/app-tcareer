@@ -73,7 +73,7 @@ class Validator {
     if (value.length < 2) {
       return "Họ bắt đầu từ 2 ký tự trở lên";
     }
-    return fullname(valueDy);
+    return null;
   }
 
   static String? lastName(valueDy) {
@@ -84,7 +84,7 @@ class Validator {
     if (value.length < 2) {
       return "Tên bắt đầu từ 2 ký tự trở lên";
     }
-    return fullname(valueDy);
+    return null;
   }
 
   static String? emailCanEmpty(valueDy) {

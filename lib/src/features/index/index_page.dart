@@ -145,13 +145,21 @@ class _IndexPageState extends ConsumerState<IndexPage>
                 final item = entry.value;
                 final index = entry.key;
                 return BottomNavigationBarItem(
-                    icon: PhosphorIcon(
-                      item['icon'],
-                      size: index != 2 ? 25 : 30,
+                    icon: Visibility(
+                      visible: index != 3,
+                      replacement: chatIcon(ref),
+                      child: PhosphorIcon(
+                        item['icon'],
+                        size: index != 2 ? 25 : 30,
+                      ),
                     ),
-                    activeIcon: PhosphorIcon(
-                      item['activeIcon'],
-                      size: index != 2 ? 25 : 30,
+                    activeIcon: Visibility(
+                      visible: index != 3,
+                      replacement: chatIcon(ref, active: true),
+                      child: PhosphorIcon(
+                        item['activeIcon'],
+                        size: index != 2 ? 25 : 30,
+                      ),
                     ),
                     label: item['label']);
               }).toList()),
@@ -160,27 +168,27 @@ class _IndexPageState extends ConsumerState<IndexPage>
     );
   }
 
-  Widget notificationIcon(WidgetRef ref, {bool active = false}) {
-    final notificationController = ref.watch(notificationControllerProvider);
-    return StreamBuilder<List<Map<String, dynamic>>>(
-        stream: notificationController.unReadNotificationsStream(),
+  Widget chatIcon(WidgetRef ref, {bool active = false}) {
+    final controller = ref.watch(conversationControllerProvider);
+    return FutureBuilder<int>(
+        future: controller.calculateUnReadMessage(context),
         builder: (context, snapshot) {
           return badges.Badge(
-            position: badges.BadgePosition.topEnd(top: -10, end: -8),
-            showBadge: snapshot.data?.isNotEmpty == true ? true : false,
+            position: badges.BadgePosition.topEnd(top: -6, end: -5),
+            showBadge: snapshot.hasData && snapshot.data != 0 ? true : false,
             ignorePointer: false,
             badgeContent: Text(
-              snapshot.data?.length.toString() ?? "",
+              snapshot.data.toString(),
               style: const TextStyle(color: Colors.white, fontSize: 10),
             ),
-            badgeStyle: const badges.BadgeStyle(badgeColor: Colors.blue),
+            badgeStyle: const badges.BadgeStyle(badgeColor: Colors.redAccent),
             child: Visibility(
               visible: active != true,
               replacement: const PhosphorIcon(
-                PhosphorIconsFill.bell,
+                PhosphorIconsFill.chatCenteredDots,
               ),
               child: const PhosphorIcon(
-                PhosphorIconsThin.bell,
+                PhosphorIconsThin.chatCenteredDots,
               ),
             ),
           );

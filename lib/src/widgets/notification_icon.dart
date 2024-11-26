@@ -15,9 +15,9 @@ Widget notificationIcon(WidgetRef ref, {bool active = false}) {
           ignorePointer: false,
           badgeContent: Text(
             snapshot.data?.length.toString() ?? "",
-            style: const TextStyle(color: Colors.white, fontSize: 8),
+            style: const TextStyle(color: Colors.white, fontSize: 10),
           ),
-          badgeStyle: const badges.BadgeStyle(badgeColor: Colors.blue),
+          badgeStyle: const badges.BadgeStyle(badgeColor: Colors.redAccent),
           child: Visibility(
             visible: active != true,
             replacement: PhosphorIcon(

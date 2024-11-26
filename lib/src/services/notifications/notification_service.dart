@@ -71,6 +71,7 @@ class NotificationService {
               duration: const Duration(seconds: 3),
               title: message.notification?.title,
               body: message.notification?.body,
+              category: NotificationCategory.Social,
               notificationLayout: NotificationLayout.Messaging));
       await AwesomeNotifications().shouldShowRationaleToRequest();
       await AwesomeNotifications()

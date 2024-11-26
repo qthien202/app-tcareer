@@ -152,7 +152,9 @@ class ConversationController extends ChangeNotifier {
     await loadConversationFriends();
     await loadConversation();
     getFriends();
+
     await getAllConversation();
+
     await initializeAbly();
     await listenAllConversation(context);
     print(">>>>>>>>>doneListen");
@@ -330,6 +332,16 @@ class ConversationController extends ChangeNotifier {
     // final friendJson =
     // jsonEncode(friends.map((friend) => friend.toJson()).toList());
     // saveConversationFriends(friendJson: friendJson);
+  }
+
+  Future<int> calculateUnReadMessage(BuildContext context) async {
+    if (conversations.isEmpty) {
+      await onInit(context);
+    }
+    int unReadLength = conversations.fold(0, (prev, val) {
+      return prev + (val.unRead?.toInt() ?? 0);
+    });
+    return unReadLength;
   }
 }
 
