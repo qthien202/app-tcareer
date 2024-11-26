@@ -54,16 +54,21 @@ class NotificationService {
             "related_user_id": message.data['related_user_id'],
             "type": message.data['type']
           },
+              // autoDismissible: true,
               displayOnForeground: true,
               displayOnBackground: true,
               roundedLargeIcon: false,
               wakeUpScreen: true,
               largeIcon: image,
               id: notificationId,
+              // icon: '',
+              badge: 0,
+              criticalAlert: true,
               channelKey: 'basic_channel',
+              duration: const Duration(seconds: 3),
               title: message.notification?.title,
               body: message.notification?.body,
-              notificationLayout: NotificationLayout.BigText));
+              notificationLayout: NotificationLayout.Messaging));
       await AwesomeNotifications().shouldShowRationaleToRequest();
       await AwesomeNotifications()
           .setListeners(onActionReceivedMethod: onActionReceivedMethod);
