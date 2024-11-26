@@ -350,4 +350,25 @@ class AppUtils {
     String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
     return formattedDate;
   }
+
+  static String formatDateTime(String date) {
+    try {
+      // Định dạng chuỗi đầu vào
+      DateFormat inputFormat = DateFormat('yyyy/MM/dd HH:mm:ss');
+      // Định dạng chuỗi đầu ra
+      DateFormat outputFormat = DateFormat('dd/MM/yyyy HH:mm');
+
+      // Loại bỏ khoảng trắng nếu có
+      date = date.trim();
+
+      // Chuyển chuỗi thành DateTime
+      DateTime dateTime = inputFormat.parse(date);
+
+      // Chuyển DateTime thành chuỗi theo định dạng mong muốn
+      return outputFormat.format(dateTime);
+    } catch (e) {
+      print("Lỗi format date: $e");
+      return "Ngày không hợp lệ";
+    }
+  }
 }

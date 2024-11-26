@@ -8,6 +8,9 @@ class JobModel {
       String? title,
       bool? isApplied,
       bool? isFavorite,
+      bool? employerSeen,
+      String? employerSeenAt,
+      String? appliedAt,
       num? jobTopicId,
       String? province,
       String? jobTopicName,
@@ -101,6 +104,9 @@ class JobModel {
     _title = json['title'];
     _isApplied = json['is_applied'];
     _isFavorite = json['is_favorite'];
+    _employerSeen = json['employer_seen'];
+    _employerSeenAt = json['employer_seen_at'];
+    _appliedAt = json['applied_at'];
     _jobTopicId = json['job_topic_id'];
     _jobTopicName = json['job_topic_name'];
     _jobRoleId = json['job_role_id'];
@@ -126,6 +132,9 @@ class JobModel {
   String? _title;
   bool? _isApplied;
   bool? _isFavorite;
+  bool? _employerSeen;
+  String? _employerSeenAt;
+  String? _appliedAt;
   num? _jobTopicId;
   String? _jobTopicName;
   num? _jobRoleId;
@@ -151,6 +160,9 @@ class JobModel {
     String? title,
     bool? isApplied,
     bool? isFavorite,
+    bool? employerSeen,
+    String? employerSeenAt,
+    String? appliedAt,
     num? jobTopicId,
     String? jobTopicName,
     num? jobRoleId,
@@ -177,6 +189,9 @@ class JobModel {
           title: title ?? _title,
           isApplied: isApplied ?? _isApplied,
           isFavorite: isFavorite ?? _isFavorite,
+          employerSeen: employerSeen ?? _employerSeen,
+          employerSeenAt: employerSeenAt ?? _employerSeenAt,
+          appliedAt: appliedAt ?? _appliedAt,
           jobTopicId: jobTopicId ?? _jobTopicId,
           jobTopicName: jobTopicName ?? _jobTopicName,
           jobRoleId: jobRoleId ?? _jobRoleId,
@@ -201,6 +216,9 @@ class JobModel {
   String? get title => _title;
   bool? get isApplied => _isApplied;
   bool? get isFavorite => _isFavorite;
+  bool? get employerSeen => _employerSeen;
+  String? get employerSeenAt => _employerSeenAt;
+  String? get appliedAt => _appliedAt;
   num? get jobTopicId => _jobTopicId;
   String? get jobTopicName => _jobTopicName;
   num? get jobRoleId => _jobRoleId;
@@ -228,6 +246,9 @@ class JobModel {
     map['title'] = _title;
     map['is_applied'] = _isApplied;
     map['is_favorite'] = _isFavorite;
+    map['employer_seen'] = _employerSeen;
+    map['employer_seen_at'] = _employerSeenAt;
+    map['applied_at'] = _appliedAt;
     map['job_topic_id'] = _jobTopicId;
     map['job_topic_name'] = _jobTopicName;
     map['job_role_id'] = _jobRoleId;
