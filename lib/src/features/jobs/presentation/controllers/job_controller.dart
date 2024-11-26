@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:app_tcareer/src/features/jobs/data/models/applicant_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/applicant_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
@@ -147,6 +149,17 @@ class JobController extends ChangeNotifier {
           .toList();
       applicants.addAll(newApplicants as Iterable<ApplicantModel>);
     }
+    notifyListeners();
+  }
+
+  ApplicantModel? application;
+  Future<void> getApplicationDetail(num applicationId) async {
+    final response =
+        await jobUseCase.getApplicationDetail(applicationId: applicationId);
+
+    final data = response['data'];
+    application = ApplicantModel.fromJson(data);
+    print(">>>>>>>>>>application: ${jsonEncode(application)}");
     notifyListeners();
   }
 

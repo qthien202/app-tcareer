@@ -4,6 +4,7 @@ import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/index/index_page.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/applicant_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/apply_job_controller.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/cv_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/text_input.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
@@ -16,14 +17,30 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 import 'job_detail_page.dart';
 
-class ApplyJobPage extends ConsumerWidget {
+class ApplyJobPage extends ConsumerStatefulWidget {
   final num jobId;
-
-  final ApplicantModel? applicant;
-  const ApplyJobPage({super.key, required this.jobId, this.applicant});
+  final num? applicationId;
+  const ApplyJobPage({super.key, required this.jobId, this.applicationId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ApplyJobPage> createState() => _ApplyJobPageState();
+}
+
+class _ApplyJobPageState extends ConsumerState<ApplyJobPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask(() async {
+      final controller = ref.read(jobControllerProvider);
+      if (widget.applicationId != null) {
+        await controller.getApplicationDetail(widget.applicationId ?? 0);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final controller = ref.watch(applyJobControllerProvider);
     final userController = ref.watch(userControllerProvider);
 
@@ -34,7 +51,7 @@ class ApplyJobPage extends ConsumerWidget {
         automaticallyImplyLeading: true,
         centerTitle: true,
         title: Text(
-          applicant != null ? "Hồ sơ ứng viên" : "Ứng tuyển",
+          widget.applicationId != null ? "Hồ sơ ứng viên" : "Ứng tuyển",
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
         ),
       ),
@@ -66,7 +83,7 @@ class ApplyJobPage extends ConsumerWidget {
         ],
       ),
       bottomNavigationBar: Visibility(
-          visible: applicant != null,
+          visible: widget.applicationId != null,
           replacement: bottomApply(context: context, ref: ref),
           child: bottomApplicant(context: context, ref: ref)),
     );
@@ -75,6 +92,8 @@ class ApplyJobPage extends ConsumerWidget {
   Widget bottomApplicant(
       {required BuildContext context, required WidgetRef ref}) {
     final userController = ref.watch(userControllerProvider);
+    final controller = ref.watch(jobControllerProvider);
+    final application = controller.application;
     return BottomAppBar(
       color: Colors.white,
       child: Row(
@@ -85,7 +104,7 @@ class ApplyJobPage extends ConsumerWidget {
               String clientId =
                   userController.userData?.data?.id.toString() ?? "";
               context.pushNamed("jobChat", pathParameters: {
-                "userId": applicant?.userId.toString() ?? "",
+                "userId": application?.userId.toString() ?? "",
                 "clientId": clientId
               });
             },
@@ -117,7 +136,7 @@ class ApplyJobPage extends ConsumerWidget {
                         padding: const EdgeInsets.symmetric(vertical: 15)),
                     onPressed: () => context.pushNamed("profile",
                             queryParameters: {
-                              "userId": applicant?.userId.toString() ?? ""
+                              "userId": application?.userId.toString() ?? ""
                             }),
                     child: const Text(
                       "Xem trang cá nhân",
@@ -149,7 +168,7 @@ class ApplyJobPage extends ConsumerWidget {
                     userController.userData?.data?.cvFile != null
                 ? () async {
                     await controller.submitApplication(
-                        jobId: jobId, context: context);
+                        jobId: widget.jobId, context: context);
                   }
                 : null,
             child: const Text(
@@ -165,11 +184,13 @@ class ApplyJobPage extends ConsumerWidget {
     TextEditingController emailController = TextEditingController();
     TextEditingController phoneController = TextEditingController();
     TextEditingController addressController = TextEditingController();
-    emailController.text = applicant != null
-        ? applicant?.email.toString() ?? ""
+    final controller = ref.watch(jobControllerProvider);
+    final application = controller.application;
+    emailController.text = application != null
+        ? application.email.toString() ?? ""
         : userController.userData?.data?.email ?? "";
-    phoneController.text = applicant != null
-        ? applicant?.phone.toString() ?? ""
+    phoneController.text = application != null
+        ? application.phone.toString() ?? ""
         : userController.userData?.data?.phone ?? "";
 
     return Container(
@@ -196,8 +217,8 @@ class ApplyJobPage extends ConsumerWidget {
                 children: [
                   CircleAvatar(
                     radius: 18,
-                    backgroundImage: NetworkImage(applicant != null
-                        ? applicant?.avatar ?? ""
+                    backgroundImage: NetworkImage(application != null
+                        ? application.avatar ?? ""
                         : userController.userData?.data?.avatar ?? ""),
                   ),
                 ],
@@ -209,8 +230,8 @@ class ApplyJobPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    applicant != null
-                        ? applicant?.fullName ?? ""
+                    application != null
+                        ? application.fullName ?? ""
                         : userController.userData?.data?.fullName ?? "",
                     style: const TextStyle(
                         fontSize: 14, fontWeight: FontWeight.w500),
@@ -243,9 +264,11 @@ class ApplyJobPage extends ConsumerWidget {
 
   Widget cvItem(WidgetRef ref, BuildContext context) {
     final controller = ref.watch(applyJobControllerProvider);
+    final jobController = ref.watch(jobControllerProvider);
+    final application = jobController.application;
     final userController = ref.watch(userControllerProvider);
-    String? cvFile = applicant != null
-        ? applicant?.cvFile ?? ""
+    String? cvFile = application != null
+        ? application.cvFile ?? ""
         : userController.userData?.data?.cvFile;
 
     return Container(
@@ -253,7 +276,7 @@ class ApplyJobPage extends ConsumerWidget {
       width: ScreenUtil().screenWidth,
       height: controller.selectedFile != null
           ? 100
-          : applicant != null
+          : application != null
               ? 60
               : 300,
       decoration: BoxDecoration(
@@ -277,7 +300,7 @@ class ApplyJobPage extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Visibility(
-                    visible: applicant == null,
+                    visible: application == null,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -294,7 +317,7 @@ class ApplyJobPage extends ConsumerWidget {
                   ),
                   fileItemRecent(context: context, url: cvFile),
                   Visibility(
-                    visible: applicant == null,
+                    visible: application == null,
                     child: const SizedBox(
                       height: 20,
                     ),
@@ -302,7 +325,7 @@ class ApplyJobPage extends ConsumerWidget {
                 ],
               )),
           Visibility(
-            visible: applicant == null,
+            visible: application == null,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

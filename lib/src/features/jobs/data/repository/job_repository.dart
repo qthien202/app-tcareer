@@ -17,6 +17,7 @@ import 'package:app_tcareer/src/services/apis/api_services.dart';
 import 'package:app_tcareer/src/services/firebase/firebase_storage_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../models/applicant_model.dart';
 import '../models/job_topic_model.dart';
 
 class JobRepository {
@@ -78,6 +79,9 @@ class JobRepository {
 
   Future<TopicJobFavoriteResponse> getTopicJobFavorite() async =>
       await apiServices.getTopicJobFavorite();
+
+  Future getApplicationDetail({required num applicationId}) async =>
+      await apiServices.getApplicationDetail(applicationId: applicationId);
 }
 
 final jobRepositoryProvider = Provider((ref) {

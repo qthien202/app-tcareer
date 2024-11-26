@@ -79,9 +79,13 @@ class _ApplicantsPageState extends ConsumerState<ApplicantsPage> {
             (BuildContext context, int index) {
               final applicant = controller.applicants[index];
               return InkWell(
-                onTap: () => context.pushNamed("applyJob",
-                    queryParameters: {"id": applicant.jobId.toString()},
-                    extra: applicant),
+                onTap: () => context.pushNamed(
+                  "applyJob",
+                  queryParameters: {
+                    "id": applicant.jobId.toString(),
+                    "applicationId": applicant.id.toString()
+                  },
+                ),
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 15),

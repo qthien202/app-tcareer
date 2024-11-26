@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_tcareer/src/features/jobs/data/models/applicant_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/applicant_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
@@ -50,6 +51,9 @@ class JobUseCase {
   Future<GetJobResponse> getSearchJob(
           {required JobSearchRequest query}) async =>
       await jobRepository.getSearchJob(query: query);
+
+  Future getApplicationDetail({required num applicationId}) async =>
+      await jobRepository.getApplicationDetail(applicationId: applicationId);
 }
 
 final jobUseCaseProvider =

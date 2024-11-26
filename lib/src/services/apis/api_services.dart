@@ -54,6 +54,8 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 
+import '../../features/jobs/data/models/applicant_model.dart';
+
 part 'api_services.g.dart';
 
 @RestApi(baseUrl: AppConstants.baseUrl)
@@ -264,4 +266,7 @@ abstract class ApiServices {
 
   @PUT('api/auth/users/change-password')
   Future putChangePassword({@Body() required ChangePasswordRequest body});
+
+  @GET('api/auth/get-application-detail/{id}')
+  Future getApplicationDetail({@Path('id') required num applicationId});
 }
