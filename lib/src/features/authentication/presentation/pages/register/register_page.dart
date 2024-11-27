@@ -18,10 +18,10 @@ class RegisterPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(registerControllerProvider);
-    controller.fullNameController.text = "thien test";
-    controller.emailController.text = "huathien1303@gmail.com";
-    controller.passController.text = "123456aA@";
-    controller.confirmPasswordController.text = "123456aA@";
+    // controller.fullNameController.text = "thien test";
+    // controller.emailController.text = "huathien1303@gmail.com";
+    // controller.passController.text = "123456aA@";
+    // controller.confirmPasswordController.text = "123456aA@";
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,

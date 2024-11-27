@@ -4,6 +4,7 @@ import 'package:app_tcareer/src/features/authentication/data/models/forgot_passw
 import 'package:app_tcareer/src/features/authentication/data/models/forgot_password_verify_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/reset_password_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/verify_otp.dart';
+import 'package:app_tcareer/src/features/authentication/data/models/verify_phone_request.dart';
 import 'package:app_tcareer/src/features/authentication/usecases/forgot_password_use_case.dart';
 import 'package:app_tcareer/src/features/authentication/usecases/register_use_case.dart';
 import 'package:app_tcareer/src/utils/alert_dialog_util.dart';
@@ -126,7 +127,10 @@ class ForgotPasswordController extends StateNotifier<void> {
     AppUtils.loadingApi(() async {
       await registerUseCaseProvider
           .signInWithOTP(smsCode: smsCode, verificationId: verificationId)
-          .then((val) {
+          .then((val) async {
+        final user = val.user;
+        await verifyPhone(
+            idToken: await user?.getIdToken() ?? "", uid: user?.uid ?? "");
         context.pushNamed('resetPassword');
       }).catchError((e) {
         AlertDialogUtil.showAlert(
@@ -137,5 +141,11 @@ class ForgotPasswordController extends StateNotifier<void> {
 
       showSnackBar("Xác  thực thành công");
     }, context);
+  }
+
+  Future<void> verifyPhone(
+      {required String idToken, required String uid}) async {
+    await registerUseCaseProvider.postVerifyPhone(
+        body: VerifyPhoneRequest(idToken: idToken, uid: uid));
   }
 }
