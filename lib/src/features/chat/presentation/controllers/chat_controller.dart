@@ -612,6 +612,8 @@ class ChatController extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  double currentIndex = -1;
 }
 
 final chatControllerProvider =

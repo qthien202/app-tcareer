@@ -37,6 +37,10 @@ class _ChatPageState extends ConsumerState<ChatPage> {
   final DraggableScrollableController draggableScrollableController =
       DraggableScrollableController();
   ItemScrollController itemScrollController = ItemScrollController();
+  final ScrollOffsetListener scrollOffsetListener =
+      ScrollOffsetListener.create();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
   @override
   void initState() {
     // TODO: implement initState
@@ -46,6 +50,12 @@ class _ChatPageState extends ConsumerState<ChatPage> {
       await controller.onInit(clientId: widget.clientId, userId: widget.userId);
       // controller.listenPresence(widget.userId);
       await controller.listenMessage();
+      scrollOffsetListener.changes.listen((event) {
+        setState(() {
+          controller.currentIndex = event;
+        });
+      });
+
       if (widget.content != null) {
         await controller.directToMessage(
             content: widget.content ?? "",
@@ -94,11 +104,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.grey.shade100,
         appBar: appBar(ref),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          child: Icon(Icons.keyboard_double_arrow_down),
-          backgroundColor: Colors.white,
-        ),
+
         body: Stack(
           alignment: Alignment.bottomCenter,
           children: [
@@ -107,6 +113,25 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               children: [
                 messages(),
               ],
+            ),
+            Positioned(
+              bottom: 80, // Điều chỉnh khoảng cách từ dưới lên
+              right: 20, // Điều chỉnh khoảng cách từ bên phải
+              child: Visibility(
+                visible: controller.currentIndex > 0,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: FloatingActionButton(
+                    mini: true,
+                    shape: CircleBorder(),
+                    onPressed: () {
+                      itemScrollController.jumpTo(index: 0);
+                    },
+                    child: Icon(Icons.keyboard_double_arrow_down),
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              ),
             ),
             if (controller.isShowMedia)
               DraggableScrollableSheet(
@@ -150,6 +175,8 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         return Expanded(
           // flex: 5,
           child: ScrollablePositionedList.separated(
+            scrollOffsetListener: scrollOffsetListener,
+            itemPositionsListener: itemPositionsListener,
             reverse: true,
             itemScrollController: itemScrollController,
             padding: const EdgeInsets.symmetric(horizontal: 10).copyWith(
