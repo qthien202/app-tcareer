@@ -6,6 +6,7 @@ import 'package:app_tcareer/src/features/authentication/presentation/pages/forgo
 import 'package:app_tcareer/src/features/authentication/presentation/pages/job_topic_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/login/login_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/register/register_page.dart';
+import 'package:app_tcareer/src/features/authentication/presentation/pages/register/verify_email_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/register/verify_phone_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/verify/verify_page.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
@@ -115,7 +116,8 @@ class AppRouter {
           '/login': '/login',
           '/intro': '/intro',
           '/verifyPhone': '/verifyPhone',
-          '/topics': '/topics'
+          '/topics': '/topics',
+          '/verifyEmail': '/verifyEmail',
         };
 
         if (isAuthenticated != true ||
@@ -166,13 +168,27 @@ class AppRouter {
           ),
         ),
         GoRoute(
-          path: "/${RouteNames.register.name}",
-          name: RouteNames.register.name,
+          path: "/verifyEmail",
+          name: "verifyEmail",
           pageBuilder: (context, state) => CustomTransitionPage(
             key: state.pageKey,
-            child: const RegisterPage(),
+            child: const VerifyEmailPage(),
             transitionsBuilder: fadeTransitionBuilder,
           ),
+        ),
+        GoRoute(
+          path: "/${RouteNames.register.name}",
+          name: RouteNames.register.name,
+          pageBuilder: (context, state) {
+            final type = state.extra as RegisterType;
+            return CustomTransitionPage(
+              key: state.pageKey,
+              child: RegisterPage(
+                type: type,
+              ),
+              transitionsBuilder: fadeTransitionBuilder,
+            );
+          },
         ),
         GoRoute(
           path: "/${RouteNames.forgotPassword.name}",

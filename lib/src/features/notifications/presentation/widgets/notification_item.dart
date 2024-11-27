@@ -62,6 +62,9 @@ Widget notificationItem(
                   updatedAt,
                   style: const TextStyle(color: Colors.grey, fontSize: 10),
                 ),
+                const SizedBox(
+                  width: 5,
+                ),
                 // const SizedBox(
                 //   height: 10,
                 // ),

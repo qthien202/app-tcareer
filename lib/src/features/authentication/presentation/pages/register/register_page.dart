@@ -9,12 +9,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
+enum RegisterType { phone, email }
+
 class RegisterPage extends ConsumerWidget {
-  const RegisterPage({super.key});
+  final RegisterType type;
+  const RegisterPage({super.key, required this.type});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(registerControllerProvider);
+    controller.fullNameController.text = "thien test";
+    controller.emailController.text = "huathien1303@gmail.com";
+    controller.passController.text = "123456aA@";
+    controller.confirmPasswordController.text = "123456aA@";
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -62,12 +69,15 @@ class RegisterPage extends ConsumerWidget {
                           hintText: "Nhập họ tên",
                           validator: Validator.fullname,
                         ),
-                        TextInputForm(
-                          controller: controller.emailController,
-                          isRequired: true,
-                          title: "Email",
-                          hintText: "Nhập email",
-                          validator: Validator.email,
+                        Visibility(
+                          visible: type != RegisterType.phone,
+                          child: TextInputForm(
+                            controller: controller.emailController,
+                            isRequired: true,
+                            title: "Email",
+                            hintText: "Nhập email",
+                            validator: Validator.email,
+                          ),
                         ),
                         TextInputForm(
                           isRequired: true,
@@ -96,7 +106,8 @@ class RegisterPage extends ConsumerWidget {
                         ),
                         authButtonWidget(
                             context: context,
-                            onPressed: () async => controller.onCreate(context),
+                            onPressed: () async => controller.onCreate(
+                                context: context, type: type),
                             title: "Tiếp tục"),
 
                         const SizedBox(

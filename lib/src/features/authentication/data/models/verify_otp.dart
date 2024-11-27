@@ -1,8 +1,20 @@
-enum TypeVerify { register, forgotPassword }
+enum TypeVerify {
+  registerPhone,
+  registerEmail,
+  forgotPasswordPhone,
+  forgotPasswordEmail
+}
 
 class VerifyOTP {
-  String phoneNumber;
-  String verificationId;
+  String? phoneNumber;
+  String? verificationId;
+  String? email;
+  String? password;
   TypeVerify type;
-  VerifyOTP(this.phoneNumber, this.verificationId, this.type);
+  VerifyOTP(
+      {this.phoneNumber,
+      this.verificationId,
+      required this.type,
+      this.email,
+      this.password});
 }

@@ -1,4 +1,5 @@
 import 'package:app_tcareer/firebase_options.dart';
+import 'package:app_tcareer/src/extensions/auth_extension.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/login_request.dart';
 import 'package:app_tcareer/src/features/authentication/usecases/login_use_case.dart';
 import 'package:app_tcareer/src/configs/app_constants.dart';
@@ -14,17 +15,21 @@ class LoginController extends ChangeNotifier {
   final LoginUseCase loginUseCaseProvider;
   final Ref ref;
   LoginController(this.loginUseCaseProvider, this.ref);
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
   TextEditingController passController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Future<void> login(BuildContext context,
-      {String? phone, String? password}) async {
-    final jobRepository = ref.watch(jobRepositoryProvider);
-
+      {String? phone, String? email, String? password}) async {
     AppUtils.loadingApi(() async {
-      await loginUseCaseProvider.login(
-          phone: phone ?? phoneController.text,
-          password: password ?? passController.text);
+      if (userNameController.text.isValidEmail) {
+        await loginUseCaseProvider.login(
+            email: email ?? userNameController.text,
+            password: password ?? passController.text);
+      } else {
+        await loginUseCaseProvider.login(
+            phone: phone ?? userNameController.text,
+            password: password ?? passController.text);
+      }
     }, context);
   }
 

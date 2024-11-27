@@ -31,8 +31,10 @@ class ChangePasswordController extends ChangeNotifier {
         },
         codeSent: (verificationId, forceResendingToken) {
           // verification = verificationId;
-          final verifyOTP = VerifyOTP(phoneController.text,
-              verificationId ?? "", TypeVerify.forgotPassword);
+          final verifyOTP = VerifyOTP(
+              type: TypeVerify.forgotPasswordPhone,
+              phoneNumber: phoneController.text,
+              verificationId: verificationId);
           print(">>>>>>>>verificationId: $verificationId");
           context.pushNamed("userVerification", extra: verifyOTP);
         },

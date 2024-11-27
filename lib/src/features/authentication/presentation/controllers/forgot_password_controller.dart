@@ -107,8 +107,10 @@ class ForgotPasswordController extends StateNotifier<void> {
         },
         codeSent: (verificationId, forceResendingToken) {
           // verification = verificationId;
-          final verifyOTP = VerifyOTP(textInputController.text,
-              verificationId ?? "", TypeVerify.forgotPassword);
+          final verifyOTP = VerifyOTP(
+              type: TypeVerify.forgotPasswordPhone,
+              phoneNumber: textInputController.text,
+              verificationId: verificationId);
           print(">>>>>>>>verificationId: $verificationId");
           context.pushNamed("verify", extra: verifyOTP);
         },

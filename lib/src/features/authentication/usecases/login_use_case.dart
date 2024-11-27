@@ -8,8 +8,10 @@ class LoginUseCase {
   final AuthRepository authRepository;
   LoginUseCase(this.authRepository);
 
-  Future<void> login({required String phone, required String password}) async {
-    return await authRepository.login(phone: phone, password: password);
+  Future<void> login(
+      {String? phone, String? email, required String password}) async {
+    return await authRepository.login(
+        phone: phone, email: email, password: password);
   }
 
   Future<void> logout() async => await authRepository.logout();

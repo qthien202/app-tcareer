@@ -184,14 +184,16 @@ Widget commentItemWidget(int commentId, Map<dynamic, dynamic> comment,
                 StreamBuilder(
                   stream: controller.likeCommentsStream(postId),
                   builder: (context, snapshot) {
+                    print(">>>>>>>data: ${snapshot.data}");
                     final likesCommentData = snapshot.data?.entries.toList();
-
+                    print(">>>>>>>>>>>likeData: $likesCommentData");
                     Map<dynamic, dynamic>? userLikesEntry =
                         likesCommentData?.map((entry) {
                       if (entry.key == commentId.toString()) {
                         return entry.value['user_likes'];
                       }
                     }).firstWhere((value) => value != null, orElse: () => null);
+                    print(">>>>>>>>>userLikes: $userLikesEntry");
 
                     bool hasLiked = userLikesEntry != null
                         ? userLikesEntry.containsKey(userId)

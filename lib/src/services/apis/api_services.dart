@@ -10,6 +10,7 @@ import 'package:app_tcareer/src/features/authentication/data/models/reset_passwo
 import 'package:app_tcareer/src/features/authentication/data/models/login_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/login_response.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/register_request.dart';
+import 'package:app_tcareer/src/features/authentication/data/models/verify_phone_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/all_conversation.dart';
 import 'package:app_tcareer/src/features/chat/data/models/conversation.dart';
 import 'package:app_tcareer/src/features/chat/data/models/leave_chat_request.dart';
@@ -272,4 +273,7 @@ abstract class ApiServices {
 
   @GET('api/auth/career/{id}/view')
   Future getJobDetail({@Path('id') required num jobId});
+
+  @POST('auth/verify_phone')
+  Future postVerifyPhone({@Body() required VerifyPhoneRequest body});
 }

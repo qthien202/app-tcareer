@@ -41,11 +41,19 @@ class VerifyPage extends ConsumerWidget {
                   height: 20,
                 ),
                 Visibility(
-                  visible: verifyOTP == null,
-                  replacement: Text(
-                    "Nhập mã xác minh mà chúng tôi vừa gửi đến số điện thoại của bạn ${verifyOTP?.phoneNumber}",
-                    style: const TextStyle(
-                        fontSize: 12, color: Colors.grey, letterSpacing: 1),
+                  visible: verifyOTP != null,
+                  replacement: Visibility(
+                    visible: verifyOTP?.phoneNumber != null,
+                    replacement: Text(
+                      "Nhập mã xác minh mà chúng tôi vừa gửi đến email của bạn ${verifyOTP?.email}",
+                      style: const TextStyle(
+                          fontSize: 12, color: Colors.grey, letterSpacing: 1),
+                    ),
+                    child: Text(
+                      "Nhập mã xác minh mà chúng tôi vừa gửi đến số điện thoại của bạn ${verifyOTP?.phoneNumber}",
+                      style: const TextStyle(
+                          fontSize: 12, color: Colors.grey, letterSpacing: 1),
+                    ),
                   ),
                   child: Text(
                     "Nhập mã xác minh mà chúng tôi vừa gửi đến email của bạn ${controller.textInputController.text}",
@@ -69,14 +77,21 @@ class VerifyPage extends ConsumerWidget {
                           context: context,
                           onPressed: () async {
                             switch (verifyOTP?.type) {
-                              case TypeVerify.register:
+                              case TypeVerify.registerPhone:
                                 await registerController.signInWithOTP(
                                     context: context,
                                     smsCode: controller.codeController.text,
                                     verificationId:
                                         verifyOTP?.verificationId ?? "");
                                 break;
-                              case TypeVerify.forgotPassword:
+                              case TypeVerify.registerEmail:
+                                await registerController.verifyEmail(
+                                    email:
+                                        registerController.emailController.text,
+                                    password: verifyOTP?.password ?? "",
+                                    context: context,
+                                    code: controller.codeController.text);
+                              case TypeVerify.forgotPasswordPhone:
                                 await controller.signInWithOTP(
                                     context: context,
                                     smsCode: controller.codeController.text,

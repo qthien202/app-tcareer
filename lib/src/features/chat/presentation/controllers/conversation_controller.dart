@@ -335,8 +335,8 @@ class ConversationController extends ChangeNotifier {
   }
 
   Future<int> calculateUnReadMessage(BuildContext context) async {
-    if (conversations.isEmpty) {
-      await onInit(context);
+    if (allConversation == null) {
+      await getAllConversation();
     }
     int unReadLength = conversations.fold(0, (prev, val) {
       return prev + (val.unRead?.toInt() ?? 0);

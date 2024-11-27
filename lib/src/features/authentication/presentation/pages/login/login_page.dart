@@ -20,10 +20,10 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(loginControllerProvider);
-    if (kDebugMode) {
-      controller.phoneController.text = "0771234567";
-      controller.passController.text = "12345678aA@";
-    }
+    // if (kDebugMode) {
+    //   controller.userNameController.text = "0771234567";
+    //   controller.passController.text = "12345678aA@";
+    // }
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
@@ -59,11 +59,11 @@ class LoginPage extends ConsumerWidget {
                   child: Column(
                     children: [
                       TextInputForm(
-                        controller: controller.phoneController,
+                        controller: controller.userNameController,
                         // isRequired: true,
-                        title: "Điện thoại",
-                        hintText: "Nhập số điện thoại",
-                        validator: Validator.phone,
+                        title: "Email hoặc số điện thoại",
+                        hintText: "Nhập email hoặc số điện thoại",
+                        validator: Validator.emailOrPhoneNumber,
                       ),
                       TextInputForm(
                         validator: Validator.password,

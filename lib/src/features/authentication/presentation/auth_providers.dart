@@ -12,15 +12,15 @@ final loginControllerProvider = ChangeNotifierProvider<LoginController>((ref) {
 });
 
 final registerControllerProvider = Provider<RegisterController>((ref) {
-  final registerUseCaseProvider = ref.watch(registerUseCase);
-  final loginController = ref.watch(loginControllerProvider);
+  final registerUseCaseProvider = ref.read(registerUseCase);
+  final loginController = ref.read(loginControllerProvider);
   return RegisterController(registerUseCaseProvider, loginController);
 });
 
 final forgotPasswordControllerProvider =
     Provider<ForgotPasswordController>((ref) {
-  final forgotPasswordUseCaseProvider = ref.watch(forgotPasswordUseCase);
-  final registerUseCaseProvider = ref.watch(registerUseCase);
+  final forgotPasswordUseCaseProvider = ref.read(forgotPasswordUseCase);
+  final registerUseCaseProvider = ref.read(registerUseCase);
   return ForgotPasswordController(
       forgotPasswordUseCaseProvider, registerUseCaseProvider);
 });

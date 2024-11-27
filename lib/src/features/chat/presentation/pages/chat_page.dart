@@ -94,7 +94,11 @@ class _ChatPageState extends ConsumerState<ChatPage> {
         resizeToAvoidBottomInset: true,
         backgroundColor: Colors.grey.shade100,
         appBar: appBar(ref),
-
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          child: Icon(Icons.keyboard_double_arrow_down),
+          backgroundColor: Colors.white,
+        ),
         body: Stack(
           alignment: Alignment.bottomCenter,
           children: [

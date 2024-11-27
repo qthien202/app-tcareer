@@ -1,4 +1,7 @@
+import 'package:app_tcareer/src/features/authentication/data/models/forgot_password_request.dart';
+import 'package:app_tcareer/src/features/authentication/data/models/forgot_password_verify_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/register_request.dart';
+import 'package:app_tcareer/src/features/authentication/data/models/verify_phone_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/repositories/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -34,7 +37,7 @@ class RegisterUseCase {
           codeSent: codeSent,
           codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
 
-  Future<void> signInWithOTP(
+  Future<UserCredential> signInWithOTP(
           {required String smsCode, required String verificationId}) async =>
       await authRepository.signInWithOTP(
           smsCode: smsCode, verificationId: verificationId);
@@ -44,6 +47,16 @@ class RegisterUseCase {
   Future<TwilioResponse> verifyCode(
           {required String phoneNumber, required String code}) async =>
       await authRepository.verifyCode(phoneNumber: phoneNumber, code: code);
+
+  Future<void> postVerifyPhone({required VerifyPhoneRequest body}) async =>
+      await authRepository.postVerifyPhone(body: body);
+
+  Future<void> postSendEmailVerification(
+          {required ForgotPasswordRequest body}) async =>
+      await authRepository.forgotPassword(body);
+  Future<void> postVerifyEmail(
+          {required ForgotPasswordVerifyRequest body}) async =>
+      await authRepository.forgotPasswordVerify(body);
 }
 
 final registerUseCase =

@@ -7,6 +7,7 @@ import 'package:app_tcareer/src/features/authentication/data/models/login_reques
 import 'package:app_tcareer/src/features/authentication/data/models/logout_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/register_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/reset_password_request.dart';
+import 'package:app_tcareer/src/features/authentication/data/models/verify_phone_request.dart';
 import 'package:app_tcareer/src/services/twilio/twilio_service.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 
@@ -31,7 +32,8 @@ class AuthRepository {
     await apiServices.postRegister(body: body);
   }
 
-  Future<void> login({required String phone, required String password}) async {
+  Future<void> login(
+      {String? phone, String? email, required String password}) async {
     try {
       final apiServices = ref.watch(apiServiceProvider);
       final userUtil = ref.watch(userUtilsProvider);
@@ -39,6 +41,7 @@ class AuthRepository {
       String deviceId = await userUtil.getDeviceId() ?? "";
       final body = LoginRequest(
           phone: phone,
+          email: email,
           password: password,
           deviceToken: deviceToken,
           deviceId: deviceId);
@@ -176,6 +179,11 @@ class AuthRepository {
       {required String phoneNumber, required String code}) async {
     final twilio = ref.watch(twilioService);
     return await twilio.verifyCode(phoneNumber: phoneNumber, code: code);
+  }
+
+  Future<void> postVerifyPhone({required VerifyPhoneRequest body}) async {
+    final api = ref.read(apiServiceProvider);
+    return await api.postVerifyPhone(body: body);
   }
 }
 
