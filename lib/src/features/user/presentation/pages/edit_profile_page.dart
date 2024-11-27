@@ -127,29 +127,6 @@ class EditProfilePage extends ConsumerWidget {
             //         style: TextStyle(color: Colors.black),
             //       )),
             // ),
-            Center(
-              child: GestureDetector(
-                  onTap: () async => await controller.logout(context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        Icons.logout,
-                        color: Colors.red,
-                        size: 20,
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        "Đăng xuất tài khoản",
-                        style: TextStyle(
-                          color: Colors.red,
-                        ),
-                      ),
-                    ],
-                  )),
-            )
           ],
         ),
       ),

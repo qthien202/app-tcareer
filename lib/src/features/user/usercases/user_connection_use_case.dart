@@ -7,11 +7,8 @@ class UserConnectionUseCase {
   final UserRepository userRepository;
   final ConnectionRepository connectionRepository;
   UserConnectionUseCase(this.userRepository, this.connectionRepository);
-  Future<Users> postFollow(
-      {required String userId, required Users user}) async {
-    final updatedUser = setFollowed(user);
-    connectionRepository.postFollow(userId);
-    return updatedUser;
+  Future<void> postFollow({required String userId, required Users user}) async {
+    await connectionRepository.postFollow(userId);
   }
 
   Users setFollowed(Users user) {

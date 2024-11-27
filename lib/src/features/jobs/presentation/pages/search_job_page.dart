@@ -159,7 +159,7 @@ class _SearchJobPageState extends ConsumerState<SearchJobPage> {
         isActive: controller.selectedExperiences.isNotEmpty,
       ),
       TabItem(
-        title: "Loại nơi làm việc",
+        title: "Hình thức làm việc",
         onTap: () async => await controller.showBottomSheet(
           context: context,
           child: const SearchWorkSpace(),

@@ -127,13 +127,13 @@ class _AddExperienceState extends ConsumerState<AddExperience> {
                   TextInputWidget(
                       controller: controller.jobTypeTextController,
                       isReadOnly: true,
-                      title: "Loại nơi làm việc",
-                      hintText: "Chọn loại nơi làm việc",
+                      title: "Hình thức làm việcc",
+                      hintText: "Chọn hình thức làm việc",
                       isRequired: true,
                       validator: (val) {
                         String value = val ?? "";
                         if (value.isEmpty) {
-                          return "Vui lòng chọn loại nơi làm việc";
+                          return "Vui lòng chọn hình thức làm việc";
                         }
                         return null;
                       },

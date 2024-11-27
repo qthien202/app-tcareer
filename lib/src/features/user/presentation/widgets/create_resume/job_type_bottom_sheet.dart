@@ -50,7 +50,7 @@ class JobTypeBottomSheet extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15),
             child: Text(
-              "Chọn loại nơi làm việc",
+              "Chọn hình thức làm việc",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
           ),

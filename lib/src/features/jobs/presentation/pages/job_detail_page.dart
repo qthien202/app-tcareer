@@ -301,7 +301,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
       },
       {
         "icon": PhosphorIconsThin.buildingOffice,
-        "title": "Loại nơi làm việc",
+        "title": "Hình thức làm việc",
         "content": controller.job?.jobType != null
             ? contentType[controller.job?.jobType]
             : null

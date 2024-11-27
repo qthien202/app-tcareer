@@ -233,7 +233,8 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
         ref.watch(userConnectionControllerProvider(userId));
     final userController = ref.watch(userControllerProvider);
     final anotherController = ref.watch(anotherUserControllerProvider);
-    friendStatus = controller.anotherUserData?.data?.followed == true
+    friendStatus = controller.anotherUserData?.data?.followed == true &&
+            controller.anotherUserData?.data?.friendStatus == null
         ? "followed"
         : (friendStatus ?? "default");
     return Visibility(
@@ -249,8 +250,8 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
                     .showModalConnect(context: context),
                 onConfirm: () async => await connectionController
                     .showModalConfirmRequest(context: context),
-                onCancelRequest: () async =>
-                    await connectionController.cancelRequest(context),
+                onCancelRequest: () async => await connectionController
+                    .showModalSentRequest(context: context),
                 onDelete: () async => await connectionController
                     .showModalDeleteFriend(context: context),
                 onFollowing: () async => await connectionController

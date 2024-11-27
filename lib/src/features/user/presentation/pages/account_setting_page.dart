@@ -19,7 +19,7 @@ class AccountSettingPage extends ConsumerWidget {
         "icon": PhosphorIconsRegular.userCircleGear
       },
       {
-        "onTap": () => context.pushNamed("sendVerification"),
+        "onTap": () => context.pushNamed("changePassword"),
         "title": "Đổi mật khẩu",
         "icon": PhosphorIconsRegular.lock
       },
@@ -35,6 +35,27 @@ class AccountSettingPage extends ConsumerWidget {
         "icon": PhosphorIconsRegular.signOut
       },
     ];
+    List<Map<String, dynamic>> settingWithGoogle = [
+      {
+        "onTap": () => context.pushNamed("editProfile"),
+        "title": "Chỉnh sửa thông tin",
+        "icon": PhosphorIconsRegular.userCircleGear
+      },
+      {
+        "onTap": () =>
+            showSnackBarError("Tính năng đang trong quá trình phát triển"),
+        "title": "Lĩnh vực quan tâm",
+        "icon": PhosphorIconsRegular.globe
+      },
+      {
+        "onTap": () async => await controller.logout(context),
+        "title": "Đăng xuất",
+        "icon": PhosphorIconsRegular.signOut
+      },
+    ];
+    final settingData = controller.userData?.data?.isLoginGoogle == false
+        ? settings
+        : settingWithGoogle;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -65,7 +86,7 @@ class AccountSettingPage extends ConsumerWidget {
             ),
             child: Column(
               // padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-              children: settings.map((e) {
+              children: settingData.map((e) {
                 return InkWell(
                   onTap: e['onTap'],
                   child: Container(

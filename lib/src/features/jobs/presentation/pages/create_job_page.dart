@@ -77,11 +77,11 @@ class CreateJobPage extends ConsumerWidget {
                       onTap: () async =>
                           await controller.showEmployeeQtyPicker(context)),
                   item(
-                      title: "Loại nơi làm việc",
+                      title: "Hình thức làm việc",
                       hasContent: controller.job.jobType != null,
                       content:
                           controller.getJobType(controller.job.jobType ?? "") ??
-                              "Thêm loại nơi làm việc",
+                              "Thêm hình thức làm việc",
                       onTap: () async => await controller.showBottomSheet(
                             context: context,
                             child: const JobTypeWorkSpace(),

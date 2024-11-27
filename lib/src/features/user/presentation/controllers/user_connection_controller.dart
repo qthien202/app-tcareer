@@ -289,22 +289,101 @@ class UserConnectionController extends ChangeNotifier {
   Future<void> showModalFollowing({
     required BuildContext context,
   }) async {
+    final currentUser = anotherUserController.anotherUserData;
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) {
         return CupertinoActionSheet(
           actions: <Widget>[
-            CupertinoActionSheetAction(
-                onPressed: () async {
-                  context.pop();
-                  await postAddFriend(context);
-                },
-                child: const Text(
-                  'Thêm bạn bè',
-                  style: TextStyle(fontSize: 16, color: Colors.black),
-                )),
+            Visibility(
+              visible: currentUser?.data?.friendStatus != "sent_request",
+              replacement: CupertinoActionSheetAction(
+                  onPressed: () async {
+                    context.pop();
+                    await cancelRequest(context);
+                  },
+                  child: const Text(
+                    'Hủy yêu cầu',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  )),
+              child: CupertinoActionSheetAction(
+                  onPressed: () async {
+                    context.pop();
+                    await postAddFriend(context);
+                  },
+                  child: const Text(
+                    'Thêm bạn bè',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  )),
+            ),
             Visibility(
               // visible: currentUser,
+              child: CupertinoActionSheetAction(
+                  isDestructiveAction: true,
+                  onPressed: () async {
+                    context.pop();
+                    await postFollow(context);
+                  },
+                  child: const Text(
+                    'Bỏ theo dõi',
+                    style: TextStyle(fontSize: 16),
+                  )),
+            ),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+              isDefaultAction: true,
+              child: const Text(
+                'Hủy',
+                style: TextStyle(color: Colors.black, fontSize: 16),
+              ),
+              onPressed: () => context.pop()),
+        );
+      },
+    );
+  }
+
+  Future<void> showModalSentRequest({
+    required BuildContext context,
+  }) async {
+    final currentUser = anotherUserController.anotherUserData;
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoActionSheet(
+          actions: <Widget>[
+            Visibility(
+              visible: currentUser?.data?.friendStatus != "sent_request",
+              replacement: CupertinoActionSheetAction(
+                  onPressed: () async {
+                    context.pop();
+                    await cancelRequest(context);
+                  },
+                  child: const Text(
+                    'Hủy yêu cầu',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  )),
+              child: CupertinoActionSheetAction(
+                  onPressed: () async {
+                    context.pop();
+                    await postAddFriend(context);
+                  },
+                  child: const Text(
+                    'Thêm bạn bè',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  )),
+            ),
+            Visibility(
+              visible: currentUser?.data?.followed == true,
+              replacement: CupertinoActionSheetAction(
+                  isDestructiveAction: false,
+                  onPressed: () async {
+                    context.pop();
+                    await postFollow(context);
+                  },
+                  child: const Text(
+                    'Theo dõi',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  )),
               child: CupertinoActionSheetAction(
                   isDestructiveAction: true,
                   onPressed: () async {
