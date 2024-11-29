@@ -1,6 +1,7 @@
 import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/controllers/job_topic_controller.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
+import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -45,44 +46,50 @@ class _JobTopicUserPageState extends ConsumerState<JobTopicUserPage> {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "Lưu ý: Bạn chỉ được chọn tối đa 5 lĩnh vực",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: controller.jobTopics.map((topic) {
-                  return GestureDetector(
-                    onTap: () => controller.selectTopic(topic.id ?? 0),
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: controller.selectedTopics.contains(topic.id)
-                              ? AppColors.authButton
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(20),
-                          border: controller.selectedTopics.contains(topic.id)
-                              ? null
-                              : Border.all(color: Colors.grey.shade300)),
-                      child: Text(
-                        topic.topicName ?? "",
-                        style: TextStyle(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Visibility(
+            visible: controller.jobTopics.isNotEmpty,
+            replacement: circularLoadingWidget(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Lưu ý: Bạn chỉ được chọn tối đa 5 lĩnh vực",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: controller.jobTopics.map((topic) {
+                    return GestureDetector(
+                      onTap: () => controller.selectTopic(topic.id ?? 0),
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
                             color: controller.selectedTopics.contains(topic.id)
-                                ? Colors.white
-                                : Colors.grey),
+                                ? AppColors.authButton
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(20),
+                            border: controller.selectedTopics.contains(topic.id)
+                                ? null
+                                : Border.all(color: Colors.grey.shade300)),
+                        child: Text(
+                          topic.topicName ?? "",
+                          style: TextStyle(
+                              color:
+                                  controller.selectedTopics.contains(topic.id)
+                                      ? Colors.white
+                                      : Colors.grey),
+                        ),
                       ),
-                    ),
-                  );
-                }).toList(),
-              ),
-            ],
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
           ),
         ),
       ),

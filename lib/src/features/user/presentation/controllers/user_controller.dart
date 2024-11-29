@@ -230,7 +230,7 @@ class UserController extends ChangeNotifier {
 
   List<num> selectedTopics = [];
   selectTopic(num topic) {
-    if (selectedTopics.length == 5) {
+    if (selectedTopics.length == 5 && !selectedTopics.contains(topic)) {
       showSnackBarError("Bạn chỉ được chọn tối đa 5 lĩnh vực");
       return;
     }
@@ -247,11 +247,11 @@ class UserController extends ChangeNotifier {
 
   Future<void> getJobTopicFavorite() async {
     topicDaTa = await userUseCase.getJobTopicFavorite();
-    print(">>>>>>>>>>>topicData: $topicDaTa");
+
     if (topicDaTa != null) {
       selectedTopics =
-          topicDaTa?.data?.map((data) => data.id ?? 0).toList() ?? [];
-      print(">>>selected: $selectedTopics");
+          topicDaTa?.data?.map((data) => data.topicId ?? 0).toList() ?? [];
+
       notifyListeners();
     }
   }

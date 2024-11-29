@@ -80,28 +80,36 @@ Response copyWith({  String? status,
 class Data {
   Data({
       num? id, 
+      num? topicId, 
       String? topicName,}){
     _id = id;
+    _topicId = topicId;
     _topicName = topicName;
 }
 
   Data.fromJson(dynamic json) {
     _id = json['id'];
+    _topicId = json['topic_id'];
     _topicName = json['topic_name'];
   }
   num? _id;
+  num? _topicId;
   String? _topicName;
 Data copyWith({  num? id,
+  num? topicId,
   String? topicName,
 }) => Data(  id: id ?? _id,
+  topicId: topicId ?? _topicId,
   topicName: topicName ?? _topicName,
 );
   num? get id => _id;
+  num? get topicId => _topicId;
   String? get topicName => _topicName;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
     map['id'] = _id;
+    map['topic_id'] = _topicId;
     map['topic_name'] = _topicName;
     return map;
   }

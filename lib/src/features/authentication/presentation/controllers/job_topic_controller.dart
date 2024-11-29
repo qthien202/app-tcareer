@@ -31,7 +31,7 @@ class JobTopicController extends ChangeNotifier {
 
   List<num> selectedTopics = [];
   selectTopic(num topic) {
-    if (selectedTopics.length == 5) {
+    if (selectedTopics.length == 5 && !selectedTopics.contains(topic)) {
       showSnackBarError("Bạn chỉ được chọn tối đa 5 lĩnh vực");
       return;
     }
