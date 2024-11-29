@@ -89,6 +89,9 @@ class JobRepository {
 
   Future getJobDetail({required num jobId}) async =>
       await apiServices.getJobDetail(jobId: jobId);
+
+  Future deleteJob({required num jobId}) async =>
+      await apiServices.deleteJob(jobId: jobId);
 }
 
 final jobRepositoryProvider = Provider((ref) {

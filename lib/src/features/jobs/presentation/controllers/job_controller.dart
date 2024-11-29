@@ -6,10 +6,12 @@ import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart'
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/job_use_case.dart';
+import 'package:app_tcareer/src/utils/alert_dialog_util.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -304,9 +306,9 @@ class JobController extends ChangeNotifier {
   }
 
   Future<void> showModalJobDetail(
-      {required BuildContext context, required JobModel jobModel}) async {
+      {required BuildContext context1, required JobModel jobModel}) async {
     showCupertinoModalPopup(
-      context: context,
+      context: context1,
       builder: (BuildContext context) {
         return CupertinoActionSheet(
           actions: <Widget>[
@@ -322,7 +324,7 @@ class JobController extends ChangeNotifier {
             CupertinoActionSheetAction(
                 isDestructiveAction: true,
                 onPressed: () async {
-                  context.pop();
+                  await deleteJob(context: context1, jobId: jobModel.id ?? 0);
                 },
                 child: const Text(
                   'Gỡ bài đăng',
@@ -353,6 +355,22 @@ class JobController extends ChangeNotifier {
   Future<void> shareJob({required num jobId}) async {
     await Share.share("https://tcareer.thientech.site/jobs/detail/$jobId",
         subject: "Chia sẻ công việc này");
+  }
+
+  Future<void> deleteJob(
+      {required BuildContext context, required num jobId}) async {
+    context.pop();
+    AlertDialogUtil.showConfirmDialog(
+        context: context,
+        message: "Bạn có chắc muốn gỡ bỏ bài đăng công việc này không?",
+        onCancel: () => context.pop(),
+        onConfirm: () async {
+          AppUtils.loadingApi(() async {
+            await jobUseCase.deleteJob(jobId: jobId);
+            context.pop();
+            context.pushReplacementNamed("postedJob");
+          }, context);
+        });
   }
 }
 

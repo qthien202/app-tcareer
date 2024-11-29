@@ -532,7 +532,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
             visible: !isClient,
             replacement: GestureDetector(
               onTap: () async => await controller.showModalJobDetail(
-                  context: context, jobModel: job ?? JobModel()),
+                  context1: context, jobModel: job ?? JobModel()),
               child: const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8),
                 child: PhosphorIcon(PhosphorIconsRegular.dotsThreeCircle),

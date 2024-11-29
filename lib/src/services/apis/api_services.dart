@@ -280,4 +280,7 @@ abstract class ApiServices {
 
   @POST('auth/verify_phone')
   Future postVerifyPhone({@Body() required VerifyPhoneRequest body});
+
+  @DELETE('api/auth/career/{id}/remove')
+  Future deleteJob({@Path('id') required num jobId});
 }

@@ -56,6 +56,8 @@ class JobUseCase {
       await jobRepository.getApplicationDetail(applicationId: applicationId);
   Future getJobDetail({required num jobId}) async =>
       await jobRepository.getJobDetail(jobId: jobId);
+  Future deleteJob({required num jobId}) async =>
+      await jobRepository.deleteJob(jobId: jobId);
 }
 
 final jobUseCaseProvider =
