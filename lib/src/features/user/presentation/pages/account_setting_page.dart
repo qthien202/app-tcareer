@@ -24,8 +24,7 @@ class AccountSettingPage extends ConsumerWidget {
         "icon": PhosphorIconsRegular.lock
       },
       {
-        "onTap": () =>
-            showSnackBarError("Tính năng đang trong quá trình phát triển"),
+        "onTap": () => context.pushNamed("userJobTopic"),
         "title": "Lĩnh vực quan tâm",
         "icon": PhosphorIconsRegular.globe
       },
@@ -42,8 +41,7 @@ class AccountSettingPage extends ConsumerWidget {
         "icon": PhosphorIconsRegular.userCircleGear
       },
       {
-        "onTap": () =>
-            showSnackBarError("Tính năng đang trong quá trình phát triển"),
+        "onTap": () => context.pushNamed("userJobTopic"),
         "title": "Lĩnh vực quan tâm",
         "icon": PhosphorIconsRegular.globe
       },

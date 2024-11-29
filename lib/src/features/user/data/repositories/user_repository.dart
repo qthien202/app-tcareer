@@ -1,6 +1,8 @@
 import 'dart:io';
-
+import 'package:app_tcareer/src/features/jobs/data/models/add_job_topic_request.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/topic_job_favorite_response.dart';
 import 'package:app_tcareer/src/features/user/data/models/change_password_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/create_resume_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
@@ -91,6 +93,21 @@ class UserRepository {
   Future<void> putChangPassword({required ChangePasswordRequest body}) async {
     final api = ref.read(apiServiceProvider);
     return await api.putChangePassword(body: body);
+  }
+
+  Future<TopicJobFavoriteResponse> getTopicJobFavorite() async {
+    final api = ref.read(apiServiceProvider);
+    return await api.getTopicJobFavorite();
+  }
+
+  Future<void> postAddJobTopic({required AddJobTopicRequest body}) async {
+    final api = ref.read(apiServiceProvider);
+    return await api.postAddJobTopic(body: body);
+  }
+
+  Future<List<JobTopicModel>> getJobTopic() async {
+    final api = ref.read(apiServiceProvider);
+    return await api.getJobTopic();
   }
 }
 

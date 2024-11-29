@@ -9,6 +9,7 @@ import 'package:app_tcareer/src/features/user/presentation/pages/change_password
 import 'package:app_tcareer/src/features/user/presentation/pages/create_resume_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/edit_profile_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/change_password/user_send_verification_page.dart';
+import 'package:app_tcareer/src/features/user/presentation/pages/job_topic_user_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_education.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_experience.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/create_resume/add_introduce.dart';
@@ -74,6 +75,14 @@ class UserRoute {
             pageBuilder: (context, state) => CustomTransitionPage(
                 key: state.pageKey,
                 child: const ChangePasswordPage(),
+                transitionsBuilder: fadeTransitionBuilder),
+          ),
+          GoRoute(
+            path: "jobTopic",
+            name: "userJobTopic",
+            pageBuilder: (context, state) => CustomTransitionPage(
+                key: state.pageKey,
+                child: const JobTopicUserPage(),
                 transitionsBuilder: fadeTransitionBuilder),
           ),
         ]),

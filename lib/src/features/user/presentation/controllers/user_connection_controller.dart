@@ -407,6 +407,61 @@ class UserConnectionController extends ChangeNotifier {
       },
     );
   }
+
+  Future<void> showModalDelete({
+    required BuildContext context,
+  }) async {
+    final currentUser = anotherUserController.anotherUserData;
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoActionSheet(
+          actions: <Widget>[
+            Visibility(
+              visible: currentUser?.data?.followed == true,
+              replacement: CupertinoActionSheetAction(
+                  isDestructiveAction: false,
+                  onPressed: () async {
+                    context.pop();
+                    await postFollow(context);
+                  },
+                  child: const Text(
+                    'Theo dõi',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  )),
+              child: CupertinoActionSheetAction(
+                  isDestructiveAction: false,
+                  onPressed: () async {
+                    context.pop();
+                    await postFollow(context);
+                  },
+                  child: const Text(
+                    'Bỏ theo dõi',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  )),
+            ),
+            CupertinoActionSheetAction(
+                isDestructiveAction: true,
+                onPressed: () async {
+                  context.pop();
+                  await showModalDeleteFriend(context: context);
+                },
+                child: const Text(
+                  'Hủy kết bạn',
+                  style: TextStyle(fontSize: 16),
+                )),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+              isDefaultAction: true,
+              child: const Text(
+                'Hủy',
+                style: TextStyle(color: Colors.black, fontSize: 16),
+              ),
+              onPressed: () => context.pop()),
+        );
+      },
+    );
+  }
 }
 
 final userConnectionControllerProvider =

@@ -253,7 +253,7 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
                 onCancelRequest: () async => await connectionController
                     .showModalSentRequest(context: context),
                 onDelete: () async => await connectionController
-                    .showModalDeleteFriend(context: context),
+                    .showModalDelete(context: context),
                 onFollowing: () async => await connectionController
                     .showModalFollowing(context: context)),
             const SizedBox(
