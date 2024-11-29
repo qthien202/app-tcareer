@@ -36,6 +36,10 @@ class JobRepository {
   Future<void> postCreateJob({required JobModel body}) async =>
       await apiServices.postCreateJob(body: body);
 
+  Future<void> putUpdateJob(
+          {required JobModel body, required num jobId}) async =>
+      await apiServices.putUpdateJob(body: body, jobId: jobId);
+
   Future<List<JobTopicModel>> getJobTopic() async =>
       await apiServices.getJobTopic();
 

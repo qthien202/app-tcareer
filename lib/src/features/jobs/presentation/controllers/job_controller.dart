@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 
 class JobController extends ChangeNotifier {
   final JobUseCase jobUseCase;
@@ -299,6 +301,58 @@ class JobController extends ChangeNotifier {
     final response = await jobUseCase.getJobDetail(jobId: num.parse(jobId));
     job = JobModel.fromJson(response['data']);
     notifyListeners();
+  }
+
+  Future<void> showModalJobDetail(
+      {required BuildContext context, required JobModel jobModel}) async {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoActionSheet(
+          actions: <Widget>[
+            CupertinoActionSheetAction(
+                onPressed: () async {
+                  context.pop();
+                  context.pushNamed("createJob", extra: jobModel ?? JobModel());
+                },
+                child: const Text(
+                  'Chỉnh sửa',
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                )),
+            CupertinoActionSheetAction(
+                isDestructiveAction: true,
+                onPressed: () async {
+                  context.pop();
+                },
+                child: const Text(
+                  'Gỡ bài đăng',
+                  style: TextStyle(fontSize: 16),
+                )),
+            CupertinoActionSheetAction(
+                onPressed: () async {
+                  context.pop();
+                  await shareJob(jobId: jobModel.id ?? 0);
+                },
+                child: const Text(
+                  'Chia sẻ',
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                )),
+          ],
+          cancelButton: CupertinoActionSheetAction(
+              isDefaultAction: true,
+              child: const Text(
+                'Hủy',
+                style: TextStyle(color: Colors.black, fontSize: 16),
+              ),
+              onPressed: () => context.pop()),
+        );
+      },
+    );
+  }
+
+  Future<void> shareJob({required num jobId}) async {
+    await Share.share("https://tcareer.thientech.site/jobs/detail/$jobId",
+        subject: "Chia sẻ công việc này");
   }
 }
 

@@ -11,6 +11,9 @@ class JobTypeWorkSpace extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(createJobControllerProvider);
+    if (controller.job.jobType != null) {
+      controller.selectedJobTypeWorkSpace = controller.job.jobType;
+    }
     List<Map<String, dynamic>> privacies = [
       {
         "value": "onsite",

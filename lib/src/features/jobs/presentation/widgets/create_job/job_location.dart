@@ -1,5 +1,8 @@
 import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_job_controller.dart';
+import 'package:app_tcareer/src/services/address/district.dart';
+import 'package:app_tcareer/src/services/address/province.dart';
+import 'package:app_tcareer/src/services/address/ward.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,6 +24,19 @@ class _JobLocationState extends ConsumerState<JobLocation> {
     Future.microtask(() async {
       final controller = ref.read(createJobControllerProvider);
       await controller.getProvince();
+      if (controller.job.detailLocation != null) {
+        final location = controller.job.detailLocation;
+        controller.selectProvince(Province(
+            provinceName: location?.provinceName,
+            provinceID: location?.provinceId));
+        controller.selectDistrict(District(
+            districtName: location?.districtName,
+            districtID: location?.districtId));
+        controller.selectWard(
+            Ward(wardName: location?.wardName, wardCode: location?.wardId));
+        controller.addressController.text =
+            controller.getAddressBeforeKeywords(location?.fullAddress ?? "");
+      }
     });
   }
 

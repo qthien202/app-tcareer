@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:app_tcareer/src/extensions/image_extension.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/widgets/text_input_form.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_media_controller.dart';
@@ -27,7 +28,9 @@ class JobCty extends ConsumerWidget {
     return PopScope(
       onPopInvoked: (didPop) {
         if (didPop) {
-          if (controller.job.ctyImageUrl == null) {
+          if (controller.job.ctyImageUrl == null ||
+              controller.job.ctyImageUrl !=
+                  mediaController.selectedImage?.path) {
             mediaController.selectedImage = null;
           }
           print(">>>>>>>>image: ${controller.job.ctyImageUrl}");
@@ -63,11 +66,22 @@ class JobCty extends ConsumerWidget {
                               width: 100,
                               fit: BoxFit.cover,
                             )
-                          : Image.asset(
-                              "assets/images/posts/no_image.jpg",
-                              height: 150,
-                              width: 150,
-                              fit: BoxFit.cover,
+                          : Visibility(
+                              visible:
+                                  controller.job.ctyImageUrl?.isImageNetWork ==
+                                      true,
+                              replacement: Image.asset(
+                                "assets/images/posts/no_image.jpg",
+                                height: 150,
+                                width: 150,
+                                fit: BoxFit.cover,
+                              ),
+                              child: Image.network(
+                                controller.job.ctyImageUrl ?? "",
+                                height: 100,
+                                width: 100,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                     ),
                     Positioned(

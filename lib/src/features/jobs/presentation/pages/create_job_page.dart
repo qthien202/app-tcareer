@@ -1,4 +1,5 @@
 import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_job_controller.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_cty.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_description.dart';
@@ -7,6 +8,7 @@ import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/jo
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_title.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_type_work_space.dart';
 import 'package:app_tcareer/src/utils/alert_dialog_util.dart';
+import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,11 +16,58 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
-class CreateJobPage extends ConsumerWidget {
-  const CreateJobPage({super.key});
+class CreateJobPage extends ConsumerStatefulWidget {
+  final JobModel? jobModel;
+  const CreateJobPage({super.key, this.jobModel});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<CreateJobPage> createState() => _CreateJobPageState();
+}
+
+class _CreateJobPageState extends ConsumerState<CreateJobPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.microtask(() async {
+      final controller = ref.read(createJobControllerProvider);
+      if (widget.jobModel != null) {
+        final data = widget.jobModel;
+        controller.setJob(
+            title: data?.title ?? "",
+            jobRoleName: data?.jobRoleName,
+            jobTopicName: data?.jobTopicName,
+            experienceName: data?.experienceRequired != 0
+                ? "${data?.experienceRequired} năm"
+                : "Dưới 1 năm",
+            jobRoleId: data?.jobTopicId,
+            jobTopicId: data?.jobTopicId,
+            experienceRequired: data?.experienceRequired,
+            positionsAvailable: data?.positionsAvailable,
+            employmentType: data?.employmentType,
+            jobType: data?.jobType,
+            expiredDate: AppUtils.formatDate(data?.expiredDate ?? ""),
+            detailLocation: data?.detailLocation,
+            ctyName: data?.ctyName,
+            ctyImageUrl: data?.ctyImageUrl,
+            jobDescription: data?.jobDescription,
+            latitude: data?.latitude,
+            longitude: data?.longitude);
+        final location = data?.detailLocation;
+        controller.setJobLocation(
+            provinceName: location?.provinceName,
+            provinceId: location?.provinceId,
+            districtName: location?.districtName,
+            districtId: location?.districtId,
+            wardName: location?.wardName,
+            wardId: location?.wardId,
+            fullAddress: location?.fullAddress);
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final controller = ref.watch(createJobControllerProvider);
     return PopScope(
       onPopInvoked: (didPop) {
@@ -38,7 +87,9 @@ class CreateJobPage extends ConsumerWidget {
               leading: null,
               actions: null,
               title: Text(
-                "Hãy tạo bài đăng tuyển dụng\ncủa bạn",
+                widget.jobModel != null
+                    ? "Cập nhật bài đăng tuyển dụng\ncủa bạn"
+                    : "Hãy tạo bài đăng tuyển dụng\ncủa bạn",
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
             ),
@@ -60,7 +111,7 @@ class CreateJobPage extends ConsumerWidget {
                       title: "Nghề nghiệp",
                       content: controller.job.jobRoleName ?? "Thêm nghề nghiệp",
                       hasContent: controller.job.jobRoleName != null,
-                      onTap: () async => context.goNamed("jobTopic")),
+                      onTap: () async => context.pushNamed("jobTopic")),
                   item(
                       title: "Kinh nghiệm làm việc",
                       content: controller.job.experienceName ??
@@ -91,7 +142,7 @@ class CreateJobPage extends ConsumerWidget {
                       hasContent: controller.jobLocation.fullAddress != null,
                       content: controller.jobLocation.fullAddress ??
                           "Thêm địa điểm làm việc",
-                      onTap: () async => context.goNamed("jobLocation")),
+                      onTap: () async => context.pushNamed("jobLocation")),
                   item(
                       title: "Công ty",
                       hasContent: controller.job.ctyName != null,
@@ -126,6 +177,7 @@ class CreateJobPage extends ConsumerWidget {
                       // replacement: Text("Thêm mô tả chi tiết"),
                       child: ConstrainedBox(
                         constraints: BoxConstraints(
+                            minHeight: 50,
                             maxHeight: ScreenUtil().screenHeight * .3,
                             maxWidth: ScreenUtil().screenWidth * .8),
                         child: ListView(
@@ -139,7 +191,7 @@ class CreateJobPage extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    onTap: () async => context.goNamed("jobDescription"),
+                    onTap: () async => context.pushNamed("jobDescription"),
                   ),
                   const SizedBox(
                     height: 30,
@@ -155,22 +207,43 @@ class CreateJobPage extends ConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary),
-                  onPressed: controller.validateJobModel() == true
-                      ? () async {
-                          await controller.postCreateJob(context);
-                        }
-                      : null,
-                  child: const Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Text(
-                      "Đăng bài",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
-                    ),
-                  ))
+              Visibility(
+                visible: widget.jobModel != null,
+                replacement: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary),
+                    onPressed: controller.validateJobModel() == true
+                        ? () async {
+                            await controller.postCreateJob(context);
+                          }
+                        : null,
+                    child: const Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Text(
+                        "Đăng bài",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    )),
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary),
+                    onPressed: controller.validateJobModel() == true
+                        ? () async {
+                            await controller.putUpdateJob(
+                                context: context,
+                                jobId: widget.jobModel?.id ?? 0);
+                          }
+                        : null,
+                    child: const Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Text(
+                        "Cập nhật",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    )),
+              )
             ],
           ),
         ),

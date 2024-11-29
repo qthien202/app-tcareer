@@ -218,7 +218,8 @@ abstract class ApiServices {
   Future postCreateJob({@Body() required JobModel body});
 
   @PUT('api/auth/career/{id}/update')
-  Future putUpdateJob({@Body() required JobModel body});
+  Future putUpdateJob(
+      {@Path('id') required num jobId, @Body() required JobModel body});
 
   @GET('api/auth/topic/view')
   Future<List<JobTopicModel>> getJobTopic();

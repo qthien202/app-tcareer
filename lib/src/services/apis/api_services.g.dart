@@ -1334,7 +1334,10 @@ class _ApiServices implements ApiServices {
   }
 
   @override
-  Future<dynamic> putUpdateJob({required JobModel body}) async {
+  Future<dynamic> putUpdateJob({
+    required num jobId,
+    required JobModel body,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -1347,7 +1350,7 @@ class _ApiServices implements ApiServices {
     )
         .compose(
           _dio.options,
-          'api/auth/career/{id}/update',
+          'api/auth/career/${jobId}/update',
           queryParameters: queryParameters,
           data: _data,
         )

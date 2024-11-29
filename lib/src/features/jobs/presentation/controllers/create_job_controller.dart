@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:app_tcareer/src/extensions/image_extension.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_location_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/controllers/job_controller.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_employee_qty.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_experience.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_location.dart';
@@ -32,8 +35,10 @@ enum JobOption { jobTopic, jobRole, none }
 class CreateJobController extends ChangeNotifier {
   final CreateJobUseCase createJobUseCase;
   final JobUseCase jobUseCase;
+  final JobController jobController;
 
-  CreateJobController(this.createJobUseCase, this.jobUseCase);
+  CreateJobController(
+      this.createJobUseCase, this.jobUseCase, this.jobController);
 
   Future<void> showBottomSheetDraggable(
       {required BuildContext context,
@@ -282,6 +287,7 @@ class CreateJobController extends ChangeNotifier {
         fullAddress: fullAddress,
         latitude: locations?.first.latitude,
         longitude: locations?.first.longitude);
+
     await setJob(
         detailLocation: jobLocation,
         latitude: locations?.first.latitude,
@@ -399,6 +405,35 @@ class CreateJobController extends ChangeNotifier {
     }, context);
   }
 
+  Future<void> putUpdateJob({
+    required BuildContext context,
+    required num jobId,
+  }) async {
+    try {
+      DateFormat inputFormat = DateFormat("dd/MM/yyyy");
+      DateFormat outputFormat = DateFormat("yyyy/MM/dd");
+      DateTime dateTime = inputFormat.parse(job.expiredDate ?? "");
+      String outputDate = outputFormat.format(dateTime);
+      job = job.copyWith(expiredDate: outputDate);
+      await AppUtils.loadingApi(() async {
+        if (job.ctyImageUrl?.isImageNetWork == false) {
+          await uploadImage();
+        }
+        await createJobUseCase.putUpdateJob(body: job, jobId: jobId);
+        job.reset();
+        clearData();
+        showSnackBar("Cập nhật công việc thành công");
+        if (context.mounted) {
+          context.pushReplacementNamed("jobDetail",
+              pathParameters: {"id": jobId.toString()},
+              extra: {"type": JobType.postedJob});
+        }
+      }, context);
+    } catch (e) {
+      showSnackBar("Có lỗi xảy ra: ${e.toString()}");
+    }
+  }
+
   Future<void> uploadImage() async {
     const uuid = Uuid();
     final id = uuid.v4();
@@ -488,10 +523,29 @@ class CreateJobController extends ChangeNotifier {
   }
 
   TextEditingController addressController = TextEditingController();
+
+  String getAddressBeforeKeywords(String input) {
+    // Các từ khóa để kiểm tra
+    List<String> keywords = ["Phường", "Quận", "Thành phố"];
+
+    // Tìm vị trí của từ khóa đầu tiên xuất hiện
+    int index = input.indexOf(RegExp(r'Phường|Quận|Thành phố'));
+
+    // Lấy phần chuỗi trước từ khóa (nếu từ khóa tồn tại)
+    String result = index != -1 ? input.substring(0, index).trim() : input;
+
+    // Xóa dấu phẩy cuối cùng (nếu có)
+    if (result.endsWith(",")) {
+      result = result.substring(0, result.length - 1).trim();
+    }
+
+    return result;
+  }
 }
 
 final createJobControllerProvider = ChangeNotifierProvider((ref) {
   final createJobUseCase = ref.read(createJobUseCaseProvider);
   final jobUseCase = ref.read(jobUseCaseProvider);
-  return CreateJobController(createJobUseCase, jobUseCase);
+  final jobController = ref.read(jobControllerProvider);
+  return CreateJobController(createJobUseCase, jobUseCase, jobController);
 });

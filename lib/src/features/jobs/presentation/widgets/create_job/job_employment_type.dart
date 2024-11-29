@@ -11,6 +11,9 @@ class JobEmploymentType extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(createJobControllerProvider);
+    if (controller.job.employmentType != null) {
+      controller.selectedJobEmploymentType = controller.job.employmentType;
+    }
     List<Map<String, dynamic>> privacies = [
       {
         "value": "full-time",

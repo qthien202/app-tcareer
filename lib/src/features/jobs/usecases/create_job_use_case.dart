@@ -23,6 +23,10 @@ class CreateJobUseCase {
   Future<String> uploadImage(
           {required File file, required String folderPath}) async =>
       await jobRepository.uploadFile(file: file, folderPath: folderPath);
+
+  Future<void> putUpdateJob(
+          {required JobModel body, required num jobId}) async =>
+      await jobRepository.putUpdateJob(body: body, jobId: jobId);
 }
 
 final createJobUseCaseProvider = Provider((ref) {

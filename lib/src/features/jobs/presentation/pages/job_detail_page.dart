@@ -527,26 +527,54 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
       ),
       actions: [
         Visibility(
-          visible: !isClient,
-          replacement: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: PhosphorIcon(PhosphorIconsRegular.dotsThreeVertical),
-          ),
-          child: GestureDetector(
-            onTap: () async => await controller.postAddJobFavorite(
-                context: context, jobId: job?.id ?? 0, type: widget.jobType),
+          visible: controller.job != null,
+          child: Visibility(
+            visible: !isClient,
+            replacement: GestureDetector(
+              onTap: () async => await controller.showModalJobDetail(
+                  context: context, jobModel: job ?? JobModel()),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: PhosphorIcon(PhosphorIconsRegular.dotsThreeCircle),
+              ),
+            ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: PhosphorIcon(
-                controller.isFavorite == true
-                    ? PhosphorIconsFill.bookmarkSimple
-                    : PhosphorIconsRegular.bookmarkSimple,
-                color:
-                    controller.isFavorite == true ? Colors.blue : Colors.black,
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  GestureDetector(
+                    onTap: () async => await controller.postAddJobFavorite(
+                        context: context,
+                        jobId: job?.id ?? 0,
+                        type: widget.jobType),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: PhosphorIcon(
+                        controller.isFavorite == true
+                            ? PhosphorIconsFill.bookmarkSimple
+                            : PhosphorIconsRegular.bookmarkSimple,
+                        color: controller.isFavorite == true
+                            ? Colors.blue
+                            : Colors.black,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  GestureDetector(
+                    onTap: () async =>
+                        await controller.shareJob(jobId: job?.id ?? 0),
+                    child: PhosphorIcon(
+                      PhosphorIconsRegular.shareNetwork,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
-        )
+        ),
       ],
     );
   }

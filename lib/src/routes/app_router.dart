@@ -13,6 +13,7 @@ import 'package:app_tcareer/src/features/chat/presentation/controllers/conversat
 import 'package:app_tcareer/src/features/chat/presentation/pages/chat_page.dart';
 import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_page.dart';
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/create_job_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/media/job_media_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_description.dart';
@@ -227,8 +228,11 @@ class AppRouter {
             path: "/createJob",
             name: "createJob",
             pageBuilder: (context, state) {
+              JobModel? jobModel = state.extra as JobModel?;
               return CustomTransitionPage(
-                child: CreateJobPage(),
+                child: CreateJobPage(
+                  jobModel: jobModel,
+                ),
                 transitionsBuilder: slideUpTransitionBuilder,
               );
             },

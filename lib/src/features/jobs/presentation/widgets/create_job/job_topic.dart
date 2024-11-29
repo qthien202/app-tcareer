@@ -1,4 +1,6 @@
 import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
+import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_job_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +23,13 @@ class _JobTopicState extends ConsumerState<JobTopic> {
     Future.microtask(() async {
       final controller = ref.read(createJobControllerProvider);
       await controller.getJobTopic();
+      if (controller.job.jobTopicId != null) {
+        controller.selectJobTopic(JobTopicModel(
+            id: controller.job.jobTopicId,
+            topicName: controller.job.jobTopicName));
+        controller.selectJobRole(JobRolesModel(
+            id: controller.job.jobRoleId, name: controller.job.jobRoleName));
+      }
     });
   }
 

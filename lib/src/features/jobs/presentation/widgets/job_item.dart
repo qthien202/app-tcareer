@@ -24,7 +24,7 @@ Widget jobItem(JobModel job, BuildContext context, JobType type) {
   return InkWell(
     onTap: () {
       context.pushNamed("jobDetail",
-          extra: {"jobId": job.id.toString(), "type": type});
+          pathParameters: {"id": job.id.toString()}, extra: {"type": type});
     },
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
@@ -206,7 +206,7 @@ Widget jobItemForAppliedJob(JobModel job, BuildContext context, JobType type) {
   return InkWell(
     onTap: () {
       context.pushNamed("jobDetail",
-          extra: {"jobId": job.id.toString(), "type": type});
+          pathParameters: {"id": job.id.toString()}, extra: {"type": type});
     },
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),

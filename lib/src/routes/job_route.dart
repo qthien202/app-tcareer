@@ -64,7 +64,7 @@ class JobRoute {
         pageBuilder: (context, state) {
           return CustomTransitionPage(
               key: state.pageKey,
-              child: PostedJobPage(),
+              child: const PostedJobPage(),
               transitionsBuilder: fadeTransitionBuilder);
         },
         routes: []),
@@ -116,11 +116,11 @@ class JobRoute {
         },
         routes: []),
     GoRoute(
-        path: "detail",
+        path: "detail/:id",
         name: "jobDetail",
         pageBuilder: (context, state) {
           final data = state.extra as Map<String, dynamic>;
-          final jobId = data['jobId'] as String;
+          final jobId = state.pathParameters['id'] ?? "";
           final type = data['type'] as JobType;
           return CustomTransitionPage(
               key: state.pageKey,
