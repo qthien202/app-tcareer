@@ -36,7 +36,7 @@ class Index {
         StatefulShellBranch(
           routes: [
             GoRoute(
-                path: "/${RouteNames.home.name}",
+                path: "/",
                 name: RouteNames.home.name,
                 pageBuilder: (context, state) => CustomTransitionPage(
                     key: state.pageKey,

@@ -117,8 +117,7 @@ Widget engagementWidget(
                         String id = originPostId ?? postId;
                         controller.shareLink(
                             title: "Bài viết",
-                            url:
-                                "https://tcareer.thiendev.shop/home/detail/$id");
+                            url: "https://tcareer.thientech.site/detail/$id");
                       },
                       child: const ListTile(
                         title: Text("Thêm"),
