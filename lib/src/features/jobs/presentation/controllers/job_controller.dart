@@ -16,6 +16,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
 
 class JobController extends ChangeNotifier {
@@ -302,7 +303,24 @@ class JobController extends ChangeNotifier {
   Future<void> getJobDetail(String jobId) async {
     final response = await jobUseCase.getJobDetail(jobId: num.parse(jobId));
     job = JobModel.fromJson(response['data']);
+    // job = job?.copyWith(expiredDate: "2024-11-29");
     notifyListeners();
+  }
+
+  bool isExpired(String inputDate) {
+    try {
+      String dateString = AppUtils.formatDate(inputDate);
+      DateTime expiredDate = DateFormat('dd/MM/yyyy').parse(dateString);
+      String currentDateString =
+          DateFormat("dd/MM/yyyy").format(DateTime.now());
+      DateTime currentDate = DateFormat('dd/MM/yyyy').parse(currentDateString);
+
+      return currentDate.isAfter(expiredDate);
+    } catch (e) {
+      // Nếu có lỗi (ví dụ: chuỗi không hợp lệ), trả về false
+      print("Lỗi: ${e.toString()}");
+      return false;
+    }
   }
 
   Future<void> showModalJobDetail(

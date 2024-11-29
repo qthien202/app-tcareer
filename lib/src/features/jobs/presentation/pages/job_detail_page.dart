@@ -468,7 +468,8 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
               Expanded(
                   flex: 4,
                   child: Visibility(
-                    visible: controller.isApplied != true,
+                    visible: !(jobController
+                        .isExpired(jobController.job?.expiredDate ?? "")),
                     replacement: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -477,27 +478,46 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                             padding: const EdgeInsets.symmetric(vertical: 15)),
                         onPressed: null,
                         child: const Text(
-                          "Đã ứng tuyển",
+                          "Hết hạn ứng tuyển",
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 14),
                         )),
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            backgroundColor: AppColors.primary,
-                            padding: const EdgeInsets.symmetric(vertical: 15)),
-                        onPressed: () => context.pushNamed("applyJob",
-                            queryParameters: {"id": job?.id.toString()}),
-                        child: const Text(
-                          "Ứng tuyển ngay",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14),
-                        )),
+                    child: Visibility(
+                      visible: controller.isApplied != true,
+                      replacement: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              backgroundColor: AppColors.primary,
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 15)),
+                          onPressed: null,
+                          child: const Text(
+                            "Đã ứng tuyển",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
+                          )),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              backgroundColor: AppColors.primary,
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 15)),
+                          onPressed: () => context.pushNamed("applyJob",
+                              queryParameters: {"id": job?.id.toString()}),
+                          child: const Text(
+                            "Ứng tuyển ngay",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14),
+                          )),
+                    ),
                   ))
             ],
           ),
