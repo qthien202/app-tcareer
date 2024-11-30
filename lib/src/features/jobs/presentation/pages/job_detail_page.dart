@@ -12,14 +12,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 enum JobType { job, postedJob, applied, favorite }
 
 class JobDetailPage extends ConsumerStatefulWidget {
   final String jobId;
-  final JobType jobType;
+  final JobType? jobType;
   const JobDetailPage({super.key, required this.jobId, required this.jobType});
 
   @override
@@ -566,7 +565,7 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                     onTap: () async => await controller.postAddJobFavorite(
                         context: context,
                         jobId: job?.id ?? 0,
-                        type: widget.jobType),
+                        type: widget.jobType ?? JobType.job),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: PhosphorIcon(

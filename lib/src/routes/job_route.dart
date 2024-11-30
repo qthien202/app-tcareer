@@ -119,9 +119,9 @@ class JobRoute {
         path: "detail/:id",
         name: "jobDetail",
         pageBuilder: (context, state) {
-          final data = state.extra as Map<String, dynamic>;
+          JobType? type = state.extra as JobType?;
           final jobId = state.pathParameters['id'] ?? "";
-          final type = data['type'] as JobType;
+
           return CustomTransitionPage(
               key: state.pageKey,
               child: JobDetailPage(
