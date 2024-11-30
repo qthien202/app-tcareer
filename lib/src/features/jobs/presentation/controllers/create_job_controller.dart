@@ -410,11 +410,6 @@ class CreateJobController extends ChangeNotifier {
     required num jobId,
   }) async {
     try {
-      DateFormat inputFormat = DateFormat("dd/MM/yyyy");
-      DateFormat outputFormat = DateFormat("yyyy/MM/dd");
-      DateTime dateTime = inputFormat.parse(job.expiredDate ?? "");
-      String outputDate = outputFormat.format(dateTime);
-      job = job.copyWith(expiredDate: outputDate);
       await AppUtils.loadingApi(() async {
         if (job.ctyImageUrl?.isImageNetWork == false) {
           await uploadImage();
@@ -480,7 +475,10 @@ class CreateJobController extends ChangeNotifier {
                         ),
                         TextButton(
                           onPressed: () async {
-                            await setJob(expiredDate: selectedExpiredDate);
+                            if (selectedExpiredDate == null) {
+                              await selectExpiredDate(value: DateTime.now());
+                              await setJob(expiredDate: selectedExpiredDate);
+                            }
                             context.pop();
                           },
                           child: const Text(

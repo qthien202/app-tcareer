@@ -46,7 +46,7 @@ class _CreateJobPageState extends ConsumerState<CreateJobPage> {
             positionsAvailable: data?.positionsAvailable,
             employmentType: data?.employmentType,
             jobType: data?.jobType,
-            expiredDate: AppUtils.formatDate(data?.expiredDate ?? ""),
+            expiredDate: data?.expiredDate,
             detailLocation: data?.detailLocation,
             ctyName: data?.ctyName,
             ctyImageUrl: data?.ctyImageUrl,
@@ -159,13 +159,16 @@ class _CreateJobPageState extends ConsumerState<CreateJobPage> {
                             context: context,
                             child: const JobEmploymentType(),
                           )),
-                  item(
-                      title: "Hạn nộp hồ sơ",
-                      content:
-                          controller.job.expiredDate ?? "Thêm hạn nộp hồ sơ",
-                      hasContent: controller.job.expiredDate != null,
-                      onTap: () async => await controller.showExpiredDatePicker(
-                          context: context)),
+                  Visibility(
+                    visible: widget.jobModel == null,
+                    child: item(
+                        title: "Hạn nộp hồ sơ",
+                        content:
+                            controller.job.expiredDate ?? "Thêm hạn nộp hồ sơ",
+                        hasContent: controller.job.expiredDate != null,
+                        onTap: () async => await controller
+                            .showExpiredDatePicker(context: context)),
+                  ),
                   item(
                     title: "Mô tả chi tiết",
                     hasContent: controller.job.jobDescription != null,
