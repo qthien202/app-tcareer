@@ -41,7 +41,7 @@ class VerifyPage extends ConsumerWidget {
                   height: 20,
                 ),
                 Visibility(
-                  visible: verifyOTP != null,
+                  visible: verifyOTP == null,
                   replacement: Visibility(
                     visible: verifyOTP?.phoneNumber != null,
                     replacement: Text(
