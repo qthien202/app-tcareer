@@ -46,7 +46,7 @@ class _UserLikedPageState extends ConsumerState<UserLikedPage> {
     return ClipRRect(
       borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-      child: ListView(
+      child: Column(
         children: [
           AppBar(
             // toolbarHeight: 30,
@@ -78,29 +78,29 @@ class _UserLikedPageState extends ConsumerState<UserLikedPage> {
           Visibility(
             visible: users != null,
             replacement: circularLoadingWidget(),
-            child: ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              itemCount: users?.length ?? 0,
-              itemBuilder: (context, index) {
-                final user = users?[index];
-                return ListTile(
-                    onTap: () => postController.goToProfile(
-                        userId: user?.id.toString() ?? "", context: context),
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(user?.avatar ??
-                          "https://ui-avatars.com/api/?name=${user?.fullName}&background=random"),
-                    ),
-                    title: Text(user?.fullName ?? ""),
-                    trailing: Icon(
-                      size: 20,
-                      Icons.arrow_forward_ios_outlined,
-                      color: Colors.black,
-                    ));
-              },
-              separatorBuilder: (context, index) => const SizedBox(
-                height: 10,
+            child: Expanded(
+              child: ListView.separated(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                itemCount: users?.length ?? 0,
+                itemBuilder: (context, index) {
+                  final user = users?[index];
+                  return ListTile(
+                      onTap: () => postController.goToProfile(
+                          userId: user?.id.toString() ?? "", context: context),
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(user?.avatar ??
+                            "https://ui-avatars.com/api/?name=${user?.fullName}&background=random"),
+                      ),
+                      title: Text(user?.fullName ?? ""),
+                      trailing: Icon(
+                        size: 20,
+                        Icons.arrow_forward_ios_outlined,
+                        color: Colors.black,
+                      ));
+                },
+                separatorBuilder: (context, index) => const SizedBox(
+                  height: 10,
+                ),
               ),
             ),
           ),

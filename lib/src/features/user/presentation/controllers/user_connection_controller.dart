@@ -2,6 +2,7 @@ import 'package:app_tcareer/src/features/index/index_controller.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/another_user_controller.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
+import 'package:app_tcareer/src/features/user/presentation/pages/user_friend_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/user_list_page.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_connection_use_case.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
@@ -192,6 +193,21 @@ class UserConnectionController extends ChangeNotifier {
         .toList();
   }
 
+  List<Data> friends = [];
+  Future<void> getFriends() async {
+    final data = await userUseCase.getFriends(userId);
+    List<dynamic> followerJson = data['data'];
+    await mapFriendsFromJson(followerJson);
+    notifyListeners();
+  }
+
+  Future<void> mapFriendsFromJson(List<dynamic> followerJson) async {
+    friends = followerJson
+        .whereType<Map<String, dynamic>>()
+        .map((item) => Data.fromJson(item))
+        .toList();
+  }
+
   Future<void> showUserFollowed(BuildContext context) async {
     final index = ref.watch(indexControllerProvider.notifier);
 
@@ -206,6 +222,28 @@ class UserConnectionController extends ChangeNotifier {
       builder: (context) => SizedBox(
         height: ScreenUtil().screenHeight * .7,
         child: UserListPage(
+          userId: userId,
+        ),
+      ),
+    ).whenComplete(
+      () => index.setBottomNavigationBarVisibility(true),
+    );
+  }
+
+  Future<void> showUserFriends(BuildContext context) async {
+    final index = ref.watch(indexControllerProvider.notifier);
+
+    // index.showBottomSheet(
+    //     context: context, builder: (scrollController) => SharePage());
+    // await getUserLikePost(postId);
+    index.setBottomNavigationBarVisibility(false);
+    showModalBottomSheet(
+      backgroundColor: Colors.white,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) => SizedBox(
+        height: ScreenUtil().screenHeight * .7,
+        child: UserFriendPage(
           userId: userId,
         ),
       ),

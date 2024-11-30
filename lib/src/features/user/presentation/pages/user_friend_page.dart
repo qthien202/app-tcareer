@@ -9,10 +9,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-class UserListPage extends ConsumerWidget {
+class UserFriendPage extends ConsumerWidget {
   final String? userId;
 
-  const UserListPage({this.userId});
+  const UserFriendPage({this.userId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,7 +20,7 @@ class UserListPage extends ConsumerWidget {
         ref.watch(userConnectionControllerProvider(userId ?? ""));
     final postController = ref.watch(postControllerProvider);
 
-    final users = controller.followers;
+    final users = controller.friends;
     return ClipRRect(
       borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20), topRight: Radius.circular(20)),
@@ -43,7 +43,7 @@ class UserListPage extends ConsumerWidget {
                 ),
                 const SizedBox(height: 10),
                 const Text(
-                  "Đang theo dõi",
+                  "Bạn bè",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ],
@@ -54,12 +54,13 @@ class UserListPage extends ConsumerWidget {
             color: Colors.grey.shade200,
           ),
           Visibility(
-            visible: controller.followers.isNotEmpty,
+            visible: controller.friends.isNotEmpty,
             replacement: circularLoadingWidget(),
             child: Expanded(
               child: ListView.separated(
+                // physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.symmetric(vertical: 10),
-                itemCount: users.length ?? 0,
+                itemCount: users.length,
                 itemBuilder: (context, index) {
                   final user = users[index];
                   return ListTile(

@@ -29,7 +29,7 @@ Widget information(
     ),
     subtitle: Row(
       children: [
-        InkWell(
+        GestureDetector(
           onTap: follows != "0"
               ? () async {
                   await connectionController.getFollowers();
@@ -44,9 +44,17 @@ Widget information(
         const SizedBox(
           width: 15,
         ),
-        Text(
-          friends != null ? "$friends người bạn" : "0 người bạn",
-          style: const TextStyle(fontSize: 12, color: Colors.black54),
+        GestureDetector(
+          onTap: friends != "0"
+              ? () async {
+                  await connectionController.getFriends();
+                  await connectionController.showUserFriends(context);
+                }
+              : null,
+          child: Text(
+            friends != null ? "$friends người bạn" : "0 người bạn",
+            style: const TextStyle(fontSize: 12, color: Colors.black54),
+          ),
         ),
       ],
     ),

@@ -70,7 +70,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
       centerTitle: false,
       backgroundColor: Colors.white,
       floating: true,
-      pinned: false, // AppBar không cố định
+      pinned: true, // AppBar không cố định
       title: Text(
         "Đoạn chat",
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
@@ -82,7 +82,8 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
     final controller = ref.watch(conversationControllerProvider);
     final userUtils = ref.watch(userUtilsProvider);
     return SliverPadding(
-        padding: const EdgeInsets.only(bottom: 550),
+        padding: EdgeInsets.only(
+            bottom: controller.conversations.length <= 3 ? 350 : 100),
         sliver: SliverVisibility(
           visible: controller.allConversation != null,
           replacementSliver: SliverToBoxAdapter(
