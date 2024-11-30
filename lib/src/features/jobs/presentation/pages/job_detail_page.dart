@@ -492,9 +492,11 @@ class _JobDetailPageState extends ConsumerState<JobDetailPage> {
                               backgroundColor: AppColors.primary,
                               padding:
                                   const EdgeInsets.symmetric(vertical: 15)),
-                          onPressed: null,
+                          onPressed: () => context.pushNamed(
+                              "applicationProfile",
+                              queryParameters: {"id": job?.id.toString()}),
                           child: const Text(
-                            "Đã ứng tuyển",
+                            "Xem hồ sơ ứng tuyển",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,

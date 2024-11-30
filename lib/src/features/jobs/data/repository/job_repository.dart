@@ -86,6 +86,8 @@ class JobRepository {
 
   Future getApplicationDetail({required num applicationId}) async =>
       await apiServices.getApplicationDetail(applicationId: applicationId);
+  Future getApplicationProfile({required num jobId}) async =>
+      await apiServices.getApplicationProfile(jobId: jobId);
 
   Future getJobDetail({required num jobId}) async =>
       await apiServices.getJobDetail(jobId: jobId);

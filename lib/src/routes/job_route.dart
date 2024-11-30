@@ -3,6 +3,7 @@ import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/chat/presentation/pages/job_chat_page.dart';
 import 'package:app_tcareer/src/features/jobs/chat/presentation/pages/job_conversation_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/applicants_page.dart';
+import 'package:app_tcareer/src/features/jobs/presentation/pages/application_profile_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/applied_job_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/apply_job_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/cv_page.dart';
@@ -147,6 +148,21 @@ class JobRoute {
               child: ApplyJobPage(
                 jobId: jobId ?? 0,
                 applicationId: applicationId,
+              ),
+              transitionsBuilder: fadeTransitionBuilder);
+        },
+        routes: []),
+    GoRoute(
+        path: "applicationProfile",
+        name: "applicationProfile",
+        pageBuilder: (context, state) {
+          num? jobId = state.uri.queryParameters['id'] != null
+              ? num.parse(state.uri.queryParameters['id'] ?? "")
+              : null;
+          return CustomTransitionPage(
+              key: state.pageKey,
+              child: ApplicationProfilePage(
+                jobId: jobId ?? 0,
               ),
               transitionsBuilder: fadeTransitionBuilder);
         },

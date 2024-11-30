@@ -168,6 +168,16 @@ class JobController extends ChangeNotifier {
     notifyListeners();
   }
 
+  ApplicantModel? applicationProfile;
+  Future<void> getApplicationProfile(num jobId) async {
+    final response = await jobUseCase.getApplicationProfile(jobId: jobId);
+
+    final data = response['data'];
+    applicationProfile = ApplicantModel.fromJson(data);
+    print(">>>>>>>>>>application: ${jsonEncode(application)}");
+    notifyListeners();
+  }
+
   Future<void> refreshJob() async {
     jobResponse = null;
     jobs.clear();

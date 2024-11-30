@@ -274,6 +274,8 @@ abstract class ApiServices {
 
   @GET('api/auth/get-application-detail/{id}')
   Future getApplicationDetail({@Path('id') required num applicationId});
+  @GET('api/auth/get-application-detail-from-job/{id}')
+  Future getApplicationProfile({@Path('id') required num jobId});
 
   @GET('api/auth/career/{id}/view')
   Future getJobDetail({@Path('id') required num jobId});
