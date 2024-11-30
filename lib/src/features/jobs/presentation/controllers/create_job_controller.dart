@@ -475,6 +475,7 @@ class CreateJobController extends ChangeNotifier {
                         ),
                         TextButton(
                           onPressed: () async {
+                            await setJob(expiredDate: selectedExpiredDate);
                             if (selectedExpiredDate == null) {
                               await selectExpiredDate(value: DateTime.now());
                               await setJob(expiredDate: selectedExpiredDate);
