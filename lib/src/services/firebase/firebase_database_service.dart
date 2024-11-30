@@ -46,7 +46,7 @@ class FirebaseDatabaseService {
     try {
       DatabaseReference ref = database.ref(path);
       await ref.set(data);
-      ref.onDisconnect().update(dataUpdate!);
+      // ref.onDisconnect().update(dataUpdate!);
     } catch (e) {
       print(e);
       rethrow;

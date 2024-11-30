@@ -28,6 +28,13 @@ class ApplyJobController extends ChangeNotifier {
 
     if (result != null) {
       fileName = result.files.single.name;
+
+      // Kiểm tra định dạng file có phải PDF không
+      if (!(fileName.toString().toLowerCase().endsWith('.pdf') == true)) {
+        showSnackBarError("Vui lòng chọn tệp CV định dạng PDF.");
+        return;
+      }
+
       print("File name: $fileName");
 
       selectedFile = File(result.files.single.path!);
