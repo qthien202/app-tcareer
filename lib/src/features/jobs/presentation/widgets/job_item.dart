@@ -7,6 +7,7 @@ import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 Widget jobItem(JobModel job, BuildContext context, JobType type) {
@@ -143,7 +144,23 @@ Widget jobItem(JobModel job, BuildContext context, JobType type) {
                           ),
                         ),
                       ],
-                    )
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Visibility(
+                      visible: isExpired(job.expiredDate ?? ""),
+                      child: Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Text(
+                          "Hết hạn ứng tuyển",
+                          style: TextStyle(fontSize: 12, color: Colors.white),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -162,28 +179,34 @@ Widget jobItem(JobModel job, BuildContext context, JobType type) {
               // Expanded(child: Text("1"))
             ],
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Divider(
-              height: 0.5,
-              color: Color(0xffEEEEEE),
-              // color: Colors.grey.shade200,
+          Visibility(
+            visible: !isExpired(job.expiredDate ?? ""),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Divider(
+                height: 0.5,
+                color: Color(0xffEEEEEE),
+                // color: Colors.grey.shade200,
+              ),
             ),
           ),
-          Row(
-            children: [
-              Icon(
-                Icons.access_time_filled_sharp,
-                color: Colors.grey.shade300,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                "Hạn nộp hồ sơ: ${AppUtils.formatDate(job.expiredDate ?? "")}",
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w300),
-              )
-            ],
+          Visibility(
+            visible: !isExpired(job.expiredDate ?? ""),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.access_time_filled_sharp,
+                  color: Colors.grey.shade300,
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "Hạn nộp hồ sơ: ${AppUtils.formatDate(job.expiredDate ?? "")}",
+                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w300),
+                )
+              ],
+            ),
           ),
         ],
       ),
@@ -373,4 +396,19 @@ Widget jobItemForAppliedJob(JobModel job, BuildContext context, JobType type) {
       ),
     ),
   );
+}
+
+bool isExpired(String inputDate) {
+  try {
+    String dateString = AppUtils.formatDate(inputDate);
+    DateTime expiredDate = DateFormat('dd/MM/yyyy').parse(dateString);
+    String currentDateString = DateFormat("dd/MM/yyyy").format(DateTime.now());
+    DateTime currentDate = DateFormat('dd/MM/yyyy').parse(currentDateString);
+
+    return currentDate.isAfter(expiredDate);
+  } catch (e) {
+    // Nếu có lỗi (ví dụ: chuỗi không hợp lệ), trả về false
+    print("Lỗi: ${e.toString()}");
+    return false;
+  }
 }
