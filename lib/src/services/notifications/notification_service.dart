@@ -127,7 +127,7 @@ class NotificationService {
           queryParameters: {"applicationId": applicationId});
     } else if (type?.contains("APPLICATION_VIEWED") == true) {
       context?.pushReplacementNamed("jobDetail",
-          extra: {"jobId": jobId, "type": JobType.applied});
+          pathParameters: {"id": jobId.toString()}, extra: JobType.applied);
     }
   }
 }

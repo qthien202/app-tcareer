@@ -65,7 +65,8 @@ class NotificationController extends ChangeNotifier {
     }
     if (type?.contains("APPLICATION_VIEWED") == true) {
       context.pushNamed("jobDetail",
-          extra: {"jobId": applicationId, "type": JobType.applied});
+          pathParameters: {"id": applicationId.toString()},
+          extra: JobType.applied);
     }
   }
 

@@ -48,12 +48,14 @@ class ConnectionUseCase {
       "inMessage": true,
       "updatedAt": DateTime.now().toIso8601String(),
     };
-    userRepository
-        .addData(path: "users/$userId", data: data, dataUpdateDisconnect: {
-      "inMessage": false,
-      "status": "offline",
-      "updatedAt": DateTime.now().toIso8601String(),
-    });
+    if (userId != "") {
+      userRepository
+          .addData(path: "users/$userId", data: data, dataUpdateDisconnect: {
+        "inMessage": false,
+        "status": "offline",
+        "updatedAt": DateTime.now().toIso8601String(),
+      });
+    }
   }
 
   Future<void> setUserOfflineStatus() async {
@@ -75,15 +77,16 @@ class ConnectionUseCase {
       "status": "online",
       "updatedAt": DateTime.now().toIso8601String(),
     };
-    userRepository.addData(path: "users/$userId", data: data);
-    await Future.delayed(const Duration(minutes: 1));
-    Map<String, dynamic> updatedData = {
-      "inMessage": false,
-      "status": "offline",
-      "updatedAt": DateTime.now().toIso8601String(),
-    };
-    userRepository.addData(path: "users/$userId", data: updatedData);
-
+    if (userId != "") {
+      userRepository.addData(path: "users/$userId", data: data);
+      await Future.delayed(const Duration(minutes: 1));
+      Map<String, dynamic> updatedData = {
+        "inMessage": false,
+        "status": "offline",
+        "updatedAt": DateTime.now().toIso8601String(),
+      };
+      userRepository.addData(path: "users/$userId", data: updatedData);
+    }
     // await setUserOfflineStatus();
   }
 
