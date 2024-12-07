@@ -21,38 +21,50 @@ class _PostedJobUserState extends ConsumerState<PostedJobUser> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.microtask(() {
-      final controller = ref.read(userControllerProvider);
-      scrollController.addListener(() {
-        controller.loadPostedJobMore(scrollController);
-      });
-    });
+    // Future.microtask(() {
+    //   final controller = ref.read(userControllerProvider);
+    //   scrollController.addListener(() {
+    //     controller.loadPostedJobMore(scrollController);
+    //   });
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(userControllerProvider);
     bool hasData = controller.postedJobs.isNotEmpty;
-    return CustomScrollView(
-      controller: scrollController,
-      physics: const BouncingScrollPhysics(),
-      slivers: [
-        CupertinoSliverRefreshControl(
-          onRefresh: () async => await controller.getPostedJob(),
-        ),
-        postedList(ref),
-        SliverToBoxAdapter(
-          child: Visibility(
-            visible: hasData &&
-                controller.postedJobs.length !=
-                    controller.postedJobRes?.meta?.total,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: circularLoadingWidget(),
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (ScrollNotification scrollInfo) {
+          if (scrollInfo.metrics.pixels >=
+              scrollInfo.metrics.maxScrollExtent - 50) {
+            controller.loadPostedJobMore(scrollController);
+          }
+          return false;
+        },
+        child: CustomScrollView(
+          // controller: scrollController,
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            CupertinoSliverRefreshControl(
+              onRefresh: () async => await controller.getPostedJob(),
             ),
-          ),
+            postedList(ref),
+            SliverToBoxAdapter(
+              child: Visibility(
+                visible: hasData &&
+                    controller.postedJobs.length !=
+                        controller.postedJobRes?.meta?.total,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: circularLoadingWidget(),
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -66,7 +78,7 @@ class _PostedJobUserState extends ConsumerState<PostedJobUser> {
       sliver: SliverVisibility(
         visible: controller.postedJobs.isNotEmpty,
         replacementSliver: SliverToBoxAdapter(
-          child: emptyWidget("Bạn chưa đăng việc làm nào!"),
+          child: emptyWidget("Người dùng này chưa đăng việc làm nào!"),
         ),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(

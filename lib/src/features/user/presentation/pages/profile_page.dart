@@ -36,7 +36,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
         backgroundColor: Colors.white,
         body: SafeArea(
           child: NestedScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 SliverToBoxAdapter(child: userInfo()),

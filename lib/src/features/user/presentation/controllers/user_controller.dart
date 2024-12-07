@@ -184,12 +184,12 @@ class UserController extends ChangeNotifier {
   }
 
   Future<void> loadPostedJobMore(ScrollController scrollController) async {
-    if (scrollController.position.maxScrollExtent == scrollController.offset) {
-      if (postedJobs.length < (postedJobRes?.meta?.total ?? 0)) {
-        postedPage += 1;
-        await getPostedJob();
-      }
+    // if (scrollController.position.maxScrollExtent == scrollController.offset) {
+    if (postedJobs.length < (postedJobRes?.meta?.total ?? 0)) {
+      postedPage += 1;
+      await getPostedJob();
     }
+    // }
   }
 
   TextEditingController firstNameController = TextEditingController();
