@@ -146,6 +146,8 @@ class SearchPostController extends ChangeNotifier {
 
   Future<void> refresh() async {
     page = 1;
+    posts.clear();
+
     search(queryCache ?? "");
     // posts.clear();
     await searchPost();

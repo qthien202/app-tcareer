@@ -25,7 +25,9 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
     // TODO: implement initState
     super.initState();
     Future.microtask(() {
-      ref.read(searchPostControllerProvider).search(widget.query);
+      final searchPostController = ref.read(searchPostControllerProvider);
+      searchPostController.posts.clear();
+      searchPostController.search(widget.query);
     });
   }
 
