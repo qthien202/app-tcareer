@@ -356,7 +356,7 @@ class PostingController extends ChangeNotifier {
         AppUtils.loadingApi(() async {
           String videoId = await postUseCase.uploadFile(
               folderName: id, topic: "Posts", uint8List: videoPicked!);
-          videoUrlWeb = "${AppConstants.driveUrl}$videoId?alt=media";
+
         }, context);
       }
     }

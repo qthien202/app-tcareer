@@ -1,19 +1,13 @@
-import 'package:app_tcareer/src/extensions/image_extension.dart';
+import 'package:app_tcareer/src/extensions/video_extension.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/post_edit.dart';
-import 'package:app_tcareer/src/features/posts/data/models/posts_response.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/video_player_widget.dart';
-import 'package:app_tcareer/src/extensions/video_extension.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
-import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
 import 'package:app_tcareer/src/widgets/photos/app_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_fb_photo_view/flutter_fb_photo_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:readmore/readmore.dart';
 
@@ -231,7 +225,7 @@ Widget contentWidget(String content) {
   return ReadMoreText(
     content,
     trimMode: TrimMode.Line,
-    trimLines: 2,
+    trimLines: 5,
     colorClickableText: Colors.black,
     trimCollapsedText: "Xem thêm",
     trimExpandedText: "Thu gọn",

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:app_tcareer/src/configs/app_constants.dart';
+import 'package:app_tcareer/src/environment/env.dart';
 import 'package:app_tcareer/src/services/drive/upload_data.dart';
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
@@ -17,7 +18,7 @@ class UploadFileService {
       required String topic,
       required String folderName}) async {
     String? fileUrl;
-    dio.options.baseUrl = AppConstants.uploadUrl;
+    dio.options.baseUrl = Env.uploadUrl;
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,
@@ -28,7 +29,7 @@ class UploadFileService {
         compact: true,
         maxWidth: 90));
     FormData formData = FormData.fromMap({
-      "api_key": AppConstants.keyUpload,
+      "api_key": Env.uploadKey,
       "file": file != null
           ? await MultipartFile.fromFile(file.path)
           : MultipartFile.fromBytes(uint8List!, filename: "upload.mp4"),

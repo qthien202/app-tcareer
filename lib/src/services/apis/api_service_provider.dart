@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:app_tcareer/app.dart';
 import 'package:app_tcareer/src/configs/app_constants.dart';
 import 'package:app_tcareer/src/configs/exceptions/api_exception.dart';
+import 'package:app_tcareer/src/environment/env.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/login_response.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/refresh_token_request.dart';
 import 'package:app_tcareer/src/routes/app_router.dart';
@@ -116,7 +117,7 @@ Future<LoginResponse?> refreshAccessToken(
   final dio = Dio();
 
   try {
-    dio.options.baseUrl = AppConstants.baseUrl;
+    dio.options.baseUrl = Env.baseUrl;
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,

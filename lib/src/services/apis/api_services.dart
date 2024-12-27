@@ -1,5 +1,6 @@
 import 'package:app_tcareer/app.dart';
 import 'package:app_tcareer/src/configs/app_constants.dart';
+import 'package:app_tcareer/src/environment/env.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/check_user_phone_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/forgot_password_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/forgot_password_verify_request.dart';
@@ -59,7 +60,7 @@ import '../../features/jobs/data/models/applicant_model.dart';
 
 part 'api_services.g.dart';
 
-@RestApi(baseUrl: AppConstants.baseUrl)
+@RestApi(baseUrl: Env.baseUrl)
 abstract class ApiServices {
   factory ApiServices(Dio dio, {String baseUrl}) = _ApiServices;
 

@@ -1,4 +1,5 @@
 import 'package:app_tcareer/src/configs/app_constants.dart';
+import 'package:app_tcareer/src/environment/env.dart';
 import 'package:app_tcareer/src/services/address/district.dart';
 import 'package:app_tcareer/src/services/address/province.dart';
 import 'package:app_tcareer/src/services/address/ward.dart';
@@ -13,7 +14,7 @@ class AddressServices {
 
   Future<List<Province>> getProvince() async {
     List<Province> provinces = [];
-    dio.options.baseUrl = AppConstants.addressApiUrl;
+    dio.options.baseUrl = Env.addressUrl;
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,
@@ -23,9 +24,9 @@ class AddressServices {
         error: true,
         compact: true,
         maxWidth: 90));
-    final token = dotenv.env['GHN_TOKEN'];
+    final token = Env.addressToken;
     final response =
-        await dio.get('province', options: Options(headers: {'token': token}));
+    await dio.get('province', options: Options(headers: {'token': token}));
     if (response.data != null && response.data['data'] != null) {
       provinces = (response.data['data'] as List).map((e) {
         return Province.fromJson(e);
@@ -36,7 +37,7 @@ class AddressServices {
 
   Future<List<District>> getDistrict(num provinceId) async {
     List<District> districts = [];
-    dio.options.baseUrl = AppConstants.addressApiUrl;
+    dio.options.baseUrl = Env.addressUrl;
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,
@@ -46,7 +47,7 @@ class AddressServices {
         error: true,
         compact: true,
         maxWidth: 90));
-    final token = dotenv.env['GHN_TOKEN'];
+    final token = Env.addressToken;
     final response = await dio.get('district?province_id=$provinceId',
         options: Options(headers: {'token': token}));
     if (response.data != null && response.data['data'] != null) {
@@ -59,7 +60,7 @@ class AddressServices {
 
   Future<List<Ward>> getWard(num districtId) async {
     List<Ward> wards = [];
-    dio.options.baseUrl = AppConstants.addressApiUrl;
+    dio.options.baseUrl = Env.addressUrl;
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,
@@ -69,7 +70,7 @@ class AddressServices {
         error: true,
         compact: true,
         maxWidth: 90));
-    final token = dotenv.env['GHN_TOKEN'];
+    final token = Env.addressToken;
     final response = await dio.get('ward?district_id=$districtId',
         options: Options(headers: {'token': token}));
     if (response.data != null && response.data['data'] != null) {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:ably_flutter/ably_flutter.dart' as ably;
+import 'package:app_tcareer/src/environment/env.dart';
 import 'package:app_tcareer/src/features/chat/data/models/all_conversation.dart';
 import 'package:app_tcareer/src/features/chat/data/models/mark_read_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_conversation.dart';
@@ -25,19 +26,20 @@ class ConversationController extends ChangeNotifier {
 
   AllConversation? allConversation;
   List<UserConversation> conversations = [];
+
   Future<void> getAllConversation() async {
     allConversation = null;
 
     allConversation = await chatUseCase.getAllConversation();
     if (allConversation?.data
-            ?.any((conversation) => conversations.contains(conversation)) ==
+        ?.any((conversation) => conversations.contains(conversation)) ==
         false) {
       conversations.clear();
     }
     if (allConversation?.data != null && conversations.isEmpty) {
       final newConversations = allConversation!.data?.where((newConversation) {
         return !conversations.any((existingConversation) =>
-            existingConversation.userId == newConversation.userId);
+        existingConversation.userId == newConversation.userId);
       }).toList();
 
       // Nếu có cuộc hội thoại mới, thêm vào danh sách
@@ -57,19 +59,18 @@ class ConversationController extends ChangeNotifier {
     final rawKey = dotenv.env['CIPHER_KEY'];
     final key = encrypt.Key.fromBase64(rawKey ?? "");
     final encrypter =
-        encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
+    encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
     String message = encrypter.decrypt64(lastMessage);
     return message;
   }
 
   Future<void> handleDecryptMessage() async {
-    final rawKey = dotenv.env['CIPHER_KEY'];
-    final key = encrypt.Key.fromBase64(rawKey ?? "");
+    final key = encrypt.Key.fromBase64(Env.cipherKey);
     final encrypter =
-        encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
+    encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
     conversations = conversations.map((conversation) {
       final decodedLatestMessage =
-          encrypter.decrypt64(conversation.latestMessage ?? "");
+      encrypter.decrypt64(conversation.latestMessage ?? "");
 
       return conversation.copyWith(latestMessage: decodedLatestMessage);
     }).toList();
@@ -181,11 +182,10 @@ class ConversationController extends ChangeNotifier {
     return conversationSubscriptions;
   }
 
-  Future<void> markDeliveredMessage(
-      {dynamic senderId,
-      required dynamic messageId,
-      required dynamic conversationId,
-      required BuildContext context}) async {
+  Future<void> markDeliveredMessage({dynamic senderId,
+    required dynamic messageId,
+    required dynamic conversationId,
+    required BuildContext context}) async {
     final userUtil = ref.watch(userUtilsProvider);
     String clientId = await userUtil.getUserId();
 
@@ -218,13 +218,13 @@ class ConversationController extends ChangeNotifier {
       final rawData = event.snapshot.value;
       if (rawData is Map) {
         final usersStatus =
-            rawData.entries.where((entry) => entry.value is Map).map((entry) {
+        rawData.entries.where((entry) => entry.value is Map).map((entry) {
           final element = Map<dynamic, dynamic>.from(entry.value);
           element['userId'] = entry.key;
           return element;
         }).toList();
         Map<dynamic, dynamic> userStatus =
-            usersStatus.firstWhere((user) => user['userId'] == userId);
+        usersStatus.firstWhere((user) => user['userId'] == userId);
         return userStatus;
       }
       return {};
@@ -240,6 +240,7 @@ class ConversationController extends ChangeNotifier {
   }
 
   List<Data> friends = [];
+
   Future<void> getFriends() async {
     final data = await chatUseCase.getFriendInChat();
     List<dynamic> followerJson = data['data'];
@@ -253,14 +254,15 @@ class ConversationController extends ChangeNotifier {
         .map((item) => Data.fromJson(item))
         .toList();
     final friendJson =
-        jsonEncode(friends.map((friend) => friend.toJson()).toList());
+    jsonEncode(friends.map((friend) => friend.toJson()).toList());
     saveConversationFriends(friendJson: friendJson);
   }
 
   StreamSubscription<ably.ConnectionStateChange>? connectSubscription;
+
   Future<StreamSubscription<ably.ConnectionStateChange>?> listenAblyConnected(
       {required Function(ably.ConnectionStateChange stateChange)
-          handleChannelStateChange}) async {
+      handleChannelStateChange}) async {
     connectSubscription = await chatUseCase.listenAblyConnected(
         handleChannelStateChange: handleChannelStateChange);
     return connectSubscription;
@@ -317,6 +319,7 @@ class ConversationController extends ChangeNotifier {
 
   TextEditingController queryController = TextEditingController();
   List<Data> recentChatters = [];
+
   Future<void> getRecentChatters() async {
     final data = await chatUseCase.getRecentChatters(queryController.text);
     List<dynamic> chattersJson = data['data'];

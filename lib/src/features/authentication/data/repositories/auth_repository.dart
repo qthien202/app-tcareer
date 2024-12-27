@@ -1,4 +1,5 @@
 import 'package:app_tcareer/src/configs/app_constants.dart';
+import 'package:app_tcareer/src/environment/env.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/check_user_phone_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/forgot_password_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/forgot_password_verify_request.dart';
@@ -135,7 +136,7 @@ class AuthRepository {
             email: email,
             phone: phone,
             password: password,
-            key: AppConstants.resetPasswordKey));
+            key: Env.resetPasswordKey));
   }
 
   Future<void> postCheckUserPhone(String phone) async {

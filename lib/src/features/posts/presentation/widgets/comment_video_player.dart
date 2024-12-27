@@ -1,17 +1,12 @@
-import 'dart:io';
-import 'package:app_tcareer/src/configs/app_constants.dart';
-import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
-import 'package:better_player/better_player.dart';
 import 'package:flick_video_player/flick_video_player.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
 
 class CommentVideoPlayerWidget extends ConsumerStatefulWidget {
   // Đường dẫn đến file video
   final String videoUrl;
+
   const CommentVideoPlayerWidget(this.videoUrl, {Key? key}) : super(key: key);
 
   @override
@@ -28,8 +23,7 @@ class _CommentVideoPlayerWidgetState
     super.initState();
 
     flickManager = FlickManager(
-        videoPlayerController: VideoPlayerController.network(
-            "${widget.videoUrl}&${AppConstants.driveApiKey}"),
+        videoPlayerController: VideoPlayerController.network(widget.videoUrl),
         autoPlay: false,
         autoInitialize: true);
   }

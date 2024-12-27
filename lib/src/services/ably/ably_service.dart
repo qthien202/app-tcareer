@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:ably_flutter/ably_flutter.dart' as ably;
 import 'package:app_tcareer/src/configs/app_constants.dart';
+import 'package:app_tcareer/src/environment/env.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,14 +20,14 @@ class AblyService {
     String userId = await userUtils.getUserId();
     print(">>>>>>>>>userId: $userId");
     clientOptions =
-        ably.ClientOptions(key: AppConstants.ablyKey, clientId: userId);
+        ably.ClientOptions(key: Env.ablyKey, clientId: userId);
     realtime =
         ably.Realtime(options: clientOptions); // Khởi tạo Realtime tại đây
   }
 
   Future<void> listenAllConnectionState(
       {required Function(ably.ConnectionStateChange)
-          handleConnectionState}) async {
+      handleConnectionState}) async {
     realtime.connection.on().listen((ably.ConnectionStateChange stateChange) {
       handleConnectionState(stateChange);
     });
@@ -34,7 +35,7 @@ class AblyService {
 
   Future<void> listenParticularConnectionState(
       {required Function(ably.ConnectionStateChange)
-          handleConnectionState}) async {
+      handleConnectionState}) async {
     realtime.connection
         .on(ably.ConnectionEvent.connected)
         .listen((ably.ConnectionStateChange stateChange) {
@@ -46,11 +47,10 @@ class AblyService {
     required String channelName,
     required Function(ably.Message) handleChannelMessage,
   }) async {
-    String? key = dotenv.env['CIPHER_KEY'];
     ably.CipherParams cipherParams =
-        await ably.Crypto.getDefaultParams(key: key);
+    await ably.Crypto.getDefaultParams(key: Env.cipherKey);
     ably.RealtimeChannelOptions realtimeChannelOptions =
-        ably.RealtimeChannelOptions(cipherParams: cipherParams);
+    ably.RealtimeChannelOptions(cipherParams: cipherParams);
 
     ably.RealtimeChannel channel = realtime.channels.get(
       channelName,
@@ -63,8 +63,8 @@ class AblyService {
 
   StreamSubscription<ably.Message> listenMessageWithSelectedName(
       {required String channelName,
-      required String eventName,
-      required Function(ably.Message) handleChannelMessage}) {
+        required String eventName,
+        required Function(ably.Message) handleChannelMessage}) {
     ably.RealtimeChannel channel = realtime.channels.get(channelName);
     return channel.subscribe(name: eventName).listen((ably.Message message) {
       handleChannelMessage(message);
@@ -98,7 +98,7 @@ class AblyService {
 
   StreamSubscription<ably.PresenceMessage> listenPresence(
       {required String channelName,
-      required Function(ably.PresenceMessage) handleChannelPresence}) {
+        required Function(ably.PresenceMessage) handleChannelPresence}) {
     ably.RealtimeChannel channel = realtime.channels.get(channelName);
     return channel.presence
         .subscribe()
@@ -127,7 +127,7 @@ class AblyService {
 
   Future<StreamSubscription<ably.ConnectionStateChange>> listenAblyConnected(
       {required Function(ably.ConnectionStateChange stateChange)
-          handleChannelStateChange}) async {
+      handleChannelStateChange}) async {
     return realtime.connection
         .on()
         .listen((ably.ConnectionStateChange stateChange) async {
