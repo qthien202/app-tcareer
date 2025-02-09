@@ -1,16 +1,20 @@
 class MarkReadMessageRequest {
   MarkReadMessageRequest({
-      num? conversationId,}){
+    num? conversationId,
+  }) {
     _conversationId = conversationId;
-}
+  }
 
   MarkReadMessageRequest.fromJson(dynamic json) {
     _conversationId = json['conversation_id'];
   }
   num? _conversationId;
-MarkReadMessageRequest copyWith({  num? conversationId,
-}) => MarkReadMessageRequest(  conversationId: conversationId ?? _conversationId,
-);
+  MarkReadMessageRequest copyWith({
+    num? conversationId,
+  }) =>
+      MarkReadMessageRequest(
+        conversationId: conversationId ?? _conversationId,
+      );
   num? get conversationId => _conversationId;
 
   Map<String, dynamic> toJson() {
@@ -18,5 +22,4 @@ MarkReadMessageRequest copyWith({  num? conversationId,
     map['conversation_id'] = _conversationId;
     return map;
   }
-
 }

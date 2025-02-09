@@ -1,14 +1,15 @@
 class ResetPasswordRequest {
   ResetPasswordRequest({
-      String? email, 
-      String? phone, 
-      String? password, 
-      String? key,}){
+    String? email,
+    String? phone,
+    String? password,
+    String? key,
+  }) {
     _email = email;
     _phone = phone;
     _password = password;
     _key = key;
-}
+  }
 
   ResetPasswordRequest.fromJson(dynamic json) {
     _email = json['email'];
@@ -20,15 +21,18 @@ class ResetPasswordRequest {
   String? _phone;
   String? _password;
   String? _key;
-ResetPasswordRequest copyWith({  String? email,
-  String? phone,
-  String? password,
-  String? key,
-}) => ResetPasswordRequest(  email: email ?? _email,
-  phone: phone ?? _phone,
-  password: password ?? _password,
-  key: key ?? _key,
-);
+  ResetPasswordRequest copyWith({
+    String? email,
+    String? phone,
+    String? password,
+    String? key,
+  }) =>
+      ResetPasswordRequest(
+        email: email ?? _email,
+        phone: phone ?? _phone,
+        password: password ?? _password,
+        key: key ?? _key,
+      );
   String? get email => _email;
   String? get phone => _phone;
   String? get password => _password;
@@ -42,5 +46,4 @@ ResetPasswordRequest copyWith({  String? email,
     map['key'] = _key;
     return map;
   }
-
 }

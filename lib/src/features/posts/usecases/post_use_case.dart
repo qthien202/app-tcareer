@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:app_tcareer/src/features/authentication/usecases/login_use_case.dart';
+import 'package:app_tcareer/src/features/authentication/domain/login_use_case.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/post_response.dart';
 import 'package:app_tcareer/src/features/posts/data/models/posts_detail_response.dart';

@@ -4,7 +4,7 @@ import 'package:app_tcareer/src/features/authentication/data/models/register_req
 import 'package:app_tcareer/src/features/authentication/data/models/verify_otp.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/verify_phone_request.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/register/register_page.dart';
-import 'package:app_tcareer/src/features/authentication/usecases/register_use_case.dart';
+import 'package:app_tcareer/src/features/authentication/domain/register_use_case.dart';
 import 'package:app_tcareer/src/utils/alert_dialog_util.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/utils/snackbar_utils.dart';

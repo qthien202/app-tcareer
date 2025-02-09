@@ -1,10 +1,11 @@
 class TopicJobFavoriteResponse {
   TopicJobFavoriteResponse({
-      List<Data>? data, 
-      Response? response,}){
+    List<Data>? data,
+    Response? response,
+  }) {
     _data = data;
     _response = response;
-}
+  }
 
   TopicJobFavoriteResponse.fromJson(dynamic json) {
     if (json['data'] != null) {
@@ -13,15 +14,19 @@ class TopicJobFavoriteResponse {
         _data?.add(Data.fromJson(v));
       });
     }
-    _response = json['response'] != null ? Response.fromJson(json['response']) : null;
+    _response =
+        json['response'] != null ? Response.fromJson(json['response']) : null;
   }
   List<Data>? _data;
   Response? _response;
-TopicJobFavoriteResponse copyWith({  List<Data>? data,
-  Response? response,
-}) => TopicJobFavoriteResponse(  data: data ?? _data,
-  response: response ?? _response,
-);
+  TopicJobFavoriteResponse copyWith({
+    List<Data>? data,
+    Response? response,
+  }) =>
+      TopicJobFavoriteResponse(
+        data: data ?? _data,
+        response: response ?? _response,
+      );
   List<Data>? get data => _data;
   Response? get response => _response;
 
@@ -35,18 +40,18 @@ TopicJobFavoriteResponse copyWith({  List<Data>? data,
     }
     return map;
   }
-
 }
 
 class Response {
   Response({
-      String? status, 
-      num? code, 
-      num? count,}){
+    String? status,
+    num? code,
+    num? count,
+  }) {
     _status = status;
     _code = code;
     _count = count;
-}
+  }
 
   Response.fromJson(dynamic json) {
     _status = json['status'];
@@ -56,13 +61,16 @@ class Response {
   String? _status;
   num? _code;
   num? _count;
-Response copyWith({  String? status,
-  num? code,
-  num? count,
-}) => Response(  status: status ?? _status,
-  code: code ?? _code,
-  count: count ?? _count,
-);
+  Response copyWith({
+    String? status,
+    num? code,
+    num? count,
+  }) =>
+      Response(
+        status: status ?? _status,
+        code: code ?? _code,
+        count: count ?? _count,
+      );
   String? get status => _status;
   num? get code => _code;
   num? get count => _count;
@@ -74,18 +82,18 @@ Response copyWith({  String? status,
     map['count'] = _count;
     return map;
   }
-
 }
 
 class Data {
   Data({
-      num? id, 
-      num? topicId, 
-      String? topicName,}){
+    num? id,
+    num? topicId,
+    String? topicName,
+  }) {
     _id = id;
     _topicId = topicId;
     _topicName = topicName;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _id = json['id'];
@@ -95,13 +103,16 @@ class Data {
   num? _id;
   num? _topicId;
   String? _topicName;
-Data copyWith({  num? id,
-  num? topicId,
-  String? topicName,
-}) => Data(  id: id ?? _id,
-  topicId: topicId ?? _topicId,
-  topicName: topicName ?? _topicName,
-);
+  Data copyWith({
+    num? id,
+    num? topicId,
+    String? topicName,
+  }) =>
+      Data(
+        id: id ?? _id,
+        topicId: topicId ?? _topicId,
+        topicName: topicName ?? _topicName,
+      );
   num? get id => _id;
   num? get topicId => _topicId;
   String? get topicName => _topicName;
@@ -113,5 +124,4 @@ Data copyWith({  num? id,
     map['topic_name'] = _topicName;
     return map;
   }
-
 }

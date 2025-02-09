@@ -26,7 +26,7 @@ class AddressServices {
         maxWidth: 90));
     final token = Env.addressToken;
     final response =
-    await dio.get('province', options: Options(headers: {'token': token}));
+        await dio.get('province', options: Options(headers: {'token': token}));
     if (response.data != null && response.data['data'] != null) {
       provinces = (response.data['data'] as List).map((e) {
         return Province.fromJson(e);

@@ -1,13 +1,14 @@
 class UserConversation {
   UserConversation({
-      num? id, 
-      num? userId, 
-      dynamic leftAt, 
-      num? unRead, 
-      String? userAvatar, 
-      String? userFullName, 
-      String? latestMessage, 
-      String? updatedAt,}){
+    num? id,
+    num? userId,
+    dynamic leftAt,
+    num? unRead,
+    String? userAvatar,
+    String? userFullName,
+    String? latestMessage,
+    String? updatedAt,
+  }) {
     _id = id;
     _userId = userId;
     _leftAt = leftAt;
@@ -16,7 +17,7 @@ class UserConversation {
     _userFullName = userFullName;
     _latestMessage = latestMessage;
     _updatedAt = updatedAt;
-}
+  }
 
   UserConversation.fromJson(dynamic json) {
     _id = json['id'];
@@ -36,23 +37,26 @@ class UserConversation {
   String? _userFullName;
   String? _latestMessage;
   String? _updatedAt;
-UserConversation copyWith({  num? id,
-  num? userId,
-  dynamic leftAt,
-  num? unRead,
-  String? userAvatar,
-  String? userFullName,
-  String? latestMessage,
-  String? updatedAt,
-}) => UserConversation(  id: id ?? _id,
-  userId: userId ?? _userId,
-  leftAt: leftAt ?? _leftAt,
-  unRead: unRead ?? _unRead,
-  userAvatar: userAvatar ?? _userAvatar,
-  userFullName: userFullName ?? _userFullName,
-  latestMessage: latestMessage ?? _latestMessage,
-  updatedAt: updatedAt ?? _updatedAt,
-);
+  UserConversation copyWith({
+    num? id,
+    num? userId,
+    dynamic leftAt,
+    num? unRead,
+    String? userAvatar,
+    String? userFullName,
+    String? latestMessage,
+    String? updatedAt,
+  }) =>
+      UserConversation(
+        id: id ?? _id,
+        userId: userId ?? _userId,
+        leftAt: leftAt ?? _leftAt,
+        unRead: unRead ?? _unRead,
+        userAvatar: userAvatar ?? _userAvatar,
+        userFullName: userFullName ?? _userFullName,
+        latestMessage: latestMessage ?? _latestMessage,
+        updatedAt: updatedAt ?? _updatedAt,
+      );
   num? get id => _id;
   num? get userId => _userId;
   dynamic get leftAt => _leftAt;
@@ -74,5 +78,4 @@ UserConversation copyWith({  num? id,
     map['updated_at'] = _updatedAt;
     return map;
   }
-
 }

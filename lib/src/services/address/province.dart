@@ -1,23 +1,24 @@
 class Province {
   Province({
-      num? provinceID, 
-      String? provinceName, 
-      num? countryID, 
-      String? code, 
-      List<String>? nameExtension, 
-      num? isEnable, 
-      num? regionID, 
-      num? regionCPN, 
-      num? updatedBy, 
-      String? createdAt, 
-      String? updatedAt, 
-      num? areaID, 
-      bool? canUpdateCOD, 
-      num? status, 
-      String? updatedIP, 
-      num? updatedEmployee, 
-      String? updatedSource, 
-      String? updatedDate,}){
+    num? provinceID,
+    String? provinceName,
+    num? countryID,
+    String? code,
+    List<String>? nameExtension,
+    num? isEnable,
+    num? regionID,
+    num? regionCPN,
+    num? updatedBy,
+    String? createdAt,
+    String? updatedAt,
+    num? areaID,
+    bool? canUpdateCOD,
+    num? status,
+    String? updatedIP,
+    num? updatedEmployee,
+    String? updatedSource,
+    String? updatedDate,
+  }) {
     _provinceID = provinceID;
     _provinceName = provinceName;
     _countryID = countryID;
@@ -36,14 +37,16 @@ class Province {
     _updatedEmployee = updatedEmployee;
     _updatedSource = updatedSource;
     _updatedDate = updatedDate;
-}
+  }
 
   Province.fromJson(dynamic json) {
     _provinceID = json['ProvinceID'];
     _provinceName = json['ProvinceName'];
     _countryID = json['CountryID'];
     _code = json['Code'];
-    _nameExtension = json['NameExtension'] != null ? json['NameExtension'].cast<String>() : [];
+    _nameExtension = json['NameExtension'] != null
+        ? json['NameExtension'].cast<String>()
+        : [];
     _isEnable = json['IsEnable'];
     _regionID = json['RegionID'];
     _regionCPN = json['RegionCPN'];
@@ -76,43 +79,46 @@ class Province {
   num? _updatedEmployee;
   String? _updatedSource;
   String? _updatedDate;
-Province copyWith({  num? provinceID,
-  String? provinceName,
-  num? countryID,
-  String? code,
-  List<String>? nameExtension,
-  num? isEnable,
-  num? regionID,
-  num? regionCPN,
-  num? updatedBy,
-  String? createdAt,
-  String? updatedAt,
-  num? areaID,
-  bool? canUpdateCOD,
-  num? status,
-  String? updatedIP,
-  num? updatedEmployee,
-  String? updatedSource,
-  String? updatedDate,
-}) => Province(  provinceID: provinceID ?? _provinceID,
-  provinceName: provinceName ?? _provinceName,
-  countryID: countryID ?? _countryID,
-  code: code ?? _code,
-  nameExtension: nameExtension ?? _nameExtension,
-  isEnable: isEnable ?? _isEnable,
-  regionID: regionID ?? _regionID,
-  regionCPN: regionCPN ?? _regionCPN,
-  updatedBy: updatedBy ?? _updatedBy,
-  createdAt: createdAt ?? _createdAt,
-  updatedAt: updatedAt ?? _updatedAt,
-  areaID: areaID ?? _areaID,
-  canUpdateCOD: canUpdateCOD ?? _canUpdateCOD,
-  status: status ?? _status,
-  updatedIP: updatedIP ?? _updatedIP,
-  updatedEmployee: updatedEmployee ?? _updatedEmployee,
-  updatedSource: updatedSource ?? _updatedSource,
-  updatedDate: updatedDate ?? _updatedDate,
-);
+  Province copyWith({
+    num? provinceID,
+    String? provinceName,
+    num? countryID,
+    String? code,
+    List<String>? nameExtension,
+    num? isEnable,
+    num? regionID,
+    num? regionCPN,
+    num? updatedBy,
+    String? createdAt,
+    String? updatedAt,
+    num? areaID,
+    bool? canUpdateCOD,
+    num? status,
+    String? updatedIP,
+    num? updatedEmployee,
+    String? updatedSource,
+    String? updatedDate,
+  }) =>
+      Province(
+        provinceID: provinceID ?? _provinceID,
+        provinceName: provinceName ?? _provinceName,
+        countryID: countryID ?? _countryID,
+        code: code ?? _code,
+        nameExtension: nameExtension ?? _nameExtension,
+        isEnable: isEnable ?? _isEnable,
+        regionID: regionID ?? _regionID,
+        regionCPN: regionCPN ?? _regionCPN,
+        updatedBy: updatedBy ?? _updatedBy,
+        createdAt: createdAt ?? _createdAt,
+        updatedAt: updatedAt ?? _updatedAt,
+        areaID: areaID ?? _areaID,
+        canUpdateCOD: canUpdateCOD ?? _canUpdateCOD,
+        status: status ?? _status,
+        updatedIP: updatedIP ?? _updatedIP,
+        updatedEmployee: updatedEmployee ?? _updatedEmployee,
+        updatedSource: updatedSource ?? _updatedSource,
+        updatedDate: updatedDate ?? _updatedDate,
+      );
   num? get provinceID => _provinceID;
   String? get provinceName => _provinceName;
   num? get countryID => _countryID;
@@ -154,5 +160,4 @@ Province copyWith({  num? provinceID,
     map['UpdatedDate'] = _updatedDate;
     return map;
   }
-
 }

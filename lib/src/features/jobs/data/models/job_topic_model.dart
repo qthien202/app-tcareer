@@ -1,18 +1,19 @@
 class JobTopicModel {
   JobTopicModel({
-      num? id, 
-      String? topicName, 
-      dynamic topicNameEn, 
-      String? createdAt, 
-      String? updatedAt, 
-      dynamic deletedAt,}){
+    num? id,
+    String? topicName,
+    dynamic topicNameEn,
+    String? createdAt,
+    String? updatedAt,
+    dynamic deletedAt,
+  }) {
     _id = id;
     _topicName = topicName;
     _topicNameEn = topicNameEn;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
     _deletedAt = deletedAt;
-}
+  }
 
   JobTopicModel.fromJson(dynamic json) {
     _id = json['id'];
@@ -28,19 +29,22 @@ class JobTopicModel {
   String? _createdAt;
   String? _updatedAt;
   dynamic _deletedAt;
-JobTopicModel copyWith({  num? id,
-  String? topicName,
-  dynamic topicNameEn,
-  String? createdAt,
-  String? updatedAt,
-  dynamic deletedAt,
-}) => JobTopicModel(  id: id ?? _id,
-  topicName: topicName ?? _topicName,
-  topicNameEn: topicNameEn ?? _topicNameEn,
-  createdAt: createdAt ?? _createdAt,
-  updatedAt: updatedAt ?? _updatedAt,
-  deletedAt: deletedAt ?? _deletedAt,
-);
+  JobTopicModel copyWith({
+    num? id,
+    String? topicName,
+    dynamic topicNameEn,
+    String? createdAt,
+    String? updatedAt,
+    dynamic deletedAt,
+  }) =>
+      JobTopicModel(
+        id: id ?? _id,
+        topicName: topicName ?? _topicName,
+        topicNameEn: topicNameEn ?? _topicNameEn,
+        createdAt: createdAt ?? _createdAt,
+        updatedAt: updatedAt ?? _updatedAt,
+        deletedAt: deletedAt ?? _deletedAt,
+      );
   num? get id => _id;
   String? get topicName => _topicName;
   dynamic get topicNameEn => _topicNameEn;
@@ -58,5 +62,4 @@ JobTopicModel copyWith({  num? id,
     map['deleted_at'] = _deletedAt;
     return map;
   }
-
 }

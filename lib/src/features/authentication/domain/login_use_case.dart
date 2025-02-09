@@ -5,7 +5,7 @@ import 'package:app_tcareer/src/features/authentication/data/repositories/auth_r
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginUseCase {
-  final AuthRepository authRepository;
+  final IAuthRepository authRepository;
   LoginUseCase(this.authRepository);
 
   Future<void> login(

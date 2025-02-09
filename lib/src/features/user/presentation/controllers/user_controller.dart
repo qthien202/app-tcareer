@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:app_tcareer/src/features/authentication/usecases/login_use_case.dart';
+import 'package:app_tcareer/src/features/authentication/domain/login_use_case.dart';
 import 'package:app_tcareer/src/features/index/index_controller.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/add_job_topic_request.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';

@@ -5,8 +5,8 @@ import 'package:app_tcareer/src/features/authentication/data/models/forgot_passw
 import 'package:app_tcareer/src/features/authentication/data/models/reset_password_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/verify_otp.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/verify_phone_request.dart';
-import 'package:app_tcareer/src/features/authentication/usecases/forgot_password_use_case.dart';
-import 'package:app_tcareer/src/features/authentication/usecases/register_use_case.dart';
+import 'package:app_tcareer/src/features/authentication/domain/forgot_password_use_case.dart';
+import 'package:app_tcareer/src/features/authentication/domain/register_use_case.dart';
 import 'package:app_tcareer/src/utils/alert_dialog_util.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/utils/snackbar_utils.dart';

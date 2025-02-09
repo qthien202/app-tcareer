@@ -1,16 +1,20 @@
 class CheckUserPhoneRequest {
   CheckUserPhoneRequest({
-      String? phone,}){
+    String? phone,
+  }) {
     _phone = phone;
-}
+  }
 
   CheckUserPhoneRequest.fromJson(dynamic json) {
     _phone = json['phone'];
   }
   String? _phone;
-CheckUserPhoneRequest copyWith({  String? phone,
-}) => CheckUserPhoneRequest(  phone: phone ?? _phone,
-);
+  CheckUserPhoneRequest copyWith({
+    String? phone,
+  }) =>
+      CheckUserPhoneRequest(
+        phone: phone ?? _phone,
+      );
   String? get phone => _phone;
 
   Map<String, dynamic> toJson() {
@@ -18,5 +22,4 @@ CheckUserPhoneRequest copyWith({  String? phone,
     map['phone'] = _phone;
     return map;
   }
-
 }

@@ -51,7 +51,7 @@ class JobChatController extends ChangeNotifier {
       user = null;
     }
     if (conversationData?.message?.data
-        ?.any((message) => messages.contains(message)) ==
+            ?.any((message) => messages.contains(message)) ==
         false) {
       messages.clear();
     }
@@ -61,12 +61,12 @@ class JobChatController extends ChangeNotifier {
       // saveUser(userId: userId, userJson: userJson);
       final newConversations = conversationData?.message?.data
           ?.where((newConversation) =>
-      !messages.any((messages) => messages.id == newConversation.id))
+              !messages.any((messages) => messages.id == newConversation.id))
           .toList();
       messages.addAll(newConversations ?? []);
       await handleDecryptMessage();
       final messageJson =
-      jsonEncode(messages.map((message) => message.toJson()).toList());
+          jsonEncode(messages.map((message) => message.toJson()).toList());
       // await saveMessage(userId: userId, messageJson: messageJson);
 
       notifyListeners();
@@ -76,7 +76,7 @@ class JobChatController extends ChangeNotifier {
   Future<void> handleDecryptMessage() async {
     final key = encrypt.Key.fromBase64(Env.cipherKey);
     final encrypter =
-    encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
+        encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
 
     messages = messages.map((message) {
       final decodedMessage = message.content != null
@@ -143,7 +143,7 @@ class JobChatController extends ChangeNotifier {
         messageData['updatedStatus'] == "read") {
       final currentMessage = messages.last;
       final updatedMessage =
-      currentMessage.copyWith(status: messageData['updatedStatus']);
+          currentMessage.copyWith(status: messageData['updatedStatus']);
       messages[messages.length - 1] = updatedMessage;
       notifyListeners();
     } else {
@@ -159,7 +159,7 @@ class JobChatController extends ChangeNotifier {
         senderId: messageData['sender_id'],
         status: "sent",
         createdAt:
-        messageData['created_at'], // sửa 'createdAt' thành 'created_at'
+            messageData['created_at'], // sửa 'createdAt' thành 'created_at'
       );
 
       if (!messages
@@ -168,7 +168,7 @@ class JobChatController extends ChangeNotifier {
         messages.add(newMessage);
 
         final messageJson =
-        jsonEncode(messages.map((message) => message.toJson()).toList());
+            jsonEncode(messages.map((message) => message.toJson()).toList());
         // saveMessage(
         //     userId: user?.userId.toString() ?? "", messageJson: messageJson);
 
@@ -204,9 +204,9 @@ class JobChatController extends ChangeNotifier {
 
         await chatUseCase
             .publishMessage(
-            conversationId:
-            conversationData?.conversation?.id.toString() ?? "",
-            data: data)
+                conversationId:
+                    conversationData?.conversation?.id.toString() ?? "",
+                data: data)
             .then((val) async {
           await conversationController
               .updateUnRead(conversationData?.conversation?.id ?? 0);
@@ -468,7 +468,7 @@ class JobChatController extends ChangeNotifier {
     await chatUseCase.putDeleteMessage(messageId.toString()).then((_) async {
       messages.removeWhere((message) => message.id == messageId);
       final messageJson =
-      jsonEncode(messages.map((message) => message.toJson()).toList());
+          jsonEncode(messages.map((message) => message.toJson()).toList());
       // print(">>>>>>>>messages: $messageJson");
       //
       notifyListeners();
@@ -504,94 +504,88 @@ class JobChatController extends ChangeNotifier {
     final userUtil = ref.watch(userUtilsProvider);
     String clientId = await userUtil.getUserId();
     final currentMessage =
-    messages.firstWhere((message) => message.id == messageId);
+        messages.firstWhere((message) => message.id == messageId);
     final index = messages.indexWhere((message) => message.id == messageId);
     final updateMessage = currentMessage
         .copyWith(content: "", type: "recall", mediaUrl: <String>[]);
     messages[index] = updateMessage;
     // print(">>>>>>>>messageData: ${jsonEncode(messages)}");
     final messageJson =
-    jsonEncode(messages.map((message) => message.toJson()).toList());
+        jsonEncode(messages.map((message) => message.toJson()).toList());
     // print(">>>>>>>>messages: $messageJson");
     // await saveMessage(
     //     userId: user?.userId.toString() ?? "", messageJson: messageJson);
     notifyListeners();
   }
 
-  Future<void> showConfirmDeleteMessage(num messageId,
-      BuildContext context) async {
+  Future<void> showConfirmDeleteMessage(
+      num messageId, BuildContext context) async {
     showCupertinoDialog<void>(
       context: context,
-      builder: (BuildContext context) =>
-          CupertinoAlertDialog(
-            title: const Text('Gỡ đối với bạn?'),
-            content: const Text(
-                'Tin nhắn này sẽ bị gỡ khỏi thiết bị của bạn, nhưng vẫn hiển thị với thành viên khác trong đoạn chat'),
-            actions: <CupertinoDialogAction>[
-              CupertinoDialogAction(
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Gỡ đối với bạn?'),
+        content: const Text(
+            'Tin nhắn này sẽ bị gỡ khỏi thiết bị của bạn, nhưng vẫn hiển thị với thành viên khác trong đoạn chat'),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            /// This parameter indicates this action is the default,
+            /// and turns the action's text to bold text.
 
-                /// This parameter indicates this action is the default,
-                /// and turns the action's text to bold text.
-
-                onPressed: () {
-                  context.pop();
-                },
-                child: const Text(
-                  'Hủy',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              CupertinoDialogAction(
-
-                /// This parameter indicates the action would perform
-                /// a destructive action such as deletion, and turns
-                /// the action's text color to red.
-                isDestructiveAction: true,
-                onPressed: () async {
-                  await deleteMessage(messageId, context);
-                },
-                child: const Text('Gỡ bỏ'),
-              ),
-            ],
+            onPressed: () {
+              context.pop();
+            },
+            child: const Text(
+              'Hủy',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
+          CupertinoDialogAction(
+            /// This parameter indicates the action would perform
+            /// a destructive action such as deletion, and turns
+            /// the action's text color to red.
+            isDestructiveAction: true,
+            onPressed: () async {
+              await deleteMessage(messageId, context);
+            },
+            child: const Text('Gỡ bỏ'),
+          ),
+        ],
+      ),
     );
   }
 
   Future<void> showRecallMessage(num messageId, BuildContext context) async {
     showCupertinoDialog<void>(
       context: context,
-      builder: (BuildContext context) =>
-          CupertinoAlertDialog(
-            title: const Text('Thu hồi tin nhắn này?'),
-            content: const Text(
-                'Tin nhắn này sẽ bị thu hồi khỏi cuộc trò chuyện và không thể khôi phục'),
-            actions: <CupertinoDialogAction>[
-              CupertinoDialogAction(
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Thu hồi tin nhắn này?'),
+        content: const Text(
+            'Tin nhắn này sẽ bị thu hồi khỏi cuộc trò chuyện và không thể khôi phục'),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            /// This parameter indicates this action is the default,
+            /// and turns the action's text to bold text.
 
-                /// This parameter indicates this action is the default,
-                /// and turns the action's text to bold text.
-
-                onPressed: () {
-                  context.pop();
-                },
-                child: const Text(
-                  'Hủy',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              CupertinoDialogAction(
-
-                /// This parameter indicates the action would perform
-                /// a destructive action such as deletion, and turns
-                /// the action's text color to red.
-                isDestructiveAction: true,
-                onPressed: () async {
-                  await recallMessage(messageId, context);
-                },
-                child: const Text('Thu hồi'),
-              ),
-            ],
+            onPressed: () {
+              context.pop();
+            },
+            child: const Text(
+              'Hủy',
+              style: TextStyle(color: Colors.black),
+            ),
           ),
+          CupertinoDialogAction(
+            /// This parameter indicates the action would perform
+            /// a destructive action such as deletion, and turns
+            /// the action's text color to red.
+            isDestructiveAction: true,
+            onPressed: () async {
+              await recallMessage(messageId, context);
+            },
+            child: const Text('Thu hồi'),
+          ),
+        ],
+      ),
     );
   }
 
@@ -610,7 +604,7 @@ class JobChatController extends ChangeNotifier {
 }
 
 final jobChatControllerProvider =
-ChangeNotifierProvider<JobChatController>((ref) {
+    ChangeNotifierProvider<JobChatController>((ref) {
   final chatUseCase = ref.watch(jobChatUseCaseProvider);
   return JobChatController(chatUseCase, ref);
 });

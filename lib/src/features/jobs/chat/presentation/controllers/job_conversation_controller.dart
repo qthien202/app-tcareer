@@ -33,14 +33,14 @@ class JobConversationController extends ChangeNotifier {
 
     allConversation = await chatUseCase.getAllConversation();
     if (allConversation?.data
-        ?.any((conversation) => conversations.contains(conversation)) ==
+            ?.any((conversation) => conversations.contains(conversation)) ==
         false) {
       conversations.clear();
     }
     if (allConversation?.data != null && conversations.isEmpty) {
       final newConversations = allConversation!.data?.where((newConversation) {
         return !conversations.any((existingConversation) =>
-        existingConversation.userId == newConversation.userId);
+            existingConversation.userId == newConversation.userId);
       }).toList();
 
       // Nếu có cuộc hội thoại mới, thêm vào danh sách
@@ -56,7 +56,7 @@ class JobConversationController extends ChangeNotifier {
   Future<String> handleDecryptLastMessage(String lastMessage) async {
     final key = encrypt.Key.fromBase64(Env.cipherKey);
     final encrypter =
-    encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
+        encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
     String message = encrypter.decrypt64(lastMessage);
     return message;
   }
@@ -65,10 +65,10 @@ class JobConversationController extends ChangeNotifier {
     final rawKey = dotenv.env['CIPHER_KEY'];
     final key = encrypt.Key.fromBase64(rawKey ?? "");
     final encrypter =
-    encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
+        encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
     conversations = conversations.map((conversation) {
       final decodedLatestMessage =
-      encrypter.decrypt64(conversation.latestMessage ?? "");
+          encrypter.decrypt64(conversation.latestMessage ?? "");
 
       return conversation.copyWith(latestMessage: decodedLatestMessage);
     }).toList();
@@ -177,10 +177,11 @@ class JobConversationController extends ChangeNotifier {
     return conversationSubscriptions;
   }
 
-  Future<void> markDeliveredMessage({dynamic senderId,
-    required dynamic messageId,
-    required dynamic conversationId,
-    required BuildContext context}) async {
+  Future<void> markDeliveredMessage(
+      {dynamic senderId,
+      required dynamic messageId,
+      required dynamic conversationId,
+      required BuildContext context}) async {
     final userUtil = ref.watch(userUtilsProvider);
     String clientId = await userUtil.getUserId();
 
@@ -213,13 +214,13 @@ class JobConversationController extends ChangeNotifier {
       final rawData = event.snapshot.value;
       if (rawData is Map) {
         final usersStatus =
-        rawData.entries.where((entry) => entry.value is Map).map((entry) {
+            rawData.entries.where((entry) => entry.value is Map).map((entry) {
           final element = Map<dynamic, dynamic>.from(entry.value);
           element['userId'] = entry.key;
           return element;
         }).toList();
         Map<dynamic, dynamic> userStatus =
-        usersStatus.firstWhere((user) => user['userId'] == userId);
+            usersStatus.firstWhere((user) => user['userId'] == userId);
         return userStatus;
       }
       return {};
@@ -249,7 +250,7 @@ class JobConversationController extends ChangeNotifier {
         .map((item) => Data.fromJson(item))
         .toList();
     final friendJson =
-    jsonEncode(friends.map((friend) => friend.toJson()).toList());
+        jsonEncode(friends.map((friend) => friend.toJson()).toList());
     saveConversationFriends(friendJson: friendJson);
   }
 
@@ -257,7 +258,7 @@ class JobConversationController extends ChangeNotifier {
 
   Future<StreamSubscription<ably.ConnectionStateChange>?> listenAblyConnected(
       {required Function(ably.ConnectionStateChange stateChange)
-      handleChannelStateChange}) async {
+          handleChannelStateChange}) async {
     connectSubscription = await chatUseCase.listenAblyConnected(
         handleChannelStateChange: handleChannelStateChange);
     return connectSubscription;

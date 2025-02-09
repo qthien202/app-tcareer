@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:twilio_flutter/twilio_flutter.dart';
 
 class RegisterUseCase {
-  final AuthRepository authRepository;
+  final IAuthRepository authRepository;
 
   RegisterUseCase(this.authRepository);
 

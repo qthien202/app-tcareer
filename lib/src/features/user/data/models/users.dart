@@ -1,16 +1,20 @@
 class Users {
   Users({
-      Data? data,}){
+    Data? data,
+  }) {
     _data = data;
-}
+  }
 
   Users.fromJson(dynamic json) {
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
   Data? _data;
-Users copyWith({  Data? data,
-}) => Users(  data: data ?? _data,
-);
+  Users copyWith({
+    Data? data,
+  }) =>
+      Users(
+        data: data ?? _data,
+      );
   Data? get data => _data;
 
   Map<String, dynamic> toJson() {
@@ -20,27 +24,27 @@ Users copyWith({  Data? data,
     }
     return map;
   }
-
 }
 
 class Data {
   Data({
-      num? id, 
-      bool? isLoginGoogle, 
-      String? firstName, 
-      String? lastName, 
-      String? shortName, 
-      String? fullName, 
-      String? phone, 
-      String? cvFile, 
-      dynamic career, 
-      dynamic address, 
-      String? avatar, 
-      String? email, 
-      num? followerCount, 
-      num? friendCount, 
-      dynamic followed, 
-      dynamic friendStatus,}){
+    num? id,
+    bool? isLoginGoogle,
+    String? firstName,
+    String? lastName,
+    String? shortName,
+    String? fullName,
+    String? phone,
+    String? cvFile,
+    dynamic career,
+    dynamic address,
+    String? avatar,
+    String? email,
+    num? followerCount,
+    num? friendCount,
+    dynamic followed,
+    dynamic friendStatus,
+  }) {
     _id = id;
     _isLoginGoogle = isLoginGoogle;
     _firstName = firstName;
@@ -57,7 +61,7 @@ class Data {
     _friendCount = friendCount;
     _followed = followed;
     _friendStatus = friendStatus;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _id = json['id'];
@@ -93,39 +97,42 @@ class Data {
   num? _friendCount;
   dynamic _followed;
   dynamic _friendStatus;
-Data copyWith({  num? id,
-  bool? isLoginGoogle,
-  String? firstName,
-  String? lastName,
-  String? shortName,
-  String? fullName,
-  String? phone,
-  String? cvFile,
-  dynamic career,
-  dynamic address,
-  String? avatar,
-  String? email,
-  num? followerCount,
-  num? friendCount,
-  dynamic followed,
-  dynamic friendStatus,
-}) => Data(  id: id ?? _id,
-  isLoginGoogle: isLoginGoogle ?? _isLoginGoogle,
-  firstName: firstName ?? _firstName,
-  lastName: lastName ?? _lastName,
-  shortName: shortName ?? _shortName,
-  fullName: fullName ?? _fullName,
-  phone: phone ?? _phone,
-  cvFile: cvFile ?? _cvFile,
-  career: career ?? _career,
-  address: address ?? _address,
-  avatar: avatar ?? _avatar,
-  email: email ?? _email,
-  followerCount: followerCount ?? _followerCount,
-  friendCount: friendCount ?? _friendCount,
-  followed: followed ?? _followed,
-  friendStatus: friendStatus ?? _friendStatus,
-);
+  Data copyWith({
+    num? id,
+    bool? isLoginGoogle,
+    String? firstName,
+    String? lastName,
+    String? shortName,
+    String? fullName,
+    String? phone,
+    String? cvFile,
+    dynamic career,
+    dynamic address,
+    String? avatar,
+    String? email,
+    num? followerCount,
+    num? friendCount,
+    dynamic followed,
+    dynamic friendStatus,
+  }) =>
+      Data(
+        id: id ?? _id,
+        isLoginGoogle: isLoginGoogle ?? _isLoginGoogle,
+        firstName: firstName ?? _firstName,
+        lastName: lastName ?? _lastName,
+        shortName: shortName ?? _shortName,
+        fullName: fullName ?? _fullName,
+        phone: phone ?? _phone,
+        cvFile: cvFile ?? _cvFile,
+        career: career ?? _career,
+        address: address ?? _address,
+        avatar: avatar ?? _avatar,
+        email: email ?? _email,
+        followerCount: followerCount ?? _followerCount,
+        friendCount: friendCount ?? _friendCount,
+        followed: followed ?? _followed,
+        friendStatus: friendStatus ?? _friendStatus,
+      );
   num? get id => _id;
   bool? get isLoginGoogle => _isLoginGoogle;
   String? get firstName => _firstName;
@@ -163,5 +170,4 @@ Data copyWith({  num? id,
     map['friend_status'] = _friendStatus;
     return map;
   }
-
 }

@@ -1,16 +1,17 @@
 class JobRolesModel {
   JobRolesModel({
-      num? id, 
-      String? name, 
-      num? topicId, 
-      dynamic createdAt, 
-      dynamic updatedAt,}){
+    num? id,
+    String? name,
+    num? topicId,
+    dynamic createdAt,
+    dynamic updatedAt,
+  }) {
     _id = id;
     _name = name;
     _topicId = topicId;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
-}
+  }
 
   JobRolesModel.fromJson(dynamic json) {
     _id = json['id'];
@@ -24,17 +25,20 @@ class JobRolesModel {
   num? _topicId;
   dynamic _createdAt;
   dynamic _updatedAt;
-JobRolesModel copyWith({  num? id,
-  String? name,
-  num? topicId,
-  dynamic createdAt,
-  dynamic updatedAt,
-}) => JobRolesModel(  id: id ?? _id,
-  name: name ?? _name,
-  topicId: topicId ?? _topicId,
-  createdAt: createdAt ?? _createdAt,
-  updatedAt: updatedAt ?? _updatedAt,
-);
+  JobRolesModel copyWith({
+    num? id,
+    String? name,
+    num? topicId,
+    dynamic createdAt,
+    dynamic updatedAt,
+  }) =>
+      JobRolesModel(
+        id: id ?? _id,
+        name: name ?? _name,
+        topicId: topicId ?? _topicId,
+        createdAt: createdAt ?? _createdAt,
+        updatedAt: updatedAt ?? _updatedAt,
+      );
   num? get id => _id;
   String? get name => _name;
   num? get topicId => _topicId;
@@ -50,5 +54,4 @@ JobRolesModel copyWith({  num? id,
     map['updated_at'] = _updatedAt;
     return map;
   }
-
 }

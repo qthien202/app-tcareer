@@ -1,10 +1,11 @@
 class SharePostData {
   SharePostData({
-      Data? data, 
-      String? message,}){
+    Data? data,
+    String? message,
+  }) {
     _data = data;
     _message = message;
-}
+  }
 
   SharePostData.fromJson(dynamic json) {
     _data = json['data'] != null ? Data.fromJson(json['data']) : null;
@@ -12,11 +13,14 @@ class SharePostData {
   }
   Data? _data;
   String? _message;
-SharePostData copyWith({  Data? data,
-  String? message,
-}) => SharePostData(  data: data ?? _data,
-  message: message ?? _message,
-);
+  SharePostData copyWith({
+    Data? data,
+    String? message,
+  }) =>
+      SharePostData(
+        data: data ?? _data,
+        message: message ?? _message,
+      );
   Data? get data => _data;
   String? get message => _message;
 
@@ -28,22 +32,25 @@ SharePostData copyWith({  Data? data,
     map['message'] = _message;
     return map;
   }
-
 }
 
 class Data {
   Data({
-      num? shareCount,}){
+    num? shareCount,
+  }) {
     _shareCount = shareCount;
-}
+  }
 
   Data.fromJson(dynamic json) {
     _shareCount = json['share_count'];
   }
   num? _shareCount;
-Data copyWith({  num? shareCount,
-}) => Data(  shareCount: shareCount ?? _shareCount,
-);
+  Data copyWith({
+    num? shareCount,
+  }) =>
+      Data(
+        shareCount: shareCount ?? _shareCount,
+      );
   num? get shareCount => _shareCount;
 
   Map<String, dynamic> toJson() {
@@ -51,5 +58,4 @@ Data copyWith({  num? shareCount,
     map['share_count'] = _shareCount;
     return map;
   }
-
 }

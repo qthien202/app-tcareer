@@ -1,12 +1,13 @@
 class LoginGoogleRequest {
   LoginGoogleRequest({
-      String? accessToken, 
-      String? deviceToken, 
-      String? deviceId,}){
+    String? accessToken,
+    String? deviceToken,
+    String? deviceId,
+  }) {
     _accessToken = accessToken;
     _deviceToken = deviceToken;
     _deviceId = deviceId;
-}
+  }
 
   LoginGoogleRequest.fromJson(dynamic json) {
     _accessToken = json['access_token'];
@@ -16,13 +17,16 @@ class LoginGoogleRequest {
   String? _accessToken;
   String? _deviceToken;
   String? _deviceId;
-LoginGoogleRequest copyWith({  String? accessToken,
-  String? deviceToken,
-  String? deviceId,
-}) => LoginGoogleRequest(  accessToken: accessToken ?? _accessToken,
-  deviceToken: deviceToken ?? _deviceToken,
-  deviceId: deviceId ?? _deviceId,
-);
+  LoginGoogleRequest copyWith({
+    String? accessToken,
+    String? deviceToken,
+    String? deviceId,
+  }) =>
+      LoginGoogleRequest(
+        accessToken: accessToken ?? _accessToken,
+        deviceToken: deviceToken ?? _deviceToken,
+        deviceId: deviceId ?? _deviceId,
+      );
   String? get accessToken => _accessToken;
   String? get deviceToken => _deviceToken;
   String? get deviceId => _deviceId;
@@ -34,5 +38,4 @@ LoginGoogleRequest copyWith({  String? accessToken,
     map['device_id'] = _deviceId;
     return map;
   }
-
 }
