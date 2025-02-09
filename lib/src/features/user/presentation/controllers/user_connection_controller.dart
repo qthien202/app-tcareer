@@ -4,8 +4,8 @@ import 'package:app_tcareer/src/features/user/presentation/controllers/another_u
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/user_friend_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/user_list_page.dart';
-import 'package:app_tcareer/src/features/user/usercases/user_connection_use_case.dart';
-import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
+import 'package:app_tcareer/src/features/user/domain/user_connection_use_case.dart';
+import 'package:app_tcareer/src/features/user/domain/user_use_case.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:flutter/cupertino.dart';

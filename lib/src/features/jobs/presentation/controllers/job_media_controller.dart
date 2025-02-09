@@ -6,8 +6,8 @@ import 'package:app_tcareer/src/features/jobs/presentation/controllers/create_jo
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_cty.dart';
 import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
-import 'package:app_tcareer/src/features/user/usercases/user_media_use_case.dart';
-import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
+import 'package:app_tcareer/src/features/user/domain/user_media_use_case.dart';
+import 'package:app_tcareer/src/features/user/domain/user_use_case.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

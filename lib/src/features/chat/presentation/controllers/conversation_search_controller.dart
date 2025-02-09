@@ -2,14 +2,12 @@ import 'dart:convert';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:app_tcareer/src/features/chat/data/models/message.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_from_message.dart';
-import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
+import 'package:app_tcareer/src/features/chat/domain/chat_use_case.dart';
 import 'package:app_tcareer/src/features/posts/data/models/debouncer.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart' as user;
-import 'package:go_router/go_router.dart';
 
 class ConversationSearchController extends ChangeNotifier {
   final ChatUseCase chatUseCase;

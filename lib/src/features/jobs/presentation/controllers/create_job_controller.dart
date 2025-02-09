@@ -11,8 +11,8 @@ import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_employee_qty.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_experience.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_location.dart';
-import 'package:app_tcareer/src/features/jobs/usecases/create_job_use_case.dart';
-import 'package:app_tcareer/src/features/jobs/usecases/job_use_case.dart';
+import 'package:app_tcareer/src/features/jobs/domain/create_job_use_case.dart';
+import 'package:app_tcareer/src/features/jobs/domain/job_use_case.dart';
 import 'package:app_tcareer/src/services/address/district.dart';
 import 'package:app_tcareer/src/services/address/province.dart';
 import 'package:app_tcareer/src/services/address/ward.dart';

@@ -12,7 +12,7 @@ import 'package:app_tcareer/src/features/authentication/presentation/pages/verif
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
 import 'package:app_tcareer/src/features/chat/presentation/pages/chat_page.dart';
 import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_page.dart';
-import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
+import 'package:app_tcareer/src/features/chat/domain/chat_use_case.dart';
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/create_job_page.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/media/job_media_page.dart';
@@ -28,7 +28,7 @@ import 'package:app_tcareer/src/features/posts/presentation/pages/search_page.da
 import 'package:app_tcareer/src/features/splash/intro_page.dart';
 import 'package:app_tcareer/src/features/splash/splash_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/another_profile_page.dart';
-import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
+import 'package:app_tcareer/src/features/user/domain/connection_use_case.dart';
 import 'package:app_tcareer/src/routes/index_route.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
 import 'package:app_tcareer/src/services/apis/api_service_provider.dart';

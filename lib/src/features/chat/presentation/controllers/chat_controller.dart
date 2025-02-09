@@ -1,25 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:ably_flutter/ably_flutter.dart';
-import 'package:app_tcareer/src/configs/app_constants.dart';
-import 'package:app_tcareer/src/features/chat/data/models/all_conversation.dart';
 import 'package:app_tcareer/src/features/chat/data/models/conversation.dart';
-import 'package:app_tcareer/src/features/chat/data/models/leave_chat_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/mark_read_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/message.dart';
 import 'package:app_tcareer/src/features/chat/data/models/send_message_request.dart';
-import 'package:app_tcareer/src/features/chat/data/models/user.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_conversation.dart';
-import 'package:app_tcareer/src/features/chat/presentation/controllers/chat_media_controller.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
-import 'package:app_tcareer/src/features/chat/presentation/pages/chat_page.dart';
-import 'package:app_tcareer/src/features/chat/presentation/pages/media/chat_media_page.dart';
-import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
-import 'package:app_tcareer/src/features/index/index_controller.dart';
-import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
-import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
+import 'package:app_tcareer/src/features/chat/domain/chat_use_case.dart';
+import 'package:app_tcareer/src/features/user/domain/connection_use_case.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
@@ -27,13 +16,10 @@ import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ably_flutter/ably_flutter.dart' as ably;
 import 'package:go_router/go_router.dart';
-import 'package:photo_manager/photo_manager.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../../../environment/env.dart';
 

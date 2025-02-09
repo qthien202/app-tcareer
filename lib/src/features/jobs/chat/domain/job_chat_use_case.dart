@@ -13,7 +13,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class JobChatUseCase {
-  final ChatRepository chatRepository;
+  final IChatRepository chatRepository;
   final Ref ref;
   JobChatUseCase(this.chatRepository, this.ref);
 

@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:app_tcareer/src/extensions/video_extension.dart';
 import 'package:app_tcareer/src/features/chat/data/models/message.dart';
 import 'package:app_tcareer/src/features/jobs/chat/presentation/controllers/job_chat_controller.dart';
-import 'package:app_tcareer/src/features/jobs/chat/usecases/job_chat_use_case.dart';
+import 'package:app_tcareer/src/features/jobs/chat/domain/job_chat_use_case.dart';
 
 import 'package:app_tcareer/src/features/posts/usecases/media_use_case.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';

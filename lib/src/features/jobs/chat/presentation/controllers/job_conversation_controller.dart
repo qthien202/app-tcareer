@@ -6,7 +6,7 @@ import 'package:app_tcareer/src/features/chat/data/models/all_conversation.dart'
 import 'package:app_tcareer/src/features/chat/data/models/mark_read_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_conversation.dart';
 
-import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
+import 'package:app_tcareer/src/features/chat/domain/chat_use_case.dart';
 import 'package:app_tcareer/src/features/posts/data/models/debouncer.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
@@ -17,7 +17,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
-import '../../usecases/job_chat_use_case.dart';
+import '../../domain/job_chat_use_case.dart';
 
 class JobConversationController extends ChangeNotifier {
   final JobChatUseCase chatUseCase;
