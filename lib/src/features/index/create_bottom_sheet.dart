@@ -42,14 +42,14 @@ class CreateBottomSheet extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 "Bạn muốn thêm gì?",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               const SizedBox(
                 height: 10,
               ),
-              Text(
+              const Text(
                 textAlign: TextAlign.center,
                 "Bạn có muốn đăng các mẹo và kinh nghiệm của mình hoặc đăng tin tuyển dụng?",
                 style: TextStyle(fontWeight: FontWeight.w300, fontSize: 12),
@@ -67,7 +67,7 @@ class CreateBottomSheet extends StatelessWidget {
                       context.pop();
                       context.pushNamed('posting');
                     },
-                    child: Text(
+                    child: const Text(
                       "Tạo bài viết",
                       style: TextStyle(color: Colors.white),
                     )),
@@ -85,7 +85,7 @@ class CreateBottomSheet extends StatelessWidget {
                       context.pop();
                       context.pushNamed('createJob');
                     },
-                    child: Text(
+                    child: const Text(
                       "Đăng tin tuyển dụng",
                       style: TextStyle(color: Colors.white),
                     )),
