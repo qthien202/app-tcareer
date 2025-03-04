@@ -117,7 +117,7 @@ Future<LoginResponse?> refreshAccessToken(
   final dio = Dio();
 
   try {
-    dio.options.baseUrl = Env.baseUrl;
+    dio.options.baseUrl = AppConstants.baseUrl;
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,

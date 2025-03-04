@@ -1,6 +1,4 @@
-import 'package:app_tcareer/app.dart';
 import 'package:app_tcareer/src/configs/app_constants.dart';
-import 'package:app_tcareer/src/environment/env.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/check_user_phone_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/forgot_password_request.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/forgot_password_verify_request.dart';
@@ -35,11 +33,9 @@ import 'package:app_tcareer/src/features/posts/data/models/like_post_request.dar
 import 'package:app_tcareer/src/features/posts/data/models/post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/posts_detail_response.dart';
 import 'package:app_tcareer/src/features/posts/data/models/posts_response.dart';
-import 'package:app_tcareer/src/features/posts/data/models/search_user_and_post_data.dart';
 import 'package:app_tcareer/src/features/posts/data/models/share_post_data.dart';
 import 'package:app_tcareer/src/features/posts/data/models/share_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/quick_search_user_data.dart';
-import 'package:app_tcareer/src/features/posts/data/models/quick_search_user_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/user_liked.dart';
 import 'package:app_tcareer/src/features/posts/data/models/user_liked_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/change_password_request.dart';
@@ -47,20 +43,13 @@ import 'package:app_tcareer/src/features/user/data/models/create_resume_request.
 import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
-import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 
-import '../../features/jobs/data/models/applicant_model.dart';
-
 part 'api_services.g.dart';
 
-@RestApi(baseUrl: Env.baseUrl)
+@RestApi(baseUrl: AppConstants.baseUrl)
 abstract class ApiServices {
   factory ApiServices(Dio dio, {String baseUrl}) = _ApiServices;
 
