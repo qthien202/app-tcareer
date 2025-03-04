@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:app_tcareer/src/configs/app_constants.dart';
 import 'package:app_tcareer/src/environment/env.dart';
 import 'package:app_tcareer/src/services/drive/upload_data.dart';
@@ -18,7 +17,7 @@ class UploadFileService {
       required String topic,
       required String folderName}) async {
     String? fileUrl;
-    dio.options.baseUrl = Env.uploadUrl;
+    dio.options.baseUrl = AppConstants.baseUrl;
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,

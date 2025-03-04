@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.3.8+51
+version: 1.3.9+52
 
 environment:
   sdk: ">=3.4.4 <4.0.0"
@@ -57,8 +57,6 @@ dependencies:
   flutter_screenutil: ^5.9.3
   flutter_reaction_button: ^3.0.0+3
   font_awesome_flutter: ^10.7.0
-
-
 
   flutter_fb_photo_view:
     git:
@@ -136,9 +134,7 @@ dependencies:
   geolocator: ^12.0.0
   envied: ^1.0.0
 
-
 #  quill_html_editor: ^2.2.8
-
 
 dev_dependencies:
   flutter_test:
@@ -156,15 +152,12 @@ dev_dependencies:
   flutter_launcher_icons: ^0.13.1
   envied_generator: ^1.0.0
 
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 flutter_native_splash:
   color: "#0A66C2"
   image: assets/images/logo_app.png
-
-
 
   android_12:
     image: assets/images/logo_app.png
