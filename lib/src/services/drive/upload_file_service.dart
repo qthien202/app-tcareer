@@ -28,7 +28,6 @@ class UploadFileService {
         compact: true,
         maxWidth: 90));
     FormData formData = FormData.fromMap({
-     
       "file": file != null
           ? await MultipartFile.fromFile(file.path)
           : MultipartFile.fromBytes(uint8List!, filename: "upload.mp4"),
