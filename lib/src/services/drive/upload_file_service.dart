@@ -28,14 +28,14 @@ class UploadFileService {
         compact: true,
         maxWidth: 90));
     FormData formData = FormData.fromMap({
-      "api_key": Env.uploadKey,
+     
       "file": file != null
           ? await MultipartFile.fromFile(file.path)
           : MultipartFile.fromBytes(uint8List!, filename: "upload.mp4"),
       "folder": "$folderName/$topic",
       "type": "video"
     });
-    final response = await dio.post('upload',
+    final response = await dio.post('api/auth/upload',
         data: formData,
         options: Options(headers: {
           'Content-Type': 'application/json',
