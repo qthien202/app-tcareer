@@ -17,8 +17,8 @@ import 'package:app_tcareer/src/features/posts/data/models/share_post_request.da
 import 'package:app_tcareer/src/features/posts/data/models/user_liked.dart';
 import 'package:app_tcareer/src/features/posts/data/models/user_liked_request.dart';
 import 'package:app_tcareer/src/services/apis/api_service_provider.dart';
-import 'package:app_tcareer/src/services/drive/google_drive_service.dart';
-import 'package:app_tcareer/src/services/drive/upload_file_service.dart';
+import 'package:app_tcareer/src/services/upload_file/google_drive_service.dart';
+import 'package:app_tcareer/src/services/upload_file/upload_file_service.dart';
 import 'package:app_tcareer/src/services/firebase/firebase_database_service.dart';
 import 'package:app_tcareer/src/services/firebase/firebase_storage_service.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
