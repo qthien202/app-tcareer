@@ -6,7 +6,7 @@ class FirebaseDatabaseService {
   final database = FirebaseDatabase.instanceFor(
       app: Firebase.app(),
       databaseURL:
-          "https://tcareer-4fa7d-default-rtdb.asia-southeast1.firebasedatabase.app");
+          "my-firebase-url");
 
   Future<Map<dynamic, dynamic>?> getData(String path) async {
     try {
