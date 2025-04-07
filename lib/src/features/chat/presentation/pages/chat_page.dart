@@ -193,6 +193,7 @@ class _ChatPageState extends ConsumerState<ChatPage> {
 
               bool isMe = message.senderId.toString() == widget.clientId;
               return messageBox(
+                  medias: controller.medias,
                   type: message.type,
                   context: context,
                   isFirstIndex: isFirstIndex,

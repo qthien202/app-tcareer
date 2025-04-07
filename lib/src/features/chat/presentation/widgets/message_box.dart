@@ -24,6 +24,7 @@ Widget messageBox(
     required String status,
     required String avatarUrl,
     required String message,
+    required List<String> medias,
     String? type,
     bool isMe = false,
     required String createdAt,
@@ -137,7 +138,7 @@ Widget messageBox(
                             ? CrossAxisAlignment.end
                             : CrossAxisAlignment.start,
                         children: [
-                          mediaItem(media, ref, context),
+                          mediaItem(media, ref, context, medias),
                           const SizedBox(
                             height: 5,
                           ),
@@ -234,7 +235,8 @@ Widget statusText(String status) {
   );
 }
 
-Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context) {
+Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context,
+    List<String> medias) {
   CarouselController carouselController = CarouselController();
   if (media.length == 1) {
     return Visibility(
@@ -257,13 +259,25 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context) {
       ),
       child: Visibility(
         visible: !media.first.isVideoNetWork,
-        replacement: ChatVideoPlayerWidget(media.first),
+        replacement: ChatVideoPlayerWidget(onTap: () {
+          final index = medias.indexOf(media.first);
+          final data = AppPhotoModel(
+              images: medias,
+              onPageChanged: (val) {
+                // carouselController.animateToPage(
+                //   val,
+                //   duration: const Duration(milliseconds: 300),
+                //   curve: Curves.easeInOut,
+                // );
+              },
+              index: index);
+          context.pushNamed("appPhoto", extra: data);
+        }, media.first),
         child: GestureDetector(
           onTap: () {
-            List<String> images =
-                media.where((item) => item.isImageNetWork).toList();
+            final index = medias.indexOf(media.first);
             final data = AppPhotoModel(
-                images: images,
+                images: medias,
                 onPageChanged: (val) {
                   // carouselController.animateToPage(
                   //   val,
@@ -271,7 +285,7 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context) {
                   //   curve: Curves.easeInOut,
                   // );
                 },
-                index: 0);
+                index: index);
             context.pushNamed("appPhoto", extra: data);
           },
           child: ClipRRect(
@@ -323,13 +337,26 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context) {
               visible: !mediaItem.isVideoNetWork,
               replacement: ChatVideoPlayerWidget(
                 mediaItem,
+                onTap: () {
+                  final index = medias.indexOf(mediaItem);
+                  final data = AppPhotoModel(
+                      images: medias,
+                      onPageChanged: (val) {
+                        // carouselController.animateToPage(
+                        //   val,
+                        //   duration: const Duration(milliseconds: 300),
+                        //   curve: Curves.easeInOut,
+                        // );
+                      },
+                      index: index);
+                  context.pushNamed("appPhoto", extra: data);
+                },
               ),
               child: GestureDetector(
                 onTap: () {
-                  List<String> images =
-                      media.where((item) => item.isImageNetWork).toList();
+                  final index = medias.indexOf(mediaItem);
                   final data = AppPhotoModel(
-                      images: images,
+                      images: medias,
                       onPageChanged: (val) {
                         // carouselController.animateToPage(
                         //   val,

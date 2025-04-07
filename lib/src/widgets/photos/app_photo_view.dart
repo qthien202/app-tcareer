@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:app_tcareer/src/extensions/image_extension.dart';
+import 'package:app_tcareer/src/extensions/video_extension.dart';
+import 'package:app_tcareer/src/features/chat/presentation/widgets/chat_video_player.dart';
 import 'package:app_tcareer/src/features/index/index_controller.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/engagement_widget.dart';
@@ -139,14 +141,18 @@ class _AppPhotoViewState extends State<AppPhotoView> {
                     return PhotoViewGalleryPageOptions.customChild(
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: PhotoView(
-                          imageProvider: isNetworkAsset
-                              ? CachedNetworkImageProvider(assetSource)
-                              : FileImage(File(assetSource)),
-                          minScale: PhotoViewComputedScale.contained,
-                          initialScale: PhotoViewComputedScale.contained,
-                          heroAttributes:
-                              PhotoViewHeroAttributes(tag: assetSource),
+                        child: Visibility(
+                          visible: !assetSource.isVideoNetWork,
+                          replacement: ChatVideoPlayerWidget(assetSource),
+                          child: PhotoView(
+                            imageProvider: isNetworkAsset
+                                ? CachedNetworkImageProvider(assetSource)
+                                : FileImage(File(assetSource)),
+                            minScale: PhotoViewComputedScale.contained,
+                            initialScale: PhotoViewComputedScale.contained,
+                            heroAttributes:
+                                PhotoViewHeroAttributes(tag: assetSource),
+                          ),
                         ),
                       ),
                     );
