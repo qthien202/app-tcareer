@@ -52,174 +52,173 @@ Widget postTemp({
     padding: const EdgeInsets.symmetric(horizontal: 10),
     child: ClipRRect(
       borderRadius: BorderRadius.circular(12),
-      child: ColorFiltered(
-        colorFilter: const ColorFilter.mode(Colors.black54, BlendMode.darken),
-        child: Container(
-          padding: !isShared ? const EdgeInsets.symmetric(vertical: 15) : null,
-          // margin: !isShared ? const EdgeInsets.symmetric(horizontal: 10) : null,
-          decoration: !isShared
-              ? BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
-                      spreadRadius: 2,
-                      blurRadius: 4,
-                      offset: const Offset(0, 1), // changes position of shadow
-                    ),
-                  ],
-                )
-              : null,
-          width: ScreenUtil().screenWidth,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () => controller.goToProfile(
-                                    userId: userId, context: context),
-                                child: CircleAvatar(
-                                  radius: 18,
-                                  backgroundImage: NetworkImage(avatarUrl),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+      child: Container(
+        padding: !isShared ? const EdgeInsets.symmetric(vertical: 15) : null,
+        // margin: !isShared ? const EdgeInsets.symmetric(horizontal: 10) : null,
+        decoration: !isShared
+            ? BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 2,
+                    blurRadius: 4,
+                    offset: const Offset(0, 1), // changes position of shadow
+                  ),
+                ],
+              )
+            : null,
+        width: ScreenUtil().screenWidth,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Column(
                           children: [
                             GestureDetector(
-                              onTap: null,
-                              child: Text(
-                                userName,
-                                style: const TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              onTap: () => controller.goToProfile(
+                                  userId: userId, context: context),
+                              child: CircleAvatar(
+                                radius: 18,
+                                backgroundImage: NetworkImage(avatarUrl),
                               ),
-                            ),
-                            if (subName != null) ...[
-                              Text(subName,
-                                  style: const TextStyle(color: Colors.grey)),
-                            ],
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "$createdAt • ",
-                                  style: const TextStyle(
-                                      color: Colors.grey, fontSize: 10),
-                                ),
-                                Icon(
-                                  privacyIcon[privacy],
-                                  color: Colors.grey,
-                                  size: 11,
-                                ),
-                              ],
                             ),
                           ],
                         ),
-                        Expanded(
-                          flex: 7,
-                          child: Visibility(
-                            replacement: Visibility(
-                              visible: !isShared,
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  InkWell(
-                                    onTap: null,
-                                    child: PhosphorIcon(
-                                      PhosphorIconsLight.x,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                      ),
+                      const SizedBox(width: 5),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: null,
+                            child: Text(
+                              userName,
+                              style: const TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
                             ),
-                            visible: !isShared &&
-                                userController.userData?.data?.id ==
-                                    int.parse(userId),
-                            child: Row(
+                          ),
+                          if (subName != null) ...[
+                            Text(subName,
+                                style: const TextStyle(color: Colors.grey)),
+                          ],
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "$createdAt • ",
+                                style: const TextStyle(
+                                    color: Colors.grey, fontSize: 10),
+                              ),
+                              Icon(
+                                privacyIcon[privacy],
+                                color: Colors.grey,
+                                size: 11,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        flex: 7,
+                        child: Visibility(
+                          replacement: Visibility(
+                            visible: !isShared,
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 InkWell(
-                                  onTap: () {
-                                    final post = CreatePostRequest(
-                                        body: content,
-                                        mediaUrl: mediaUrl,
-                                        privacy: privacy);
-                                    final postEdit = PostEdit(post: post);
-                                    postingController.showModalPost(
-                                        postId: postId,
-                                        context: context,
-                                        userId: userId,
-                                        postEdit: postEdit);
-                                  },
-                                  child: const PhosphorIcon(
-                                    PhosphorIconsLight.dotsThreeCircle,
+                                  onTap: null,
+                                  child: PhosphorIcon(
+                                    PhosphorIconsLight.x,
                                     color: Colors.grey,
                                   ),
                                 ),
                               ],
                             ),
                           ),
+                          visible: !isShared &&
+                              userController.userData?.data?.id ==
+                                  int.parse(userId),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  final post = CreatePostRequest(
+                                      body: content,
+                                      mediaUrl: mediaUrl,
+                                      privacy: privacy);
+                                  final postEdit = PostEdit(post: post);
+                                  postingController.showModalPost(
+                                      postId: postId,
+                                      context: context,
+                                      userId: userId,
+                                      postEdit: postEdit);
+                                },
+                                child: const PhosphorIcon(
+                                  PhosphorIconsLight.dotsThreeCircle,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Hiển thị video hoặc ảnh
+                Visibility(
+                  visible: content != null,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Column(
+                      children: [
+                        contentWidget(content ?? ""),
                       ],
                     ),
                   ),
-                  // Hiển thị video hoặc ảnh
-                  Visibility(
-                    visible: content != null,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 5),
-                      child: Column(
-                        children: [
-                          contentWidget(content ?? ""),
-                        ],
-                      ),
-                    ),
-                  ),
+                ),
 
-                  Visibility(
-                    visible: hasMediaUrl,
-                    child: postingImageWidget(
-                        mediaUrl: mediaUrl ?? [],
-                        ref: ref,
-                        visibleDelete: false),
+                Visibility(
+                  visible: hasMediaUrl,
+                  child: postingImageWidget(
+                    isTemp: true,
+                    mediaUrl: mediaUrl ?? [],
+                    ref: ref,
+                    visibleDelete: false,
                   ),
+                )
 
-                  // Visibility(
-                  //     visible: !isShared,
-                  //     child: engagementWidget(
-                  //       onLike: () {},
-                  //       index: index,
-                  //       liked: liked,
-                  //       ref: ref,
-                  //       postId: postId,
-                  //       context: context,
-                  //       likeCount: likes,
-                  //       shareCount: shares,
-                  //     ))
-                ],
-              ),
-            ],
-          ),
+                // Visibility(
+                //     visible: !isShared,
+                //     child: engagementWidget(
+                //       onLike: () {},
+                //       index: index,
+                //       liked: liked,
+                //       ref: ref,
+                //       postId: postId,
+                //       context: context,
+                //       likeCount: likes,
+                //       shareCount: shares,
+                //     ))
+              ],
+            ),
+          ],
         ),
       ),
     ),

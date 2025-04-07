@@ -289,11 +289,11 @@ class PostingController extends ChangeNotifier {
     final mediaController = ref.watch(mediaControllerProvider);
     final videoPaths = mediaController.videoPaths;
     if (mediaController.videoPaths.any((video) => !video.isVideo)) {
-      String? video = videoPaths.first;
+      String? video = await AppUtils.compressVideo(videoPaths.first);
       String videoUrl = await postUseCase.uploadFile(
         topic: "post",
         folderName: "video",
-        file: File(video),
+        file: File(video ?? ""),
       );
       mediaUrl.add(videoUrl);
     } else {
@@ -356,7 +356,6 @@ class PostingController extends ChangeNotifier {
         AppUtils.loadingApi(() async {
           String videoId = await postUseCase.uploadFile(
               folderName: id, topic: "Posts", uint8List: videoPicked!);
-
         }, context);
       }
     }

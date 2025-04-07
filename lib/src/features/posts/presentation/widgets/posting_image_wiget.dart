@@ -13,7 +13,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 Widget postingImageWidget(
     {required List<String> mediaUrl,
     required WidgetRef ref,
-    bool visibleDelete = true}) {
+    bool visibleDelete = true,
+    bool isTemp = false}) {
   final controller = ref.watch(postingControllerProvider);
   if (mediaUrl.isEmpty) {
     return const SizedBox();
@@ -67,11 +68,24 @@ Widget postingImageWidget(
                                 height: constraints.maxWidth / aspectRatio,
                                 fit: BoxFit.cover,
                               )
-                            : Image.file(
-                                File(image),
-                                width: constraints.maxWidth,
-                                height: constraints.maxWidth / aspectRatio,
-                                fit: BoxFit.cover,
+                            : Visibility(
+                                visible: isTemp,
+                                replacement: Image.file(
+                                  File(image),
+                                  width: constraints.maxWidth,
+                                  height: constraints.maxWidth / aspectRatio,
+                                  fit: BoxFit.cover,
+                                ),
+                                child: ColorFiltered(
+                                  colorFilter: const ColorFilter.mode(
+                                      Colors.black54, BlendMode.darken),
+                                  child: Image.file(
+                                    File(image),
+                                    width: constraints.maxWidth,
+                                    height: constraints.maxWidth / aspectRatio,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
                       );
                     },

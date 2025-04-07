@@ -168,10 +168,11 @@ class AppUtils {
     MediaInfo? mediaInfo = await VideoCompress.compressVideo(path,
         includeAudio: true, // Nén video có âm thanh
         frameRate: 24, // Số khung hình / giây
-        quality: VideoQuality.MediumQuality,
+        quality: VideoQuality.LowQuality,
         deleteOrigin: false);
     print("🚀video path: ${mediaInfo?.path}");
     print("🚀video size: ${mediaInfo?.filesize}");
+    // await VideoCompress.deleteAllCache();
     return mediaInfo?.path;
   }
 
