@@ -189,6 +189,7 @@ class ChatMediaController extends ChangeNotifier {
         }
 
         await chatController.sendMessageWithMedia(mediaUrl);
+
         mediaPath.clear();
         mediaLocalPath.clear();
         media.clear();
@@ -237,7 +238,7 @@ class ChatMediaController extends ChangeNotifier {
         mediaUrl: mediaLocalPath,
         createdAt: DateTime.now().toIso8601String(),
         senderId: senderId,
-        status: 'sent',
+        status: 'sending',
         type: 'temp');
 
     chatController.messages.add(newMessage);
