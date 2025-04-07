@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 import 'alert_dialog_util.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:video_compress/video_compress.dart';
 
 class AppUtils {
   static showLoading(BuildContext context) {
@@ -163,20 +164,16 @@ class AppUtils {
     return path;
   }
 
-  // static Future<Uint8List> compressImageWeb(Uint8List list) async {
-  //   img.Image? image = img.decodeImage(list);
-
-  //   if (image == null) {
-  //     throw Exception("Unable to decode image");
-  //   }
-
-  //   img.Image resized = img.copyResize(image, width: 85, height: 85);
-
-  //   Uint8List compressed =
-  //       Uint8List.fromList(img.encodeJpg(resized, quality: 85));
-
-  //   return compressed;
-  // }
+  static Future<String?> compressVideo(String path) async {
+    MediaInfo? mediaInfo = await VideoCompress.compressVideo(path,
+        includeAudio: true, // Nén video có âm thanh
+        frameRate: 24, // Số khung hình / giây
+        quality: VideoQuality.MediumQuality,
+        deleteOrigin: false);
+    print("🚀video path: ${mediaInfo?.path}");
+    print("🚀video size: ${mediaInfo?.filesize}");
+    return mediaInfo?.path;
+  }
 
   static Future<Uint8List> compressImageWeb(Uint8List list) async {
     img.Image? image = img.decodeImage(list);

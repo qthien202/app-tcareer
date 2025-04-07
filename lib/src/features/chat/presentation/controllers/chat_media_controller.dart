@@ -26,6 +26,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:uuid/uuid.dart';
+import 'package:video_compress/video_compress.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 class ChatMediaController extends ChangeNotifier {
@@ -178,17 +179,24 @@ class ChatMediaController extends ChangeNotifier {
         final id = uuid.v4();
         for (String path in mediaPath) {
           if (path.isVideoLocal) {
+            String? videoCompressed = await AppUtils.compressVideo(path);
             String videoUrl = await chatUseCase.uploadVideo(
-                file: File(path), folderName: "video", topic: "chat");
+                file: File(videoCompressed ?? ""),
+                folderName: "video",
+                topic: "chat");
             mediaUrl.add(videoUrl);
           } else {
+            String? imageCompressed = await AppUtils.compressImage(path);
             String imageUrl = await chatUseCase.uploadImage(
-                file: File(path), folderPath: "Chats/$id");
+                file: File(imageCompressed ?? ""), folderPath: "Chats/$id");
             mediaUrl.add(imageUrl);
           }
         }
 
         await chatController.sendMessageWithMedia(mediaUrl);
+        for (var media in mediaUrl) {
+          chatController.medias.add(media);
+        }
 
         mediaPath.clear();
         mediaLocalPath.clear();
