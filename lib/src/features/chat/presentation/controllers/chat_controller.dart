@@ -325,7 +325,8 @@ class ChatController extends ChangeNotifier {
     //   await mediaController.uploadImage();
 
     final body = SendMessageRequest(
-        conversationId: conversationData?.conversation?.id, mediaUrl: mediaUrl);
+        conversationId: conversationData?.conversation?.id, mediaUrl: mediaUrl,);
+
     await chatUseCase.sendMessage(body);
     // notifyListeners();
 

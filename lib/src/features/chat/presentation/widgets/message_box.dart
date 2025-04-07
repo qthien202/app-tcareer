@@ -179,15 +179,39 @@ Widget createdAtText(String createdAt) {
 
 Widget statusText(String status) {
   Map<String, dynamic> statusMap = {
+    "sending": "Đang gửi",
     "sent": "Đã gửi",
     "read": "Đã xem",
     "delivered": "Đã nhận"
   };
 
   Map<String, dynamic> statusIcon = {
-    "sent": PhosphorIconsRegular.check,
-    "delivered": PhosphorIconsRegular.checks,
-    "read": PhosphorIconsRegular.eye,
+    "sending": Padding(
+      padding: EdgeInsets.symmetric(horizontal: 5),
+      child: SizedBox(
+        width: 5,
+        height: 5,
+        child: SizedBox(
+            width: 10.0,
+            height: 10.0,
+            child: CupertinoActivityIndicator(color: Colors.white, radius: 10)),
+      ),
+    ),
+    "sent": const PhosphorIcon(
+      PhosphorIconsRegular.check,
+      color: Colors.white,
+      size: 15,
+    ),
+    "delivered": const PhosphorIcon(
+      PhosphorIconsRegular.checks,
+      color: Colors.white,
+      size: 15,
+    ),
+    "read": const PhosphorIcon(
+      PhosphorIconsRegular.eye,
+      color: Colors.white,
+      size: 15,
+    ),
   };
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
@@ -204,11 +228,7 @@ Widget statusText(String status) {
         const SizedBox(
           width: 2,
         ),
-        PhosphorIcon(
-          statusIcon[status],
-          color: Colors.white,
-          size: 15,
-        ),
+        statusIcon[status],
       ],
     ),
   );
@@ -232,11 +252,6 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context) {
                 fit: BoxFit.cover,
               ),
             ),
-          ),
-          SizedBox(
-            width: 24, // Kích thước của indicator
-            height: 24,
-            child: circularLoadingWidget(),
           ),
         ],
       ),
@@ -297,11 +312,11 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context) {
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: circularLoadingWidget(),
-                ),
+                // SizedBox(
+                //   width: 24,
+                //   height: 24,
+                //   child: circularLoadingWidget(),
+                // ),
               ],
             ),
             child: Visibility(
@@ -373,7 +388,7 @@ Widget recallMessage({
                   isMe
                       ? "Bạn đã thu hồi một tin nhắn"
                       : "$fullName đã thu hồi một tin nhắn",
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.black, fontWeight: FontWeight.w400),
                 ),
                 const SizedBox(
@@ -381,7 +396,7 @@ Widget recallMessage({
                 ),
                 Text(
                   AppUtils.formatCreatedAt(createdAt),
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.black,
                       fontSize: 11,
                       fontWeight: FontWeight.w300),

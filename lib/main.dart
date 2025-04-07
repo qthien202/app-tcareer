@@ -32,16 +32,7 @@ void main() async {
   container.read(deviceInfoProvider).configuration();
   try {
     await Firebase.initializeApp(
-      options: kIsWeb
-          ? const FirebaseOptions(
-              apiKey: "AIzaSyBa2suLLiuvDmkTisxPg1oxxYojKx40zhw",
-              authDomain: "tcareer-4fa7d.firebaseapp.com",
-              projectId: "tcareer-4fa7d",
-              storageBucket: "tcareer-4fa7d.appspot.com",
-              messagingSenderId: "353946571533",
-              appId: "1:353946571533:web:f540d00c325bb1d272d644",
-              measurementId: "G-JRVZ98QJCR")
-          : DefaultFirebaseOptions.currentPlatform,
+      options:  DefaultFirebaseOptions.currentPlatform,
     );
   } catch (e) {
     if (e.toString().contains('duplicate-app')) {
