@@ -13,14 +13,14 @@ Widget postLoadingWidget(BuildContext context) {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 2,
-              blurRadius: 4,
-              offset: const Offset(0, 1), // changes position of shadow
-            ),
-          ],
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: Colors.grey.withOpacity(0.1),
+          //     spreadRadius: 2,
+          //     blurRadius: 4,
+          //     offset: const Offset(0, 1), // changes position of shadow
+          //   ),
+          // ],
         ),
 
         // padding: const EdgeInsets.all(4),

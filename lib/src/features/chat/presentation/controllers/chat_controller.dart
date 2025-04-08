@@ -23,6 +23,7 @@ import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
+import 'package:app_tcareer/src/widgets/photos/gallery_item.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,7 @@ class ChatController extends ChangeNotifier {
     if (user?.userId.toString() != userId) {
       user = null;
       messages.clear();
-      medias.clear();
+      galleriesMessage.clear();
       notifyListeners();
     }
     conversationData = await chatUseCase.getConversation(userId);
@@ -89,7 +90,7 @@ class ChatController extends ChangeNotifier {
   }
 
   // Đảm bảo rằng bạn đã import thư viện json
-  List<String> medias = [];
+  List<GalleryItem> galleriesMessage = [];
   Future<void> handleDecryptMessage() async {
     final key = encrypt.Key.fromBase64(Env.cipherKey);
     final encrypter =
@@ -115,13 +116,16 @@ class ChatController extends ChangeNotifier {
       if (mediaUrl != null) {
         for (var url in mediaUrl) {
           // Kiểm tra nếu url chưa có trong medias
-          if (!medias.contains(url)) {
-            medias.add(url); // Thêm URL mới vào danh sách
-          }
+          final media = GalleryItem(
+              fullName: message.senderFullName ?? "",
+              avatarUrl: message.senderAvatar ?? "",
+              createdAt: message.createdAt ?? "",
+              mediaUrl: url);
+          galleriesMessage.add(media);
         }
       }
 
-      print("🖼️medias: ${medias.length}");
+      print("🖼️medias: ${galleriesMessage.length}");
 
       return message.copyWith(content: decodedMessage, mediaUrl: mediaUrl);
     }).toList();
@@ -350,6 +354,7 @@ class ChatController extends ChangeNotifier {
 
   Future<void> onInit(
       {required String clientId, required String userId}) async {
+    galleriesMessage.clear();
     await loadCache(userId);
     await getConversation(userId);
     await initializeAbly();

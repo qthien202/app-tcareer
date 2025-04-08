@@ -17,6 +17,7 @@ import 'package:app_tcareer/src/features/posts/usecases/media_use_case.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
+import 'package:app_tcareer/src/widgets/photos/gallery_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -194,8 +195,16 @@ class ChatMediaController extends ChangeNotifier {
         }
 
         await chatController.sendMessageWithMedia(mediaUrl);
-        for (var media in mediaUrl) {
-          chatController.medias.add(media);
+        final messages = chatController.messages;
+        for (var message in messages) {
+          for (var url in mediaUrl) {
+            final media = GalleryItem(
+                fullName: message.senderFullName ?? "",
+                avatarUrl: message.senderAvatar ?? "",
+                createdAt: message.createdAt ?? "",
+                mediaUrl: url);
+            chatController.galleriesMessage.add(media);
+          }
         }
 
         mediaPath.clear();

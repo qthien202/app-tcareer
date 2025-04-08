@@ -247,17 +247,17 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context) {
           onTap: () {
             List<String> images =
                 media.where((item) => item.isImageNetWork).toList();
-            final data = AppPhotoModel(
-                images: images,
-                onPageChanged: (val) {
-                  // carouselController.animateToPage(
-                  //   val,
-                  //   duration: const Duration(milliseconds: 300),
-                  //   curve: Curves.easeInOut,
-                  // );
-                },
-                index: 0);
-            context.pushNamed("appPhoto", extra: data);
+            // final data = AppPhotoModel(
+            //     images: images,
+            //     onPageChanged: (val) {
+            //       // carouselController.animateToPage(
+            //       //   val,
+            //       //   duration: const Duration(milliseconds: 300),
+            //       //   curve: Curves.easeInOut,
+            //       // );
+            //     },
+            //     index: 0);
+            // context.pushNamed("appPhoto", extra: data);
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
@@ -313,17 +313,17 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context) {
                 onTap: () {
                   List<String> images =
                       media.where((item) => item.isImageNetWork).toList();
-                  final data = AppPhotoModel(
-                      images: images,
-                      onPageChanged: (val) {
-                        // carouselController.animateToPage(
-                        //   val,
-                        //   duration: const Duration(milliseconds: 300),
-                        //   curve: Curves.easeInOut,
-                        // );
-                      },
-                      index: index);
-                  context.pushNamed("appPhoto", extra: data);
+                  // final data = AppPhotoModel(
+                  //     images: images,
+                  //     onPageChanged: (val) {
+                  //       // carouselController.animateToPage(
+                  //       //   val,
+                  //       //   duration: const Duration(milliseconds: 300),
+                  //       //   curve: Curves.easeInOut,
+                  //       // );
+                  //     },
+                  //     index: index);
+                  // context.pushNamed("appPhoto", extra: data);
                 },
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8),

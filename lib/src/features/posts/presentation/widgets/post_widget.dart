@@ -5,6 +5,7 @@ import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart'
 import 'package:app_tcareer/src/features/posts/presentation/widgets/video_player_widget.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:app_tcareer/src/widgets/photos/app_image.dart';
+import 'package:app_tcareer/src/widgets/photos/gallery_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,23 +44,29 @@ Widget postWidget({
     "Friend": Icons.group,
     "Private": Icons.lock
   };
+  List<GalleryItem> medias = mediaUrl
+          ?.map((media) => GalleryItem(
+              fullName: userName,
+              avatarUrl: avatarUrl,
+              createdAt: createdAt,
+              mediaUrl: media))
+          .toList() ??
+      [];
   return Container(
-    padding: !isShared
-        ? const EdgeInsets.symmetric(horizontal: 10, vertical: 15)
-        : null,
+    padding: !isShared ? const EdgeInsets.symmetric(vertical: 15) : null,
     margin: !isShared ? const EdgeInsets.symmetric(horizontal: 10) : null,
     decoration: !isShared
         ? BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                spreadRadius: 2,
-                blurRadius: 4,
-                offset: const Offset(0, 1), // changes position of shadow
-              ),
-            ],
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: Colors.grey.withOpacity(0.1),
+            //     spreadRadius: 2,
+            //     blurRadius: 4,
+            //     offset: const Offset(0, 1), // changes position of shadow
+            //   ),
+            // ],
           )
         : null,
     width: ScreenUtil().screenWidth,
@@ -83,7 +90,7 @@ Widget postWidget({
                           onTap: () => controller.goToProfile(
                               userId: userId, context: context),
                           child: CircleAvatar(
-                            radius: 18,
+                            radius: 20,
                             backgroundImage: NetworkImage(avatarUrl),
                           ),
                         ),
@@ -195,7 +202,7 @@ Widget postWidget({
               child: Visibility(
                 visible: mediaUrl?.hasVideos ?? false,
                 replacement: AppImage(
-                  images: mediaUrl ?? [],
+                  images: medias,
                 ),
                 // PostImageWidget(mediaUrl: mediaUrl ?? [], postId: postId),
                 child: VideoPlayerWidget(videoUrl: firstMediaUrl),

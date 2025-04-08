@@ -1,7 +1,9 @@
+import 'gallery_item.dart';
+
 class AppPhotoModel {
-  List<String> images;
+  List<GalleryItem> medias;
   Function(int)? onPageChanged;
   int index;
   AppPhotoModel(
-      {required this.images, required this.onPageChanged, required this.index});
+      {required this.medias, required this.onPageChanged, required this.index});
 }

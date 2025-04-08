@@ -5,6 +5,7 @@ import 'package:app_tcareer/src/features/posts/get_image_orientation.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
 import 'package:app_tcareer/src/widgets/photos/app_photo_model.dart';
+import 'package:app_tcareer/src/widgets/photos/gallery_item.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class AppImage extends ConsumerStatefulWidget {
-  final List<String> images;
+  final List<GalleryItem> images;
   const AppImage({super.key, required this.images});
 
   @override
@@ -37,7 +38,7 @@ class _AppImageState extends ConsumerState<AppImage> {
           carouselController: carouselController,
           itemCount: widget.images.length,
           itemBuilder: (context, index, realIndex) {
-            final image = widget.images[index];
+            final item = widget.images[index];
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: ClipRRect(
@@ -45,7 +46,7 @@ class _AppImageState extends ConsumerState<AppImage> {
                 child: GestureDetector(
                   onTap: () {
                     final data = AppPhotoModel(
-                        images: widget.images,
+                        medias: widget.images,
                         onPageChanged: (val) {
                           setIndex(val);
                           carouselController.animateToPage(
@@ -58,16 +59,16 @@ class _AppImageState extends ConsumerState<AppImage> {
                     context.pushNamed("appPhoto", extra: data);
                   },
                   child: Hero(
-                    tag: image,
+                    tag: item.mediaUrl,
                     child: Visibility(
-                      visible: image.isImageNetWork,
+                      visible: item.mediaUrl.isImageNetWork,
                       replacement: Image.file(
-                        File(image),
+                        File(item.mediaUrl),
                         width: ScreenUtil().screenWidth,
                         fit: BoxFit.cover,
                       ),
                       child: cachedImageWidget(
-                        imageUrl: image,
+                        imageUrl: item.mediaUrl,
                         width: ScreenUtil().screenWidth,
                         fit: BoxFit.cover,
                       ),

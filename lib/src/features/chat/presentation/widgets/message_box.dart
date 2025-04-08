@@ -9,6 +9,7 @@ import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
 import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:app_tcareer/src/widgets/photos/app_photo_model.dart';
+import 'package:app_tcareer/src/widgets/photos/gallery_item.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,7 +25,7 @@ Widget messageBox(
     required String status,
     required String avatarUrl,
     required String message,
-    required List<String> medias,
+    required List<GalleryItem> medias,
     String? type,
     bool isMe = false,
     required String createdAt,
@@ -236,7 +237,7 @@ Widget statusText(String status) {
 }
 
 Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context,
-    List<String> medias) {
+    List<GalleryItem> medias) {
   CarouselController carouselController = CarouselController();
   if (media.length == 1) {
     return Visibility(
@@ -260,9 +261,10 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context,
       child: Visibility(
         visible: !media.first.isVideoNetWork,
         replacement: ChatVideoPlayerWidget(onTap: () {
-          final index = medias.indexOf(media.first);
+          final index =
+              medias.indexWhere((item) => item.mediaUrl == media.first);
           final data = AppPhotoModel(
-              images: medias,
+              medias: medias,
               onPageChanged: (val) {
                 // carouselController.animateToPage(
                 //   val,
@@ -275,9 +277,10 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context,
         }, media.first),
         child: GestureDetector(
           onTap: () {
-            final index = medias.indexOf(media.first);
+            final index =
+                medias.indexWhere((item) => item.mediaUrl == media.first);
             final data = AppPhotoModel(
-                images: medias,
+                medias: medias,
                 onPageChanged: (val) {
                   // carouselController.animateToPage(
                   //   val,
@@ -338,9 +341,10 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context,
               replacement: ChatVideoPlayerWidget(
                 mediaItem,
                 onTap: () {
-                  final index = medias.indexOf(mediaItem);
+                  final index =
+                      medias.indexWhere((item) => item.mediaUrl == mediaItem);
                   final data = AppPhotoModel(
-                      images: medias,
+                      medias: medias,
                       onPageChanged: (val) {
                         // carouselController.animateToPage(
                         //   val,
@@ -354,9 +358,10 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context,
               ),
               child: GestureDetector(
                 onTap: () {
-                  final index = medias.indexOf(mediaItem);
+                  final index =
+                      medias.indexWhere((item) => item.mediaUrl == mediaItem);
                   final data = AppPhotoModel(
-                      images: medias,
+                      medias: medias,
                       onPageChanged: (val) {
                         // carouselController.animateToPage(
                         //   val,

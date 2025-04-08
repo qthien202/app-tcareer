@@ -105,7 +105,7 @@ class _AppPhotoViewState extends State<AppPhotoView> {
             centerTitle: true,
             leading: IconButton(
               icon: const Icon(
-                Icons.close,
+                Icons.arrow_back_ios,
                 color: Colors.white,
               ),
               onPressed: () => context.pop(),
@@ -113,15 +113,15 @@ class _AppPhotoViewState extends State<AppPhotoView> {
             automaticallyImplyLeading: false,
             titleTextStyle: const TextStyle(color: Colors.white),
             title: Visibility(
-                visible: widget.data.images.length > 1,
-                child: Text("${index + 1}/${widget.data.images.length}")),
+                visible: widget.data.medias.length > 1,
+                child: Text("${index + 1}/${widget.data.medias.length}")),
             actions: [
               Visibility(
-                visible:
-                    widget.data.images.any((image) => image.isImageNetWork),
+                visible: widget.data.medias
+                    .any((media) => media.mediaUrl.isImageNetWork),
                 child: IconButton(
                     onPressed: () async =>
-                        await downLoadImage(widget.data.images[index]),
+                        await downLoadImage(widget.data.medias[index].mediaUrl),
                     icon: Icon(
                       Icons.download,
                       color: Colors.white,
@@ -136,28 +136,84 @@ class _AppPhotoViewState extends State<AppPhotoView> {
                   pageController: pageController,
                   scrollPhysics: const BouncingScrollPhysics(),
                   builder: (BuildContext context, int index) {
-                    final assetSource = widget.data.images[index];
+                    final media = widget.data.medias[index];
+                    final assetSource = media.mediaUrl;
                     final isNetworkAsset = assetSource.isNetworkSource;
                     return PhotoViewGalleryPageOptions.customChild(
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Visibility(
-                          visible: !assetSource.isVideoNetWork,
-                          replacement: ChatVideoPlayerWidget(assetSource),
-                          child: PhotoView(
-                            imageProvider: isNetworkAsset
-                                ? CachedNetworkImageProvider(assetSource)
-                                : FileImage(File(assetSource)),
-                            minScale: PhotoViewComputedScale.contained,
-                            initialScale: PhotoViewComputedScale.contained,
-                            heroAttributes:
-                                PhotoViewHeroAttributes(tag: assetSource),
+                      child: Stack(
+                        children: [
+                          Visibility(
+                            visible: !assetSource.isVideoNetWork,
+                            replacement: AspectRatio(
+                                aspectRatio: 9 / 16,
+                                child: ChatVideoPlayerWidget(assetSource)),
+                            child: PhotoView(
+                              imageProvider: isNetworkAsset
+                                  ? CachedNetworkImageProvider(assetSource)
+                                  : FileImage(File(assetSource)),
+                              minScale: PhotoViewComputedScale.contained,
+                              initialScale: PhotoViewComputedScale.contained,
+                              heroAttributes:
+                                  PhotoViewHeroAttributes(tag: assetSource),
+                            ),
                           ),
-                        ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Positioned(
+                            bottom: 15,
+                            left: 10,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 8),
+                              decoration: BoxDecoration(
+                                color:
+                                    Colors.black.withOpacity(0.4), // Nền đen mờ
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 20,
+                                        backgroundImage:
+                                            NetworkImage(media.avatarUrl ?? ""),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            media.fullName ?? "",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            media.createdAt ?? "",
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                     );
                   },
-                  itemCount: widget.data.images.length,
+                  itemCount: widget.data.medias.length,
                   loadingBuilder: (context, event) => const Center(
                         child: SizedBox(
                           width: 20.0,
