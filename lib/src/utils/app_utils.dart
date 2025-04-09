@@ -5,6 +5,7 @@ import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:go_router/go_router.dart';
 import 'package:heif_converter/heif_converter.dart';
 import 'package:image/image.dart' as img;
@@ -13,6 +14,7 @@ import 'package:uuid/uuid.dart';
 import 'alert_dialog_util.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_compress/video_compress.dart';
+import 'package:path/path.dart' as path;
 
 class AppUtils {
   static showLoading(BuildContext context) {
@@ -141,27 +143,20 @@ class AppUtils {
   }
 
   static Future<String?> compressImage(String filePath) async {
-    String? path;
+    final tempDir = await getTemporaryDirectory();
+    final targetPath = path.join(
+      tempDir.path,
+      'compressed_${DateTime.now().millisecondsSinceEpoch}.jpg',
+    );
     if (await isHeif(filePath) == true) {
-      filePath = await HeifConverter.convert(filePath, output: filePath) ?? "";
+      filePath =
+          await HeifConverter.convert(filePath, output: targetPath) ?? "";
     }
-    File file = File(filePath);
-    // print(">>>>>>filePath: $filePath");
-    List<int> imageBytes = await file.readAsBytes();
-    // print(">>>>>>>imageBytes: $imageBytes");
-    img.Image? image = img.decodeImage(Uint8List.fromList(imageBytes));
-    // print(">>>>>>>>>>image: $image");
-    if (image != null) {
-      Uint8List jpgBytes =
-          Uint8List.fromList(img.encodeJpg(image, quality: 70));
-      String fileNameWithoutExtension =
-          filePath.substring(0, filePath.lastIndexOf('.'));
-      File newFile = File('$fileNameWithoutExtension.jpg');
-      newFile = await newFile.writeAsBytes(jpgBytes);
-      path = newFile.path;
-      // print(">>>>>>>>>>path: $path");
-    }
-    return path;
+    final compressed = await FlutterImageCompress.compressAndGetFile(
+        filePath, targetPath,
+        quality: 60);
+    final compressPath = compressed?.path;
+    return compressPath;
   }
 
   static Future<String?> compressVideo(String path) async {
