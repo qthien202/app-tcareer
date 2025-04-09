@@ -52,41 +52,76 @@ class _AppPhotoViewState extends State<AppPhotoView> {
   }
 
   final Dio dio = Dio();
-  Future<void> downLoadImage(String imageUrl) async {
+  Future<void> downloadMedia(String mediaUrl) async {
     try {
       final plugin = DeviceInfoPlugin();
       final android = await plugin.androidInfo;
 
+      // Xin quyền (Android 13 trở xuống mới cần)
       var status = android.version.sdkInt < 33
           ? await Permission.storage.request()
           : PermissionStatus.granted;
 
+      if (!status.isGranted) {
+        showSnackBarError("Không có quyền lưu trữ");
+        return;
+      }
+
+      // Lấy đuôi file
+      final isVideo = mediaUrl.toLowerCase().endsWith('.mp4');
+      final ext = isVideo ? '.mp4' : '.jpg';
+
+      // Chọn thư mục phù hợp
+      Directory? dir;
+      if (Platform.isAndroid) {
+        dir = isVideo
+            ? Directory('/storage/emulated/0/Movies') // Video
+            : Directory('/storage/emulated/0/Pictures'); // Ảnh
+      } else if (Platform.isIOS) {
+        dir = await getApplicationDocumentsDirectory();
+      }
+
+      if (dir == null) {
+        showSnackBarError("Không tìm được thư mục lưu trữ");
+        return;
+      }
+
+      if (!await dir.exists()) {
+        await dir.create(recursive: true);
+      }
+
+      final fileName = '${DateTime.now().millisecondsSinceEpoch}$ext';
+      final savePath = '${dir.path}/$fileName';
+
+      // Logger DIO
       dio.interceptors.add(PrettyDioLogger(
-          requestHeader: true,
-          requestBody: true,
-          responseBody: true,
-          responseHeader: false,
-          error: true,
-          compact: true,
-          maxWidth: 90));
-      if (status.isGranted) {
-        Directory? appDocDir = await getExternalStorageDirectory();
-        String savePath =
-            '${appDocDir!.path}/Pictures/${DateTime.now().millisecondsSinceEpoch}.jpg';
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+        maxWidth: 90,
+      ));
 
-        final response = await dio.download(imageUrl, savePath);
-        if (response.statusCode == 200) {
-          final result = await ImageGallerySaver.saveFile(savePath);
+      final response = await dio.download(mediaUrl, savePath);
+      if (response.statusCode == 200) {
+        final result = await ImageGallerySaver.saveFile(
+          savePath,
+          isReturnPathOfIOS: true,
+        );
 
-          if (result != null) {
-            showSnackBar("Tải ảnh về thành công");
-          }
+        if (result != null) {
+          showSnackBar("📥 Đã lưu ${isVideo ? "video" : "ảnh"} vào thư viện");
         } else {
-          showSnackBarError("Tài ảnh về thất bại");
+          showSnackBarError("❌ Lưu thất bại");
         }
+      } else {
+        showSnackBarError("❌ Tải file thất bại");
       }
     } catch (e) {
-      print(">>>>>>>$e");
+      print("❌ Lỗi tải media: $e");
+      showSnackBarError("Đã xảy ra lỗi khi tải file");
     }
   }
 
@@ -121,7 +156,7 @@ class _AppPhotoViewState extends State<AppPhotoView> {
                     .any((media) => media.mediaUrl.isImageNetWork),
                 child: IconButton(
                     onPressed: () async =>
-                        await downLoadImage(widget.data.medias[index].mediaUrl),
+                        await downloadMedia(widget.data.medias[index].mediaUrl),
                     icon: Icon(
                       Icons.download,
                       color: Colors.white,
@@ -129,112 +164,100 @@ class _AppPhotoViewState extends State<AppPhotoView> {
               )
             ],
           ),
-          body: Stack(
-            alignment: Alignment.bottomCenter,
-            children: [
-              PhotoViewGallery.builder(
-                  pageController: pageController,
-                  scrollPhysics: const BouncingScrollPhysics(),
-                  builder: (BuildContext context, int index) {
-                    final media = widget.data.medias[index];
-                    final assetSource = media.mediaUrl;
-                    final isNetworkAsset = assetSource.isNetworkSource;
-                    return PhotoViewGalleryPageOptions.customChild(
-                      child: Stack(
-                        children: [
-                          Visibility(
-                            visible: !assetSource.isVideoNetWork,
-                            replacement: AspectRatio(
-                                aspectRatio: 9 / 16,
-                                child: ChatVideoPlayerWidget(assetSource)),
-                            child: PhotoView(
-                              imageProvider: isNetworkAsset
-                                  ? CachedNetworkImageProvider(assetSource)
-                                  : FileImage(File(assetSource)),
-                              minScale: PhotoViewComputedScale.contained,
-                              initialScale: PhotoViewComputedScale.contained,
-                              heroAttributes:
-                                  PhotoViewHeroAttributes(tag: assetSource),
-                            ),
+          body: PhotoViewGallery.builder(
+              pageController: pageController,
+              scrollPhysics: const BouncingScrollPhysics(),
+              builder: (BuildContext context, int index) {
+                final media = widget.data.medias[index];
+                final assetSource = media.mediaUrl;
+                final isNetworkAsset = assetSource.isNetworkSource;
+                return PhotoViewGalleryPageOptions.customChild(
+                  child: Stack(
+                    children: [
+                      Visibility(
+                        visible: !assetSource.isVideoNetWork,
+                        replacement: AspectRatio(
+                            aspectRatio: 9 / 16,
+                            child: ChatVideoPlayerWidget(assetSource)),
+                        child: PhotoView(
+                          imageProvider: isNetworkAsset
+                              ? CachedNetworkImageProvider(assetSource)
+                              : FileImage(File(assetSource)),
+                          minScale: PhotoViewComputedScale.contained,
+                          initialScale: PhotoViewComputedScale.contained,
+                          heroAttributes:
+                              PhotoViewHeroAttributes(tag: assetSource),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Positioned(
+                        bottom: 5,
+                        left: 10,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.2), // Nền đen mờ
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Positioned(
-                            bottom: 15,
-                            left: 10,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 8),
-                              decoration: BoxDecoration(
-                                color:
-                                    Colors.black.withOpacity(0.4), // Nền đen mờ
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Column(
+                          child: Column(
+                            children: [
+                              Row(
                                 children: [
-                                  Row(
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage:
+                                        NetworkImage(media.avatarUrl ?? ""),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      CircleAvatar(
-                                        radius: 20,
-                                        backgroundImage:
-                                            NetworkImage(media.avatarUrl ?? ""),
+                                      Text(
+                                        media.fullName ?? "",
+                                        style: TextStyle(color: Colors.white),
                                       ),
                                       const SizedBox(
-                                        width: 10,
+                                        height: 5,
                                       ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            media.fullName ?? "",
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Text(
-                                            media.createdAt ?? "",
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12),
-                                          ),
-                                        ],
+                                      Text(
+                                        media.createdAt ?? "",
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 12),
                                       ),
                                     ],
                                   ),
                                 ],
                               ),
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                  itemCount: widget.data.medias.length,
-                  loadingBuilder: (context, event) => const Center(
-                        child: SizedBox(
-                          width: 20.0,
-                          height: 20.0,
-                          child: CupertinoActivityIndicator(
-                              color: Colors.white, radius: 10),
+                            ],
+                          ),
                         ),
-                      ),
-                  backgroundDecoration: const BoxDecoration(
-                    color: Colors.black,
+                      )
+                    ],
                   ),
-                  // pageController: controller.pageController,
-                  onPageChanged: (val) {
-                    setIndex(val);
-                    widget.data.onPageChanged!(val);
-                  }),
-              const SizedBox(
-                height: 10,
+                );
+              },
+              itemCount: widget.data.medias.length,
+              loadingBuilder: (context, event) => const Center(
+                    child: SizedBox(
+                      width: 20.0,
+                      height: 20.0,
+                      child: CupertinoActivityIndicator(
+                          color: Colors.white, radius: 10),
+                    ),
+                  ),
+              backgroundDecoration: const BoxDecoration(
+                color: Colors.black,
               ),
-            ],
-          ),
+              // pageController: controller.pageController,
+              onPageChanged: (val) {
+                setIndex(val);
+                widget.data.onPageChanged!(val);
+              }),
           // bottomNavigationBar: BottomAppBar(
           //   color: Colors.black,
           //   child: engagementWidget(
