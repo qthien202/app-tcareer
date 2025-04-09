@@ -15,7 +15,7 @@ class HomeRoute {
         final postId = state.pathParameters["id"] ?? "";
         final notificationType =
             state.uri.queryParameters["notificationType"] ?? "";
-        print(">>>>>>>>>>>>>>>type0: ${notificationType}");
+
         return CustomTransitionPage(
             key: state.pageKey,
             child: PostDetailPage(

@@ -80,7 +80,6 @@ class AppRouter {
             await ref.read(conversationControllerProvider).initializeAbly();
             await ref.read(conversationControllerProvider).listenAblyConnected(
                 handleChannelStateChange: (connectionState) async {
-              print(">>>>>>>state: ${connectionState.event}");
               if (connectionState.event == ably.ConnectionEvent.closed) {
                 await ref.read(conversationControllerProvider).initializeAbly();
               }

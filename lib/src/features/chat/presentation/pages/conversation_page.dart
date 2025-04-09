@@ -109,8 +109,6 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
                           "userId": conversation.userId.toString() ?? "",
                           "clientId": clientId
                         });
-                        print(
-                            ">>>>>>>>>>>>conversations: ${controller.conversations}");
                       },
                       leading: Stack(
                         children: [

@@ -60,7 +60,7 @@ class _AppPhotoViewState extends State<AppPhotoView> {
       var status = android.version.sdkInt < 33
           ? await Permission.storage.request()
           : PermissionStatus.granted;
-      print(">>>>>>>>status: $status");
+
       dio.interceptors.add(PrettyDioLogger(
           requestHeader: true,
           requestBody: true,
@@ -73,7 +73,7 @@ class _AppPhotoViewState extends State<AppPhotoView> {
         Directory? appDocDir = await getExternalStorageDirectory();
         String savePath =
             '${appDocDir!.path}/Pictures/${DateTime.now().millisecondsSinceEpoch}.jpg';
-        print(">>>>>>>>>>>savePath: $savePath");
+
         final response = await dio.download(imageUrl, savePath);
         if (response.statusCode == 200) {
           final result = await ImageGallerySaver.saveFile(savePath);

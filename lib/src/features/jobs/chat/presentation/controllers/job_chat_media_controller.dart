@@ -93,7 +93,7 @@ class JobChatMediaController extends ChangeNotifier {
         cachedVideoDurations[item.id] = duration;
       }
     }
-    print(">>>>>>>>>>$cachedVideoDurations");
+
     notifyListeners();
   }
 
@@ -142,7 +142,7 @@ class JobChatMediaController extends ChangeNotifier {
     // Cập nhật chỉ số của các tài sản đã chọn
     assetIndices =
         selectedAsset.map((asset) => selectedAsset.indexOf(asset)).toList();
-    print(">>>>>>>>>>assets: $selectedAsset");
+
     notifyListeners();
   }
 

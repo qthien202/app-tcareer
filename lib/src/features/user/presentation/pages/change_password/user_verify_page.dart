@@ -67,7 +67,6 @@ class UserVerifyPage extends ConsumerWidget {
                       authButtonWidget(
                           context: context,
                           onPressed: () async {
-                            print(">>>>>>>>>>>>12314234");
                             if (controller.formVerifyKey.currentState
                                     ?.validate() ==
                                 true) {

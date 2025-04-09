@@ -16,12 +16,12 @@ class PhotoManagerUtils {
     final List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
         type: RequestType.image | RequestType.video);
     AssetPathEntity album = albums.first;
-    print(">>>>>>>>>>>>>>>albums: $albums");
+
     int totalAssets = await album.assetCountAsync;
 
     List<AssetEntity> assets =
         await albums.first.getAssetListPaged(page: page, size: totalAssets);
-    print(">>>>>>>>>>>>>>>assets: $assets");
+
     return assets;
   }
 }

@@ -102,7 +102,7 @@ class ChatMediaController extends ChangeNotifier {
         cachedVideoDurations[item.id] = duration;
       }
     }
-    print(">>>>>>>>>>$cachedVideoDurations");
+
     notifyListeners();
   }
 
@@ -120,8 +120,6 @@ class ChatMediaController extends ChangeNotifier {
     required BuildContext context,
     bool? isComment,
   }) async {
-    print(">>>>>>>>>$isComment");
-
     if (asset.type == AssetType.video &&
         selectedAsset.where((a) => a.type == AssetType.video).length >= 5) {
       showSnackBarError("Bạn chỉ có thể chọn tối đa 5 video");

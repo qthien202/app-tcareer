@@ -158,7 +158,6 @@ class ConversationController extends ChangeNotifier {
 
     await initializeAbly();
     await listenAllConversation(context);
-    print(">>>>>>>>>doneListen");
   }
 
   Future<void> refresh() async {
@@ -172,8 +171,6 @@ class ConversationController extends ChangeNotifier {
       BuildContext context) async {
     final subscription = await chatUseCase.listenAllConversation(
       handleChannelMessage: (message) async {
-        print(">>>>>>>>>conversationData: ${message.data}");
-
         final messageData = jsonDecode(message.data.toString());
         await updateLastMessage(messageData: messageData, context: context);
       },
@@ -293,7 +290,6 @@ class ConversationController extends ChangeNotifier {
     await userUtil.saveCache(
         key: "conversation_$userId", value: conversationJson);
     final conversations = await userUtil.loadCache("conversation_$userId");
-    print(">>>>>>>conversation saved: ${jsonEncode(conversations)}");
   }
 
   Future<void> saveConversationFriends({required String friendJson}) async {
@@ -307,7 +303,7 @@ class ConversationController extends ChangeNotifier {
     final userUtil = ref.read(userUtilsProvider);
     final String userId = await userUtil.getUserId();
     String? rawData = await userUtil.loadCache("conversation_friend_$userId");
-    print(">>>>>>>>>rawData: $rawData");
+
     if (rawData != null) {
       final List<dynamic> decodedData = jsonDecode(rawData);
       List<Data> loadedConversationFriend = decodedData

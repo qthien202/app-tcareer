@@ -71,7 +71,7 @@ class ConversationSearchController extends ChangeNotifier {
 
     userMessages.addAll(userFromMessage?.data as Iterable<Data>);
     await handleDecryptMessage();
-    print(">>>>>>>>>>>>userMessage: ${jsonEncode(userMessages)}");
+
     notifyListeners();
   }
 

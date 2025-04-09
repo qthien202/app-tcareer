@@ -153,7 +153,7 @@ class JobPage extends ConsumerWidget {
 
   Widget recommendJobs(WidgetRef ref) {
     final controller = ref.watch(jobControllerProvider);
-    print(">>>>>>>>>data: ${controller.jobs.length}");
+
     return SliverVisibility(
       visible: controller.jobResponse != null,
       replacementSliver: SliverToBoxAdapter(

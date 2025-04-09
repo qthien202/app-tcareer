@@ -110,7 +110,7 @@ class _SearchJobPageState extends ConsumerState<SearchJobPage> {
 
   Widget jobList(WidgetRef ref) {
     final controller = ref.watch(searchJobControllerProvider);
-    print(">>>>>>>>>data: ${controller.jobs.length}");
+
     return SliverVisibility(
       visible: controller.jobRes != null,
       replacementSliver: SliverToBoxAdapter(
@@ -194,7 +194,6 @@ class _SearchJobPageState extends ConsumerState<SearchJobPage> {
   }
 
   Widget button(TabItem tab) {
-    print(">>>>>>>>isActive: ${tab.isActive}");
     return GestureDetector(
       onTap: tab.onTap,
       child: Container(

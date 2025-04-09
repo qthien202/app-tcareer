@@ -27,8 +27,6 @@ Future<AssetPathEntity?> showJObAlbumPopup(
         .add({"album": album, "first": assetFirst, "total": totalAssets});
   }
 
-  print(">>>>>>>>>>albumLength: ${albumWithThumbnail}");
-
   return showMenu<AssetPathEntity>(
     color: Colors.white,
     context: context,

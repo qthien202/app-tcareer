@@ -27,7 +27,6 @@ Future<AssetPathEntity?> showChatAlbumPopup(
         .add({"album": album, "first": assetFirst, "total": totalAssets});
   }
   controller.setIsShowPopUp(true);
-  print(">>>>>>>>>>albumLength: ${albumWithThumbnail}");
 
   return showModalBottomSheet<AssetPathEntity>(
     context: context,

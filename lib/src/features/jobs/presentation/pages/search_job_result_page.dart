@@ -70,7 +70,7 @@ class _SearchJobResultPageState extends ConsumerState<SearchJobResultPage> {
 
   Widget jobList(WidgetRef ref) {
     final controller = ref.watch(searchJobControllerProvider);
-    print(">>>>>>>>>data: ${controller.jobs.length}");
+
     return SliverVisibility(
       visible: controller.jobRes != null,
       replacementSliver: SliverToBoxAdapter(

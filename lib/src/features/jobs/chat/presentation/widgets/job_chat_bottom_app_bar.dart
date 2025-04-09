@@ -10,7 +10,6 @@ Widget jobChatBottomAppBar(WidgetRef ref, BuildContext context,
     {bool autoFocus = true}) {
   // final controller = ref.watch(commentControllerProvider);
   final media = ref.watch(jobChatMediaControllerProvider);
-  print(">>>>>>>>>>>media: ${media.selectedAsset.isNotEmpty}");
 
   final controller = ref.watch(jobChatControllerProvider);
   return Column(

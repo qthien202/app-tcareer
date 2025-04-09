@@ -404,11 +404,11 @@ class ChatController extends ChangeNotifier {
     String? rawData = await userUtil.loadCache("message_$userId");
     if (rawData != null) {
       final List<dynamic> decodedData = jsonDecode(rawData);
-      print(">>>>>>>>>>>>>decodeData: $decodedData");
+
       List<MessageModel> loadedMessages = decodedData
           .map((data) => MessageModel.fromJson(data as Map<String, dynamic>))
           .toList();
-      print(">>>>>>>>>messageCache: ${jsonEncode(loadedMessages)}");
+
       messages.clear();
       messages.addAll(loadedMessages);
       messages = messages.map((message) {

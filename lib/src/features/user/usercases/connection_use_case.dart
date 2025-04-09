@@ -94,7 +94,6 @@ class ConnectionUseCase {
     final userUtil = ref.read(userUtilsProvider);
     String userId = await userUtil.getUserId();
     final data = await userRepository.getData("users/$userId");
-    print(">>>>>>>>>>>>dataMessage: $data");
     bool inMessage = data?['inMessage'] as bool;
     return inMessage;
   }

@@ -451,7 +451,7 @@ class _ApplyJobPageState extends ConsumerState<ApplyJobPage> {
     Uri uri = Uri.parse(url ?? "");
     String path = Uri.decodeComponent(uri.path);
     String fileName = path.split('/').last;
-    print(">>>>>>>>>>fileName: $fileName");
+
     return InkWell(
       onTap: () => context.pushNamed("viewCV",
           extra: PdfModel(url: url, fileName: fileName)),
