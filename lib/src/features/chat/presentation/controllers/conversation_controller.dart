@@ -10,13 +10,16 @@ import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
 import 'package:app_tcareer/src/features/posts/data/models/debouncer.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
+import 'package:app_tcareer/src/services/custom_cache_manager.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'dart:developer' as dev;
 
 class ConversationController extends ChangeNotifier {
   final ChatUseCase chatUseCase;
@@ -28,30 +31,53 @@ class ConversationController extends ChangeNotifier {
   List<UserConversation> conversations = [];
 
   Future<void> getAllConversation() async {
-    allConversation = null;
-
     allConversation = await chatUseCase.getAllConversation();
-    if (allConversation?.data
-            ?.any((conversation) => conversations.contains(conversation)) ==
-        false) {
-      conversations.clear();
-    }
-    if (allConversation?.data != null && conversations.isEmpty) {
-      final newConversations = allConversation!.data?.where((newConversation) {
-        return !conversations.any((existingConversation) =>
-            existingConversation.userId == newConversation.userId);
-      }).toList();
 
-      // Nếu có cuộc hội thoại mới, thêm vào danh sách
-      if (newConversations?.isNotEmpty == true) {
-        conversations.addAll(newConversations!);
-        await handleDecryptMessage();
-        final conversationJson = jsonEncode(conversations
-            .map((conversation) => conversation.toJson())
-            .toList());
-        await saveConversation(conversationJson: conversationJson);
-        notifyListeners();
+    final apiConversations = allConversation?.data;
+
+    // Nếu không có dữ liệu từ API, không làm gì cả để tránh mất cache
+    if (apiConversations == null || apiConversations.isEmpty) {
+      dev.log("⚠️ Không có dữ liệu từ API, giữ nguyên cache cũ");
+      return;
+    }
+
+    bool isDifferent = false;
+
+    if (apiConversations.length != conversations.length) {
+      isDifferent = true;
+    } else {
+      for (final apiItem in apiConversations) {
+        final localItem = conversations.firstWhere(
+          (c) => c.userId == apiItem.userId,
+          orElse: () => UserConversation.empty(),
+        );
+
+        if (localItem.userId == null ||
+            localItem.userAvatar != apiItem.userAvatar ||
+            localItem.userFullName != apiItem.userFullName ||
+            localItem.latestMessage != apiItem.latestMessage ||
+            localItem.unRead != apiItem.unRead) {
+          isDifferent = true;
+          break;
+        }
       }
+    }
+
+    if (isDifferent) {
+      conversations.clear();
+      conversations.addAll(apiConversations);
+
+      await handleDecryptMessage();
+
+      final conversationJson = jsonEncode(
+        conversations.map((conversation) => conversation.toJson()).toList(),
+      );
+      await saveConversation(conversationJson: conversationJson);
+
+      notifyListeners();
+      dev.log("🆕 Cập nhật conversation và cache lại");
+    } else {
+      dev.log("✅ Dữ liệu conversation không thay đổi, không cần update");
     }
   }
 
@@ -83,7 +109,13 @@ class ConversationController extends ChangeNotifier {
         .indexWhere((conversation) => conversation.id == conversationId);
     final updatedConversation = currentConversation.copyWith(unRead: 0);
     conversations[index] = updatedConversation;
+    await refreshCache();
     notifyListeners();
+  }
+
+  Future<void> refreshCache() async {
+    await saveConversation(conversationJson: jsonEncode(conversations));
+    await loadConversation();
   }
 
   Future<void> updateLastMessage(
@@ -115,6 +147,7 @@ class ConversationController extends ChangeNotifier {
           .removeWhere((conversation) => conversation.userId == userId);
 
       conversations.insert(0, newConversation);
+      await refreshCache();
       notifyListeners();
       await markDeliveredMessage(
           context: context,
@@ -135,6 +168,7 @@ class ConversationController extends ChangeNotifier {
       if (!conversations
           .any((existing) => existing.userId == newConversation.userId)) {
         conversations.insert(0, newConversation);
+        await refreshCache();
         notifyListeners();
         await markDeliveredMessage(
             context: context,
@@ -150,12 +184,8 @@ class ConversationController extends ChangeNotifier {
   }
 
   Future<void> onInit(BuildContext context) async {
-    await loadConversationFriends();
+    loadConversationFriends();
     await loadConversation();
-    // getFriends();
-    //
-    // await getAllConversation();
-
     await initializeAbly();
     await listenAllConversation(context);
   }
@@ -240,10 +270,39 @@ class ConversationController extends ChangeNotifier {
   List<Data> friends = [];
 
   Future<void> getFriends() async {
+    final userUtil = ref.read(userUtilsProvider);
+    final String userId = await userUtil.getUserId();
+
     final data = await chatUseCase.getFriendInChat();
-    List<dynamic> followerJson = data['data'];
-    await mapFriendsFromJson(followerJson);
-    notifyListeners();
+    final List<dynamic> followerJson = data['data'];
+    final fetchedFriends = followerJson
+        .whereType<Map<String, dynamic>>()
+        .map((item) => Data.fromJson(item))
+        .toList();
+
+    // 🔹 So sánh với cache hiện tại
+    bool hasDifference = fetchedFriends.length != friends.length ||
+        fetchedFriends.any((newFriend) {
+          final matched = friends.firstWhere(
+            (old) => old.id == newFriend.id,
+            orElse: () => Data(id: null, fullName: '', avatar: ''),
+          );
+          return matched.fullName != newFriend.fullName ||
+              matched.avatar != newFriend.avatar;
+        });
+
+    if (hasDifference) {
+      friends = fetchedFriends;
+      notifyListeners();
+
+      final friendJson = jsonEncode(friends.map((f) => f.toJson()).toList());
+
+      await CustomCacheManager.instance.putFile(
+        'conversation_friend_$userId',
+        Uint8List.fromList(utf8.encode(friendJson)),
+        fileExtension: 'json',
+      );
+    }
   }
 
   Future<void> mapFriendsFromJson(List<dynamic> followerJson) async {
@@ -269,51 +328,74 @@ class ConversationController extends ChangeNotifier {
   Future<void> loadConversation() async {
     final userUtil = ref.read(userUtilsProvider);
     final String userId = await userUtil.getUserId();
-    String? rawData = await userUtil.loadCache("conversation_$userId");
 
-    if (rawData != null) {
-      final List<dynamic> decodedData = jsonDecode(rawData);
-      List<UserConversation> loadedConversation = decodedData
+    final fileInfo = await CustomCacheManager.instance
+        .getFileFromCache('conversation_$userId');
+
+    if (fileInfo != null) {
+      final jsonStr = utf8.decode(await fileInfo.file.readAsBytes());
+      final List<dynamic> decodedData = jsonDecode(jsonStr);
+
+      final List<UserConversation> loadedConversation = decodedData
           .map(
               (data) => UserConversation.fromJson(data as Map<String, dynamic>))
           .toList();
-      conversations.clear();
-      conversations.addAll(loadedConversation);
 
-      notifyListeners();
+      if (loadedConversation.isNotEmpty) {
+        conversations.clear();
+        conversations.addAll(loadedConversation);
+        dev.log("📦 Load từ cache: ${jsonEncode(conversations)}");
+        notifyListeners();
+      }
     }
+
+    // Gọi sau khi load cache, nếu API fail thì conversations vẫn có data từ cache
+    await getAllConversation();
   }
 
   Future<void> saveConversation({required String conversationJson}) async {
     final userUtil = ref.read(userUtilsProvider);
     final String userId = await userUtil.getUserId();
-    await userUtil.saveCache(
-        key: "conversation_$userId", value: conversationJson);
-    final conversations = await userUtil.loadCache("conversation_$userId");
+
+    await CustomCacheManager.instance.putFile(
+      'conversation_$userId',
+      Uint8List.fromList(utf8.encode(conversationJson)),
+      fileExtension: 'json',
+    );
   }
 
   Future<void> saveConversationFriends({required String friendJson}) async {
     final userUtil = ref.read(userUtilsProvider);
     final String userId = await userUtil.getUserId();
-    await userUtil.saveCache(
-        key: "conversation_friend_$userId", value: friendJson);
+
+    await CustomCacheManager.instance.putFile(
+      'conversation_friend_$userId',
+      Uint8List.fromList(utf8.encode(friendJson)),
+      fileExtension: 'json',
+    );
   }
 
   Future<void> loadConversationFriends() async {
     final userUtil = ref.read(userUtilsProvider);
     final String userId = await userUtil.getUserId();
-    String? rawData = await userUtil.loadCache("conversation_friend_$userId");
 
-    if (rawData != null) {
-      final List<dynamic> decodedData = jsonDecode(rawData);
-      List<Data> loadedConversationFriend = decodedData
+    final fileInfo = await CustomCacheManager.instance
+        .getFileFromCache('conversation_friend_$userId');
+
+    if (fileInfo != null) {
+      final jsonStr = utf8.decode(await fileInfo.file.readAsBytes());
+      final List decoded = jsonDecode(jsonStr);
+      final loadedFriends = decoded
           .map((data) => Data.fromJson(data as Map<String, dynamic>))
           .toList();
-      friends.clear();
-      friends.addAll(loadedConversationFriend);
 
+      friends.clear();
+      friends.addAll(loadedFriends);
       notifyListeners();
     }
+
+    // 🔹 Sau khi load cache thì gọi getFriends() để check cập nhật mới
+    await getFriends();
   }
 
   TextEditingController queryController = TextEditingController();

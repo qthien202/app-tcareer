@@ -85,7 +85,7 @@ class _ConversationPageState extends ConsumerState<ConversationPage> {
         padding: EdgeInsets.only(
             bottom: controller.conversations.length <= 3 ? 350 : 100),
         sliver: SliverVisibility(
-          visible: controller.allConversation != null,
+          visible: true,
           replacementSliver: SliverToBoxAdapter(
             child: circularLoadingWidget(),
           ),
