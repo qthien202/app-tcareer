@@ -229,7 +229,7 @@ Widget contentWidget(String content) {
   return ReadMoreText(
     content,
     trimMode: TrimMode.Line,
-    trimLines: 2,
+    trimLines: 5,
     colorClickableText: Colors.black,
     trimCollapsedText: "Xem thêm",
     trimExpandedText: "Thu gọn",

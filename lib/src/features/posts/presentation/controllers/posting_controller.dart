@@ -200,8 +200,8 @@ class PostingController extends ChangeNotifier {
   }
 
   Future<void> createPost(BuildContext context) async {
-    final mediaController = ref.read(mediaControllerProvider);
-    final postController = ref.read(postControllerProvider);
+    final mediaController = ref.watch(mediaControllerProvider);
+    final postController = ref.watch(postControllerProvider);
 
     context.goNamed("home");
     loadingProgress = 0.0;
@@ -452,8 +452,8 @@ class PostingController extends ChangeNotifier {
 
   Future<void> updatePost(
       {required String postId, required BuildContext context}) async {
-    final mediaController = ref.read(mediaControllerProvider);
-    final postController = ref.read(postControllerProvider);
+    final mediaController = ref.watch(mediaControllerProvider);
+    final postController = ref.watch(postControllerProvider);
 
     context.goNamed("home");
     loadingProgress = 0.0;
