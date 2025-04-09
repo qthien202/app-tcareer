@@ -51,5 +51,4 @@ class UserConnectionUseCase {
 }
 
 final userConnectionUseCaseProvider = Provider((ref) => UserConnectionUseCase(
-    ref.watch(userRepositoryProvider),
-    ref.watch(connectionRepositoryProvider)));
+    ref.read(userRepositoryProvider), ref.read(connectionRepositoryProvider)));

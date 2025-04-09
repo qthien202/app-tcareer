@@ -22,9 +22,9 @@ final notificationProvider =
     Provider.family<NotificationHandler, GlobalKey<NavigatorState>>(
         (ref, navigatorKey) {
   final firebaseMessagingService =
-      ref.watch(firebaseMessagingServiceProvider(navigatorKey));
+      ref.read(firebaseMessagingServiceProvider(navigatorKey));
   final notificationService =
-      ref.watch(notificationServiceProvider(navigatorKey));
+      ref.read(notificationServiceProvider(navigatorKey));
   return NotificationHandler(
       firebaseMessagingService, notificationService, navigatorKey);
 });

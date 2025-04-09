@@ -60,4 +60,4 @@ class RegisterUseCase {
 }
 
 final registerUseCase =
-    Provider((ref) => RegisterUseCase(ref.watch(authRepository)));
+    Provider((ref) => RegisterUseCase(ref.read(authRepository)));

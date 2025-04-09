@@ -70,7 +70,7 @@ class ApplyJobController extends ChangeNotifier {
   Future<void> submitApplication(
       {required num jobId, required BuildContext context}) async {
     final jobController = ref.read(jobControllerProvider);
-    final userController = ref.watch(userControllerProvider);
+    final userController = ref.read(userControllerProvider);
     String? cvFile = userController.userData?.data?.cvFile;
     AppUtils.loadingApi(() async {
       if (selectedFile != null) {

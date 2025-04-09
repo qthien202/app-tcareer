@@ -247,8 +247,8 @@ class ChatMediaController extends ChangeNotifier {
   }
 
   Future<void> updateMediaLocalConversation() async {
-    final chatController = ref.watch(chatControllerProvider);
-    final userUtil = ref.watch(userUtilsProvider);
+    final chatController = ref.read(chatControllerProvider);
+    final userUtil = ref.read(userUtilsProvider);
     num senderId = num.parse(await userUtil.getUserId());
     final newMessage = MessageModel(
         conversationId: chatController.conversationData?.conversation?.id,
@@ -269,7 +269,7 @@ class ChatMediaController extends ChangeNotifier {
   }
 
   Future<bool> hasChangedSelectedAssets() async {
-    final userUtils = ref.watch(userUtilsProvider);
+    final userUtils = ref.read(userUtilsProvider);
     List<String>? assetIds = await userUtils.loadCacheList("selectedAsset");
     return assetIds?.length != selectedAsset.length;
   }
@@ -303,7 +303,7 @@ class ChatMediaController extends ChangeNotifier {
 }
 
 final chatMediaControllerProvider = ChangeNotifierProvider((ref) {
-  final mediaUseCase = ref.watch(mediaUseCaseProvider);
-  final chatUseCase = ref.watch(chatUseCaseProvider);
+  final mediaUseCase = ref.read(mediaUseCaseProvider);
+  final chatUseCase = ref.read(chatUseCaseProvider);
   return ChatMediaController(mediaUseCase, ref, chatUseCase);
 });

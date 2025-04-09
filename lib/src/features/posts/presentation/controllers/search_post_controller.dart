@@ -178,7 +178,7 @@ class SearchPostController extends ChangeNotifier {
   }
 
   // Future<void>addFriend(String userId)async{
-  //   final connectionController = ref.watch(userConnectionControllerProvider);
+  //   final connectionController = ref.read(userConnectionControllerProvider);
   //   await connectionController.postAddFriend(userId);
   // }
 

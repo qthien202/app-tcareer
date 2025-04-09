@@ -13,7 +13,7 @@ class NotificationController extends ChangeNotifier {
   final Ref ref;
   NotificationController(this.notificationUseCase, this.ref);
   Stream<List<Map<String, dynamic>>> notificationsStream() {
-    final userController = ref.watch(userControllerProvider);
+    final userController = ref.read(userControllerProvider);
     final user = userController.userData?.data;
     int userId = user?.id?.toInt() ?? 0;
 
@@ -23,7 +23,7 @@ class NotificationController extends ChangeNotifier {
   }
 
   Stream<List<Map<String, dynamic>>> unReadNotificationsStream() {
-    final userController = ref.watch(userControllerProvider);
+    final userController = ref.read(userControllerProvider);
     final user = userController.userData?.data;
     int userId = user?.id?.toInt() ?? 0;
 
@@ -76,6 +76,6 @@ class NotificationController extends ChangeNotifier {
 }
 
 final notificationControllerProvider = Provider((ref) {
-  final notificationUseCase = ref.watch(notificationUseCaseProvider);
+  final notificationUseCase = ref.read(notificationUseCaseProvider);
   return NotificationController(notificationUseCase, ref);
 });

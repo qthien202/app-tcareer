@@ -29,15 +29,15 @@ class AuthRepository {
   AuthRepository(this.ref);
 
   Future<void> register(RegisterRequest body) async {
-    final apiServices = ref.watch(apiServiceProvider);
+    final apiServices = ref.read(apiServiceProvider);
     await apiServices.postRegister(body: body);
   }
 
   Future<void> login(
       {String? phone, String? email, required String password}) async {
     try {
-      final apiServices = ref.watch(apiServiceProvider);
-      final userUtil = ref.watch(userUtilsProvider);
+      final apiServices = ref.read(apiServiceProvider);
+      final userUtil = ref.read(userUtilsProvider);
       String deviceToken = await userUtil.getDeviceToken() ?? "";
       String deviceId = await userUtil.getDeviceId() ?? "";
       final body = LoginRequest(
@@ -66,14 +66,14 @@ class AuthRepository {
   }
 
   Future<void> loginWithGoogle() async {
-    final fireBaseAuth = ref.watch(firebaseAuthServiceProvider);
+    final fireBaseAuth = ref.read(firebaseAuthServiceProvider);
     final user = await fireBaseAuth.signInWithGoogle();
     final accessToken = user?.credential?.accessToken;
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String deviceToken = await userUtil.getDeviceToken() ?? "";
     String deviceId = await userUtil.getDeviceId() ?? "";
     try {
-      final apiServices = ref.watch(apiServiceProvider);
+      final apiServices = ref.read(apiServiceProvider);
       final response = await apiServices.postLoginWithGoogle(
           body: LoginGoogleRequest(
               accessToken: accessToken,
@@ -99,10 +99,10 @@ class AuthRepository {
   }
 
   Future<void> logout() async {
-    final fireBaseAuth = ref.watch(firebaseAuthServiceProvider);
-    final userUtil = ref.watch(userUtilsProvider);
+    final fireBaseAuth = ref.read(firebaseAuthServiceProvider);
+    final userUtil = ref.read(userUtilsProvider);
 
-    final apiServices = ref.watch(apiServiceProvider);
+    final apiServices = ref.read(apiServiceProvider);
     String refreshToken = await userUtil.getRefreshToken();
     await apiServices.postLogout(
         body: LogoutRequest(refreshToken: refreshToken));
@@ -116,12 +116,12 @@ class AuthRepository {
   }
 
   Future<void> forgotPassword(ForgotPasswordRequest body) async {
-    final apiServices = ref.watch(apiServiceProvider);
+    final apiServices = ref.read(apiServiceProvider);
     await apiServices.postForgotPassword(body: body);
   }
 
   Future<void> forgotPasswordVerify(ForgotPasswordVerifyRequest body) async {
-    final apiServices = ref.watch(apiServiceProvider);
+    final apiServices = ref.read(apiServiceProvider);
     await apiServices.postForgotPasswordVerify(body: body);
   }
 
@@ -130,7 +130,7 @@ class AuthRepository {
     String? phone,
     required String password,
   }) async {
-    final apiServices = ref.watch(apiServiceProvider);
+    final apiServices = ref.read(apiServiceProvider);
     await apiServices.postResetPassword(
         body: ResetPasswordRequest(
             email: email,
@@ -140,7 +140,7 @@ class AuthRepository {
   }
 
   Future<void> postCheckUserPhone(String phone) async {
-    final apiServices = ref.watch(apiServiceProvider);
+    final apiServices = ref.read(apiServiceProvider);
     await apiServices.postCheckUserPhone(
         body: CheckUserPhoneRequest(phone: phone));
   }
@@ -155,7 +155,7 @@ class AuthRepository {
           codeSent,
       required void Function(String verificationId)
           codeAutoRetrievalTimeout}) async {
-    final fireBaseAuth = ref.watch(firebaseAuthServiceProvider);
+    final fireBaseAuth = ref.read(firebaseAuthServiceProvider);
     return await fireBaseAuth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         verificationCompleted: verificationCompleted,
@@ -166,19 +166,19 @@ class AuthRepository {
 
   Future<UserCredential> signInWithOTP(
       {required String smsCode, required String verificationId}) async {
-    final fireBaseAuth = ref.watch(firebaseAuthServiceProvider);
+    final fireBaseAuth = ref.read(firebaseAuthServiceProvider);
     return await fireBaseAuth.signInWithOTP(
         smsCode: smsCode, verificationId: verificationId);
   }
 
   Future<TwilioResponse> sendVerificationCode(String phoneNumber) async {
-    final twilio = ref.watch(twilioService);
+    final twilio = ref.read(twilioService);
     return await twilio.sendVerificationCode(phoneNumber);
   }
 
   Future<TwilioResponse> verifyCode(
       {required String phoneNumber, required String code}) async {
-    final twilio = ref.watch(twilioService);
+    final twilio = ref.read(twilioService);
     return await twilio.verifyCode(phoneNumber: phoneNumber, code: code);
   }
 

@@ -187,7 +187,7 @@ class ConversationController extends ChangeNotifier {
       required dynamic messageId,
       required dynamic conversationId,
       required BuildContext context}) async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String clientId = await userUtil.getUserId();
 
     final currentConversation = conversations
@@ -270,7 +270,7 @@ class ConversationController extends ChangeNotifier {
   }
 
   Future<void> loadConversation() async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     final String userId = await userUtil.getUserId();
     String? rawData = await userUtil.loadCache("conversation_$userId");
 
@@ -288,7 +288,7 @@ class ConversationController extends ChangeNotifier {
   }
 
   Future<void> saveConversation({required String conversationJson}) async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     final String userId = await userUtil.getUserId();
     await userUtil.saveCache(
         key: "conversation_$userId", value: conversationJson);
@@ -297,14 +297,14 @@ class ConversationController extends ChangeNotifier {
   }
 
   Future<void> saveConversationFriends({required String friendJson}) async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     final String userId = await userUtil.getUserId();
     await userUtil.saveCache(
         key: "conversation_friend_$userId", value: friendJson);
   }
 
   Future<void> loadConversationFriends() async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     final String userId = await userUtil.getUserId();
     String? rawData = await userUtil.loadCache("conversation_friend_$userId");
     print(">>>>>>>>>rawData: $rawData");
@@ -352,7 +352,7 @@ class ConversationController extends ChangeNotifier {
 }
 
 final conversationControllerProvider = ChangeNotifierProvider((ref) {
-  final chatUseCase = ref.watch(chatUseCaseProvider);
+  final chatUseCase = ref.read(chatUseCaseProvider);
 
   return ConversationController(chatUseCase, ref);
 });

@@ -18,4 +18,4 @@ class SearchUseCase {
 }
 
 final searchUseCaseProvider =
-    Provider((ref) => SearchUseCase(ref.watch(postRepository)));
+    Provider((ref) => SearchUseCase(ref.read(postRepository)));

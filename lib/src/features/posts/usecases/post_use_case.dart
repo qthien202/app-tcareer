@@ -123,4 +123,4 @@ class PostUseCase {
 }
 
 final postUseCaseProvider =
-    Provider((ref) => PostUseCase(ref.watch(postRepository)));
+    Provider((ref) => PostUseCase(ref.read(postRepository)));

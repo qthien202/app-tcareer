@@ -32,4 +32,4 @@ class CommentUseCase {
 }
 
 final commentUseCaseProvider =
-    Provider((ref) => CommentUseCase(ref.watch(postRepository)));
+    Provider((ref) => CommentUseCase(ref.read(postRepository)));

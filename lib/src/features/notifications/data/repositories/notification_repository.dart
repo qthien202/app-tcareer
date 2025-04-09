@@ -8,7 +8,7 @@ class NotificationRepository {
   NotificationRepository(this.ref);
 
   Stream<DatabaseEvent> listenToNotifications() {
-    final database = ref.watch(firebaseDatabaseServiceProvider);
+    final database = ref.read(firebaseDatabaseServiceProvider);
     String path = "notification";
     final data = database.listenToData(path);
 
@@ -16,7 +16,7 @@ class NotificationRepository {
   }
 
   Future<void> readNotification(String notificationId) async {
-    final database = ref.watch(firebaseDatabaseServiceProvider);
+    final database = ref.read(firebaseDatabaseServiceProvider);
     return await database.updateValue(
         "notification/$notificationId", "is_read", true);
   }

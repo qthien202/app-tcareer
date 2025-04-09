@@ -95,6 +95,6 @@ class NotificationUseCase {
 }
 
 final notificationUseCaseProvider = Provider((ref) {
-  final notificationRepository = ref.watch(notificationRepositoryProvider);
+  final notificationRepository = ref.read(notificationRepositoryProvider);
   return NotificationUseCase(notificationRepository);
 });

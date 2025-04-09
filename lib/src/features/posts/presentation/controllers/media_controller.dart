@@ -99,7 +99,7 @@ class MediaController extends ChangeNotifier {
   List<String> videoPaths = [];
 
   Future<void> getAssetPaths(BuildContext context) async {
-    final userUtils = ref.watch(userUtilsProvider);
+    final userUtils = ref.read(userUtilsProvider);
     await userUtils.removeCache("selectedAsset");
     await userUtils.removeCache("imageCache");
     final posting = ref.read(postingControllerProvider);
@@ -265,13 +265,13 @@ class MediaController extends ChangeNotifier {
   }
 
   Future<void> setCacheSelectedAssets() async {
-    final userUtils = ref.watch(userUtilsProvider);
+    final userUtils = ref.read(userUtilsProvider);
     List<String> assetIds = selectedAsset.map((asset) => asset.id).toList();
     await userUtils.saveCacheList(key: "selectedAsset", value: assetIds);
   }
 
   Future<void> loadSelectedAsset() async {
-    final userUtils = ref.watch(userUtilsProvider);
+    final userUtils = ref.read(userUtilsProvider);
     List<String>? assetIds = await userUtils.loadCacheList("selectedAsset");
     if (assetIds != null) {
       selectedAsset.clear();
@@ -376,7 +376,7 @@ class MediaController extends ChangeNotifier {
   }
 
   Future<bool> hasChangedSelectedAssets() async {
-    final userUtils = ref.watch(userUtilsProvider);
+    final userUtils = ref.read(userUtilsProvider);
     List<String>? assetIds = await userUtils.loadCacheList("selectedAsset");
     return assetIds?.length != selectedAsset.length;
   }

@@ -77,13 +77,13 @@ final apiServiceProvider = Provider<ApiServices>((ref) {
       } catch (e) {
         showSnackBarError("Phiên đăng nhập hết hạn!");
         final refreshTokenNotifier =
-            ref.watch(refreshTokenStateProvider.notifier);
+            ref.read(refreshTokenStateProvider.notifier);
         userUtils.clearToken();
         refreshTokenNotifier.setTokenExpired(true);
       }
 
       // final refreshTokenNotifier =
-      //     ref.watch(refreshTokenStateProvider.notifier);
+      //     ref.read(refreshTokenStateProvider.notifier);
       // refreshTokenNotifier.setTokenExpired(true);
       // await userUtils.clearToken();
     } else {

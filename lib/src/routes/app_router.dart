@@ -64,7 +64,7 @@ class AppRouter {
       debugLogDiagnostics: true,
       initialLocation: "/",
       redirect: (context, state) async {
-        final userUtils = ref.watch(userUtilsProvider);
+        final userUtils = ref.read(userUtilsProvider);
         final isAuthenticated = await userUtils.isAuthenticated();
         bool isChatRoute = state.fullPath?.contains("conversation") == true ||
             state.fullPath?.startsWith("/conversation/chat") == true ||

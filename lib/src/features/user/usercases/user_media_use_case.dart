@@ -32,7 +32,7 @@ class UserMediaUseCase {
 }
 
 final userMediaUseCaseProvider = Provider((ref) {
-  final mediaRepositoryProvider = ref.watch(mediaRepository);
-  final userRepository = ref.watch(userRepositoryProvider);
+  final mediaRepositoryProvider = ref.read(mediaRepository);
+  final userRepository = ref.read(userRepositoryProvider);
   return UserMediaUseCase(mediaRepositoryProvider, userRepository);
 });

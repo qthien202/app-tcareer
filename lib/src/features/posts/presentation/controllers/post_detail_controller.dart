@@ -51,6 +51,6 @@ class PostDetailController extends ChangeNotifier {
 }
 
 final postDetailControllerProvider = ChangeNotifierProvider((ref) {
-  final postUseCase = ref.watch(postUseCaseProvider);
+  final postUseCase = ref.read(postUseCaseProvider);
   return PostDetailController(postUseCase);
 });

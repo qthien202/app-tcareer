@@ -33,4 +33,4 @@ class MediaUseCase {
 }
 
 final mediaUseCaseProvider =
-    Provider((ref) => MediaUseCase(ref.watch(mediaRepository)));
+    Provider((ref) => MediaUseCase(ref.read(mediaRepository)));

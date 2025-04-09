@@ -135,8 +135,8 @@ final firebaseMessagingServiceProvider =
     Provider.family<FirebaseMessagingService, GlobalKey<NavigatorState>>(
         (ref, navigatorKey) {
   final notificationService =
-      ref.watch(notificationServiceProvider(navigatorKey));
-  final userUtils = ref.watch(userUtilsProvider);
+      ref.read(notificationServiceProvider(navigatorKey));
+  final userUtils = ref.read(userUtilsProvider);
   return FirebaseMessagingService(
       notificationService, userUtils, ref, navigatorKey);
 });

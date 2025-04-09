@@ -43,8 +43,8 @@ class PostingController extends ChangeNotifier {
   }
 
   Future<void> loadCacheImage() async {
-    final userUtils = ref.watch(userUtilsProvider);
-    final mediaController = ref.watch(mediaControllerProvider);
+    final userUtils = ref.read(userUtilsProvider);
+    final mediaController = ref.read(mediaControllerProvider);
     List<String>? imageCache = await userUtils.loadCacheList("imageCache");
     if (imageCache?.isNotEmpty == true) {
       mediaController.imagePaths = imageCache!;
@@ -53,8 +53,8 @@ class PostingController extends ChangeNotifier {
   }
 
   Future<void> loadVideoCache() async {
-    final userUtils = ref.watch(userUtilsProvider);
-    final mediaController = ref.watch(mediaControllerProvider);
+    final userUtils = ref.read(userUtilsProvider);
+    final mediaController = ref.read(mediaControllerProvider);
     List<String>? videoCache = await userUtils.loadCacheList("videoCache");
     if (videoCache?.isNotEmpty == true) {
       mediaController.videoPaths = videoCache!;
@@ -63,9 +63,9 @@ class PostingController extends ChangeNotifier {
   }
 
   Future<void> loadContentCache() async {
-    final userUtils = ref.watch(userUtilsProvider);
+    final userUtils = ref.read(userUtilsProvider);
     String? contentCache = await userUtils.loadCache("postContent");
-    final mediaController = ref.watch(mediaControllerProvider);
+    final mediaController = ref.read(mediaControllerProvider);
     if (contentCache != null) {
       mediaController.contentController.text = contentCache;
       userUtils.removeCache("postContent");
@@ -80,8 +80,8 @@ class PostingController extends ChangeNotifier {
   }
 
   Future<void> clearPostCache(BuildContext context) async {
-    final mediaController = ref.watch(mediaControllerProvider);
-    final userUtils = ref.watch(userUtilsProvider);
+    final mediaController = ref.read(mediaControllerProvider);
+    final userUtils = ref.read(userUtilsProvider);
     await userUtils.removeCache("imageCache");
     await userUtils.removeCache("selectedAsset");
     mediaController.selectedAsset.clear();
@@ -96,7 +96,7 @@ class PostingController extends ChangeNotifier {
   }
 
   Future<void> setCacheImagePath() async {
-    final userUtils = ref.watch(userUtilsProvider);
+    final userUtils = ref.read(userUtilsProvider);
     final mediaController = ref.read(mediaControllerProvider);
 
     await userUtils.saveCacheList(
@@ -104,15 +104,15 @@ class PostingController extends ChangeNotifier {
   }
 
   Future<void> setCacheContent() async {
-    final userUtils = ref.watch(userUtilsProvider);
-    final mediaController = ref.watch(mediaControllerProvider);
+    final userUtils = ref.read(userUtilsProvider);
+    final mediaController = ref.read(mediaControllerProvider);
     await userUtils.saveCache(
         key: "postContent",
         value: mediaController.contentController.text ?? "");
   }
 
   Future<void> setCacheVideo() async {
-    final userUtils = ref.watch(userUtilsProvider);
+    final userUtils = ref.read(userUtilsProvider);
     final mediaController = ref.read(mediaControllerProvider);
 
     await userUtils.saveCacheList(
@@ -165,7 +165,7 @@ class PostingController extends ChangeNotifier {
   }
 
   Future<void> showDialog(BuildContext context) async {
-    final mediaController = ref.watch(mediaControllerProvider);
+    final mediaController = ref.read(mediaControllerProvider);
     if (mediaController.imagePaths.any((image) => image.isImageNetWork) ||
         mediaController.videoPaths.any((video) => video.isVideoNetWork)) {
       print(">>>>>>>>2");
@@ -200,8 +200,8 @@ class PostingController extends ChangeNotifier {
   }
 
   Future<void> createPost(BuildContext context) async {
-    final mediaController = ref.watch(mediaControllerProvider);
-    final postController = ref.watch(postControllerProvider);
+    final mediaController = ref.read(mediaControllerProvider);
+    final postController = ref.read(postControllerProvider);
 
     context.goNamed("home");
     loadingProgress = 0.0;
@@ -232,9 +232,9 @@ class PostingController extends ChangeNotifier {
   }
 
   Future<void> updatePostTemp() async {
-    final postController = ref.watch(postControllerProvider);
-    final userController = ref.watch(userControllerProvider);
-    final media = ref.watch(mediaControllerProvider);
+    final postController = ref.read(postControllerProvider);
+    final userController = ref.read(userControllerProvider);
+    final media = ref.read(mediaControllerProvider);
     final user = userController.userData?.data;
 
     final newPost = post.Data(
@@ -255,7 +255,7 @@ class PostingController extends ChangeNotifier {
   List<String> mediaUrl = [];
   Future<void> uploadImageFile() async {
     mediaUrl.clear();
-    final mediaController = ref.watch(mediaControllerProvider);
+    final mediaController = ref.read(mediaControllerProvider);
     final uuid = Uuid();
     final id = uuid.v4();
     for (String asset in mediaController.imagePaths) {
@@ -275,7 +275,7 @@ class PostingController extends ChangeNotifier {
   }
 
   // Future<void> uploadImage() async {
-  //   final mediaController = ref.watch(mediaControllerProvider);
+  //   final mediaController = ref.read(mediaControllerProvider);
   //   // if (mediaController.imagePaths.isNotEmpty) {
   //     await uploadImageFile();
   //   // }
@@ -286,7 +286,7 @@ class PostingController extends ChangeNotifier {
 
   Future<void> uploadVideo() async {
     mediaUrl.clear();
-    final mediaController = ref.watch(mediaControllerProvider);
+    final mediaController = ref.read(mediaControllerProvider);
     final videoPaths = mediaController.videoPaths;
     if (mediaController.videoPaths.any((video) => !video.isVideo)) {
       String? video = await AppUtils.compressVideo(videoPaths.first);
@@ -325,8 +325,8 @@ class PostingController extends ChangeNotifier {
   String? videoUrlWeb;
   Uint8List? videoPicked;
   Future<void> pickMediaWeb(BuildContext context) async {
-    final mediaUseCase = ref.watch(mediaUseCaseProvider);
-    final postUseCase = ref.watch(postUseCaseProvider);
+    final mediaUseCase = ref.read(mediaUseCaseProvider);
+    final postUseCase = ref.read(postUseCaseProvider);
     final pickedFile = await mediaUseCase.pickMediaWeb();
 
     for (var asset in pickedFile!) {
@@ -384,7 +384,7 @@ class PostingController extends ChangeNotifier {
 
   Future<void> setPostEdit(
       {required PostEdit postEdit, required String postId}) async {
-    final mediaController = ref.watch(mediaControllerProvider);
+    final mediaController = ref.read(mediaControllerProvider);
     final post = postEdit.post;
     selectedPrivacy = post?.privacy ?? "";
     mediaController.contentController.text = post?.body ?? "";
@@ -452,8 +452,8 @@ class PostingController extends ChangeNotifier {
 
   Future<void> updatePost(
       {required String postId, required BuildContext context}) async {
-    final mediaController = ref.watch(mediaControllerProvider);
-    final postController = ref.watch(postControllerProvider);
+    final mediaController = ref.read(mediaControllerProvider);
+    final postController = ref.read(postControllerProvider);
 
     context.goNamed("home");
     loadingProgress = 0.0;
@@ -520,7 +520,7 @@ class PostingController extends ChangeNotifier {
 
   Future<void> deletePost(
       {required BuildContext context, required String postId}) async {
-    final postController = ref.watch(postControllerProvider);
+    final postController = ref.read(postControllerProvider);
 
     AppUtils.futureApi(() async {
       postController.postCache

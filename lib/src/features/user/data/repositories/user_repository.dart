@@ -19,22 +19,22 @@ class UserRepository {
   UserRepository(this.ref);
 
   Future<Users> getUserInfo() async {
-    final api = ref.watch(apiServiceProvider);
+    final api = ref.read(apiServiceProvider);
     return await api.getUserInfo();
   }
 
   Future<Users> getUserById(String userId) async {
-    final api = ref.watch(apiServiceProvider);
+    final api = ref.read(apiServiceProvider);
     return await api.getUserById(userId: userId);
   }
 
   Future getFollower(String userId) async {
-    final api = ref.watch(apiServiceProvider);
+    final api = ref.read(apiServiceProvider);
     return await api.getFollowers(userId: userId);
   }
 
   Future getFriends(String userId) async {
-    final api = ref.watch(apiServiceProvider);
+    final api = ref.read(apiServiceProvider);
     return await api.getFriends(userId: userId);
   }
 
@@ -42,46 +42,46 @@ class UserRepository {
       {required String path,
       required Map<String, dynamic> data,
       Map<String, Object?>? dataUpdateDisconnect}) async {
-    final database = ref.watch(firebaseDatabaseServiceProvider);
+    final database = ref.read(firebaseDatabaseServiceProvider);
     return await database.addData(
         path: path, data: data, dataUpdate: dataUpdateDisconnect);
   }
 
   Future<void> updateData(
       {required String path, required Map<String, dynamic> data}) async {
-    final database = ref.watch(firebaseDatabaseServiceProvider);
+    final database = ref.read(firebaseDatabaseServiceProvider);
     return await database.updateData(path: path, data: data);
   }
 
   Future<void> monitorConnection(
       void Function(DatabaseEvent event)? onData) async {
-    final database = ref.watch(firebaseDatabaseServiceProvider);
+    final database = ref.read(firebaseDatabaseServiceProvider);
     return await database.monitorConnection(onData);
   }
 
   Future<Map<dynamic, dynamic>?> getData(String path) async {
-    final database = ref.watch(firebaseDatabaseServiceProvider);
+    final database = ref.read(firebaseDatabaseServiceProvider);
     return await database.getData(path);
   }
 
   Future<void> putUpdateProfile({required UpdateProfileRequest body}) async {
-    final api = ref.watch(apiServiceProvider);
+    final api = ref.read(apiServiceProvider);
     return await api.putUpdateProfile(body: body);
   }
 
   Future<String> uploadImage(
       {required File file, required String folderPath}) async {
-    final storage = ref.watch(firebaseStorageServiceProvider);
+    final storage = ref.read(firebaseStorageServiceProvider);
     return await storage.uploadFile(file, folderPath);
   }
 
   Future postCreateResume({required CreateResumeRequest body}) async {
-    final api = ref.watch(apiServiceProvider);
+    final api = ref.read(apiServiceProvider);
     return await api.postCreateResume(body: body);
   }
 
   Future<ResumeModel> getResume({String? userId}) async {
-    final api = ref.watch(apiServiceProvider);
+    final api = ref.read(apiServiceProvider);
     return await api.getResume(userId: userId);
   }
 

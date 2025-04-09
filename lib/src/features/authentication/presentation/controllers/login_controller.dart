@@ -40,7 +40,7 @@ class LoginController extends ChangeNotifier {
   }
 
   Future<void> signInWithGoogle(BuildContext context) async {
-    final jobRepository = ref.watch(jobRepositoryProvider);
+    final jobRepository = ref.read(jobRepositoryProvider);
     AppUtils.loadingApi(() async {
       await loginUseCaseProvider.loginWithGoogle();
     }, context);

@@ -29,7 +29,7 @@ class ChatUseCase {
   Future<StreamSubscription<ably.Message>> listenAllConversation({
     required Function(ably.Message) handleChannelMessage,
   }) async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String userId = await userUtil.getUserId();
     return await chatRepository.listenAllMessage(
         channelName: "conversation-user-$userId",
@@ -118,6 +118,6 @@ class ChatUseCase {
 }
 
 final chatUseCaseProvider = Provider<ChatUseCase>((ref) {
-  final chatRepository = ref.watch(chatRepositoryProvider);
+  final chatRepository = ref.read(chatRepositoryProvider);
   return ChatUseCase(chatRepository, ref);
 });

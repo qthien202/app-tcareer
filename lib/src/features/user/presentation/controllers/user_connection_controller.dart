@@ -209,7 +209,7 @@ class UserConnectionController extends ChangeNotifier {
   }
 
   Future<void> showUserFollowed(BuildContext context) async {
-    final index = ref.watch(indexControllerProvider.notifier);
+    final index = ref.read(indexControllerProvider.notifier);
 
     // index.showBottomSheet(
     //     context: context, builder: (scrollController) => SharePage());
@@ -231,7 +231,7 @@ class UserConnectionController extends ChangeNotifier {
   }
 
   Future<void> showUserFriends(BuildContext context) async {
-    final index = ref.watch(indexControllerProvider.notifier);
+    final index = ref.read(indexControllerProvider.notifier);
 
     // index.showBottomSheet(
     //     context: context, builder: (scrollController) => SharePage());
@@ -505,9 +505,9 @@ class UserConnectionController extends ChangeNotifier {
 final userConnectionControllerProvider =
     ChangeNotifierProviderFamily<UserConnectionController, String>(
         (ref, userId) {
-  final userUseCase = ref.watch(userUseCaseProvider);
-  final userConnectionUseCase = ref.watch(userConnectionUseCaseProvider);
-  final anotherUserController = ref.watch(anotherUserControllerProvider);
+  final userUseCase = ref.read(userUseCaseProvider);
+  final userConnectionUseCase = ref.read(userConnectionUseCaseProvider);
+  final anotherUserController = ref.read(anotherUserControllerProvider);
   return UserConnectionController(
       userConnectionUseCase, ref, userUseCase, anotherUserController, userId);
 });

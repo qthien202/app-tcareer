@@ -132,12 +132,12 @@ class AnotherUserController extends ChangeNotifier {
   }
 
   Future<void> logout(BuildContext context) async {
-    final userUtils = ref.watch(userUtilsProvider);
+    final userUtils = ref.read(userUtilsProvider);
     await userUtils.logout(context);
   }
 
   Future<void> showMenu(BuildContext context) async {
-    final index = ref.watch(indexControllerProvider.notifier);
+    final index = ref.read(indexControllerProvider.notifier);
     // index.showBottomSheet(
     //     context: context, builder: (scrollController) => SharePage());
     index.setBottomNavigationBarVisibility(false);
@@ -180,7 +180,7 @@ class AnotherUserController extends ChangeNotifier {
 }
 
 final anotherUserControllerProvider = ChangeNotifierProvider((ref) {
-  final userUseCase = ref.watch(userUseCaseProvider);
-  final postUseCase = ref.watch(postUseCaseProvider);
+  final userUseCase = ref.read(userUseCaseProvider);
+  final postUseCase = ref.read(postUseCaseProvider);
   return AnotherUserController(userUseCase, postUseCase, ref);
 });

@@ -24,4 +24,4 @@ class ForgotPasswordUseCase {
 }
 
 final forgotPasswordUseCase =
-    Provider((ref) => ForgotPasswordUseCase(ref.watch(authRepository)));
+    Provider((ref) => ForgotPasswordUseCase(ref.read(authRepository)));

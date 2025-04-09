@@ -21,4 +21,4 @@ class LoginUseCase {
   }
 }
 
-final loginUseCase = Provider((ref) => LoginUseCase(ref.watch(authRepository)));
+final loginUseCase = Provider((ref) => LoginUseCase(ref.read(authRepository)));

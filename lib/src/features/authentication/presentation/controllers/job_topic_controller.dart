@@ -46,13 +46,13 @@ class JobTopicController extends ChangeNotifier {
 
   TopicJobFavoriteResponse? topicFavorites;
   Future<void> getTopicFavorite(BuildContext context) async {
-    final jobRepository = ref.watch(jobRepositoryProvider);
+    final jobRepository = ref.read(jobRepositoryProvider);
     topicFavorites = await jobRepository.getTopicJobFavorite();
     notifyListeners();
   }
 
   Future<void> cancelSetTopic() async {
-    final userUtils = ref.watch(userUtilsProvider);
+    final userUtils = ref.read(userUtilsProvider);
     topicFavorites = null;
     await userUtils.saveCache(key: "topics", value: "null");
     notifyListeners();

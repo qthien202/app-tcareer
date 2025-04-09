@@ -7,32 +7,32 @@ class ConnectionRepository {
   ConnectionRepository(this.ref);
 
   Future<void> postFollow(String userId) async {
-    final api = ref.watch(apiServiceProvider);
+    final api = ref.read(apiServiceProvider);
     return await api.postFollow(userId: userId);
   }
 
   Future<void> postAddFriend(String userId) async {
-    final api = ref.watch(apiServiceProvider);
+    final api = ref.read(apiServiceProvider);
     return await api.postAddFriend(userId: userId);
   }
 
   Future<void> postAcceptFriend(String userId) async {
-    final api = ref.watch(apiServiceProvider);
+    final api = ref.read(apiServiceProvider);
     return await api.postAcceptFriend(userId: userId);
   }
 
   Future<void> postDeclineFriend(String userId) async {
-    final api = ref.watch(apiServiceProvider);
+    final api = ref.read(apiServiceProvider);
     return await api.postDeclineFriend(userId: userId);
   }
 
   Future<void> deleteCancelRequest(String userId) async {
-    final api = ref.watch(apiServiceProvider);
+    final api = ref.read(apiServiceProvider);
     return await api.deleteCancelRequest(userId: userId);
   }
 
   Future<void> deleteUnFriend(String userId) async {
-    final api = ref.watch(apiServiceProvider);
+    final api = ref.read(apiServiceProvider);
     return await api.deleteUnFriend(userId: userId);
   }
 }

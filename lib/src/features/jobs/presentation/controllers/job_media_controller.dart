@@ -117,7 +117,7 @@ class JobMediaController extends ChangeNotifier {
       }
     }
 
-    // final user = ref.watch(userControllerProvider);
+    // final user = ref.read(userControllerProvider);
 
     // if (selectedImage != null) {
     //   AppUtils.loadingApi(() async {

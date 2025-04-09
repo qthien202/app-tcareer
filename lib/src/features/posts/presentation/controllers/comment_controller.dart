@@ -39,7 +39,7 @@ class CommentController extends ChangeNotifier {
   }) async {
     if (isDisposed) return; // Kiểm tra xem controller đã bị dispose chưa
 
-    final mediaController = ref.watch(mediaControllerProvider);
+    final mediaController = ref.read(mediaControllerProvider);
     if (mediaController.videoPaths != null) {
       await AppUtils.loadingApi(() async => await uploadVideo(), context);
     }
@@ -158,7 +158,7 @@ class CommentController extends ChangeNotifier {
   List<String> mediaUrl = [];
   Future<void> uploadVideo() async {
     mediaUrl.clear();
-    final mediaController = ref.watch(mediaControllerProvider);
+    final mediaController = ref.read(mediaControllerProvider);
     final video =
         await AppUtils.compressVideo(mediaController.videoPaths.first);
     if (mediaController.videoPaths.isNotEmpty) {
@@ -174,7 +174,7 @@ class CommentController extends ChangeNotifier {
 
   Future<void> uploadImageFile() async {
     mediaUrl.clear();
-    final mediaController = ref.watch(mediaControllerProvider);
+    final mediaController = ref.read(mediaControllerProvider);
     final uuid = const Uuid();
     final id = uuid.v4();
     for (String asset in mediaController.imagePaths) {
@@ -225,7 +225,7 @@ class CommentController extends ChangeNotifier {
   }
 
   Future<void> showUserLiked(BuildContext context, int commentId) async {
-    final index = ref.watch(indexControllerProvider.notifier);
+    final index = ref.read(indexControllerProvider.notifier);
     // index.showBottomSheet(
     //     context: context, builder: (scrollController) => SharePage());
     // await getUserLikePost(postId);
@@ -363,7 +363,7 @@ class CommentController extends ChangeNotifier {
       String commentId, String content) async {
     editContentController.text = content;
 
-    final index = ref.watch(indexControllerProvider.notifier);
+    final index = ref.read(indexControllerProvider.notifier);
     // index.showBottomSheet(
     //     context: context, builder: (scrollController) => SharePage());
     index.setBottomNavigationBarVisibility(false);

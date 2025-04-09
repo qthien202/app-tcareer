@@ -136,8 +136,8 @@ class UserController extends ChangeNotifier {
 
   Future<void> logout(BuildContext context) async {
     // var providers = ref.container.getAllProviderElements();
-    final auth = ref.watch(loginUseCase);
-    final connectUseCase = ref.watch(connectionUseCaseProvider);
+    final auth = ref.read(loginUseCase);
+    final connectUseCase = ref.read(connectionUseCaseProvider);
     AppUtils.loadingApi(() async {
       await connectUseCase.setUserOfflineStatus();
       await auth.logout();
@@ -266,7 +266,7 @@ class UserController extends ChangeNotifier {
 }
 
 final userControllerProvider = ChangeNotifierProvider((ref) {
-  final userUseCase = ref.watch(userUseCaseProvider);
-  final postUseCase = ref.watch(postUseCaseProvider);
+  final userUseCase = ref.read(userUseCaseProvider);
+  final postUseCase = ref.read(postUseCaseProvider);
   return UserController(userUseCase, postUseCase, ref);
 });

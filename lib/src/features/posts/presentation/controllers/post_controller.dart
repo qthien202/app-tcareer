@@ -127,7 +127,7 @@ class PostController extends ChangeNotifier {
   }
 
   Stream<Map<dynamic, dynamic>> commentsStream(String postId) {
-    final commentUseCase = ref.watch(commentUseCaseProvider);
+    final commentUseCase = ref.read(commentUseCaseProvider);
     return commentUseCase.listenToComment(postId).map((event) {
       if (event.snapshot.value != null) {
         final commentMap = event.snapshot.value as Map<dynamic, dynamic>;
@@ -139,7 +139,7 @@ class PostController extends ChangeNotifier {
   }
 
   Future<void> showSharePage(BuildContext context, int postId) async {
-    final index = ref.watch(indexControllerProvider.notifier);
+    final index = ref.read(indexControllerProvider.notifier);
     // index.showBottomSheet(
     //     context: context, builder: (scrollController) => SharePage());
     index.setBottomNavigationBarVisibility(false);
@@ -168,7 +168,7 @@ class PostController extends ChangeNotifier {
   }
 
   Future<void> showUserLiked(BuildContext context, int postId) async {
-    final index = ref.watch(indexControllerProvider.notifier);
+    final index = ref.read(indexControllerProvider.notifier);
     // index.showBottomSheet(
     //     context: context, builder: (scrollController) => SharePage());
     // await getUserLikePost(postId);
@@ -204,8 +204,8 @@ class PostController extends ChangeNotifier {
   }
 
   void goToProfile({required String userId, required BuildContext context}) {
-    final user = ref.watch(userControllerProvider);
-    final index = ref.watch(indexControllerProvider.notifier);
+    final user = ref.read(userControllerProvider);
+    final index = ref.read(indexControllerProvider.notifier);
     index.setBottomNavigationBarVisibility(true);
     if (user.isCurrentUser(int.parse(userId)) == true) {
       context.goNamed('user');

@@ -160,7 +160,7 @@ class ChatController extends ChangeNotifier {
 
   Future<void> handleUpdateMessage(ably.Message message) async {
     final messageData = jsonDecode(message.data.toString());
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String clientId = await userUtil.getUserId();
     if (messageData['topic'] == "recall") {
       if (clientId != messageData['senderId'].toString()) {
@@ -217,10 +217,10 @@ class ChatController extends ChangeNotifier {
 
   Future<void> markReadMessage(
       {required String senderId, required dynamic messageId}) async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String clientId = await userUtil.getUserId();
     final conversationController = ref.read(conversationControllerProvider);
-    final connectionUseCase = ref.watch(connectionUseCaseProvider);
+    final connectionUseCase = ref.read(connectionUseCaseProvider);
     if (await connectionUseCase.getInMessage() == true) {
       if (clientId != senderId && messages.last.status == "sent" ||
           messages.last.status == "delivered") {
@@ -388,19 +388,19 @@ class ChatController extends ChangeNotifier {
 
   Future<void> saveMessage(
       {required String userId, required String messageJson}) async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
 
     await userUtil.saveCache(key: "message_$userId", value: messageJson);
   }
 
   Future<void> saveUser(
       {required String userId, required String userJson}) async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     await userUtil.saveCache(key: "message_user_$userId", value: userJson);
   }
 
   Future<void> loadMessage(String userId) async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String? rawData = await userUtil.loadCache("message_$userId");
     if (rawData != null) {
       final List<dynamic> decodedData = jsonDecode(rawData);
@@ -430,7 +430,7 @@ class ChatController extends ChangeNotifier {
   }
 
   Future<void> loadUser(String userId) async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String? rawData = await userUtil.loadCache("message_user_$userId");
     if (rawData != null) {
       final Map<dynamic, dynamic> decodedData = jsonDecode(rawData);
@@ -521,10 +521,10 @@ class ChatController extends ChangeNotifier {
   }
 
   Future<void> pushNotifyRecallMessage({required dynamic messageId}) async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String clientId = await userUtil.getUserId();
     final conversationController = ref.read(conversationControllerProvider);
-    final connectionUseCase = ref.watch(connectionUseCaseProvider);
+    final connectionUseCase = ref.read(connectionUseCaseProvider);
     if (await connectionUseCase.getInMessage() == true) {
       String data = jsonEncode(
           {"topic": "recall", "id": messageId, "senderId": clientId});
@@ -536,7 +536,7 @@ class ChatController extends ChangeNotifier {
   }
 
   Future<void> handleUpdateMessageRecall(dynamic messageId) async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String clientId = await userUtil.getUserId();
     final currentMessage =
         messages.firstWhere((message) => message.id == messageId);

@@ -8,7 +8,7 @@ class ConnectionUseCase {
   ConnectionUseCase(this.userRepository, this.ref);
 
   Future<void> monitorConnection() async {
-    final userUtils = ref.watch(userUtilsProvider);
+    final userUtils = ref.read(userUtilsProvider);
     if (await userUtils.isAuthenticated()) {
       userRepository.monitorConnection(
         (event) {
@@ -25,7 +25,7 @@ class ConnectionUseCase {
   }
 
   Future<void> setUserOnlineStatus() async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String userId = await userUtil.getUserId();
     Map<String, dynamic> data = {
       "status": "online",
@@ -41,7 +41,7 @@ class ConnectionUseCase {
   }
 
   Future<void> setUserOnlineStatusInMessage() async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String userId = await userUtil.getUserId();
     Map<String, dynamic> data = {
       "status": "online",
@@ -59,7 +59,7 @@ class ConnectionUseCase {
   }
 
   Future<void> setUserOfflineStatus() async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String userId = await userUtil.getUserId();
     Map<String, dynamic> data = {
       "inMessage": false,
@@ -70,7 +70,7 @@ class ConnectionUseCase {
   }
 
   Future<void> setUserOfflineStatusInBackground() async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String userId = await userUtil.getUserId();
     Map<String, dynamic> data = {
       "inMessage": false,
@@ -91,7 +91,7 @@ class ConnectionUseCase {
   }
 
   Future<bool> getInMessage() async {
-    final userUtil = ref.watch(userUtilsProvider);
+    final userUtil = ref.read(userUtilsProvider);
     String userId = await userUtil.getUserId();
     final data = await userRepository.getData("users/$userId");
     print(">>>>>>>>>>>>dataMessage: $data");
@@ -101,6 +101,6 @@ class ConnectionUseCase {
 }
 
 final connectionUseCaseProvider = Provider((ref) {
-  final userRepository = ref.watch(userRepositoryProvider);
+  final userRepository = ref.read(userRepositoryProvider);
   return ConnectionUseCase(userRepository, ref);
 });
