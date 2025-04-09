@@ -194,7 +194,7 @@ class _AppPhotoViewState extends State<AppPhotoView> {
                       ),
                       Positioned(
                         bottom: 5,
-                        left: 10,
+                        left: 5,
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           decoration: BoxDecoration(
