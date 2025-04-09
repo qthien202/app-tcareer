@@ -6,10 +6,12 @@ import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart'
 import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/features/jobs/usecases/job_use_case.dart';
+import 'package:app_tcareer/src/services/custom_cache_manager.dart';
 import 'package:app_tcareer/src/utils/alert_dialog_util.dart';
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +20,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:share_plus/share_plus.dart';
+import 'dart:developer' as dev;
 
 class JobController extends ChangeNotifier {
   final JobUseCase jobUseCase;
@@ -46,20 +49,50 @@ class JobController extends ChangeNotifier {
   Future<void> getJobs() async {
     if (currentPosition != null) {
       jobResponse = await jobUseCase.getJobs(
-          page: jobPage,
-          lat: currentPosition?.latitude,
-          lng: currentPosition?.longitude);
-    } else {
-      jobResponse = await jobUseCase.getJobs(
         page: jobPage,
+        lat: currentPosition?.latitude,
+        lng: currentPosition?.longitude,
       );
+    } else {
+      jobResponse = await jobUseCase.getJobs(page: jobPage);
     }
-    if (jobResponse?.data != null) {
-      final newJobs = jobResponse?.data
-          ?.where((newJob) => !jobs.any((job) => job.id == newJob.id))
-          .toList();
-      jobs.addAll(newJobs as Iterable<JobModel>);
+
+    final newJobs = jobResponse?.data ?? [];
+
+    // 🔹 So sánh dựa trên cả id + title
+    final cachedKeys = jobs.map((e) => "${e.id}_${e.title}").toSet();
+    final newKeys = newJobs.map((e) => "${e.id}_${e.title}").toSet();
+
+    final isDifferent = !setEquals(cachedKeys, newKeys);
+
+    if (isDifferent) {
+      jobs = newJobs;
       notifyListeners();
+
+      final jobListJson = jsonEncode(jobs.map((job) => job.toJson()).toList());
+      await CustomCacheManager.instance.putFile(
+        'jobs_cache',
+        Uint8List.fromList(utf8.encode(jobListJson)),
+        fileExtension: 'json',
+      );
+
+      dev.log("🆕 Cập nhật job mới và cache lại");
+    } else {
+      dev.log(
+          "✅ Dữ liệu API trùng với cache (id hoặc title), không cần update");
+    }
+  }
+
+  Future<void> loadJobsFromCache() async {
+    final fileInfo =
+        await CustomCacheManager.instance.getFileFromCache('jobs_cache');
+    if (fileInfo != null) {
+      final jsonStr = utf8.decode(await fileInfo.file.readAsBytes());
+      final List decoded = jsonDecode(jsonStr);
+      jobs = decoded.map((e) => JobModel.fromJson(e)).toList();
+      dev.log("🚀jobs: ${jsonEncode(jobs)}");
+      await getJobs();
+      // notifyListeners();
     }
   }
 

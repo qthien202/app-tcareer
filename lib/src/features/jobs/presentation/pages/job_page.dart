@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'dart:developer' as developer;
 
 class JobPage extends ConsumerWidget {
   const JobPage({super.key});
@@ -21,9 +22,9 @@ class JobPage extends ConsumerWidget {
     if (controller.jobs.isEmpty) {
       Future.microtask(() async {
         await controller.getCurrentPosition().then((val) async {
-          await controller.getJobs();
+          await controller.loadJobsFromCache();
         }).catchError((e) async {
-          await controller.getJobs();
+          await controller.loadJobsFromCache();
         });
       });
     }
@@ -155,7 +156,7 @@ class JobPage extends ConsumerWidget {
     final controller = ref.watch(jobControllerProvider);
 
     return SliverVisibility(
-      visible: controller.jobResponse != null,
+      visible: controller.jobs.isNotEmpty,
       replacementSliver: SliverToBoxAdapter(
         child: circularLoadingWidget(),
       ),
