@@ -29,13 +29,13 @@ class SearchPage extends ConsumerWidget {
               onChanged: (val) async => await controller.onSearch(),
               onSubmitted: (val) =>
                   context.goNamed("searchResult", queryParameters: {"q": val})),
-          leading: GestureDetector(
-            onTap: () => context.pop(),
-            child: const Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-          ),
+          // leading: GestureDetector(
+          //   onTap: () => context.pop(),
+          //   child: const Icon(
+          //     Icons.arrow_back,
+          //     color: Colors.black,
+          //   ),
+          // ),
         ),
         body: Visibility(
             visible: controller.quickSearchData.data?.isNotEmpty == true,

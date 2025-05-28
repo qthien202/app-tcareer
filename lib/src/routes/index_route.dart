@@ -9,6 +9,7 @@ import 'package:app_tcareer/src/features/jobs/presentation/pages/job_page.dart';
 import 'package:app_tcareer/src/features/notifications/presentation/pages/notification_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/home_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/posting_page.dart';
+import 'package:app_tcareer/src/features/posts/presentation/pages/search_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/create_resume_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/media/user_media_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/profile_page.dart';
@@ -22,11 +23,12 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_from_message.dart';
 
+import '../features/posts/presentation/pages/search_result_page.dart';
 import '../features/user/data/models/create_resume_model.dart';
 import 'job_route.dart';
 import 'user_route.dart';
 
-enum RouteNames { home, jobs, notifications, user, temp }
+enum RouteNames { home, search, notifications, user, temp }
 
 class Index {
   static final StatefulShellRoute router = StatefulShellRoute.indexedStack(
@@ -47,13 +49,22 @@ class Index {
         ),
         StatefulShellBranch(routes: [
           GoRoute(
-              path: "/${RouteNames.jobs.name}",
-              name: RouteNames.jobs.name,
+              path: "/${RouteNames.search.name}",
+              name: RouteNames.search.name,
               pageBuilder: (context, state) => CustomTransitionPage(
                   key: state.pageKey,
-                  child: const JobPage(),
+                  child: const SearchPage(),
                   transitionsBuilder: fadeTransitionBuilder),
-              routes: JobRoute.routes),
+              routes: [
+                GoRoute(
+                  path: "searchResult",
+                  name: "searchResult",
+                  builder: (context, state) {
+                    final query = state.uri.queryParameters['q'] ?? "";
+                    return SearchResultPage(query);
+                  },
+                ),
+              ]),
         ]),
         StatefulShellBranch(routes: [
           GoRoute(

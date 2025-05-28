@@ -74,9 +74,9 @@ class _IndexPageState extends ConsumerState<IndexPage>
         "label": "Trang chủ"
       },
       {
-        'icon': PhosphorIconsThin.bagSimple,
-        'activeIcon': PhosphorIconsFill.bagSimple,
-        'route': 'jobs',
+        'icon': PhosphorIconsThin.magnifyingGlass,
+        'activeIcon': PhosphorIconsFill.magnifyingGlass,
+        'route': 'search',
         "label": "Việc làm"
       },
       {

@@ -25,21 +25,14 @@ class HomeRoute {
             transitionsBuilder: fadeTransitionBuilder);
       },
     ),
-    GoRoute(
-      path: "search",
-      name: "search",
-      builder: (context, state) {
-        return const SearchPage();
-      },
-    ),
-    GoRoute(
-      path: "searchResult",
-      name: "searchResult",
-      builder: (context, state) {
-        final query = state.uri.queryParameters['q'] ?? "";
-        return SearchResultPage(query);
-      },
-    ),
+    // GoRoute(
+    //   path: "search",
+    //   name: "search",
+    //   builder: (context, state) {
+    //     return const SearchPage();
+    //   },
+    // ),
+
     GoRoute(
       path: "profile",
       name: "profile",
