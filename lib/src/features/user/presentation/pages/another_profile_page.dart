@@ -44,7 +44,7 @@ class _AnotherProfilePageState extends ConsumerState<AnotherProfilePage>
     final controller = ref.watch(anotherUserControllerProvider);
     final user = controller.anotherUserData?.data;
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(

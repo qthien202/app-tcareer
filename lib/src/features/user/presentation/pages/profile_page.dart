@@ -28,9 +28,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
 
   @override
   Widget build(BuildContext context) {
-    final controller = ref.watch(userControllerProvider);
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -51,7 +50,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                             color: Colors.transparent,
                             border: Border.all(color: Colors.grey.shade300),
                             borderRadius: BorderRadius.circular(10)),
-                        child: Text(
+                        child: const Text(
                           "Thiết lập tài khoản",
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
@@ -74,7 +73,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                       tabs: const [
                         Tab(text: "Thông tin"),
                         Tab(text: "Hoạt động"),
-                        Tab(text: "Việc làm"),
                       ],
                     ),
                   ),
@@ -87,7 +85,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage>
                 children: [
                   const ResumeUser(),
                   postList(),
-
                 ],
               ),
             ),

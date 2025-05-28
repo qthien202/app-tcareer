@@ -61,6 +61,13 @@ class _ChatPageState extends ConsumerState<ChatPage> {
             content: widget.content ?? "",
             itemScrollController: itemScrollController);
       }
+      itemPositionsListener.itemPositions.addListener(() {
+        final positions = itemPositionsListener.itemPositions.value;
+        final isAtBottom = positions.any(
+            (position) => position.index == 0 && position.itemLeadingEdge >= 0);
+
+        controller.setIsAtBottom(isAtBottom);
+      });
     });
 
     super.initState();
@@ -91,11 +98,6 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           }
 
           controller.contentController.clear();
-
-          // ref
-          //     .watch(indexControllerProvider.notifier)
-          //     .setBottomNavigationBarVisibility(true);
-          // context.goNamed("conversation");
         }
       },
       child: Scaffold(
@@ -115,20 +117,25 @@ class _ChatPageState extends ConsumerState<ChatPage> {
               ],
             ),
             Positioned(
-              bottom: 80, // Điều chỉnh khoảng cách từ dưới lên
-              right: 20, // Điều chỉnh khoảng cách từ bên phải
+              bottom: 40,
               child: Visibility(
-                visible: controller.currentIndex > 0,
+                visible: !controller.isAtBottom,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: FloatingActionButton(
                     mini: true,
-                    shape: CircleBorder(),
+                    shape: const CircleBorder(),
                     onPressed: () {
-                      itemScrollController.jumpTo(index: 0);
+                      itemScrollController.scrollTo(
+                          index: 0,
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInCirc);
                     },
-                    child: Icon(Icons.keyboard_double_arrow_down),
-                    backgroundColor: Colors.white,
+                    child: Icon(
+                      Icons.arrow_downward,
+                      color: Colors.white,
+                    ),
+                    backgroundColor: Colors.blue,
                   ),
                 ),
               ),

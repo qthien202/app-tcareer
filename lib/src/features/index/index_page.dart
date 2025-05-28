@@ -65,7 +65,7 @@ class _IndexPageState extends ConsumerState<IndexPage>
       },
       {
         'icon': PhosphorIconsThin.magnifyingGlass,
-        'activeIcon': PhosphorIconsFill.magnifyingGlass,
+        'activeIcon': PhosphorIconsBold.magnifyingGlass,
         'route': 'search',
         "label": "Việc làm"
       },
@@ -125,9 +125,7 @@ class _IndexPageState extends ConsumerState<IndexPage>
                   }
                 } else {
                   // context.pushNamed("posting");
-                  ref
-                      .read(indexControllerProvider.notifier)
-                      .showCreateBottomSheet(context);
+                  context.pushNamed('posting');
                 }
               },
               currentIndex: widget.shell.currentIndex,

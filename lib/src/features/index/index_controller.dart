@@ -1,4 +1,3 @@
-import 'package:app_tcareer/src/features/index/create_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,18 +28,6 @@ class IndexController extends StateNotifier<bool> {
               builder: (context, scrollController) => builder(scrollController),
             )).whenComplete(
       () => setBottomNavigationBarVisibility(true),
-    );
-  }
-
-  void showCreateBottomSheet(BuildContext context) async {
-    await showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (context) {
-        return SizedBox(
-            height: ScreenUtil().screenHeight * .4,
-            child: const CreateBottomSheet());
-      },
     );
   }
 }

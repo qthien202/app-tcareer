@@ -4,14 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../widgets/empty_widget.dart';
+
 class SearchPage extends ConsumerWidget {
   const SearchPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(searchPostControllerProvider);
-    Future.microtask(() {
+    final postController = ref.watch(postControllerProvider);
+    Future.microtask(() async {
       controller.loadSearchHistory();
+      // await controller.onSearch();
     });
     return PopScope(
       onPopInvoked: (didPop) {
@@ -24,11 +28,11 @@ class SearchPage extends ConsumerWidget {
           centerTitle: false,
           leadingWidth: 40,
           automaticallyImplyLeading: false,
-          title: searchBarWidget(
-              controller: controller.queryController,
-              onChanged: (val) async => await controller.onSearch(),
-              onSubmitted: (val) =>
-                  context.goNamed("searchResult", queryParameters: {"q": val})),
+          title: Text(
+            "Tìm kiếm",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+          ),
+
           // leading: GestureDetector(
           //   onTap: () => context.pop(),
           //   child: const Icon(
@@ -38,9 +42,54 @@ class SearchPage extends ConsumerWidget {
           // ),
         ),
         body: Visibility(
-            visible: controller.quickSearchData.data?.isNotEmpty == true,
-            replacement: searchHistory(ref),
-            child: userList(ref, context)),
+          visible: controller.queryController.text.isNotEmpty,
+          replacement: ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 15, left: 15, bottom: 20),
+                child: searchBarWidget(
+                    autofocus: false,
+                    controller: controller.queryController,
+                    onChanged: (val) async => await controller.onSearch(),
+                    onSubmitted: (val) => context
+                        .goNamed("searchResult", queryParameters: {"q": val})),
+              ),
+              emptyWidget("Hãy tìm kiếm những thứ bạn muốn"),
+            ],
+          ),
+          child: Visibility(
+              visible: controller.quickSearchData.data?.isNotEmpty == true,
+              replacement: ListView(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(right: 15, left: 15, bottom: 20),
+                    child: searchBarWidget(
+                        autofocus: false,
+                        controller: controller.queryController,
+                        onChanged: (val) async => await controller.onSearch(),
+                        onSubmitted: (val) => context.goNamed("searchResult",
+                            queryParameters: {"q": val})),
+                  ),
+                  searchHistory(ref),
+                ],
+              ),
+              child: ListView(
+                children: [
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(right: 15, left: 15, bottom: 20),
+                    child: searchBarWidget(
+                        autofocus: false,
+                        controller: controller.queryController,
+                        onChanged: (val) async => await controller.onSearch(),
+                        onSubmitted: (val) => context.goNamed("searchResult",
+                            queryParameters: {"q": val})),
+                  ),
+                  userList(ref, context),
+                ],
+              )),
+        ),
       ),
     );
   }

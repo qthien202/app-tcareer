@@ -45,14 +45,13 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage> {
           onTap: () => context.pushReplacementNamed("search"),
           controller: controller.queryController,
         ),
-
-        // leading: GestureDetector(
-        //   onTap: () => context.pop(),
-        //   child: const Icon(
-        //     Icons.arrow_back,
-        //     color: Colors.black,
-        //   ),
-        // ),
+        leading: GestureDetector(
+          onTap: () => context.pop(),
+          child: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+        ),
       ),
       body: Visibility(
         visible: !controller.isLoading,
