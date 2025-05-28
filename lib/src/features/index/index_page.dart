@@ -1,10 +1,8 @@
 import 'package:app_tcareer/src/configs/app_colors.dart';
-import 'package:app_tcareer/src/features/authentication/presentation/controllers/job_topic_controller.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/chat_controller.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
 import 'package:app_tcareer/src/features/index/index_controller.dart';
-import 'package:app_tcareer/src/features/jobs/data/repository/job_repository.dart';
 import 'package:app_tcareer/src/features/notifications/presentation/controllers/notification_controller.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
@@ -35,14 +33,6 @@ class _IndexPageState extends ConsumerState<IndexPage>
     Future.microtask(() async {
       final userUtils = ref.watch(userUtilsProvider);
       String? topics = await userUtils.loadCache("topics");
-      final jobTopicController = ref.watch(jobTopicControllerProvider);
-      if (topics == null) {
-        await jobTopicController.getTopicFavorite(context);
-        if (jobTopicController.topicFavorites != null &&
-            jobTopicController.topicFavorites?.data?.isEmpty == true) {
-          context.goNamed("topics");
-        }
-      }
     });
   }
 

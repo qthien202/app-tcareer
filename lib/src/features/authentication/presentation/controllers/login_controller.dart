@@ -3,7 +3,7 @@ import 'package:app_tcareer/src/extensions/auth_extension.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/login_request.dart';
 import 'package:app_tcareer/src/features/authentication/usecases/login_use_case.dart';
 import 'package:app_tcareer/src/configs/app_constants.dart';
-import 'package:app_tcareer/src/features/jobs/data/repository/job_repository.dart';
+
 import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +40,6 @@ class LoginController extends ChangeNotifier {
   }
 
   Future<void> signInWithGoogle(BuildContext context) async {
-    final jobRepository = ref.read(jobRepositoryProvider);
     AppUtils.loadingApi(() async {
       await loginUseCaseProvider.loginWithGoogle();
     }, context);

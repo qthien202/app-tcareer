@@ -1,7 +1,4 @@
-import 'package:app_tcareer/src/features/index/index_controller.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/features/notifications/usecases/notification_use_case.dart';
-import 'package:app_tcareer/src/features/posts/presentation/pages/comments_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -62,11 +59,6 @@ class NotificationController extends ChangeNotifier {
     if (type?.contains("APPLICATION_SUBMITTED") == true) {
       context.pushNamed("applyJob",
           queryParameters: {"applicationId": applicationId});
-    }
-    if (type?.contains("APPLICATION_VIEWED") == true) {
-      context.pushNamed("jobDetail",
-          pathParameters: {"id": applicationId.toString()},
-          extra: JobType.applied);
     }
   }
 

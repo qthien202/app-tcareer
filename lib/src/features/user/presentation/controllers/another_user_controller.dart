@@ -1,6 +1,4 @@
 import 'package:app_tcareer/src/features/index/index_controller.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
 import 'package:app_tcareer/src/features/posts/data/models/posts_response.dart'
     as post_model;
 import 'package:app_tcareer/src/features/posts/usecases/post_use_case.dart';
@@ -91,7 +89,6 @@ class AnotherUserController extends ChangeNotifier {
     await getUserById(userId);
     await getResume(userId);
     await getPost(userId);
-    await getPostedJob(num.parse(userId));
   }
 
   int pendingLikeCount = 0;
@@ -153,30 +150,7 @@ class AnotherUserController extends ChangeNotifier {
     );
   }
 
-  List<JobModel> postedJobs = [];
-  GetJobResponse? postedJobRes;
   int postedPage = 1;
-
-  Future<void> getPostedJob(num userId) async {
-    postedJobRes =
-        await userUseCase.getPostedJob(page: postedPage, userId: userId);
-    if (postedJobRes?.data != null) {
-      final newJobs = postedJobRes?.data
-          ?.where((newJob) => !postedJobs.any((job) => job.id == newJob.id))
-          .toList();
-      postedJobs.addAll(newJobs as Iterable<JobModel>);
-      notifyListeners();
-    }
-  }
-
-  Future<void> loadPostedJobMore(ScrollController scrollController) async {
-    if (scrollController.position.maxScrollExtent == scrollController.offset) {
-      if (postedJobs.length < (postedJobRes?.meta?.total ?? 0)) {
-        postedPage += 1;
-        await getPostedJob(anotherUserData?.data?.id ?? 0);
-      }
-    }
-  }
 }
 
 final anotherUserControllerProvider = ChangeNotifierProvider((ref) {

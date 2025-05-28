@@ -1,5 +1,3 @@
-import 'package:app_tcareer/main.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -119,15 +117,6 @@ class NotificationService {
         'profile',
         queryParameters: {"userId": userId},
       );
-    } else if (type?.contains("APPLICATION_SUBMITTED") == true &&
-        applicationId != null &&
-        applicationId.isNotEmpty) {
-      print(">>>>>>>>>>>>>>123123");
-      navigatorKey.currentContext?.pushNamed("applyJob",
-          queryParameters: {"applicationId": applicationId});
-    } else if (type?.contains("APPLICATION_VIEWED") == true) {
-      context?.pushReplacementNamed("jobDetail",
-          pathParameters: {"id": jobId.toString()}, extra: JobType.applied);
     }
   }
 }

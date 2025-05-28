@@ -16,15 +16,6 @@ import 'package:app_tcareer/src/features/chat/data/models/leave_chat_request.dar
 import 'package:app_tcareer/src/features/chat/data/models/mark_read_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/send_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_from_message.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/add_job_topic_request.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/applicant_response.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/apply_job_model.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/job_roles_model.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/job_search_request.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/topic_job_favorite_response.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_comment_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/like_comment_request.dart';
@@ -204,75 +195,15 @@ abstract class ApiServices {
   @PUT('api/auth/user/update-profile')
   Future putUpdateProfile({@Body() required UpdateProfileRequest body});
 
-  @POST('api/auth/career/create')
-  Future postCreateJob({@Body() required JobModel body});
-
-  @PUT('api/auth/career/{id}/update')
-  Future putUpdateJob(
-      {@Path('id') required num jobId, @Body() required JobModel body});
-
-  @GET('api/auth/topic/view')
-  Future<List<JobTopicModel>> getJobTopic();
-
-  @GET('api/auth/topic-roles/{topic}/view')
-  Future<List<JobRolesModel>> getJobRoles(
-      {@Path('topic') required num topicId});
-
-  @GET('api/auth/career')
-  Future<GetJobResponse> getJobs(
-      {@Query('page') int? page,
-      @Query('latitude') double? lat,
-      @Query('longitude') double? lng});
-
   @POST('api/auth/create_resume')
   Future postCreateResume({@Body() required CreateResumeRequest body});
 
   @GET('api/auth/resume')
   Future<ResumeModel> getResume({@Query('user_id') String? userId});
 
-  @POST('api/auth/submit-application')
-  Future postSubmitApplication({@Body() required ApplyJobModel body});
-
-  @GET('api/auth/get-posted-jobs')
-  Future<GetJobResponse> getPostedJob(
-      {@Query('page') int? page, @Query('user_id') num? userId});
-
-  @GET('api/auth/get-applied-jobs')
-  Future<GetJobResponse> getAppliedJob({@Query('page') int? page});
-
-  @GET('api/auth/get-application-for-job/{id}')
-  Future<ApplicantResponse> getApplicants({@Path('id') required num jobId});
-
-  @POST('api/auth/add-job-favorite/{id}')
-  Future postAddJobFavorite({@Path('id') required num jobId});
-
-  @GET('api/auth/get-job-favorites')
-  Future<GetJobResponse> getJobFavorites({@Query('page') int? page});
-
-  @GET('api/auth/jobs-search')
-  Future<GetJobResponse> getSearchJob(
-      {@Queries() required JobSearchRequest query});
-
-  @POST('api/auth/add-job-topics-favorites')
-  Future postAddJobTopic({@Body() required AddJobTopicRequest body});
-
-  @GET('api/auth/topic-job-favorite')
-  Future<TopicJobFavoriteResponse> getTopicJobFavorite();
-
   @PUT('api/auth/users/change-password')
   Future putChangePassword({@Body() required ChangePasswordRequest body});
 
-  @GET('api/auth/get-application-detail/{id}')
-  Future getApplicationDetail({@Path('id') required num applicationId});
-  @GET('api/auth/get-application-detail-from-job/{id}')
-  Future getApplicationProfile({@Path('id') required num jobId});
-
-  @GET('api/auth/career/{id}/view')
-  Future getJobDetail({@Path('id') required num jobId});
-
   @POST('auth/verify_phone')
   Future postVerifyPhone({@Body() required VerifyPhoneRequest body});
-
-  @DELETE('api/auth/career/{id}/remove')
-  Future deleteJob({@Path('id') required num jobId});
 }

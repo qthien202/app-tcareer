@@ -1,33 +1,19 @@
-import 'package:app_tcareer/main.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/verify_otp.dart';
-import 'package:app_tcareer/src/features/authentication/data/repositories/auth_repository.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/forgot_password/forgot_password_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/forgot_password/reset_password_page.dart';
-import 'package:app_tcareer/src/features/authentication/presentation/pages/job_topic_page.dart';
+
 import 'package:app_tcareer/src/features/authentication/presentation/pages/login/login_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/register/register_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/register/verify_email_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/register/verify_phone_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/verify/verify_page.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
-import 'package:app_tcareer/src/features/chat/presentation/pages/chat_page.dart';
-import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_page.dart';
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/pages/create_job_page.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/pages/media/job_media_page.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_description.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_location.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_topic.dart';
-import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/post_edit.dart';
-import 'package:app_tcareer/src/features/posts/data/models/shared_post.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/media/media_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/posting_page.dart';
-import 'package:app_tcareer/src/features/posts/presentation/pages/search_page.dart';
 import 'package:app_tcareer/src/features/splash/intro_page.dart';
 import 'package:app_tcareer/src/features/splash/splash_page.dart';
-import 'package:app_tcareer/src/features/user/presentation/pages/another_profile_page.dart';
 import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
 import 'package:app_tcareer/src/routes/index_route.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
@@ -39,8 +25,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/notifications/presentation/pages/notification_page.dart';
-import '../features/posts/presentation/pages/detail/post_detail_page.dart';
 import 'package:ably_flutter/ably_flutter.dart' as ably;
 
 enum RouteNames {
@@ -224,60 +208,6 @@ class AppRouter {
           ],
         ),
         GoRoute(
-            path: "/createJob",
-            name: "createJob",
-            pageBuilder: (context, state) {
-              JobModel? jobModel = state.extra as JobModel?;
-              return CustomTransitionPage(
-                child: CreateJobPage(
-                  jobModel: jobModel,
-                ),
-                transitionsBuilder: slideUpTransitionBuilder,
-              );
-            },
-            routes: [
-              GoRoute(
-                  path: "media",
-                  name: "jobMedia",
-                  pageBuilder: (context, state) {
-                    return CustomTransitionPage(
-                      child: JobMediaPage(),
-                      transitionsBuilder: slideUpTransitionBuilder,
-                    );
-                  },
-                  routes: []),
-              GoRoute(
-                  path: "location",
-                  name: "jobLocation",
-                  pageBuilder: (context, state) {
-                    return CustomTransitionPage(
-                      child: JobLocation(),
-                      transitionsBuilder: slideUpTransitionBuilder,
-                    );
-                  },
-                  routes: []),
-              GoRoute(
-                  path: "topic",
-                  name: "jobTopic",
-                  pageBuilder: (context, state) {
-                    return CustomTransitionPage(
-                      child: JobTopic(),
-                      transitionsBuilder: slideUpTransitionBuilder,
-                    );
-                  },
-                  routes: []),
-              GoRoute(
-                  path: "description",
-                  name: "jobDescription",
-                  pageBuilder: (context, state) {
-                    return CustomTransitionPage(
-                      child: JobDescription(),
-                      transitionsBuilder: slideUpTransitionBuilder,
-                    );
-                  },
-                  routes: []),
-            ]),
-        GoRoute(
             path: "/${RouteNames.posting.name}",
             name: RouteNames.posting.name,
             pageBuilder: (context, state) {
@@ -327,15 +257,6 @@ class AppRouter {
                 transitionsBuilder: fadeTransitionBuilder,
               );
             }),
-        GoRoute(
-          path: "/topics",
-          name: "topics",
-          pageBuilder: (context, state) => CustomTransitionPage(
-            key: state.pageKey,
-            child: const JobTopicPage(),
-            transitionsBuilder: fadeTransitionBuilder,
-          ),
-        ),
       ],
       refreshListenable: GoRouterRefreshStream(),
       // observers: [CustomNavigatorObserver(ref)]
