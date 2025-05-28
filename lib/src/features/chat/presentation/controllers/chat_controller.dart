@@ -334,7 +334,7 @@ class ChatController extends ChangeNotifier {
     );
 
     await chatUseCase.sendMessage(body);
-
+    setHasContent('');
     // notifyListeners();
 
     // setIsShowMedia(context);
