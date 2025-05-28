@@ -29,8 +29,14 @@ class PostingPage extends ConsumerStatefulWidget {
   final PostEdit? postEdit;
   final String? postId;
   final String? action;
+  final BuildContext parentContext;
 
-  const PostingPage({super.key, this.postEdit, this.postId, this.action});
+  const PostingPage(
+      {super.key,
+      this.postEdit,
+      this.postId,
+      this.action,
+      required this.parentContext});
 
   @override
   ConsumerState<PostingPage> createState() => _PostingPageState();
@@ -97,21 +103,11 @@ class _PostingPageState extends ConsumerState<PostingPage> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(
-                widget.action == "edit" ? "Chỉnh sửa" : "Tạo bài viết",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
             Expanded(
               child: ListView(
                 controller: scrollController,
                 padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 children: [
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,8 +141,18 @@ class _PostingPageState extends ConsumerState<PostingPage> {
                     height: 5,
                   ),
                   postInput(
-                    controller: mediaController.contentController,
-                  ),
+                      controller: mediaController.contentController,
+                      onChanged: (val) {
+                        if (val.isNotEmpty) {
+                          setState(() {
+                            isActive = true;
+                          });
+                        } else {
+                          setState(() {
+                            isActive = false;
+                          });
+                        }
+                      }),
                   const SizedBox(
                     height: 5,
                   ),
@@ -179,47 +185,35 @@ class _PostingPageState extends ConsumerState<PostingPage> {
       required bool isLoading}) {
     final controller = ref.watch(postingControllerProvider);
     return AppBar(
-      // bottom: PreferredSize(
-      //   preferredSize: const Size.fromHeight(5),
-      //   child: Divider(
-      //     color: Colors.grey.shade200,
-      //   ),
-      // ),
       backgroundColor: Colors.white,
-      leading: InkWell(
-        onTap: onPop,
-        child: const Icon(
-          Icons.arrow_back,
-          color: Colors.black,
-        ),
+      leading: TextButton(
+          onPressed: onPop,
+          child: const Text(
+            "Hủy",
+            style: TextStyle(color: Colors.black, fontSize: 14),
+          )),
+      centerTitle: true,
+      title: Text(
+        widget.action == "edit" ? "Chỉnh sửa bài viết" : "Tạo bài viết",
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
       ),
-      centerTitle: false,
-      // title: Text(
-      //   widget.action == "edit" ? "Chỉnh sửa bài viết" : "Tạo bài viết",
-      //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-      // ),
-      // titleTextStyle: const TextStyle(
-      //   color: Colors.black,
-      //   fontSize: 20,
-      //   fontWeight: FontWeight.w700,
-      // ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 2),
-          child: ElevatedButton(
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
-              // style: ElevatedButton.styleFrom(
-              //     shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(20)),
-              //     backgroundColor: AppColors.executeButton),
-              onPressed: isActive ? onPosting : null,
+        InkWell(
+          onTap: isActive ? onPosting : null,
+          child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 5),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: isActive
+                      ? AppColors.executeButton
+                      : Colors.grey.shade400),
               child: Text(
-                controller.action == "edit" ? "Lưu" : "Đăng bài",
+                controller.action == "edit" ? "Lưu" : "Đăng",
                 style: const TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
+                    color: Colors.white, fontWeight: FontWeight.w700),
               )),
-        )
+        ),
       ],
     );
   }
@@ -241,9 +235,6 @@ class _PostingPageState extends ConsumerState<PostingPage> {
           children: [
             IconButton(
               onPressed: () async {
-                // await controller
-                //
-
                 await mediaController.getAlbums();
                 context.goNamed("photoManager");
               },
@@ -253,24 +244,6 @@ class _PostingPageState extends ConsumerState<PostingPage> {
                 size: 25,
               ),
             ),
-
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: const PhosphorIcon(
-            //     PhosphorIconsFill.link,
-            //     color: Colors.grey,
-            //     size: 25,
-            //   ),
-            // ),
-
-            // IconButton(
-            //   onPressed: () {},
-            //   icon: const PhosphorIcon(
-            //     PhosphorIconsBold.smiley,
-            //     color: Colors.grey,
-            //     size: 20,
-            //   ),
-            // ),
           ],
         ),
       ),

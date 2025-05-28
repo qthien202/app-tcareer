@@ -21,8 +21,10 @@ import 'package:app_tcareer/src/services/apis/api_service_provider.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:app_tcareer/src/widgets/photos/app_photo_model.dart';
 import 'package:app_tcareer/src/widgets/photos/app_photo_view.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:ably_flutter/ably_flutter.dart' as ably;
@@ -208,42 +210,46 @@ class AppRouter {
           ],
         ),
         GoRoute(
-            path: "/${RouteNames.posting.name}",
-            name: RouteNames.posting.name,
-            pageBuilder: (context, state) {
-              PostEdit? postEdit = state.extra as PostEdit?;
-              String? postId = state.uri.queryParameters['postId'].toString();
-              String? action = state.uri.queryParameters['action'].toString();
-              return CustomTransitionPage(
+          path: "/${RouteNames.posting.name}",
+          name: RouteNames.posting.name,
+          pageBuilder: (context, state) {
+            PostEdit? postEdit = state.extra as PostEdit?;
+            String? postId = state.uri.queryParameters['postId'];
+            String? action = state.uri.queryParameters['action'];
+
+            return CustomTransitionPage(
                 key: state.pageKey,
+                fullscreenDialog: false,
+                barrierDismissible: true,
+                opaque: false,
                 child: PostingPage(
+                  parentContext: context,
                   postEdit: postEdit,
                   postId: postId,
                   action: action,
                 ),
-                transitionsBuilder: slideUpTransitionBuilder,
-              );
-            },
-            routes: [
-              GoRoute(
-                path: "${RouteNames.photoManager.name}",
-                name: RouteNames.photoManager.name,
-                pageBuilder: (context, state) {
-                  String isCommentString =
-                      state.uri.queryParameters["isComment"] ?? "false";
-                  String content = state.uri.queryParameters['content'] ?? "";
-                  bool isComment = bool.parse(isCommentString);
-                  return CustomTransitionPage(
+                transitionsBuilder: slideUpTransitionBuilder);
+          },
+          routes: [
+            GoRoute(
+              path: "${RouteNames.photoManager.name}",
+              name: RouteNames.photoManager.name,
+              pageBuilder: (context, state) {
+                String isCommentString =
+                    state.uri.queryParameters["isComment"] ?? "false";
+                String content = state.uri.queryParameters['content'] ?? "";
+                bool isComment = bool.parse(isCommentString);
+                return CustomTransitionPage(
                     key: state.pageKey,
                     child: MediaPage(
                       isComment: isComment,
                       content: content,
                     ),
-                    transitionsBuilder: slideUpTransitionBuilder,
-                  );
-                },
-              ),
-            ]),
+                    transitionsBuilder: slideUpTransitionBuilder);
+              },
+            ),
+          ],
+        ),
         GoRoute(
             path: "/appPhoto",
             name: "appPhoto",

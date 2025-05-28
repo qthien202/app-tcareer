@@ -4,12 +4,14 @@ import 'package:app_tcareer/src/features/chat/presentation/controllers/conversat
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
 import 'package:app_tcareer/src/features/index/index_controller.dart';
 import 'package:app_tcareer/src/features/notifications/presentation/controllers/notification_controller.dart';
+import 'package:app_tcareer/src/features/posts/presentation/pages/posting_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
 import 'package:app_tcareer/src/routes/index_route.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:badges/badges.dart' as badges;
@@ -124,8 +126,18 @@ class _IndexPageState extends ConsumerState<IndexPage>
                     widget.shell.goBranch(index);
                   }
                 } else {
-                  // context.pushNamed("posting");
-                  context.pushNamed('posting');
+                  context.pushNamed("posting");
+                  // showModalBottomSheet(
+                  //     isScrollControlled: true,
+                  //     context: context,
+                  //     builder: (context) {
+                  //       return SizedBox(
+                  //         height: ScreenUtil().screenHeight * .95,
+                  //         child: PostingPage(
+                  //           parentContext: context,
+                  //         ),
+                  //       );
+                  //     });
                 }
               },
               currentIndex: widget.shell.currentIndex,

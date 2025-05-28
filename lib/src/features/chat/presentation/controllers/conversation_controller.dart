@@ -340,7 +340,7 @@ class ConversationController extends ChangeNotifier {
       if (loadedConversation.isNotEmpty) {
         conversations.clear();
         conversations.addAll(loadedConversation);
-        dev.log("📦 Load từ cache: ${jsonEncode(conversations)}");
+
         notifyListeners();
       }
     }
