@@ -21,7 +21,7 @@ class LoginUseCase {
     final response = await _repository.login(req: req);
     final accessToken = response?.accessToken ?? "";
     final refreshToken = response?.refreshToken ?? "";
-    final userId = _util.decodeToken(accessToken)['userId'];
+    final userId = _util.decodeToken(accessToken)['sub'];
     _util.saveAuthToken(
         authToken: accessToken, refreshToken: refreshToken, userId: userId);
     var providers = ref.container.getAllProviderElements();

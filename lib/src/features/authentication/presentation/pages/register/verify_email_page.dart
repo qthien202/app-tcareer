@@ -1,4 +1,3 @@
-import 'package:app_tcareer/src/features/authentication/presentation/auth_providers.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/widgets/auth_button_widget.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/widgets/text_input_form.dart';
 import 'package:app_tcareer/src/utils/validator.dart';
@@ -7,12 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../notifier/register_notifier.dart';
+
 class VerifyEmailPage extends ConsumerWidget {
   const VerifyEmailPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(registerControllerProvider);
+    final notifier = ref.watch(registerNotifierProvider.notifier);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
@@ -44,11 +45,11 @@ class VerifyEmailPage extends ConsumerWidget {
                   height: 20,
                 ),
                 Form(
-                  key: controller.formKeyVerifyEmail,
+                  key: notifier.formKeyVerifyEmail,
                   child: Column(
                     children: [
                       TextInputForm(
-                        controller: controller.emailController,
+                        controller: notifier.emailController,
                         // isRequired: true,
                         title: "Email",
                         hintText: "Nhập email",
@@ -60,7 +61,7 @@ class VerifyEmailPage extends ConsumerWidget {
                       authButtonWidget(
                           context: context,
                           onPressed: () async {
-                            await controller.sendEmailVerification(context);
+                            await notifier.sendEmailVerification(context);
                           },
                           title: "Gửi mã xác thực"),
                       const SizedBox(

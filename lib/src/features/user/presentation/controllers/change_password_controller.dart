@@ -1,5 +1,5 @@
 import 'package:app_tcareer/src/features/authentication/data/models/verify_otp.dart';
-import 'package:app_tcareer/src/features/authentication/data/repositories/auth_repository.dart';
+import 'package:app_tcareer/src/features/authentication/data/repositories/auth_repository_impl.dart';
 import 'package:app_tcareer/src/features/user/data/models/change_password_request.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
 import 'package:app_tcareer/src/utils/alert_dialog_util.dart';
@@ -47,19 +47,19 @@ class ChangePasswordController extends ChangeNotifier {
       {required String smsCode,
       required String verificationId,
       required BuildContext context}) async {
-    AppUtils.loadingApi(() async {
-      await userUseCase
-          .signInWithOTP(smsCode: smsCode, verificationId: verificationId)
-          .then((val) async {
-        print(">>>>>>>>>>idToken: ${await val.user?.getIdToken()}");
-      }).catchError((e) async {
-        await AlertDialogUtil.showAlert(
-            context: context,
-            title: "Có lỗi xảy ra",
-            content:
-                "Mã xác minh từ SMS/TOTP không hợp lệ. Vui lòng kiểm tra và nhập lại mã xác minh chính xác");
-      });
-    }, context);
+    // AppUtils.loadingApi(() async {
+    //   await userUseCase
+    //       .signInWithOTP(smsCode: smsCode, verificationId: verificationId)
+    //       .then((val) async {
+    //     print(">>>>>>>>>>idToken: ${await val.user?.getIdToken()}");
+    //   }).catchError((e) async {
+    //     await AlertDialogUtil.showAlert(
+    //         context: context,
+    //         title: "Có lỗi xảy ra",
+    //         content:
+    //             "Mã xác minh từ SMS/TOTP không hợp lệ. Vui lòng kiểm tra và nhập lại mã xác minh chính xác");
+    //   });
+    // }, context);
   }
 
   Future<void> changePassword(BuildContext context) async {

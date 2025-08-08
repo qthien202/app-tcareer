@@ -1,12 +1,7 @@
 import 'package:app_tcareer/src/configs/app_colors.dart';
-import 'package:app_tcareer/src/features/authentication/presentation/controllers/login_controller.dart';
-import 'package:app_tcareer/src/features/authentication/presentation/auth_providers.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/widgets/auth_button_widget.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/widgets/text_input_form.dart';
 import 'package:app_tcareer/src/utils/validator.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart' as firebase_ui;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -14,16 +9,20 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
+import '../../notifier/login_notifier.dart';
+
 class LoginPage extends ConsumerWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(loginControllerProvider);
+    final notifier = ref.watch(loginNotifierProvider.notifier);
+
     if (kDebugMode) {
-      controller.userNameController.text = "0771234567";
-      controller.passController.text = "12345678aA@";
+      notifier.userNameController.text = "0771234567";
+      notifier.passController.text = "12345678aA@";
     }
+
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
@@ -55,11 +54,11 @@ class LoginPage extends ConsumerWidget {
                   height: 20,
                 ),
                 Form(
-                  key: controller.formKey,
+                  key: notifier.formKey,
                   child: Column(
                     children: [
                       TextInputForm(
-                        controller: controller.userNameController,
+                        controller: notifier.userNameController,
                         // isRequired: true,
                         title: "Email hoặc số điện thoại",
                         hintText: "Nhập email hoặc số điện thoại",
@@ -67,7 +66,7 @@ class LoginPage extends ConsumerWidget {
                       ),
                       TextInputForm(
                         validator: Validator.password,
-                        controller: controller.passController,
+                        controller: notifier.passController,
                         // isRequired: true,
                         isSecurity: true,
                         title: "Mật khẩu",
@@ -90,7 +89,7 @@ class LoginPage extends ConsumerWidget {
                       ),
                       authButtonWidget(
                           context: context,
-                          onPressed: () => controller.onLogin(context),
+                          onPressed: () => notifier.onLogin(context),
                           // onPressed:()=>context.goNamed('home'),
                           title: "Tiếp tục"),
                       const SizedBox(
@@ -104,7 +103,7 @@ class LoginPage extends ConsumerWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6)),
                             onPressed: () =>
-                                controller.signInWithGoogle(context)),
+                                notifier.signInWithGoogle(context)),
                       ),
                       const SizedBox(
                         height: 20,
