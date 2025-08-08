@@ -1,0 +1,118 @@
+import 'dart:io';
+
+import 'package:app_tcareer/src/extensions/image_extension.dart';
+import 'package:app_tcareer/src/features/posts/get_image_orientation.dart';
+import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
+import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
+import 'package:app_tcareer/src/widgets/photos/app_photo_model.dart';
+import 'package:app_tcareer/src/widgets/photos/gallery_item.dart';
+import 'package:carousel_slider/carousel_slider.dart' as csl;
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+class AppImage extends ConsumerStatefulWidget {
+  final List<GalleryItem> images;
+  const AppImage({super.key, required this.images});
+
+  @override
+  ConsumerState<AppImage> createState() => _AppImageState();
+}
+
+class _AppImageState extends ConsumerState<AppImage> {
+  csl.CarouselController carouselController = csl.CarouselController();
+  int index = 0;
+  void setIndex(int value) {
+    setState(() {
+      index = value;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        csl.CarouselSlider.builder(
+          carouselController: carouselController,
+          itemCount: widget.images.length,
+          itemBuilder: (context, index, realIndex) {
+            final item = widget.images[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: GestureDetector(
+                  onTap: () {
+                    final data = AppPhotoModel(
+                        medias: widget.images,
+                        onPageChanged: (val) {
+                          setIndex(val);
+                          carouselController.animateToPage(
+                            val,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        },
+                        index: index);
+                    context.pushNamed("appPhoto", extra: data);
+                  },
+                  child: Hero(
+                    tag: item.mediaUrl,
+                    child: Visibility(
+                      visible: item.mediaUrl.isImageNetWork,
+                      replacement: Image.file(
+                        File(item.mediaUrl),
+                        width: ScreenUtil().screenWidth,
+                        fit: BoxFit.cover,
+                      ),
+                      child: cachedImageWidget(
+                        imageUrl: item.mediaUrl,
+                        width: ScreenUtil().screenWidth,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+          options: csl.CarouselOptions(
+              aspectRatio: ref
+                  .watch(imageOrientationProvider(widget.images[0]))
+                  .when(
+                    data: (orientation) =>
+                        orientation == ImageOrientation.landscape
+                            ? 1.91
+                            : 4 / 5,
+                    loading: () => 16 / 9, // Giá trị mặc định khi chưa tải xong
+                    error: (error, stack) =>
+                        16 / 9, // Giá trị mặc định khi có lỗi
+                  ),
+              initialPage: 0,
+              enableInfiniteScroll: false,
+              viewportFraction: 1,
+              onPageChanged: (index, reason) {
+                setIndex(index);
+              }),
+        ),
+        const SizedBox(height: 10),
+        Visibility(
+          visible: widget.images.length > 1,
+          child: Center(
+            child: AnimatedSmoothIndicator(
+              count: widget.images.length,
+              activeIndex: index,
+              effect: const ScrollingDotsEffect(
+                dotWidth: 5,
+                dotHeight: 5,
+                activeDotColor: Colors.blue,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
