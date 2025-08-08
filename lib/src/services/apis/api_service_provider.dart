@@ -141,7 +141,7 @@ Future<LoginResponse?> refreshAccessToken(
 }
 
 class RefreshTokenStateNotifier extends ChangeNotifier {
-  bool isRefreshTokenExpired = false; // Mặc định là false
+  bool isRefreshTokenExpired = false;
 
   void setTokenExpired(bool expired) {
     isRefreshTokenExpired = expired;

@@ -175,7 +175,7 @@ class CommentController extends ChangeNotifier {
   Future<void> uploadImageFile() async {
     mediaUrl.clear();
     final mediaController = ref.read(mediaControllerProvider);
-    final uuid = const Uuid();
+    const uuid = Uuid();
     final id = uuid.v4();
     for (String asset in mediaController.imagePaths) {
       String? assetPath = await AppUtils.compressImage(asset);

@@ -1,6 +1,5 @@
 import 'package:app_tcareer/app.dart';
 import 'package:app_tcareer/main.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/pages/job_detail_page.dart';
 import 'package:app_tcareer/src/services/notifications/notification_service.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -120,12 +119,6 @@ class FirebaseMessagingService {
           'profile',
           queryParameters: {"userId": userId},
         );
-      } else if (type?.contains("APPLICATION_SUBMITTED") == true) {
-        context.pushNamed("applyJob",
-            queryParameters: {"applicationId": applicationId});
-      } else if (type?.contains("APPLICATION_VIEWED") == true) {
-        context.pushReplacementNamed("jobDetail",
-            pathParameters: {"id": jobId.toString()}, extra: JobType.applied);
       }
     }
   }
@@ -177,12 +170,6 @@ Future<void> backgroundHandler(RemoteMessage message) async {
         'profile',
         queryParameters: {"userId": userId},
       );
-    } else if (type?.contains("APPLICATION_SUBMITTED") == true) {
-      context.pushNamed("applyJob",
-          queryParameters: {"applicationId": applicationId});
-    } else if (type?.contains("APPLICATION_VIEWED") == true) {
-      context.pushReplacementNamed("jobDetail",
-          pathParameters: {"id": jobId.toString()}, extra: JobType.applied);
     }
   }
 }

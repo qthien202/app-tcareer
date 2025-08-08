@@ -23,7 +23,6 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Khởi tạo dữ liệu ở đây
     final controller = ref.watch(postControllerProvider);
     final scrollController = ref.read(postControllerProvider).scrollController;
     bool hasData = controller.postCache.isNotEmpty;
@@ -179,17 +178,17 @@ class HomePage extends ConsumerWidget {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
       ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: GestureDetector(
-            onTap: () => context.goNamed('search'),
-            child: const PhosphorIcon(
-              PhosphorIconsRegular.magnifyingGlass,
-              color: Colors.black,
-              size: 20,
-            ),
-          ),
-        ),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 10),
+        //   child: GestureDetector(
+        //     onTap: () => context.goNamed('search'),
+        //     child: const PhosphorIcon(
+        //       PhosphorIconsRegular.magnifyingGlass,
+        //       color: Colors.black,
+        //       size: 20,
+        //     ),
+        //   ),
+        // ),
         // Padding(
         //   padding: const EdgeInsets.symmetric(horizontal: 10),
         //   child: GestureDetector(

@@ -2,11 +2,6 @@ import 'dart:io';
 
 import 'package:app_tcareer/src/features/authentication/usecases/login_use_case.dart';
 import 'package:app_tcareer/src/features/index/index_controller.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/add_job_topic_request.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/get_job_response.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/job_topic_model.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/topic_job_favorite_response.dart';
 import 'package:app_tcareer/src/features/posts/data/models/posts_response.dart'
     as post_model;
 import 'package:app_tcareer/src/features/posts/usecases/post_use_case.dart';
@@ -31,7 +26,7 @@ class UserController extends ChangeNotifier {
     getUserInfo();
     getResume();
     getPost();
-    getPostedJob();
+    
     // scrollController.addListener(() {
     //   loadMore();
     // });
@@ -168,29 +163,9 @@ class UserController extends ChangeNotifier {
     super.dispose();
   }
 
-  List<JobModel> postedJobs = [];
-  GetJobResponse? postedJobRes;
-  int postedPage = 1;
 
-  Future<void> getPostedJob() async {
-    postedJobRes = await userUseCase.getPostedJob(page: postedPage);
-    if (postedJobRes?.data != null) {
-      final newJobs = postedJobRes?.data
-          ?.where((newJob) => !postedJobs.any((job) => job.id == newJob.id))
-          .toList();
-      postedJobs.addAll(newJobs as Iterable<JobModel>);
-      notifyListeners();
-    }
-  }
 
-  Future<void> loadPostedJobMore(ScrollController scrollController) async {
-    // if (scrollController.position.maxScrollExtent == scrollController.offset) {
-    if (postedJobs.length < (postedJobRes?.meta?.total ?? 0)) {
-      postedPage += 1;
-      await getPostedJob();
-    }
-    // }
-  }
+
 
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -221,12 +196,7 @@ class UserController extends ChangeNotifier {
     }, context);
   }
 
-  List<JobTopicModel> jobTopics = [];
-  Future<void> getJobTopic() async {
-    jobTopics.clear();
-    jobTopics = await userUseCase.getJobTopic();
-    notifyListeners();
-  }
+
 
   List<num> selectedTopics = [];
   selectTopic(num topic) {
@@ -243,26 +213,11 @@ class UserController extends ChangeNotifier {
     }
   }
 
-  TopicJobFavoriteResponse? topicDaTa;
 
-  Future<void> getJobTopicFavorite() async {
-    topicDaTa = await userUseCase.getJobTopicFavorite();
 
-    if (topicDaTa != null) {
-      selectedTopics =
-          topicDaTa?.data?.map((data) => data.topicId ?? 0).toList() ?? [];
 
-      notifyListeners();
-    }
-  }
 
-  Future<void> addJobTopic(BuildContext context) async {
-    AppUtils.loadingApi(() async {
-      await userUseCase.postAddJobTopic(
-          body: AddJobTopicRequest(topicIds: selectedTopics));
-      showSnackBar("Lưu thành công");
-    }, context);
-  }
+
 }
 
 final userControllerProvider = ChangeNotifierProvider((ref) {

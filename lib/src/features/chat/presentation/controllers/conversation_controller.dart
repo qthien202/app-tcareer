@@ -37,7 +37,6 @@ class ConversationController extends ChangeNotifier {
 
     // Nếu không có dữ liệu từ API, không làm gì cả để tránh mất cache
     if (apiConversations == null || apiConversations.isEmpty) {
-      dev.log("⚠️ Không có dữ liệu từ API, giữ nguyên cache cũ");
       return;
     }
 
@@ -75,10 +74,7 @@ class ConversationController extends ChangeNotifier {
       await saveConversation(conversationJson: conversationJson);
 
       notifyListeners();
-      dev.log("🆕 Cập nhật conversation và cache lại");
-    } else {
-      dev.log("✅ Dữ liệu conversation không thay đổi, không cần update");
-    }
+    } else {}
   }
 
   Future<String> handleDecryptLastMessage(String lastMessage) async {
@@ -344,7 +340,7 @@ class ConversationController extends ChangeNotifier {
       if (loadedConversation.isNotEmpty) {
         conversations.clear();
         conversations.addAll(loadedConversation);
-        dev.log("📦 Load từ cache: ${jsonEncode(conversations)}");
+
         notifyListeners();
       }
     }

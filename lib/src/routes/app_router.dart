@@ -1,33 +1,19 @@
-import 'package:app_tcareer/main.dart';
 import 'package:app_tcareer/src/features/authentication/data/models/verify_otp.dart';
-import 'package:app_tcareer/src/features/authentication/data/repositories/auth_repository.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/forgot_password/forgot_password_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/forgot_password/reset_password_page.dart';
-import 'package:app_tcareer/src/features/authentication/presentation/pages/job_topic_page.dart';
+
 import 'package:app_tcareer/src/features/authentication/presentation/pages/login/login_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/register/register_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/register/verify_email_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/register/verify_phone_page.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/pages/verify/verify_page.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
-import 'package:app_tcareer/src/features/chat/presentation/pages/chat_page.dart';
-import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_page.dart';
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
-import 'package:app_tcareer/src/features/jobs/data/models/job_model.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/pages/create_job_page.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/pages/media/job_media_page.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_description.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_location.dart';
-import 'package:app_tcareer/src/features/jobs/presentation/widgets/create_job/job_topic.dart';
-import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/post_edit.dart';
-import 'package:app_tcareer/src/features/posts/data/models/shared_post.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/media/media_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/posting_page.dart';
-import 'package:app_tcareer/src/features/posts/presentation/pages/search_page.dart';
 import 'package:app_tcareer/src/features/splash/intro_page.dart';
 import 'package:app_tcareer/src/features/splash/splash_page.dart';
-import 'package:app_tcareer/src/features/user/presentation/pages/another_profile_page.dart';
 import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
 import 'package:app_tcareer/src/routes/index_route.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
@@ -35,12 +21,12 @@ import 'package:app_tcareer/src/services/apis/api_service_provider.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:app_tcareer/src/widgets/photos/app_photo_model.dart';
 import 'package:app_tcareer/src/widgets/photos/app_photo_view.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../features/notifications/presentation/pages/notification_page.dart';
-import '../features/posts/presentation/pages/detail/post_detail_page.dart';
 import 'package:ably_flutter/ably_flutter.dart' as ably;
 
 enum RouteNames {
@@ -224,96 +210,46 @@ class AppRouter {
           ],
         ),
         GoRoute(
-            path: "/createJob",
-            name: "createJob",
-            pageBuilder: (context, state) {
-              JobModel? jobModel = state.extra as JobModel?;
-              return CustomTransitionPage(
-                child: CreateJobPage(
-                  jobModel: jobModel,
-                ),
-                transitionsBuilder: slideUpTransitionBuilder,
-              );
-            },
-            routes: [
-              GoRoute(
-                  path: "media",
-                  name: "jobMedia",
-                  pageBuilder: (context, state) {
-                    return CustomTransitionPage(
-                      child: JobMediaPage(),
-                      transitionsBuilder: slideUpTransitionBuilder,
-                    );
-                  },
-                  routes: []),
-              GoRoute(
-                  path: "location",
-                  name: "jobLocation",
-                  pageBuilder: (context, state) {
-                    return CustomTransitionPage(
-                      child: JobLocation(),
-                      transitionsBuilder: slideUpTransitionBuilder,
-                    );
-                  },
-                  routes: []),
-              GoRoute(
-                  path: "topic",
-                  name: "jobTopic",
-                  pageBuilder: (context, state) {
-                    return CustomTransitionPage(
-                      child: JobTopic(),
-                      transitionsBuilder: slideUpTransitionBuilder,
-                    );
-                  },
-                  routes: []),
-              GoRoute(
-                  path: "description",
-                  name: "jobDescription",
-                  pageBuilder: (context, state) {
-                    return CustomTransitionPage(
-                      child: JobDescription(),
-                      transitionsBuilder: slideUpTransitionBuilder,
-                    );
-                  },
-                  routes: []),
-            ]),
-        GoRoute(
-            path: "/${RouteNames.posting.name}",
-            name: RouteNames.posting.name,
-            pageBuilder: (context, state) {
-              PostEdit? postEdit = state.extra as PostEdit?;
-              String? postId = state.uri.queryParameters['postId'].toString();
-              String? action = state.uri.queryParameters['action'].toString();
-              return CustomTransitionPage(
+          path: "/${RouteNames.posting.name}",
+          name: RouteNames.posting.name,
+          pageBuilder: (context, state) {
+            PostEdit? postEdit = state.extra as PostEdit?;
+            String? postId = state.uri.queryParameters['postId'];
+            String? action = state.uri.queryParameters['action'];
+
+            return CustomTransitionPage(
                 key: state.pageKey,
+                fullscreenDialog: false,
+                barrierDismissible: true,
+                opaque: false,
                 child: PostingPage(
+                  parentContext: context,
                   postEdit: postEdit,
                   postId: postId,
                   action: action,
                 ),
-                transitionsBuilder: slideUpTransitionBuilder,
-              );
-            },
-            routes: [
-              GoRoute(
-                path: "${RouteNames.photoManager.name}",
-                name: RouteNames.photoManager.name,
-                pageBuilder: (context, state) {
-                  String isCommentString =
-                      state.uri.queryParameters["isComment"] ?? "false";
-                  String content = state.uri.queryParameters['content'] ?? "";
-                  bool isComment = bool.parse(isCommentString);
-                  return CustomTransitionPage(
+                transitionsBuilder: slideUpTransitionBuilder);
+          },
+          routes: [
+            GoRoute(
+              path: "${RouteNames.photoManager.name}",
+              name: RouteNames.photoManager.name,
+              pageBuilder: (context, state) {
+                String isCommentString =
+                    state.uri.queryParameters["isComment"] ?? "false";
+                String content = state.uri.queryParameters['content'] ?? "";
+                bool isComment = bool.parse(isCommentString);
+                return CustomTransitionPage(
                     key: state.pageKey,
                     child: MediaPage(
                       isComment: isComment,
                       content: content,
                     ),
-                    transitionsBuilder: slideUpTransitionBuilder,
-                  );
-                },
-              ),
-            ]),
+                    transitionsBuilder: slideUpTransitionBuilder);
+              },
+            ),
+          ],
+        ),
         GoRoute(
             path: "/appPhoto",
             name: "appPhoto",
@@ -327,15 +263,6 @@ class AppRouter {
                 transitionsBuilder: fadeTransitionBuilder,
               );
             }),
-        GoRoute(
-          path: "/topics",
-          name: "topics",
-          pageBuilder: (context, state) => CustomTransitionPage(
-            key: state.pageKey,
-            child: const JobTopicPage(),
-            transitionsBuilder: fadeTransitionBuilder,
-          ),
-        ),
       ],
       refreshListenable: GoRouterRefreshStream(),
       // observers: [CustomNavigatorObserver(ref)]

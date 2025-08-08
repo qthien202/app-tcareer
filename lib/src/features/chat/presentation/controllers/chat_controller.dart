@@ -45,8 +45,12 @@ class ChatController extends ChangeNotifier {
   ChatController(this.chatUseCase, this.ref) {
     // listenMessage();
   }
+  bool isAtBottom = true;
 
-  ScrollController scrollController = ScrollController();
+  void setIsAtBottom(bool value) {
+    isAtBottom = value;
+    notifyListeners();
+  }
 
   TextEditingController contentController = TextEditingController();
 
@@ -210,11 +214,6 @@ class ChatController extends ChangeNotifier {
     }
   }
 
-  void scrollToBottom() {
-    final position = scrollController.position.maxScrollExtent;
-    scrollController.jumpTo(position);
-  }
-
   Future<void> markReadMessage(
       {required String senderId, required dynamic messageId}) async {
     final userUtil = ref.read(userUtilsProvider);
@@ -263,14 +262,6 @@ class ChatController extends ChangeNotifier {
   String status = "off";
   Timer? _timer;
 
-  void _startTimer(String dateString) {
-    _cancelTimer();
-    _timer = Timer.periodic(Duration(minutes: 1), (_) {
-      statusText = AppUtils.formatTimeMessage(dateString);
-      notifyListeners();
-    });
-  }
-
   void _cancelTimer() {
     _timer?.cancel(); // Hủy Timer nếu nó đang chạy
     _timer = null;
@@ -284,7 +275,6 @@ class ChatController extends ChangeNotifier {
     super.dispose();
     messageSubscription?.cancel();
     presenceSubscription?.cancel();
-    scrollController.dispose();
     contentController.dispose();
   }
 
@@ -344,7 +334,7 @@ class ChatController extends ChangeNotifier {
     );
 
     await chatUseCase.sendMessage(body);
-
+    setHasContent('');
     // notifyListeners();
 
     // setIsShowMedia(context);

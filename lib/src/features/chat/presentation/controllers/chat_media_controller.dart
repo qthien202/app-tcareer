@@ -171,10 +171,11 @@ class ChatMediaController extends ChangeNotifier {
   Future<void> uploadMedia(BuildContext context) async {
     final chatController = ref.read(chatControllerProvider);
     await chatController.setIsShowMedia(context);
+
     AppUtils.futureApi(
       () async {
         mediaUrl.clear();
-        final uuid = Uuid();
+        const uuid = Uuid();
         final id = uuid.v4();
         for (String path in mediaPath) {
           if (path.isVideoLocal) {
@@ -241,6 +242,7 @@ class ChatMediaController extends ChangeNotifier {
         }
       }
     }
+    selectedAsset.clear();
     await updateMediaLocalConversation();
   }
 
