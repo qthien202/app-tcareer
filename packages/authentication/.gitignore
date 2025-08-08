@@ -1,0 +1,56 @@
+# =========================
+# General (Miscellaneous)
+# =========================
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# =========================
+# IDEs
+# =========================
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VSCode (uncomment if you want to ignore it)
+# .vscode/
+
+# =========================
+# Flutter / Dart
+# =========================
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+build/
+.melos_tool/
+
+# pubspec.lock — allowed in apps, not in packages
+# To keep it simple, ignore globally and selectively allow if needed
+**/pubspec.lock
+
+# dartdoc output
+**/doc/api/
+
+# =========================
+# Android
+# =========================
+android/.gradle/
+android/.idea/
+android/local.properties
+android/.DS_Store
+android/build/
+**/android/app/debug/
+**/android/app/profile/
+**/android/app/release/
