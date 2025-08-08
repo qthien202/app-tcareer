@@ -1,6 +1,6 @@
 class AppConstants {
   AppConstants._();
-  static const baseUrl = "https://wavvv-sever.onrender.com/";
+  static const baseUrl = "https://api.tcareer.thientech.site/";
   static const introContent =
       "Khám phá tất cả các công việc thú vị nhất\ndựa trên sở thích và chuyên ngành học của bạn.";
   static const authToken = "authToken";

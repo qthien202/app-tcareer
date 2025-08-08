@@ -1,5 +1,6 @@
 import 'package:app_tcareer/src/features/authentication/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:app_tcareer/src/features/authentication/domain/repositories/firebase_auth_repository.dart';
+import 'package:app_tcareer/src/features/authentication/domain/usecases/login/logout_usecase.dart';
 import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,18 +31,18 @@ final firebaseAuthRepositoryProvider = Provider<FirebaseAuthRepository>((ref) {
 
 /// UseCases
 
-final forgotPasswordVerifyUseCase =
+final forgotPasswordVerifyUseCaseProvider =
     Provider<ForgotPasswordVerifyUseCase>((ref) {
   final repo = ref.watch(authRepositoryProvider);
   return ForgotPasswordVerifyUseCase(repo);
 });
 
-final forgotPasswordUseCase = Provider<ForgotPasswordUseCase>((ref) {
+final forgotPasswordUseCaseProvider = Provider<ForgotPasswordUseCase>((ref) {
   final repo = ref.watch(authRepositoryProvider);
   return ForgotPasswordUseCase(repo);
 });
 
-final resetPasswordUseCase = Provider<ResetPasswordUseCase>((ref) {
+final resetPasswordUseCaseProvider = Provider<ResetPasswordUseCase>((ref) {
   final repo = ref.watch(authRepositoryProvider);
   return ResetPasswordUseCase(repo);
 });
@@ -81,4 +82,10 @@ final verifyPhoneNumberOTPProvider = Provider<VerifyPhoneNumberUseCase>((ref) {
 final verifyPhoneNumberProvider = Provider<VerifyPhoneUseCase>((ref) {
   final repo = ref.watch(authRepositoryProvider);
   return VerifyPhoneUseCase(repo);
+});
+
+final logoutUseCaseProvider = Provider<LogoutUseCase>((ref) {
+  final firebaseRepo = ref.watch(firebaseAuthRepositoryProvider);
+  final authRepo = ref.watch(authRepositoryProvider);
+  return LogoutUseCase(firebaseRepo, authRepo);
 });

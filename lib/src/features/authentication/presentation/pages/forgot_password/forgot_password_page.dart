@@ -1,19 +1,17 @@
 import 'package:app_tcareer/src/extensions/auth_extension.dart';
-import 'package:app_tcareer/src/features/authentication/presentation/auth_providers.dart';
+import 'package:app_tcareer/src/features/authentication/presentation/notifier/forgot_password_notifier.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/widgets/auth_button_widget.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/widgets/text_input_form.dart';
 import 'package:app_tcareer/src/utils/validator.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class ForgotPasswordPage extends ConsumerWidget {
   const ForgotPasswordPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(forgotPasswordControllerProvider);
+    final notifier = ref.watch(forgotPasswordNotifierProvider.notifier);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
@@ -45,11 +43,11 @@ class ForgotPasswordPage extends ConsumerWidget {
                   height: 20,
                 ),
                 Form(
-                  key: controller.formKey,
+                  key: notifier.formKey,
                   child: Column(
                     children: [
                       TextInputForm(
-                        controller: controller.textInputController,
+                        controller: notifier.textInputController,
                         // isRequired: true,
                         title: "Email hoặc số điện thoại",
                         hintText: "Nhập email hoặc số điện thoại",
@@ -61,12 +59,12 @@ class ForgotPasswordPage extends ConsumerWidget {
                       authButtonWidget(
                           context: context,
                           onPressed: () async {
-                            if (controller
+                            if (notifier
                                 .textInputController.text.isValidEmail) {
-                              await controller.forgotPassword(context);
-                            } else if (controller
+                              await notifier.forgotPassword(context);
+                            } else if (notifier
                                 .textInputController.text.isValidPhoneNumber) {
-                              await controller.checkUserPhone(context);
+                              await notifier.checkUserPhone(context);
                             }
                           },
                           title: "Gửi mã xác thực"),

@@ -18,14 +18,13 @@ class LoginWithGoogleUseCase {
     String deviceToken = await _util.getDeviceToken() ?? "";
     String deviceId = await _util.getDeviceId() ?? "";
     final req = LoginGoogleRequest(
-      accessToken: accessTokenFirebase,
-      deviceId:deviceId,
-      deviceToken: deviceToken
-    );
+        accessToken: accessTokenFirebase,
+        deviceId: deviceId,
+        deviceToken: deviceToken);
     final response = await _authRepository.loginWithGoogle(req: req);
     final accessToken = response?.accessToken ?? "";
     final refreshToken = response?.refreshToken ?? "";
-    final userId = _util.decodeToken(accessToken)['userId'];
+    final userId = _util.decodeToken(accessToken)['sub'];
     _util.saveAuthToken(
         authToken: accessToken, refreshToken: refreshToken, userId: userId);
     var providers = ref.container.getAllProviderElements();

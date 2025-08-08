@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:app_tcareer/src/features/authentication/usecases/login_use_case.dart';
+import 'package:app_tcareer/src/features/authentication/data/models/logout_request.dart';
+import 'package:app_tcareer/src/features/authentication/domain/auth_provider.dart';
 import 'package:app_tcareer/src/features/index/index_controller.dart';
 import 'package:app_tcareer/src/features/posts/data/models/posts_response.dart'
     as post_model;
@@ -26,7 +27,7 @@ class UserController extends ChangeNotifier {
     getUserInfo();
     getResume();
     getPost();
-    
+
     // scrollController.addListener(() {
     //   loadMore();
     // });
@@ -131,11 +132,13 @@ class UserController extends ChangeNotifier {
 
   Future<void> logout(BuildContext context) async {
     // var providers = ref.container.getAllProviderElements();
-    final auth = ref.read(loginUseCase);
+    final logoutUseCase = ref.read(logoutUseCaseProvider);
     final connectUseCase = ref.read(connectionUseCaseProvider);
+    final userUtil = ref.read(userUtilsProvider);
+    final refreshToken = await userUtil.getRefreshToken();
     AppUtils.loadingApi(() async {
       await connectUseCase.setUserOfflineStatus();
-      await auth.logout();
+      await logoutUseCase.call(LogoutRequest(refreshToken: refreshToken));
 
       // for (var element in providers) {
       //   element.invalidateSelf();
@@ -162,10 +165,6 @@ class UserController extends ChangeNotifier {
     // TODO: implement dispose
     super.dispose();
   }
-
-
-
-
 
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -196,8 +195,6 @@ class UserController extends ChangeNotifier {
     }, context);
   }
 
-
-
   List<num> selectedTopics = [];
   selectTopic(num topic) {
     if (selectedTopics.length == 5 && !selectedTopics.contains(topic)) {
@@ -212,12 +209,6 @@ class UserController extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-
-
-
-
-
 }
 
 final userControllerProvider = ChangeNotifierProvider((ref) {

@@ -1,4 +1,4 @@
-import 'package:app_tcareer/src/features/authentication/presentation/auth_providers.dart';
+import 'package:app_tcareer/src/features/authentication/presentation/notifier/forgot_password_notifier.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/widgets/auth_button_widget.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/widgets/text_input_form.dart';
 
@@ -11,7 +11,7 @@ class ResetPasswordPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(forgotPasswordControllerProvider);
+    final notifier = ref.watch(forgotPasswordNotifierProvider.notifier);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
@@ -43,12 +43,12 @@ class ResetPasswordPage extends ConsumerWidget {
                   height: 20,
                 ),
                 Form(
-                  key: controller.keyResetPassword,
+                  key: notifier.keyResetPassword,
                   child: Column(
                     children: [
                       TextInputForm(
                         isSecurity: true,
-                        controller: controller.passwordController,
+                        controller: notifier.passwordController,
                         // isRequired: true,
                         title: "Mật khẩu",
                         hintText: "Nhập mật khẩu",
@@ -56,13 +56,13 @@ class ResetPasswordPage extends ConsumerWidget {
                       ),
                       TextInputForm(
                         isSecurity: true,
-                        controller: controller.confirmPasswordController,
+                        controller: notifier.confirmPasswordController,
                         // isRequired: true,
                         title: "Xác nhận mật khẩu",
                         hintText: "Nhập lại mật khẩu",
                         validator: (val) {
                           return Validator.rePassword(
-                              val, controller.passwordController.text);
+                              val, notifier.passwordController.text);
                         },
                       ),
                       const SizedBox(
@@ -71,7 +71,7 @@ class ResetPasswordPage extends ConsumerWidget {
                       authButtonWidget(
                           context: context,
                           onPressed: () async =>
-                              await controller.resetPassword(context),
+                              await notifier.resetPassword(context),
                           title: "Cập nhật mật khẩu"),
                       const SizedBox(
                         height: 20,

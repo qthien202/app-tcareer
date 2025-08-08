@@ -1,11 +1,13 @@
 import 'package:app_tcareer/src/features/authentication/data/models/verify_otp.dart';
-import 'package:app_tcareer/src/features/authentication/presentation/auth_providers.dart';
+import 'package:app_tcareer/src/features/authentication/presentation/notifier/forgot_password_notifier.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/widgets/auth_button_widget.dart';
 import 'package:app_tcareer/src/features/authentication/presentation/widgets/pin_put_widget.dart';
 
 import 'package:app_tcareer/src/utils/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../notifier/register_notifier.dart';
 
 class VerifyPage extends ConsumerWidget {
   final VerifyOTP? verifyOTP;
@@ -14,8 +16,9 @@ class VerifyPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final controller = ref.watch(forgotPasswordControllerProvider);
-    final registerController = ref.watch(registerControllerProvider);
+    final registerNotifier = ref.watch(registerNotifierProvider.notifier);
+    final forgotPasswordNotifier =
+        ref.watch(forgotPasswordNotifierProvider.notifier);
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -56,7 +59,7 @@ class VerifyPage extends ConsumerWidget {
                     ),
                   ),
                   child: Text(
-                    "Nhập mã xác minh mà chúng tôi vừa gửi đến email của bạn ${controller.textInputController.text}",
+                    "Nhập mã xác minh mà chúng tôi vừa gửi đến email của bạn ${forgotPasswordNotifier.textInputController.text}",
                     style: const TextStyle(
                         fontSize: 12, color: Colors.grey, letterSpacing: 1),
                   ),
@@ -65,11 +68,12 @@ class VerifyPage extends ConsumerWidget {
                   height: 20,
                 ),
                 Form(
-                  key: controller.keyVerify,
+                  key: forgotPasswordNotifier.keyVerify,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      pinPutWidget(controller: controller.codeController),
+                      pinPutWidget(
+                          controller: forgotPasswordNotifier.codeController),
                       const SizedBox(
                         height: 35,
                       ),
@@ -78,28 +82,31 @@ class VerifyPage extends ConsumerWidget {
                           onPressed: () async {
                             switch (verifyOTP?.type) {
                               case TypeVerify.registerPhone:
-                                await registerController.signInWithOTP(
+                                await registerNotifier.signInWithOTP(
                                     context: context,
-                                    smsCode: controller.codeController.text,
+                                    smsCode: forgotPasswordNotifier
+                                        .codeController.text,
                                     verificationId:
                                         verifyOTP?.verificationId ?? "");
                                 break;
                               case TypeVerify.registerEmail:
-                                await registerController.verifyEmail(
+                                await registerNotifier.verifyEmail(
                                     email:
-                                        registerController.emailController.text,
+                                        registerNotifier.emailController.text,
                                     password: verifyOTP?.password ?? "",
                                     context: context,
-                                    code: controller.codeController.text);
+                                    code: forgotPasswordNotifier
+                                        .codeController.text);
                               case TypeVerify.forgotPasswordPhone:
-                                await controller.signInWithOTP(
+                                await forgotPasswordNotifier.signInWithOTP(
                                     context: context,
-                                    smsCode: controller.codeController.text,
+                                    smsCode: forgotPasswordNotifier
+                                        .codeController.text,
                                     verificationId:
                                         verifyOTP?.verificationId ?? "");
                                 break;
                               default:
-                                await controller.verifyOtp(context);
+                                await forgotPasswordNotifier.verifyOtp(context);
                                 break;
                             }
                           },
