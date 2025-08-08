@@ -4,7 +4,7 @@ part 'env.g.dart';
 
 @envied
 abstract class Env {
-  // @EnviedField(varName: 'BASE_URL', obfuscate: false)
+  @EnviedField(varName: 'BASE_URL', obfuscate: false)
   // static const String baseUrl = _Env.baseUrl;
   @EnviedField(varName: 'UPLOAD_URL', obfuscate: true)
   static final String uploadUrl = _Env.uploadUrl;
