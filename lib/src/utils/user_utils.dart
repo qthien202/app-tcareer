@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class UserUtils {
   final Ref ref;
@@ -120,6 +121,10 @@ class UserUtils {
   Future<bool> clearCache() async {
     final shareRef = await ref.read(sharedPreferencesProvider.future);
     return shareRef.clear();
+  }
+
+  Map<String, dynamic> decodeToken(String accessToken) {
+    return JwtDecoder.decode(accessToken);
   }
 }
 
