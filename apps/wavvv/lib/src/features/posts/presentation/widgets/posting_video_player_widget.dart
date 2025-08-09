@@ -2,11 +2,11 @@ import 'dart:io';
 import 'package:app_tcareer/src/extensions/video_extension.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:chewie/chewie.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
-import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 
 class PostingVideoPlayerWidget extends ConsumerStatefulWidget {
   final List<String> videoUrl;

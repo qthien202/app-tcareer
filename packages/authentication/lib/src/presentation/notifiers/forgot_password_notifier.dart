@@ -1,4 +1,5 @@
 import 'package:authentication/src/domain/auth_provider.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,9 +11,6 @@ import 'package:authentication/src/data/models/forgot_password_verify_request.da
 import 'package:authentication/src/data/models/reset_password_request.dart';
 import 'package:authentication/src/data/models/verify_otp.dart';
 import 'package:authentication/src/data/models/verify_phone_request.dart';
-import 'package:authentication/src/utils/alert_dialog_util.dart';
-import 'package:authentication/src/utils/app_utils.dart';
-import 'package:authentication/src/utils/snackbar_utils.dart';
 
 import '../../domain/usecases/auth_usecase.dart';
 

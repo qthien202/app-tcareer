@@ -1,10 +1,8 @@
 import 'dart:io';
 import 'package:app_tcareer/src/extensions/image_extension.dart';
-import 'package:app_tcareer/src/features/posts/get_image_orientation.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
-import 'package:app_tcareer/src/widgets/photos/app_photo_model.dart';
-import 'package:app_tcareer/src/widgets/photos/gallery_item.dart';
 import 'package:carousel_slider/carousel_slider.dart' as csl;
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

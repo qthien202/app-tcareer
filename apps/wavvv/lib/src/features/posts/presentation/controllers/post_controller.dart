@@ -1,22 +1,13 @@
 import 'package:app_tcareer/src/features/index/index_controller.dart';
-import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
-import 'package:app_tcareer/src/features/posts/data/models/post_response.dart';
-import 'package:app_tcareer/src/features/posts/data/models/post_state.dart';
 import 'package:app_tcareer/src/features/posts/data/models/posts_response.dart'
     as post_model;
 import 'package:app_tcareer/src/features/posts/data/models/user_liked.dart';
-import 'package:app_tcareer/src/features/posts/presentation/controllers/media_controller.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/share_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/user_liked_page.dart';
-import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/posts/usecases/comment_use_case.dart';
 import 'package:app_tcareer/src/features/posts/usecases/post_use_case.dart';
-import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
-import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
-import 'package:app_tcareer/src/utils/app_utils.dart';
-
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

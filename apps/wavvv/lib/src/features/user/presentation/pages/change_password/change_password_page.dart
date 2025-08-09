@@ -1,8 +1,8 @@
 import 'package:authentication/authentication.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/change_password_controller.dart';
-import 'package:app_tcareer/src/utils/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:core/core.dart';
 
 class ChangePasswordPage extends ConsumerWidget {
   const ChangePasswordPage({super.key});

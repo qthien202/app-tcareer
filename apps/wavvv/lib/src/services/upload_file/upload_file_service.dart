@@ -1,9 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:app_tcareer/src/configs/app_constants.dart';
-import 'package:app_tcareer/src/environment/env.dart';
 import 'package:app_tcareer/src/services/upload_file/upload_data.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
+import 'package:core/core.dart';
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +18,7 @@ class UploadFileService {
     required String folderName,
   }) async {
     String? fileUrl;
-    dio.options.baseUrl = AppConstants.baseUrl;
+    dio.options.baseUrl = Env.baseURL;
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,

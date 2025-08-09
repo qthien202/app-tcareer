@@ -1,8 +1,6 @@
-import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
-import 'package:app_tcareer/src/widgets/shimmer_loading_widget.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 Widget postLoadingWidget(BuildContext context) {
   return SliverList(

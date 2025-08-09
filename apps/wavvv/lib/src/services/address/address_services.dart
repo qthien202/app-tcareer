@@ -1,5 +1,4 @@
-import 'package:app_tcareer/src/configs/app_constants.dart';
-import 'package:app_tcareer/src/environment/env.dart';
+import 'package:core/core.dart';
 import 'package:app_tcareer/src/services/address/district.dart';
 import 'package:app_tcareer/src/services/address/province.dart';
 import 'package:app_tcareer/src/services/address/ward.dart';
@@ -26,7 +25,7 @@ class AddressServices {
         maxWidth: 90));
     final token = Env.addressToken;
     final response =
-    await dio.get('province', options: Options(headers: {'token': token}));
+        await dio.get('province', options: Options(headers: {'token': token}));
     if (response.data != null && response.data['data'] != null) {
       provinces = (response.data['data'] as List).map((e) {
         return Province.fromJson(e);

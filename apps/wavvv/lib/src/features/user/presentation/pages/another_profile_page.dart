@@ -1,4 +1,4 @@
-import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:core/core.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/post_loading_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/post_widget.dart';
@@ -10,7 +10,6 @@ import 'package:app_tcareer/src/features/user/presentation/widgets/connect_butto
 import 'package:app_tcareer/src/features/user/presentation/widgets/information.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/information_loading.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/resume_another.dart';
-import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

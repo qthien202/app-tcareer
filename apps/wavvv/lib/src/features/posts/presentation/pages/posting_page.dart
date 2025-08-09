@@ -1,29 +1,19 @@
-import 'dart:io';
-
-import 'package:app_tcareer/src/configs/app_colors.dart';
-import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/post_edit.dart';
-import 'package:app_tcareer/src/features/posts/presentation/controllers/media_controller.dart';
-import 'package:app_tcareer/src/features/posts/presentation/controllers/posting_controller.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/post_input.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/post_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/posting_image_wiget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/posting_video_player_widget.dart';
-import 'package:app_tcareer/src/features/posts/presentation/widgets/privacy_bottom_sheet_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/privacy_widget.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_fb_photo_view/flutter_fb_photo_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-
-import '../../data/models/shared_post.dart';
 
 class PostingPage extends ConsumerStatefulWidget {
   final PostEdit? postEdit;

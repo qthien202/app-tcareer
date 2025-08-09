@@ -1,25 +1,13 @@
-import 'dart:io';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/chat_controller.dart';
-import 'package:app_tcareer/src/features/chat/presentation/controllers/chat_media_controller.dart';
 import 'package:app_tcareer/src/features/chat/presentation/pages/media/chat_media_page.dart';
 import 'package:app_tcareer/src/features/chat/presentation/widgets/chat_bottom_app_bar.dart';
-import 'package:app_tcareer/src/features/chat/presentation/widgets/chat_emoji.dart';
-import 'package:app_tcareer/src/features/chat/presentation/widgets/chat_input.dart';
 import 'package:app_tcareer/src/features/chat/presentation/widgets/message_box.dart';
-import 'package:app_tcareer/src/features/index/index_controller.dart';
-import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
-import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
-import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
-import 'package:app_tcareer/src/utils/app_utils.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
-import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class ChatPage extends ConsumerStatefulWidget {

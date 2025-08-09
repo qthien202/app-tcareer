@@ -1,6 +1,4 @@
-import 'package:app_tcareer/src/configs/app_colors.dart';
-import 'package:authentication/authentication.dart';
-import 'package:app_tcareer/src/features/user/data/models/create_resume_request.dart';
+import 'package:core/core.dart';
 import 'package:app_tcareer/src/features/user/data/models/education_model.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/create_resume_controller.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/text_input_widget.dart';
@@ -8,8 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class AddEducation extends ConsumerStatefulWidget {

@@ -1,7 +1,5 @@
-import 'package:app_tcareer/src/configs/app_constants.dart';
 import 'package:app_tcareer/src/services/custom_cache_manager.dart';
-import 'package:app_tcareer/src/utils/snackbar_utils.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
+import 'package:core/core.dart';
 import 'package:authentication/authentication.dart';
 import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:dio/dio.dart';
@@ -107,7 +105,7 @@ Future<LoginResponse?> refreshAccessToken(
   final dio = Dio();
 
   try {
-    dio.options.baseUrl = AppConstants.baseUrl;
+    dio.options.baseUrl = Env.baseURL;
     dio.interceptors.add(CurlLoggerDioInterceptor(printOnSuccess: true));
     dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,
@@ -137,7 +135,3 @@ class RefreshTokenStateNotifier extends ChangeNotifier {
     isRefreshTokenExpired = expired;
   }
 }
-
-final refreshTokenStateProvider = ChangeNotifierProvider(
-  (ref) => RefreshTokenStateNotifier(),
-);

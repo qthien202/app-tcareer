@@ -1,14 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
-
-import 'package:app_tcareer/src/configs/app_constants.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_comment_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/create_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/like_comment_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/like_post_data.dart';
 import 'package:app_tcareer/src/features/posts/data/models/like_post_request.dart';
 import 'package:app_tcareer/src/features/posts/data/models/post_request.dart';
-import 'package:app_tcareer/src/features/posts/data/models/post_response.dart';
 import 'package:app_tcareer/src/features/posts/data/models/posts_detail_response.dart';
 import 'package:app_tcareer/src/features/posts/data/models/posts_response.dart';
 import 'package:app_tcareer/src/features/posts/data/models/quick_search_user_data.dart';
@@ -17,17 +14,13 @@ import 'package:app_tcareer/src/features/posts/data/models/share_post_request.da
 import 'package:app_tcareer/src/features/posts/data/models/user_liked.dart';
 import 'package:app_tcareer/src/features/posts/data/models/user_liked_request.dart';
 import 'package:app_tcareer/src/services/apis/api_service_provider.dart';
-import 'package:app_tcareer/src/services/upload_file/google_drive_service.dart';
 import 'package:app_tcareer/src/services/upload_file/upload_file_service.dart';
 import 'package:app_tcareer/src/services/firebase/firebase_database_service.dart';
 import 'package:app_tcareer/src/services/firebase/firebase_storage_service.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
-
-import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
+import 'package:core/core.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class PostRepository {
   final Ref ref;

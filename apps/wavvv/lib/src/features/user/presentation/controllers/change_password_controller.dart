@@ -1,9 +1,7 @@
 import 'package:authentication/authentication.dart';
 import 'package:app_tcareer/src/features/user/data/models/change_password_request.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
-import 'package:app_tcareer/src/utils/alert_dialog_util.dart';
-import 'package:app_tcareer/src/utils/app_utils.dart';
-import 'package:app_tcareer/src/utils/snackbar_utils.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

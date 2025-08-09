@@ -3,23 +3,17 @@ import 'dart:io';
 import 'package:app_tcareer/src/extensions/image_extension.dart';
 import 'package:app_tcareer/src/extensions/video_extension.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/chat_controller.dart';
-import 'package:app_tcareer/src/features/chat/presentation/controllers/chat_media_controller.dart';
-import 'package:app_tcareer/src/features/chat/presentation/widgets/chat_video_player.dart';
-import 'package:app_tcareer/src/utils/app_utils.dart';
-import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
-import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
-import 'package:app_tcareer/src/widgets/photos/app_photo_model.dart';
-import 'package:app_tcareer/src/widgets/photos/gallery_item.dart';
+import 'package:app_tcareer/src/features/posts/presentation/widgets/video_player_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_controller.dart';
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_fb_photo_view/flutter_fb_photo_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart' as csl;
+
 Widget messageBox(
     {required bool isFirstIndex,
     required String status,
@@ -260,7 +254,7 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context,
       ),
       child: Visibility(
         visible: !media.first.isVideoNetWork,
-        replacement: ChatVideoPlayerWidget(onTap: () {
+        replacement: VideoFullScreenWidget(onTap: () {
           final index =
               medias.indexWhere((item) => item.mediaUrl == media.first);
           final data = AppPhotoModel(
@@ -338,7 +332,7 @@ Widget mediaItem(List<String> media, WidgetRef ref, BuildContext context,
             ),
             child: Visibility(
               visible: !mediaItem.isVideoNetWork,
-              replacement: ChatVideoPlayerWidget(
+              replacement: VideoFullScreenWidget(
                 mediaItem,
                 onTap: () {
                   final index =

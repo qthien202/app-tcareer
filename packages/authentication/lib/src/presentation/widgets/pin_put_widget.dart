@@ -1,9 +1,7 @@
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
-
-import '../../common/configs/app_colors.dart';
 
 Widget pinPutWidget({TextEditingController? controller}) {
   final defaultPinTheme = PinTheme(

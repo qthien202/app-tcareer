@@ -1,7 +1,6 @@
-import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:core/core.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/text_input_widget.dart';
-import 'package:app_tcareer/src/utils/validator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

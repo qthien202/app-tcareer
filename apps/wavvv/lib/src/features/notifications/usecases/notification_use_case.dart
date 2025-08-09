@@ -1,6 +1,5 @@
 import 'package:app_tcareer/src/features/notifications/data/repositories/notification_repository.dart';
-import 'package:app_tcareer/src/utils/app_utils.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:core/core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class NotificationUseCase {

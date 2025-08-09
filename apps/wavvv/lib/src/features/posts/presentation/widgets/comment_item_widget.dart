@@ -3,8 +3,7 @@ import 'package:app_tcareer/src/features/posts/presentation/controllers/comment_
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/comment_video_player.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
-import 'package:app_tcareer/src/utils/app_utils.dart';
-import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
+import 'package:core/core.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

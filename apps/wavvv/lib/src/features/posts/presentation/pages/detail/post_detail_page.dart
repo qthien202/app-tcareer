@@ -5,7 +5,7 @@ import 'package:app_tcareer/src/features/posts/presentation/pages/comments_page.
 import 'package:app_tcareer/src/features/posts/presentation/widgets/post_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/shared_post_widget.dart';
 import 'package:app_tcareer/src/features/posts/usecases/post_use_case.dart';
-import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,7 +33,6 @@ class _PostDetailPageState extends ConsumerState<PostDetailPage> {
     super.initState();
     Future.microtask(() {
       ref.read(postDetailControllerProvider).getPostById(widget.postId);
-      print(">>>>>>>>>>>>>>>type1: ${widget.notificationType}");
       if (widget.notificationType?.contains("COMMENT") == true) {
         final indexController = ref.watch(indexControllerProvider.notifier);
         indexController.showBottomSheet(

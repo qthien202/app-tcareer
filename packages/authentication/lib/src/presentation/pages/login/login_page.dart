@@ -1,14 +1,12 @@
 import 'package:authentication/src/presentation/widgets/auth_button_widget.dart';
 import 'package:authentication/src/presentation/widgets/text_input_form.dart';
-import 'package:authentication/src/utils/validator.dart';
+import 'package:core/core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sign_in_button/sign_in_button.dart';
-
-import '../../../common/configs/app_colors.dart';
 import '../../notifiers/login_notifier.dart';
 
 class LoginPage extends ConsumerWidget {

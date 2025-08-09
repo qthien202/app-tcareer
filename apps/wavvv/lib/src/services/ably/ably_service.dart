@@ -1,16 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:ably_flutter/ably_flutter.dart' as ably;
-import 'package:app_tcareer/src/configs/app_constants.dart';
-import 'package:app_tcareer/src/environment/env.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:core/core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AblyService {
-  late ably.ClientOptions clientOptions; // Sử dụng 'late' để đảm bảo không null
-  late ably.Realtime realtime; // Sử dụng 'late' để đảm bảo không null
+  late ably.ClientOptions clientOptions;
+  late ably.Realtime realtime;
   final Ref ref;
 
   AblyService(this.ref);
@@ -18,10 +14,8 @@ class AblyService {
   Future<void> initialize() async {
     final userUtils = ref.read(userUtilsProvider);
     String userId = await userUtils.getUserId();
-    print(">>>>>>>>>userId: $userId");
     clientOptions = ably.ClientOptions(key: Env.ablyKey, clientId: userId);
-    realtime =
-        ably.Realtime(options: clientOptions); // Khởi tạo Realtime tại đây
+    realtime = ably.Realtime(options: clientOptions);
   }
 
   Future<void> listenAllConnectionState(
@@ -119,7 +113,6 @@ class AblyService {
   }
 
   Future<void> dispose() async {
-    // Hủy tất cả các tài nguyên liên quan
     await disconnect();
     await realtime.close();
   }

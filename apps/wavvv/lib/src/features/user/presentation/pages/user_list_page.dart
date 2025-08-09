@@ -1,13 +1,9 @@
-import 'package:app_tcareer/src/configs/app_colors.dart';
-import 'package:app_tcareer/src/features/posts/data/models/user_liked.dart';
-import 'package:app_tcareer/src/features/posts/presentation/pages/user_liked_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_connection_controller.dart';
-import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:core/core.dart';
 
 class UserListPage extends ConsumerWidget {
   final String? userId;

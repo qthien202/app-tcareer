@@ -1,7 +1,7 @@
 import 'package:authentication/src/data/models/login_google_request.dart';
 import 'package:authentication/src/domain/repositories/auth_repository.dart';
 import 'package:authentication/src/domain/repositories/firebase_auth_repository.dart';
-import 'package:authentication/src/utils/user_utils.dart';
+import 'package:core/core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

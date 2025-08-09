@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import '../../common/configs/app_constants.dart';
 import '../models/check_user_phone_request.dart';
 import '../models/forgot_password_verify_request.dart';
 import '../models/login_google_request.dart';
@@ -15,7 +14,6 @@ import '../models/verify_phone_request.dart';
 
 part 'auth_service.g.dart';
 
-@RestApi(baseUrl: AppConstants.baseUrl)
 abstract class AuthService {
   factory AuthService(Dio dio, {String baseUrl}) = _AuthService;
 

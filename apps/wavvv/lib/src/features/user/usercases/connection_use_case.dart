@@ -1,5 +1,5 @@
 import 'package:app_tcareer/src/features/user/data/repositories/user_repository.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
+import 'package:core/core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ConnectionUseCase {
