@@ -1,4 +1,4 @@
-import 'package:app_tcareer/src/widgets/shimmer_loading_widget.dart';
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

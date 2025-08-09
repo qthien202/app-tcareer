@@ -139,7 +139,8 @@ dependencies:
   freezed_annotation: any
   authentication:
     path: ../../packages/authentication
-
+  core:
+    path: ../../packages/core
 
 #  quill_html_editor: ^2.2.8
 

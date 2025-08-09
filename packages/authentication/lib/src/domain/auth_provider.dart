@@ -1,12 +1,10 @@
 import 'package:authentication/src/data/repositories/firebase_auth_repository_impl.dart';
 import 'package:authentication/src/domain/repositories/firebase_auth_repository.dart';
 import 'package:authentication/src/domain/usecases/login/logout_usecase.dart';
-import 'package:authentication/src/utils/user_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-import '../common/core/api/client.dart';
+import 'package:core/core.dart';
 import '../data/repositories/auth_repository_impl.dart';
 import '../data/services/auth_service.dart';
 import 'repositories/auth_repository.dart';
@@ -14,7 +12,7 @@ import 'usecases/auth_usecase.dart';
 
 /// Services
 final authServiceProvider = Provider<AuthService>((ref) {
-  final dio = ref.watch(dioProvider);
+  final dio = ref.watch(clientProvider);
   return AuthService(dio);
 });
 

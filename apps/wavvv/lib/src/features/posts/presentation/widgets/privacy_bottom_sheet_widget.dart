@@ -1,6 +1,5 @@
-import 'package:app_tcareer/src/configs/app_colors.dart';
-import 'package:app_tcareer/src/features/posts/presentation/controllers/posting_controller.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

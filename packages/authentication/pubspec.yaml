@@ -116,7 +116,8 @@ dependencies:
   flutter_image_compress:
   freezed: any
   freezed_annotation: any
-
+  core:
+    path: ../core
 #  quill_html_editor: ^2.2.8
 
 dev_dependencies:

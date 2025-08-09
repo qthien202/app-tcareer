@@ -1,21 +1,13 @@
-import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/chat_controller.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
-import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
 import 'package:app_tcareer/src/features/index/index_controller.dart';
-import 'package:app_tcareer/src/features/notifications/presentation/controllers/notification_controller.dart';
-import 'package:app_tcareer/src/features/posts/presentation/pages/posting_page.dart';
-import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart';
-import 'package:app_tcareer/src/routes/index_route.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:ably_flutter/ably_flutter.dart' as ably;
 
 class IndexPage extends ConsumerStatefulWidget {
   const IndexPage({super.key, required this.shell});

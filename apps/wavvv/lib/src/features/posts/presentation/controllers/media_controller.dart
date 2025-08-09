@@ -9,8 +9,7 @@ import 'package:app_tcareer/src/features/posts/presentation/controllers/post_con
 import 'package:app_tcareer/src/features/posts/presentation/pages/posting_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/posts/usecases/media_use_case.dart';
-import 'package:app_tcareer/src/utils/snackbar_utils.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:app_tcareer/src/features/posts/data/models/debouncer.dart';
 import 'package:app_tcareer/src/features/posts/data/models/posts_response.dart'
     as post;
@@ -7,11 +5,9 @@ import 'package:app_tcareer/src/features/posts/data/models/quick_search_user_dat
 import 'package:app_tcareer/src/features/posts/usecases/post_use_case.dart';
 import 'package:app_tcareer/src/features/posts/usecases/search_use_case.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart' as user;
-import 'package:app_tcareer/src/features/user/presentation/controllers/user_connection_controller.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
+import 'package:core/core.dart';
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SearchPostController extends ChangeNotifier {
   final SearchUseCase searchUseCase;

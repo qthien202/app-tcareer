@@ -1,7 +1,7 @@
 import 'package:authentication/src/domain/repositories/auth_repository.dart';
+import 'package:core/core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../data/models/login_request.dart';
-import '../../../utils/user_utils.dart';
 
 class LoginUseCase {
   final AuthRepository _repository;

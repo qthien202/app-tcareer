@@ -1,11 +1,10 @@
-import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/post_input.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/privacy_widget.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class SharePage extends ConsumerWidget {
   final int postId;

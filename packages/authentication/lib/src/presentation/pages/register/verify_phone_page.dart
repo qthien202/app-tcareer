@@ -1,12 +1,8 @@
-import 'package:authentication/src/presentation/pages/register/register_page.dart';
-import 'package:authentication/src/presentation/widgets/auth_button_widget.dart';
-import 'package:authentication/src/presentation/widgets/text_input_form.dart';
-import 'package:authentication/src/utils/validator.dart';
-
+import 'package:authentication/authentication.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../authentication.dart';
 
 class VerifyPhonePage extends ConsumerWidget {
   const VerifyPhonePage({super.key});

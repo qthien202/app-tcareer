@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:core/core.dart';
 import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_media_use_case.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
-import 'package:app_tcareer/src/utils/app_utils.dart';
-import 'package:app_tcareer/src/utils/snackbar_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

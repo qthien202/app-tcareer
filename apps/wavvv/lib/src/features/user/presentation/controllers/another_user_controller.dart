@@ -6,7 +6,7 @@ import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/another_menu.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

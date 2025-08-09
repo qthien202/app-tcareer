@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/post_loading_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/post_widget.dart';
@@ -8,11 +6,10 @@ import 'package:app_tcareer/src/features/user/presentation/controllers/user_cont
 import 'package:app_tcareer/src/features/user/presentation/widgets/information.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/information_loading.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/resume_user.dart';
-import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {

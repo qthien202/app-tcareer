@@ -5,7 +5,6 @@ import 'package:app_tcareer/src/features/posts/presentation/widgets/post_widget.
 import 'package:app_tcareer/src/features/posts/presentation/widgets/video_player_widget.dart';
 import 'package:app_tcareer/src/extensions/video_extension.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
-import 'package:app_tcareer/src/widgets/cached_image_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_fb_photo_view/flutter_fb_photo_view.dart';

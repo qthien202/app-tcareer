@@ -1,10 +1,8 @@
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/search_bar_widget.dart';
-import 'package:app_tcareer/src/utils/app_utils.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
-import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

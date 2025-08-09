@@ -1,4 +1,4 @@
-import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:core/core.dart';
 import 'package:app_tcareer/src/features/user/data/models/create_resume_model.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/create_resume_controller.dart';
 import 'package:app_tcareer/src/features/user/presentation/widgets/text_editor.dart';

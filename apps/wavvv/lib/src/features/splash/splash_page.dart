@@ -1,4 +1,4 @@
-import 'package:app_tcareer/src/configs/app_colors.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';

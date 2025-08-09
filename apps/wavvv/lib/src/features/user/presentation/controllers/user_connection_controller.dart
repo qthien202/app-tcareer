@@ -6,8 +6,7 @@ import 'package:app_tcareer/src/features/user/presentation/pages/user_friend_pag
 import 'package:app_tcareer/src/features/user/presentation/pages/user_list_page.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_connection_use_case.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
-import 'package:app_tcareer/src/utils/app_utils.dart';
-import 'package:app_tcareer/src/utils/snackbar_utils.dart';
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

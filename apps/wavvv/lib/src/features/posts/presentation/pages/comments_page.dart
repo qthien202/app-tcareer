@@ -1,17 +1,14 @@
 import 'dart:io';
-
-import 'package:app_tcareer/src/features/posts/presentation/controllers/comment_controller.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/comment_item_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
-import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
+import 'package:core/core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
-import 'package:pinput/pinput.dart';
 
 class CommentsPage extends ConsumerStatefulWidget {
   final ScrollController scrollController;
@@ -184,7 +181,7 @@ class _CommentsPageState extends ConsumerState<CommentsPage> {
                             ),
                             Text(
                               "Xem ${commentsChild.length} câu trả lời",
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.black54, fontSize: 11),
                             ),
                           ],

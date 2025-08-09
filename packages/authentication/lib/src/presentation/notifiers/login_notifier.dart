@@ -1,9 +1,9 @@
 import 'package:authentication/src/extensions/auth_extension.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/auth_provider.dart';
 import '../../domain/usecases/auth_usecase.dart';
-import '../../utils/app_utils.dart';
 
 class LoginNotifier extends AsyncNotifier<void> {
   late final LoginUseCase _loginUseCase;

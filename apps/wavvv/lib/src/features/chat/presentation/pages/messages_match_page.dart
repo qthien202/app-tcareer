@@ -1,7 +1,6 @@
 import 'package:app_tcareer/src/features/chat/data/models/message.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_search_controller.dart';
-import 'package:app_tcareer/src/utils/app_utils.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_from_message.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

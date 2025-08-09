@@ -1,4 +1,3 @@
-import 'package:app_tcareer/src/configs/app_constants.dart';
 import 'package:authentication/authentication.dart';
 import 'package:app_tcareer/src/features/chat/data/models/all_conversation.dart';
 import 'package:app_tcareer/src/features/chat/data/models/conversation.dart';
@@ -24,13 +23,14 @@ import 'package:app_tcareer/src/features/user/data/models/create_resume_request.
 import 'package:app_tcareer/src/features/user/data/models/resume_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/update_profile_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
+import 'package:core/core.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_services.g.dart';
 
-@RestApi(baseUrl: AppConstants.baseUrl)
+@RestApi(baseUrl: Env.baseURL)
 abstract class ApiServices {
   factory ApiServices(Dio dio, {String baseUrl}) = _ApiServices;
 

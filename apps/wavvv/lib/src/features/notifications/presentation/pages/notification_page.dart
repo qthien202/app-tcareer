@@ -1,11 +1,9 @@
 import 'package:app_tcareer/src/features/notifications/presentation/controllers/notification_controller.dart';
 import 'package:app_tcareer/src/features/notifications/presentation/widgets/notification_item.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
-import 'package:app_tcareer/src/utils/app_utils.dart';
-import 'package:app_tcareer/src/widgets/circular_loading_widget.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class NotificationPage extends ConsumerWidget {
   const NotificationPage({super.key});

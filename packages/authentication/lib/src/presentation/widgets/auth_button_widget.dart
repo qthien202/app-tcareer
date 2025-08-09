@@ -1,7 +1,5 @@
-
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-
-import '../../common/configs/app_colors.dart';
 
 Widget authButtonWidget(
     {required BuildContext context,

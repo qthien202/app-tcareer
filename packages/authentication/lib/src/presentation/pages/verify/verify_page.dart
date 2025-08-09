@@ -1,12 +1,6 @@
-import 'package:authentication/src/data/models/verify_otp.dart';
-import 'package:authentication/src/presentation/widgets/auth_button_widget.dart';
-import 'package:authentication/src/presentation/widgets/pin_put_widget.dart';
-
-import 'package:authentication/src/utils/validator.dart';
+import 'package:authentication/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../../../authentication.dart';
 
 class VerifyPage extends ConsumerWidget {
   final VerifyOTP? verifyOTP;

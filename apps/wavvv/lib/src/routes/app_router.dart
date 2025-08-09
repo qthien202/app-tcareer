@@ -1,4 +1,3 @@
-
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
 import 'package:app_tcareer/src/features/posts/data/models/post_edit.dart';
@@ -10,9 +9,7 @@ import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart
 import 'package:app_tcareer/src/routes/index_route.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
 import 'package:app_tcareer/src/services/apis/api_service_provider.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
-import 'package:app_tcareer/src/widgets/photos/app_photo_model.dart';
-import 'package:app_tcareer/src/widgets/photos/app_photo_view.dart';
+import 'package:core/core.dart';
 import 'package:authentication/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

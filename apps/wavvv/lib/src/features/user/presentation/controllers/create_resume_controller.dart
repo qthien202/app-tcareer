@@ -1,17 +1,16 @@
-import 'package:app_tcareer/src/configs/app_colors.dart';
 import 'package:app_tcareer/src/features/user/data/models/create_resume_request.dart';
 import 'package:app_tcareer/src/features/user/data/models/education_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/experience_model.dart';
 import 'package:app_tcareer/src/features/user/data/models/skill_model.dart';
 import 'package:app_tcareer/src/features/user/presentation/controllers/user_controller.dart';
 import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
-import 'package:app_tcareer/src/utils/app_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:quill_html_editor/quill_html_editor.dart';
+import 'package:core/core.dart';
 
 enum DatePicker { startDate, endDate }
 

@@ -1,17 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:ably_flutter/ably_flutter.dart' as ably;
-import 'package:app_tcareer/src/environment/env.dart';
+
 import 'package:app_tcareer/src/features/chat/data/models/all_conversation.dart';
 import 'package:app_tcareer/src/features/chat/data/models/mark_read_message_request.dart';
 import 'package:app_tcareer/src/features/chat/data/models/user_conversation.dart';
-import 'package:app_tcareer/src/features/chat/presentation/controllers/chat_controller.dart';
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
-import 'package:app_tcareer/src/features/posts/data/models/debouncer.dart';
 import 'package:app_tcareer/src/features/user/data/models/users.dart';
-import 'package:app_tcareer/src/features/user/usercases/user_use_case.dart';
 import 'package:app_tcareer/src/services/custom_cache_manager.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +16,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
-import 'dart:developer' as dev;
 
 class ConversationController extends ChangeNotifier {
   final ChatUseCase chatUseCase;

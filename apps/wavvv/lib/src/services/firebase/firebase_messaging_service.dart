@@ -1,7 +1,5 @@
-import 'package:app_tcareer/app.dart';
 import 'package:app_tcareer/main.dart';
 import 'package:app_tcareer/src/services/notifications/notification_service.dart';
-import 'package:app_tcareer/src/utils/user_utils.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:core/core.dart';
 
 class FirebaseMessagingService {
   final NotificationService notificationService;

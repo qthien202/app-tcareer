@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:app_tcareer/src/configs/app_constants.dart';
 import 'package:app_tcareer/src/features/index/index_controller.dart';
 import 'package:app_tcareer/src/features/posts/data/models/user_liked.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/edit_comment_page.dart';
@@ -10,8 +8,7 @@ import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart'
 import 'package:app_tcareer/src/features/posts/usecases/comment_use_case.dart';
 import 'package:app_tcareer/src/features/posts/usecases/media_use_case.dart';
 import 'package:app_tcareer/src/features/posts/usecases/post_use_case.dart';
-import 'package:app_tcareer/src/utils/app_utils.dart';
-import 'package:app_tcareer/src/utils/snackbar_utils.dart';
+import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
