@@ -1,0 +1,72 @@
+import 'package:firebase_database/firebase_database.dart';
+
+enum NotificationType {
+  FOLLOW,
+  SENT_REQUEST_FRIEND,
+  ACCEPT_REQUEST_FRIEND,
+  CREATE_POST,
+  LIKE_POST,
+  SHARE,
+  LIKE_COMMENT,
+  COMMENT_POST,
+  COMMENT,
+  REPLY_COMMENT,
+  SHARE_POST,
+  OTHER
+}
+
+class NotificationEntity {
+  final String id;
+  final String avatar;
+  final String content;
+  final String fullName;
+  final bool isRead;
+  final int relatedUserId;
+  final NotificationType type;
+  final String updatedAt;
+  final String userId;
+
+  NotificationEntity({
+    required this.id,
+    required this.avatar,
+    required this.content,
+    required this.fullName,
+    required this.isRead,
+    required this.relatedUserId,
+    required this.type,
+    required this.updatedAt,
+    required this.userId,
+  });
+
+  factory NotificationEntity.fromMap(String id, Map<dynamic, dynamic> map) {
+    NotificationType parseType(String? typeStr) {
+      if (typeStr == null) return NotificationType.OTHER;
+      return NotificationType.values.firstWhere(
+        (e) => e.toString().split('.').last == typeStr,
+        orElse: () => NotificationType.OTHER,
+      );
+    }
+
+    return NotificationEntity(
+      id: id,
+      avatar: map['avatar']?.toString() ?? '',
+      content: map['content']?.toString() ?? '',
+      fullName: map['full_name']?.toString() ?? '',
+      isRead: map['is_read'] ?? false,
+      relatedUserId: map['related_user_id'] != null
+          ? int.tryParse(map['related_user_id'].toString()) ?? 0
+          : 0,
+      type: parseType(map['type']?.toString()),
+      updatedAt: map['updated_at']?.toString() ?? '',
+      userId: map['user_id']?.toString() ?? '',
+    );
+  }
+
+  /// Nếu muốn lấy từ DataSnapshot của Firebase
+  factory NotificationEntity.fromSnapshot(DataSnapshot snapshot) {
+    return NotificationEntity.fromMap(
+      snapshot.key ?? '',
+      snapshot.value as Map<dynamic, dynamic>,
+    );
+  }
+}
