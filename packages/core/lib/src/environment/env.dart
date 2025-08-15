@@ -26,4 +26,7 @@ abstract class Env {
 
   @EnviedField(varName: 'GHN_TOKEN', obfuscate: true)
   static final String addressToken = _Env.addressToken;
+
+  @EnviedField(varName: 'DATABASE_URL', obfuscate: true)
+  static final String databaseURL = _Env.databaseURL;
 }

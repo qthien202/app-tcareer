@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import '../models/check_user_phone_request.dart';
@@ -14,6 +15,7 @@ import '../models/verify_phone_request.dart';
 
 part 'auth_service.g.dart';
 
+@RestApi(baseUrl: Env.baseURL)
 abstract class AuthService {
   factory AuthService(Dio dio, {String baseUrl}) = _AuthService;
 

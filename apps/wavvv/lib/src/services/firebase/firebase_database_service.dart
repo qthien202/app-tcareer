@@ -1,12 +1,11 @@
+import 'package:core/core.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FirebaseDatabaseService {
   final database = FirebaseDatabase.instanceFor(
-      app: Firebase.app(),
-      databaseURL:
-          "https://tcareer-4fa7d-default-rtdb.asia-southeast1.firebasedatabase.app");
+      app: Firebase.app(), databaseURL: Env.databaseURL);
 
   Future<Map<dynamic, dynamic>?> getData(String path) async {
     try {
