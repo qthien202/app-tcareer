@@ -30,3 +30,6 @@ export 'src/utils/validator.dart';
 
 //services
 export 'src/services/firebase/realtime_database_service.dart';
+
+//extensions
+export 'src/extensions/string_date_time_extension.dart';

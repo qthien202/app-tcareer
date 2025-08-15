@@ -62,7 +62,6 @@ class NotificationEntity {
     );
   }
 
-  /// Nếu muốn lấy từ DataSnapshot của Firebase
   factory NotificationEntity.fromSnapshot(DataSnapshot snapshot) {
     return NotificationEntity.fromMap(
       snapshot.key ?? '',
