@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/comment_item_widget.dart';
-import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
 import 'package:core/core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

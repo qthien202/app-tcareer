@@ -1,7 +1,6 @@
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_search_controller.dart';
 import 'package:app_tcareer/src/features/posts/presentation/posts_provider.dart';
-import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/search_bar_widget.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';

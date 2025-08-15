@@ -16,3 +16,6 @@ scripts:
   build_core:
     run: melos exec --scope=core -- fvm flutter pub run build_runner build --delete-conflicting-outputs
     description: Build runner for core package only
+  build_notify:
+    run: melos exec --scope=notification -- fvm flutter pub run build_runner build --delete-conflicting-outputs
+    description: Build runner for notification package only

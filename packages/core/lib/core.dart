@@ -18,6 +18,7 @@ export 'src/widgets/circular_loading_widget.dart';
 export 'src/widgets/photo_manager_page.dart';
 export 'src/widgets/shimmer_loading_widget.dart';
 export 'src/widgets/video_fullscreen_widget.dart';
+export 'src/widgets/empty_widget.dart';
 //utils
 export 'src/utils/alert_dialog_util.dart';
 export 'src/utils/app_utils.dart';
