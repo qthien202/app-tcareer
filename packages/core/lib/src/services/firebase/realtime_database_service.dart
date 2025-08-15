@@ -28,7 +28,8 @@ class RealtimeDatabaseService {
     return _database.ref(path).onValue;
   }
 
-  Future<void> updateValue(String path, String key, dynamic value) async {
+  Future<void> updateValue(
+      {required String path, required String key, dynamic value}) async {
     try {
       await _database.ref(path).update({key: value});
     } catch (e, st) {
@@ -47,7 +48,8 @@ class RealtimeDatabaseService {
     }
   }
 
-  Future<void> updateData(String path, Map<String, dynamic> data) async {
+  Future<void> updateData(
+      {required String path, required Map<String, dynamic> data}) async {
     try {
       await _database.ref(path).update(data);
     } catch (e, st) {
@@ -56,13 +58,23 @@ class RealtimeDatabaseService {
     }
   }
 
-  Future<String> push(String path, Map<String, dynamic> data) async {
+  Future<String> push(
+      {required String path, required Map<String, dynamic> data}) async {
     try {
       final ref = _database.ref(path).push();
       await ref.set(data);
       return ref.key!;
     } catch (e, st) {
       print("Error pushing data at $path: $e\n$st");
+      rethrow;
+    }
+  }
+
+  Future<void> delete(String path) async {
+    try {
+      await _database.ref(path).remove();
+    } catch (e, st) {
+      print("Error deleting data at $path: $e\n$st");
       rethrow;
     }
   }

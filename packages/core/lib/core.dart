@@ -27,3 +27,6 @@ export 'src/utils/picker_utils.dart';
 export 'src/utils/snackbar_utils.dart';
 export 'src/utils/user_utils.dart';
 export 'src/utils/validator.dart';
+
+//services
+export 'src/services/firebase/realtime_database_service.dart';
