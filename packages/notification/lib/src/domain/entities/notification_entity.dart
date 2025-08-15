@@ -21,10 +21,11 @@ class NotificationEntity {
   final String content;
   final String fullName;
   final bool isRead;
-  final int relatedUserId;
+  final int? relatedUserId;
   final NotificationType type;
   final String updatedAt;
   final String userId;
+  final String? postId;
 
   NotificationEntity({
     required this.id,
@@ -32,10 +33,11 @@ class NotificationEntity {
     required this.content,
     required this.fullName,
     required this.isRead,
-    required this.relatedUserId,
+    this.relatedUserId,
     required this.type,
     required this.updatedAt,
     required this.userId,
+    this.postId,
   });
 
   factory NotificationEntity.fromMap(String id, Map<dynamic, dynamic> map) {
@@ -48,18 +50,18 @@ class NotificationEntity {
     }
 
     return NotificationEntity(
-      id: id,
-      avatar: map['avatar']?.toString() ?? '',
-      content: map['content']?.toString() ?? '',
-      fullName: map['full_name']?.toString() ?? '',
-      isRead: map['is_read'] ?? false,
-      relatedUserId: map['related_user_id'] != null
-          ? int.tryParse(map['related_user_id'].toString()) ?? 0
-          : 0,
-      type: parseType(map['type']?.toString()),
-      updatedAt: map['updated_at']?.toString() ?? '',
-      userId: map['user_id']?.toString() ?? '',
-    );
+        id: id,
+        avatar: map['avatar']?.toString() ?? '',
+        content: map['content']?.toString() ?? '',
+        fullName: map['full_name']?.toString() ?? '',
+        isRead: map['is_read'] ?? false,
+        relatedUserId: map['related_user_id'] != null
+            ? int.tryParse(map['related_user_id'].toString()) ?? 0
+            : 0,
+        type: parseType(map['type']?.toString()),
+        updatedAt: map['updated_at']?.toString() ?? '',
+        userId: map['user_id']?.toString() ?? '',
+        postId: map['post_id']?.toString() ?? '');
   }
 
   factory NotificationEntity.fromSnapshot(DataSnapshot snapshot) {
