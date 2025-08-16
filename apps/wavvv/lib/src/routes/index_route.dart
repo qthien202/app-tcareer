@@ -1,6 +1,6 @@
 import 'package:app_tcareer/src/features/chat/presentation/pages/conversation_page.dart';
 import 'package:app_tcareer/src/features/index/index_page.dart';
-import 'package:app_tcareer/src/features/notifications/presentation/pages/notification_page.dart';
+import 'package:app_tcareer/src/features/notifications/notification_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/home_page.dart';
 import 'package:app_tcareer/src/features/posts/presentation/pages/search_page.dart';
 import 'package:app_tcareer/src/features/user/presentation/pages/profile_page.dart';

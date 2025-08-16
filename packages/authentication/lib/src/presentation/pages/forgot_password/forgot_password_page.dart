@@ -1,12 +1,16 @@
+import 'dart:ui';
+
 import 'package:authentication/src/extensions/auth_extension.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import '../../../../authentication.dart';
 
 class ForgotPasswordPage extends ConsumerWidget {
-  const ForgotPasswordPage({super.key});
+  final Function(VerifyOTP data) onVerifyPhoneSuccess;
+  final VoidCallback onVerifyEmailSuccess;
+  const ForgotPasswordPage(this.onVerifyPhoneSuccess, this.onVerifyEmailSuccess,
+      {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -57,15 +61,11 @@ class ForgotPasswordPage extends ConsumerWidget {
                       ),
                       authButtonWidget(
                           context: context,
-                          onPressed: () async {
-                            if (notifier
-                                .textInputController.text.isValidEmail) {
-                              await notifier.forgotPassword(context);
-                            } else if (notifier
-                                .textInputController.text.isValidPhoneNumber) {
-                              await notifier.checkUserPhone(context);
-                            }
-                          },
+                          onPressed: () async => await _onForgotPassword(
+                              context: context,
+                              notifier: notifier,
+                              onVerifyEmailSuccess: onVerifyEmailSuccess,
+                              onVerifyPhoneSuccess: onVerifyPhoneSuccess),
                           title: "Gửi mã xác thực"),
                       const SizedBox(
                         height: 20,
@@ -82,5 +82,37 @@ class ForgotPasswordPage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _onForgotPassword(
+      {required ForgotPasswordNotifier notifier,
+      required BuildContext context,
+      required Function(VerifyOTP data) onVerifyPhoneSuccess,
+      required VoidCallback onVerifyEmailSuccess}) async {
+    if (notifier.textInputController.text.isValidEmail) {
+      AppUtils.loadingApi(() async {
+        await notifier.forgotPassword(onSuccess: onVerifyEmailSuccess);
+      }, context);
+    } else if (notifier.textInputController.text.isValidPhoneNumber) {
+      AppUtils.loadingApi(() async {
+        await notifier.checkUserPhone(
+          onVerifySuccess: onVerifyPhoneSuccess,
+          onVerificationFailed: (ex) {
+            AlertDialogUtil.showAlert(
+              context: context,
+              title: "Có lỗi xảy ra",
+              content: ex.message ?? "",
+            );
+          },
+          onPhoneNumberExist: () async {
+            await AlertDialogUtil.showAlert(
+              context: context,
+              title: "Có lỗi xảy ra",
+              content: "Số điện thoại không tồn tại trên hệ thống",
+            );
+          },
+        );
+      }, context);
+    }
   }
 }
