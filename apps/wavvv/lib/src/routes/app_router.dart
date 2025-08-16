@@ -1,3 +1,4 @@
+import 'package:app_tcareer/src/features/authentication/authentication.dart';
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
 import 'package:app_tcareer/src/features/chat/usecases/chat_use_case.dart';
 import 'package:app_tcareer/src/features/posts/data/models/post_edit.dart';
@@ -9,8 +10,8 @@ import 'package:app_tcareer/src/features/user/usercases/connection_use_case.dart
 import 'package:app_tcareer/src/routes/index_route.dart';
 import 'package:app_tcareer/src/routes/transition_builder.dart';
 import 'package:app_tcareer/src/services/apis/api_service_provider.dart';
+import 'package:authentication/authentication.dart' as auth;
 import 'package:core/core.dart';
-import 'package:authentication/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -155,7 +156,7 @@ class AppRouter {
           path: "/${RouteNames.register.name}",
           name: RouteNames.register.name,
           pageBuilder: (context, state) {
-            final type = state.extra as RegisterType;
+            final type = state.extra as auth.RegisterType;
             return CustomTransitionPage(
               key: state.pageKey,
               child: RegisterPage(
@@ -178,7 +179,7 @@ class AppRouter {
                 path: RouteNames.verify.name,
                 name: RouteNames.verify.name,
                 pageBuilder: (context, state) {
-                  VerifyOTP? verifyOTp = state.extra as VerifyOTP?;
+                  auth.VerifyOTP? verifyOTp = state.extra as auth.VerifyOTP?;
                   return CustomTransitionPage(
                     key: state.pageKey,
                     child: VerifyPage(

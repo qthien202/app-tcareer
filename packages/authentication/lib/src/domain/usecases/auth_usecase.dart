@@ -1,6 +1,6 @@
-export 'forgot_pass_word/forgot_password_usecase.dart';
-export 'forgot_pass_word/forgot_password_verify_usecase.dart';
-export 'forgot_pass_word/reset_password_usecase.dart';
+export 'forgot_password/forgot_password_usecase.dart';
+export 'forgot_password/forgot_password_verify_usecase.dart';
+export 'forgot_password/reset_password_usecase.dart';
 
 //login
 export 'login/login_usecase.dart';

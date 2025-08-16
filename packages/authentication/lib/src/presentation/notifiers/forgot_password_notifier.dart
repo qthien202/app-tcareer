@@ -1,6 +1,12 @@
+import 'dart:ui';
+
 import 'package:authentication/src/domain/auth_provider.dart';
 import 'package:core/core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/animation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -45,15 +51,12 @@ class ForgotPasswordNotifier extends AsyncNotifier<void> {
     _loginWithOtpUseCase = ref.read(loginWithOTPUseCaseProvider);
   }
 
-  Future<void> forgotPassword(BuildContext context) async {
+  Future<void> forgotPassword({required VoidCallback onSuccess}) async {
     if (formKey.currentState?.validate() != true) return;
 
     final body = ForgotPasswordRequest(email: textInputController.text);
-
-    AppUtils.loadingApi(() async {
-      await _forgotPasswordUseCase(body);
-      context.pushNamed('verify');
-    }, context);
+    await _forgotPasswordUseCase(body);
+    onSuccess.call();
   }
 
   Future<void> verifyOtp(BuildContext context) async {
@@ -88,49 +91,41 @@ class ForgotPasswordNotifier extends AsyncNotifier<void> {
     }, context);
   }
 
-  Future<void> checkUserPhone(BuildContext context) async {
+  Future<void> checkUserPhone(
+      {required VoidCallback onPhoneNumberExist,
+      required Function(FirebaseAuthException ex) onVerificationFailed,
+      required Function(VerifyOTP data) onVerifySuccess}) async {
     if (formKey.currentState?.validate() != true) return;
 
-    AppUtils.loadingApi(() async {
-      await _checkUserPhoneUseCase
-          .call(CheckUserPhoneRequest(phone: textInputController.text))
-          .then((val) async {
-        await AlertDialogUtil.showAlert(
-          context: context,
-          title: "Có lỗi xảy ra",
-          content: "Số điện thoại không tồn tại trên hệ thống",
-        );
-      }).catchError((e) async {
-        await verifyPhoneNumber(context);
-      });
-    }, context);
+    await _checkUserPhoneUseCase
+        .call(CheckUserPhoneRequest(phone: textInputController.text))
+        .then((val) async {})
+        .catchError((e) async {
+      await verifyPhoneNumber(
+          onVerificationFailed: onVerificationFailed,
+          onVerifySuccess: onVerifySuccess);
+    });
   }
 
-  Future<void> verifyPhoneNumber(BuildContext context) async {
+  Future<void> verifyPhoneNumber(
+      {required Function(FirebaseAuthException ex) onVerificationFailed,
+      required Function(VerifyOTP data) onVerifySuccess}) async {
     final phone = "+84${textInputController.text.substring(1)}";
 
-    AppUtils.loadingApi(() async {
-      await _verifyPhoneNumberUseCase(
-        phoneNumber: phone,
-        verificationCompleted: (_) {},
-        verificationFailed: (ex) {
-          AlertDialogUtil.showAlert(
-            context: context,
-            title: "Có lỗi xảy ra",
-            content: ex.message ?? "",
-          );
-        },
-        codeSent: (verificationId, _) {
-          final verifyOTP = VerifyOTP(
-            type: TypeVerify.forgotPasswordPhone,
-            phoneNumber: textInputController.text,
-            verificationId: verificationId,
-          );
-          context.pushNamed("verify", extra: verifyOTP);
-        },
-        codeAutoRetrievalTimeout: (_) {},
-      );
-    }, context);
+    await _verifyPhoneNumberUseCase(
+      phoneNumber: phone,
+      verificationCompleted: (_) {},
+      verificationFailed: onVerificationFailed,
+      codeSent: (verificationId, _) {
+        final verifyOTP = VerifyOTP(
+          type: TypeVerify.forgotPasswordPhone,
+          phoneNumber: textInputController.text,
+          verificationId: verificationId,
+        );
+        onVerifySuccess.call(verifyOTP);
+      },
+      codeAutoRetrievalTimeout: (_) {},
+    );
   }
 
   Future<void> signInWithOTP({

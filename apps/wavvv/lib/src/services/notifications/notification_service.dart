@@ -112,7 +112,6 @@ class NotificationService {
       context?.pushReplacementNamed("chat",
           pathParameters: {"userId": userId ?? "", "clientId": clientId});
     } else if (userId != null && userId.isNotEmpty) {
-      print(">>>>>>>>>>>2");
       context?.pushNamed(
         'profile',
         queryParameters: {"userId": userId},

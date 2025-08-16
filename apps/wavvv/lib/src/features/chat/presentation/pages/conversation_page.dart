@@ -1,5 +1,4 @@
 import 'package:app_tcareer/src/features/chat/presentation/controllers/conversation_controller.dart';
-import 'package:app_tcareer/src/features/posts/presentation/widgets/empty_widget.dart';
 import 'package:app_tcareer/src/features/posts/presentation/widgets/search_bar_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';

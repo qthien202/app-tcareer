@@ -5,7 +5,7 @@ part 'env.g.dart';
 
 @Envied(path: AppConstants.env)
 abstract class Env {
-  @EnviedField(varName: 'BASE_URL', obfuscate: false)
+  @EnviedField(varName: 'BASE_URL',)
   static const String baseURL = _Env.baseURL;
   @EnviedField(varName: 'CLIENT_ID', obfuscate: true)
   static final String clientId = _Env.clientId;
@@ -26,4 +26,7 @@ abstract class Env {
 
   @EnviedField(varName: 'GHN_TOKEN', obfuscate: true)
   static final String addressToken = _Env.addressToken;
+
+  @EnviedField(varName: 'DATABASE_URL', obfuscate: true)
+  static final String databaseURL = _Env.databaseURL;
 }
