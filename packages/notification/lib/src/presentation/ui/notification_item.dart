@@ -11,7 +11,7 @@ Widget notificationItem(
   return GestureDetector(
     onTap: onTap,
     child: Container(
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       color: color,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

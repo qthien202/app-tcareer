@@ -1,12 +1,15 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:notification/src/presentation/notifier/notification_notifier.dart';
-
+import 'package:notification/notification.dart';
 import 'notification_item.dart';
 
 class NotificationPage extends ConsumerWidget {
-  const NotificationPage({super.key});
+  final void Function(NotificationEntity data) onTap;
+  const NotificationPage({
+    super.key,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,23 +35,18 @@ class NotificationPage extends ConsumerWidget {
 
   Widget notifications(WidgetRef ref) {
     final state = ref.watch(notificationNotifierProvider);
-    final notifier = ref.watch(notificationNotifierProvider.notifier);
     return state.when(
         loading: () => circularLoadingWidget(),
         data: (data) {
           final notifications = data.notifications;
           return ListView.builder(
-            itemCount: (notifications.length ?? 0) > 20
-                ? 20
-                : notifications.length ?? 0,
+            itemCount: (notifications.length) > 20 ? 20 : notifications.length,
             itemBuilder: (context, index) {
               final notification = notifications[index];
-
               return notificationItem(
                   data: notification,
                   context: context,
-                  onTap: () => notifier.directToPage(
-                      context: context, notification: notification));
+                  onTap: () => onTap.call(notification));
             },
           );
         },

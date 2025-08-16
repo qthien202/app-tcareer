@@ -141,6 +141,8 @@ dependencies:
     path: ../../packages/authentication
   core:
     path: ../../packages/core
+  notification:
+    path: ../../packages/notification
 
 #  quill_html_editor: ^2.2.8
 
