@@ -9,8 +9,10 @@ import '../../../../authentication.dart';
 class ForgotPasswordPage extends ConsumerWidget {
   final Function(VerifyOTP data) onVerifyPhoneSuccess;
   final VoidCallback onVerifyEmailSuccess;
-  const ForgotPasswordPage(this.onVerifyPhoneSuccess, this.onVerifyEmailSuccess,
-      {super.key});
+  const ForgotPasswordPage(
+      {super.key,
+      required this.onVerifyPhoneSuccess,
+      required this.onVerifyEmailSuccess});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

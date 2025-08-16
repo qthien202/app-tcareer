@@ -1,5 +1,7 @@
-import 'package:authentication/authentication.dart'as auth;
+import 'package:authentication/authentication.dart' as auth;
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
@@ -11,11 +13,11 @@ class LoginPage extends StatelessWidget {
 
 class RegisterPage extends StatelessWidget {
   final auth.RegisterType type;
-  const RegisterPage({super.key,required this.type});
+  const RegisterPage({super.key, required this.type});
 
   @override
   Widget build(BuildContext context) {
-    return auth.RegisterPage(type:type);
+    return auth.RegisterPage(type: type);
   }
 }
 
@@ -42,7 +44,10 @@ class ForgotPasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const auth.ForgotPasswordPage();
+    return auth.ForgotPasswordPage(
+      onVerifyEmailSuccess: () => context.pushNamed('verify'),
+      onVerifyPhoneSuccess: (data) => context.pushNamed("verify", extra: data),
+    );
   }
 }
 
@@ -65,7 +70,3 @@ class VerifyPage extends StatelessWidget {
     return auth.VerifyPage(verifyOTP: verifyOTP);
   }
 }
-
-
-
-
