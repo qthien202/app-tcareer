@@ -8,10 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:app_tcareer/src/features/notifications/presentation/controllers/notification_controller.dart';
-
-import 'package:badges/badges.dart' as badges;
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:notification/notification.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -230,12 +227,12 @@ class HomePage extends ConsumerWidget {
                     color: AppColors.primary,
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Text(
                   postingController.loadingProgress >= 0.75
                       ? "Sắp hoàn tất..."
                       : "Đang tải bài viết lên...",
-                  style: TextStyle(fontSize: 11),
+                  style: const TextStyle(fontSize: 11),
                 )
               ],
             ),
@@ -253,29 +250,7 @@ class HomePage extends ConsumerWidget {
 }
 
 Widget notificationIcon(WidgetRef ref, {bool active = false}) {
-  final notificationController = ref.watch(notificationControllerProvider);
-  return StreamBuilder<List<Map<String, dynamic>>>(
-      stream: notificationController.unReadNotificationsStream(),
-      builder: (context, snapshot) {
-        return badges.Badge(
-          position: badges.BadgePosition.topEnd(top: -8, end: -5),
-          showBadge: snapshot.data?.isNotEmpty == true ? true : false,
-          ignorePointer: false,
-          badgeContent: Text(
-            snapshot.data?.length.toString() ?? "",
-            style: const TextStyle(color: Colors.white, fontSize: 10),
-          ),
-          badgeStyle: const badges.BadgeStyle(badgeColor: Colors.redAccent),
-          child: Visibility(
-            visible: active != true,
-            replacement: PhosphorIcon(
-              PhosphorIconsFill.bell,
-            ),
-            child: PhosphorIcon(
-              PhosphorIconsRegular.bell,
-              size: 20,
-            ),
-          ),
-        );
-      });
+  final notificationState = ref.watch(notificationNotifierProvider);
+  return NotificationIconWidget(
+      unreadCount: notificationState.value?.unreadCount ?? 0);
 }

@@ -47,8 +47,10 @@ class NotificationNotifier extends AsyncNotifier<NotificationState> {
       _subscription = _listenNotificationUseCase(userId).listen(
         (notifications) {
           if (!ref.exists(notificationNotifierProvider)) return;
-
+          final unreadNotifications =
+              notifications.where((e) => !e.isRead).toList();
           state = AsyncValue.data(NotificationState(
+              unreadCount: unreadNotifications.length,
               notifications: notifications,
               isLoading: false,
               errorMessage: null));

@@ -2,7 +2,8 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:notification/notification.dart';
-import 'notification_item.dart';
+import 'package:notification/src/presentation/ui/widgets/notification_item_widget.dart';
+
 
 class NotificationPage extends ConsumerWidget {
   final void Function(NotificationEntity data) onTap;
@@ -43,9 +44,8 @@ class NotificationPage extends ConsumerWidget {
             itemCount: (notifications.length) > 20 ? 20 : notifications.length,
             itemBuilder: (context, index) {
               final notification = notifications[index];
-              return notificationItem(
+              return NotificationItemWidget(
                   data: notification,
-                  context: context,
                   onTap: () => onTap.call(notification));
             },
           );

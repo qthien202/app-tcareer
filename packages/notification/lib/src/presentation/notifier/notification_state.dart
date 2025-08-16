@@ -4,9 +4,9 @@ part 'notification_state.freezed.dart';
 
 @freezed
 class NotificationState with _$NotificationState {
-  const factory NotificationState({
-    @Default([]) List<NotificationEntity> notifications,
-    @Default(false) bool isLoading,
-    String? errorMessage,
-  }) = _NotificationState;
+  const factory NotificationState(
+      {@Default([]) List<NotificationEntity> notifications,
+      @Default(false) bool isLoading,
+      String? errorMessage,
+      @Default(0) int unreadCount}) = _NotificationState;
 }
