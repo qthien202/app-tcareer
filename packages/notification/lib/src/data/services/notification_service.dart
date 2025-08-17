@@ -1,6 +1,9 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:core/core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:notification/src/data/models/app_notification.dart';
+import 'package:notification/src/data/models/notification_click_event.dart';
+import 'package:notification/src/data/models/notification_payload.dart';
 
 class NotificationService {
   NotificationService();
@@ -10,8 +13,8 @@ class NotificationService {
       null,
       [
         NotificationChannel(
-          channelKey: 'basic_channel',
-          channelName: 'Basic notifications',
+          channelKey: 'tcareer_channel',
+          channelName: 'TCareer Notification',
           channelDescription: 'Notification channel for basic notifications',
           importance: NotificationImportance.Max,
           channelShowBadge: true,
@@ -35,17 +38,33 @@ class NotificationService {
 
     await AwesomeNotifications().createNotification(
       content: NotificationContent(
-        id: notificationId,
-        channelKey: data.payload.userId ?? "",
-        title: data.title,
-        body: data.body,
-        largeIcon: data.imageUrl,
-        payload: data.payload.toMap(),
-        displayOnForeground: true,
-        displayOnBackground: true,
-        notificationLayout: NotificationLayout.Messaging,
-      ),
+          id: notificationId,
+          channelKey: "tcareer_channel",
+          title: data.title,
+          body: data.body,
+          largeIcon: data.imageUrl,
+          payload: data.payload.toMap(),
+          displayOnForeground: true,
+          displayOnBackground: true,
+          notificationLayout: NotificationLayout.Messaging,
+          groupKey: data.payload.userId),
     );
+    await AwesomeNotifications()
+        .setListeners(onActionReceivedMethod: onActionReceivedMethod);
+  }
+
+  Future<void> onActionReceivedMethod(ReceivedAction receivedAction) async {
+    Log.i("On click notification");
+    final payload = receivedAction.payload;
+    if (payload != null) {
+      final safePayload =
+          payload.map((key, value) => MapEntry(key, value ?? ""));
+      AppEventBus.fire(
+        NotificationClickEvent(
+          payload: NotificationPayload.fromMap(safePayload),
+        ),
+      );
+    }
   }
 }
 

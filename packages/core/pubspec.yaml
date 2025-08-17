@@ -105,6 +105,7 @@ dependencies:
   freezed: any
   freezed_annotation: any
   go_router: ^14.2.1
+  event_bus: ^2.0.1
 
 
 #  quill_html_editor: ^2.2.8

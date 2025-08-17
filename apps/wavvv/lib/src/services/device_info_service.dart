@@ -12,12 +12,12 @@ class DeviceInfoService {
     if (Platform.isAndroid) {
       final android = await deviceInfoPlugin.androidInfo;
       String deviceId = android.id;
-      print(">>>>>>deviceId: $deviceId");
+      Log.i(deviceId, name: "DEVICE-ID");
       await userUtils.saveDeviceId(deviceId: deviceId);
     } else {
       final ios = await deviceInfoPlugin.iosInfo;
       String deviceId = ios.identifierForVendor ?? "";
-      print(">>>>>>deviceId: $deviceId");
+      Log.i(deviceId, name: "DEVICE-ID");
       await userUtils.saveDeviceId(deviceId: deviceId);
     }
   }

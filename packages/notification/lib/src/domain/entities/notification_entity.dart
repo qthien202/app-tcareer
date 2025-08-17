@@ -1,17 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
-
-enum NotificationType {
-  FOLLOW,
-  SENT_REQUEST_FRIEND,
-  ACCEPT_REQUEST_FRIEND,
-  CREATE_POST,
-  LIKE_POST,
-  LIKE_COMMENT,
-  COMMENT_POST,
-  REPLY_COMMENT,
-  SHARE_POST,
-  OTHER
-}
+import 'package:notification/notification.dart';
 
 class NotificationEntity {
   final String id;
