@@ -1,8 +1,4 @@
-enum NotificationType {
-  comment,
-  chat,
-  other,
-}
+import 'package:notification/notification.dart';
 
 class NotificationPayload {
   final String? postId;
@@ -11,7 +7,6 @@ class NotificationPayload {
   final String? applicationId;
   final String? conversationId;
   final String? jobId;
-  final Map<String, dynamic> rawData;
 
   NotificationPayload({
     this.postId,
@@ -20,16 +15,15 @@ class NotificationPayload {
     this.applicationId,
     this.conversationId,
     this.jobId,
-    required this.rawData,
   });
 
   factory NotificationPayload.fromMap(Map<String, dynamic> data) {
     NotificationType parseType(String? typeStr) {
-      if (typeStr == null) return NotificationType.other;
-      final upper = typeStr.toUpperCase();
-      if (upper.contains("COMMENT")) return NotificationType.comment;
-      if (upper.contains("CHAT")) return NotificationType.chat;
-      return NotificationType.other;
+      if (typeStr == null) return NotificationType.OTHER;
+      return NotificationType.values.firstWhere(
+        (e) => e.toString().split('.').last == typeStr,
+        orElse: () => NotificationType.OTHER,
+      );
     }
 
     return NotificationPayload(
@@ -39,7 +33,6 @@ class NotificationPayload {
       applicationId: data['application_id']?.toString(),
       conversationId: data['conversation_id']?.toString(),
       jobId: data['job_id']?.toString(),
-      rawData: data,
     );
   }
 
@@ -51,6 +44,17 @@ class NotificationPayload {
       if (applicationId != null) 'application_id': applicationId!,
       if (conversationId != null) 'conversation_id': conversationId!,
       if (jobId != null) 'job_id': jobId!,
+    };
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'post_id': postId,
+      'related_user_id': userId,
+      'type': type.name,
+      'application_id': applicationId,
+      'conversation_id': conversationId,
+      'job_id': jobId,
     };
   }
 }

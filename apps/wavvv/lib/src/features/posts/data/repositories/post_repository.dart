@@ -71,7 +71,6 @@ class PostRepository {
       {required String personal, String? userId, int? page}) async {
     final api = ref.read(apiServiceProvider);
     final userUtils = ref.read(userUtilsProvider);
-    print(">>>>>>refreshToken: ${await userUtils.getRefreshToken()}");
     return await api.getPosts(
         queries:
             PostRequest(personal: personal, profileUserId: userId, page: page));

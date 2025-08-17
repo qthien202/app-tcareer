@@ -133,42 +133,42 @@ final firebaseMessagingServiceProvider =
       notificationService, userUtils, ref, navigatorKey);
 });
 
-Future<void> backgroundHandler(RemoteMessage message) async {
-  final context = navigatorKey.currentContext;
-  final data = message.data;
-  print(">>>>>>>>>data: $data");
-  final postId = data["post_id"]?.toString();
-  final userId = data['related_user_id']?.toString();
-  final type = data['type']?.toString();
-  final applicationId = data['application_id']?.toString();
-  final jobId = data['job_id']?.toString();
-
-  if (context != null) {
-    if (postId != null &&
-        postId.isNotEmpty &&
-        type?.contains("COMMENT") == true) {
-      context.pushNamed(
-        "detail",
-        pathParameters: {"id": postId},
-        queryParameters: {"notificationType": type},
-      );
-    } else if (postId != null && postId.isNotEmpty) {
-      context.pushNamed(
-        "detail",
-        pathParameters: {"id": postId},
-      );
-    } else if (type?.contains("CHAT") == true &&
-        userId != null &&
-        userId.isNotEmpty) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String clientId = prefs.getString("userId").toString();
-      context.pushReplacementNamed("chat",
-          pathParameters: {"userId": userId ?? "", "clientId": clientId});
-    } else if (userId != null && userId.isNotEmpty) {
-      context.pushNamed(
-        'profile',
-        queryParameters: {"userId": userId},
-      );
-    }
-  }
-}
+// Future<void> backgroundHandler(RemoteMessage message) async {
+//   final context = navigatorKey.currentContext;
+//   final data = message.data;
+//   print(">>>>>>>>>data: $data");
+//   final postId = data["post_id"]?.toString();
+//   final userId = data['related_user_id']?.toString();
+//   final type = data['type']?.toString();
+//   final applicationId = data['application_id']?.toString();
+//   final jobId = data['job_id']?.toString();
+//
+//   if (context != null) {
+//     if (postId != null &&
+//         postId.isNotEmpty &&
+//         type?.contains("COMMENT") == true) {
+//       context.pushNamed(
+//         "detail",
+//         pathParameters: {"id": postId},
+//         queryParameters: {"notificationType": type},
+//       );
+//     } else if (postId != null && postId.isNotEmpty) {
+//       context.pushNamed(
+//         "detail",
+//         pathParameters: {"id": postId},
+//       );
+//     } else if (type?.contains("CHAT") == true &&
+//         userId != null &&
+//         userId.isNotEmpty) {
+//       SharedPreferences prefs = await SharedPreferences.getInstance();
+//       String clientId = prefs.getString("userId").toString();
+//       context.pushReplacementNamed("chat",
+//           pathParameters: {"userId": userId ?? "", "clientId": clientId});
+//     } else if (userId != null && userId.isNotEmpty) {
+//       context.pushNamed(
+//         'profile',
+//         queryParameters: {"userId": userId},
+//       );
+//     }
+//   }
+// }

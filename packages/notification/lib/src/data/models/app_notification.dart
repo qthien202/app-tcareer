@@ -26,4 +26,13 @@ class AppNotification {
       payload: NotificationPayload.fromMap(data),
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'body': body,
+      'imageUrl': imageUrl,
+      'payload': payload.toJson(),
+    };
+  }
 }

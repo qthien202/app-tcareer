@@ -6,10 +6,8 @@ import 'package:notification/src/data/models/app_notification.dart';
 import 'package:notification/src/data/models/notification_received_event.dart';
 import 'package:core/core.dart';
 
-final eventBus = EventBus();
-
 void handleIncomingNotification(RemoteMessage message) {
-  eventBus.fire(
+  AppEventBus.fire(
     NotificationReceivedEvent(
       data: AppNotification.fromRemoteMessage(message),
     ),
@@ -28,6 +26,7 @@ class FirebaseMessagingService {
 
   void configureFirebaseMessaging() async {
     final deviceToken = await fcm.getToken();
+    Log.i(deviceToken ?? "", name: "DEVICE-TOKEN");
     await userUtils.saveDeviceToken(deviceToken: deviceToken ?? "");
 
     fcm.getInitialMessage().then((message) {
@@ -47,9 +46,7 @@ class FirebaseMessagingService {
   }
 }
 
-final firebaseMessagingServiceProvider =
-    Provider.family<FirebaseMessagingService, GlobalKey<NavigatorState>>(
-        (ref, navigatorKey) {
+final firebaseMessagingServiceProvider = Provider((ref) {
   final userUtils = ref.read(userUtilsProvider);
   return FirebaseMessagingService(userUtils, ref);
 });
